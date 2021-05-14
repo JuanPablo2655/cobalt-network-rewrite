@@ -1,5 +1,5 @@
 import { CobaltClient } from "./utils/cobaltClient";
 
-const cobalt = new CobaltClient();
+const cobalt: CobaltClient = new CobaltClient();
 
 cobalt.start();
