@@ -4,7 +4,7 @@ import { CobaltClient } from "../../utils/cobaltClient";
 import Event from "../Event"
 
 const registerEvent: Function = (cobalt: CobaltClient) => {
-    const eventFiles = sync(resolve('src/events/**/**'));
+    const eventFiles = sync(resolve('build/events/**/**'));
     eventFiles.forEach((file) => {
         if (/\.(j|t)s$/iu.test(file)) {
             const File = require(file).default;

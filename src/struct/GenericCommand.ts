@@ -8,11 +8,11 @@ abstract class GenericCommand {
     public category: string;
     public usage: string;
     public aliases: string[];
-    public enabled: Boolean;
+    public enabled: boolean;
     public ownerOnly: boolean;
     public guildOnly: boolean;
     public nsfwOnly: boolean;
-    public cooldown: Number;
+    public cooldown: number;
     public userPermissions: PermissionString[];
     public clientPermissions: PermissionString[];
     public abstract cobalt: CobaltClient;

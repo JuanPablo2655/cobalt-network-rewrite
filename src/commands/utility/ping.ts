@@ -6,8 +6,8 @@ abstract class PingCommand extends GenericCommand {
         super({
             name: "ping",
             description: "check the bot ping",
-            category: "util",
-            aliases: ["p"]
+            category: "utility",
+            aliases: ["p"],
         });
     };
 

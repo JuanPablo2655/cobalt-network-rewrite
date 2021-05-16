@@ -17,7 +17,7 @@ export class CobaltClient extends Client {
             partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'USER', 'GUILD_MEMBER']
         });
 
-        this.prefix = 'cn!';
+        this.prefix = 't!!';
     };
 
 

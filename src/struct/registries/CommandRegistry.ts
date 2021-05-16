@@ -1,10 +1,10 @@
 import { resolve } from "path";
 import { sync } from 'glob';
 import { CobaltClient } from "../../utils/cobaltClient";
-import GenericCommand from "../GenericCommand";
+import GenericCommand from "../../struct/GenericCommand";
 
 const registerCommand: Function = (cobalt: CobaltClient) => {
-    const commandFiles = sync(resolve('src/commands/**/*'));
+    const commandFiles = sync(resolve('build/commands/**/*'));
     commandFiles.forEach((file) => {
         if (/\.(j|t)s$/iu.test(file)) {
             const File = require(file).default;

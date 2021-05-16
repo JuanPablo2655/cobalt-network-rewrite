@@ -1,4 +1,4 @@
-import { Guild, Message, TextChannel } from "discord.js";
+import { Collection, Guild, Message, TextChannel } from "discord.js";
 import Event from "../struct/Event"
 import dotenv from "dotenv";
 dotenv.config();
@@ -12,7 +12,7 @@ abstract class MessageEvent extends Event {
 
     run(message: Message) {
         if (message.author.bot) return;
-        if (!message.content.startsWith(this.cobalt.prefix)) {
+        if (!message.content.toLowerCase().startsWith(this.cobalt.prefix)) {
             return; // handle xp and bank space
         };
         const args = message.content.slice(this.cobalt.prefix.length).trim().split(/ +/);
@@ -44,8 +44,51 @@ abstract class MessageEvent extends Event {
                         if (missingPermissions.length) return message.channel.send(`I\'m missing these required permissions: ${missingPermissions.join(", ")}`);
                     };
                 };
+                const updateCooldown = () => {
+                    if (command.cooldown) {
+                        if (!this.cobalt.cooldowns.has(command.name)) {
+                            this.cobalt.cooldowns.set(command.name, new Collection());
+                        };
+                        const now = Date.now();
+                        const timestamps = this.cobalt.cooldowns.get(command.name);
+                        const cooldownAmount = command.cooldown * 1000;
+                        if (timestamps?.has(message.author.id)) {
+                            const cooldown = timestamps.get(message.author.id);
+                            if (cooldown) {
+                                const expirationTime = cooldown + cooldownAmount;
+                                if (now < expirationTime) {
+                                    return
+                                };                            
+                            };
+                        };
+                        timestamps?.set(message.author.id, now);
+                        setTimeout(() => timestamps?.delete(message.author.id), cooldownAmount);
+                    };
+                };
+                const isInCooldown = (): boolean => {
+                    if (command.cooldown) {
+                        const now = Date.now();
+                        const timestamps = this.cobalt.cooldowns.get(command.name);
+                        const cooldownAmount = command.cooldown * 1000;
+                        if (!timestamps) return false;
+                        if (timestamps?.has(message.author.id)) {
+                            const cooldown = timestamps.get(message.author.id);
+                            if (cooldown) {
+                                const expirationTime = cooldown + cooldownAmount;
+                                if (now < expirationTime) {
+                                    const timeLeft = (expirationTime - now) / 1000;
+                                    message.channel.send(`Wait ${timeLeft.toFixed(1)} more second(s) before reusing \`${command.name}\` command.`);
+                                    return true;
+                                };
+                            };
+                        };
+                        return false;
+                    };
+                    return false;
+                };
                 try {
-                    return command.run(message, args, addCD);
+                    if (isInCooldown()) return
+                    return command.run(message, args, updateCooldown);
                 } catch (err) {
                     console.error(err);
                     message.reply("there was an error running this command.");
@@ -56,7 +99,3 @@ abstract class MessageEvent extends Event {
 };
 
 export default MessageEvent;
-
-function addCD() {
-    throw new Error("Function not implemented.");
-}

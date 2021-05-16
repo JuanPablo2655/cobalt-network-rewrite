@@ -6,11 +6,11 @@ export interface CommandOptions {
     category: string,
     usage?: string,
     aliases?: string[],
-    enabled?: Boolean,
+    enabled?: boolean,
     ownerOnly?: boolean,
     guildOnly?: boolean,
     nsfwOnly?: boolean,
-    cooldown?: Number,
+    cooldown?: number,
     userPermissions?: PermissionString[],
     clientPermissions?: PermissionString[],
     run: (message: Message, args: string[], addCD: Function) => unknown | Promise<unknown>
