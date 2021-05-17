@@ -1,5 +1,5 @@
 import { EventOptions } from "../types/Options";
-import { CobaltClient } from "../utils/cobaltClient";
+import { CobaltClient } from "./cobaltClient";
 
 abstract class Event {
     public name: string;

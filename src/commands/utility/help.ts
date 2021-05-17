@@ -7,22 +7,27 @@ abstract class HelpCommand extends GenericCommand {
             name: "help",
             description: "Help menu",
             category: "utility",
+            usage: "[category | command]",
             aliases: ["h", "halp"]
         });
     };
 
     run(message: Message, args: string[], addCD: Function) {
         addCD();
-        const helpEmbed = new MessageEmbed().setColor("RANDOM");
         const command = this.cobalt.commands.get(args[0]);
         const categories = this.removeDuplicates(this.cobalt.commands.map(c => c.category));
-        if (!args && !command) {
-            helpEmbed.setDescription(`${this.cobalt.user?.username} Command List`)
-            for (const category of categories) {
-                helpEmbed.addField(`${category}`, `\`${this.cobalt.prefix}help ${category}\``, true);
-            };
-            return message.channel.send(helpEmbed);
-        } else if (categories.includes(args[0]) && !command) {
+        if (command) {
+            const usage = command.usage ? `${command.name} ${command.usage}` : `${command.name}`
+            const helpEmbed = new MessageEmbed().setColor("RANDOM");
+            helpEmbed.setDescription(`${command.name} Info`)
+                .addField("Description:", `${command.description}`)
+                .addField("Usage:", `\`${this.cobalt.prefix}${usage}\``)
+                .addField("Aliases:", `${command.aliases?.length ? command.aliases.join(", ") : "None"}`)
+                .addField("Cooldown:", `${command.cooldown}`)
+                .addField("Perms Needed:", `${command.clientPermissions?.map(p => `\`${p}\``).join(", ")}`);
+            return message.reply(helpEmbed);
+        } else if (categories.includes(args[0])) {
+            const helpEmbed = new MessageEmbed().setColor("RANDOM");
             const commandNames: Array<string> = new Array;
             const commands = this.cobalt.commands.filter(c => c.category === args[0]);
             for (const command of commands) {
@@ -30,11 +35,20 @@ abstract class HelpCommand extends GenericCommand {
                     commandNames.push(command[1].name);
                 };
             };
-            helpEmbed.setDescription(`${args[0]} Commands`, `${commandNames.map(c => `\`${c}\``).join(", ")}`)
+            helpEmbed.setTitle(`${this.cobalt.utils.toCapitalize(args[0])} Commands`);
+            helpEmbed.setDescription(`${commandNames.map(c => `\`${c}\``).join(", ")}`);
+            return message.reply(helpEmbed);
+        } else {
+            const helpEmbed = new MessageEmbed().setColor("RANDOM");
+            helpEmbed.setDescription(`${this.cobalt.user?.username} Command List`);
+            for (const category of categories) {
+                helpEmbed.addField(`${this.cobalt.utils.toCapitalize(category)}`, `\`${this.cobalt.prefix}help ${category}\``, true);
+            };
+            return message.reply(helpEmbed);
         };
     };
 
-    removeDuplicates(array: Array <string | undefined> ) {
+    removeDuplicates(array: Array <string> ) {
         return [...new Set(array)];
     };
 };

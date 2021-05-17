@@ -7,13 +7,15 @@ abstract class PingCommand extends GenericCommand {
             name: "ping",
             description: "check the bot ping",
             category: "utility",
-            aliases: ["p"],
+            aliases: ["p"]
         });
     };
 
-    run (message: Message, _args: string[], addCD: Function) {
+    async run (message: Message, _args: string[], addCD: Function) {
         addCD();
-        return message.channel.send("ping")
+        const m = await message.reply("If you see this neck yourself #owned");
+        const ping = (m.createdTimestamp - message.createdTimestamp);
+        return m.edit(`Latency: ${ping}ms\nAPI Latency: ${Math.round(this.cobalt.ws.ping)}ms`)
     };
 };
 

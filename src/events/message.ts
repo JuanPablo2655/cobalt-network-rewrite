@@ -31,17 +31,17 @@ abstract class MessageEvent extends Event {
                     const missingPermissions = new Array;
                     if (userPermissions?.length) {
                         for (let i = 0; i < userPermissions.length; i++) {
-                            const hasPermissions = message.member?.hasPermission(userPermissions[i]);
+                            const hasPermissions = message.member?.permissions.has(userPermissions[i]);
                             if (!hasPermissions) missingPermissions.push(userPermissions[i]);
                         };
-                        if (missingPermissions.length) return message.channel.send(`Your missing these required permissions: ${missingPermissions.join(", ")}`);
+                        if (missingPermissions.length) return message.reply(`Your missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, { allowedMentions: { repliedUser: true }});
                     };
                     if (clientPermissions?.length) {
                         for (let i = 0; i < clientPermissions.length; i++) {
-                            const hasPermission = message.guild?.me?.hasPermission(clientPermissions[i]);
+                            const hasPermission = message.guild?.me?.permissions.has(clientPermissions[i]);
                             if (!hasPermission) missingPermissions.push(clientPermissions[i]);
                         };
-                        if (missingPermissions.length) return message.channel.send(`I\'m missing these required permissions: ${missingPermissions.join(", ")}`);
+                        if (missingPermissions.length) return message.reply(`I\'m missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, { allowedMentions: { repliedUser: true }});
                     };
                 };
                 const updateCooldown = () => {
