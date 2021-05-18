@@ -24,6 +24,8 @@ abstract class MessageEvent extends Event {
                     return message.channel.send("This comamnd can only be used by the owners of the bot.");
                 } else if (command.guildOnly && !(message.guild instanceof Guild)) {
                     return message.channel.send("This command can only be used in a guild.");
+                } else if (command.nsfwOnly && !(message.channel as TextChannel).nsfw) {
+                    return message.channel.send("This command can only be used in a NSFW marked channel.")
                 };
                 if (message.channel instanceof TextChannel) {
                     const userPermissions = command.userPermissions;

@@ -1,7 +1,7 @@
 import { Client, Collection, Intents } from "discord.js";
 import dotenv from "dotenv";
 import { CommandRegistry, EventRegistry } from "./registries/export/RegistryIndex";
-import { CommandOptions, EventOptions } from "../types/Options";
+import { CommandOptions, EventOptions, InteractionCommandOptions } from "../types/Options";
 import Util from "../utils/Util";
 dotenv.config();
 
@@ -10,6 +10,7 @@ export class CobaltClient extends Client {
     public cooldowns = new Collection<string, Collection<string, number>>();
     public aliases = new Collection<string, string>();
     public events = new Collection<string, EventOptions>();
+    public interactions = new Collection<string, InteractionCommandOptions>();
     public prefix: string;
     public utils: Util;
 
