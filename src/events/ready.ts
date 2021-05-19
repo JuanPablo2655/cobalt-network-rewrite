@@ -9,8 +9,8 @@ abstract class ReadyEvent extends Event {
     };
 
     async run () {
-        console.log("ready");
         InteractionRegistry(this.cobalt);
+        console.log("[Cobalt]\tOnline!");
     };
 };
 

@@ -6,6 +6,7 @@ import Interaction from "../Interaction";
 
 const registerInteraction: Function = (cobalt: CobaltClient) => {
     const interactionFiles = sync(resolve('build/interactions/**/*'));
+    console.log(`[Interactions]\tLoaded ${interactionFiles.length} commands`)
     interactionFiles.forEach(async (file) => {
         if (/\.(j|t)s$/iu.test(file)) {
             const File = require(file).default;
@@ -18,7 +19,6 @@ const registerInteraction: Function = (cobalt: CobaltClient) => {
                     description: interaction.description ?? "Empty description",
                     options: interaction.options ?? []
                 };
-                // await cobalt.guilds.cache.get("823300821994569748")?.commands.create(data);
                 await cobalt.application?.commands.create(data);
             };
         };

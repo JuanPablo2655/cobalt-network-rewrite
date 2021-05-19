@@ -5,6 +5,7 @@ import GenericCommand from "../../struct/GenericCommand";
 
 const registerCommand: Function = (cobalt: CobaltClient) => {
     const commandFiles = sync(resolve('build/commands/**/*'));
+    console.log(`[Commands]\tLoaded ${commandFiles.length} commands`)
     commandFiles.forEach((file) => {
         if (/\.(j|t)s$/iu.test(file)) {
             const File = require(file).default;
