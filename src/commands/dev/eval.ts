@@ -11,7 +11,7 @@ abstract class EvalCommand extends GenericCommand {
             category: "dev",
             usage: "<code>",
             aliases: ["e"],
-            ownerOnly: true
+            devOnly: true
         });
     };
 

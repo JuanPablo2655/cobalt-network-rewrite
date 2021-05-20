@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf build",
     "build": "npx tsc && node build/cobalt.js",
-    "dev": "ts-node-dev --respawn --transpile-only ./src/cobalt.ts"
+    "dev": "ts-node-dev --respawn --transpile-only --debug ./src/cobalt.ts --watch"
   },
   "repository": {
     "type": "git",
@@ -22,12 +22,12 @@
     "discord.js": "github:discordjs/discord.js",
     "dotenv": "^8.2.0",
     "glob": "^7.1.7",
-    "mongoose": "^5.12.9",
+    "mongoose": "^5.12.10",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
-    "@types/node": "^14.14.35",
+    "@types/node": "^14.17.0",
     "@types/node-fetch": "^2.5.10",
     "ts-node-dev": "^1.1.6",
     "tslib": "^2.0.3",

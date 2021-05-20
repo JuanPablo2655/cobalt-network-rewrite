@@ -8,6 +8,7 @@ export interface CommandOptions {
     aliases?: string[],
     enabled?: boolean,
     ownerOnly?: boolean,
+    devOnly?: boolean
     guildOnly?: boolean,
     nsfwOnly?: boolean,
     cooldown?: number,

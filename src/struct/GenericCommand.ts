@@ -10,6 +10,7 @@ abstract class GenericCommand {
     public aliases: string[];
     public enabled: boolean;
     public ownerOnly: boolean;
+    public devOnly: boolean;
     public guildOnly: boolean;
     public nsfwOnly: boolean;
     public cooldown: number;
@@ -25,6 +26,7 @@ abstract class GenericCommand {
         this.aliases = options.aliases ?? [];
         this.enabled = options.enabled ?? true;
         this.ownerOnly = options.ownerOnly ?? false;
+        this.devOnly = options.devOnly ?? false;
         this.guildOnly = options.guildOnly ?? false;
         this.nsfwOnly = options.nsfwOnly ?? false;
         this.cooldown = options.cooldown ?? 1;

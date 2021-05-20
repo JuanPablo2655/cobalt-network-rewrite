@@ -20,12 +20,14 @@ abstract class MessageEvent extends Event {
         if (commandName) {
             const command = this.cobalt.commands.get(commandName);
             if (command) {
-                if (command.ownerOnly && !process.env.OWNERS?.split(",").includes(message.author.id)) {
-                    return message.channel.send("This comamnd can only be used by the owners of the bot.");
+                if (command.devOnly && !process.env.OWNERS?.split(",").includes(message.author.id)) {
+                    return
+                } else if (command.ownerOnly && (message.guild as Guild).ownerID !== message.author.id) {
+                    return message.reply("This comamnd can only be used by the owner of the guild.");
                 } else if (command.guildOnly && !(message.guild instanceof Guild)) {
-                    return message.channel.send("This command can only be used in a guild.");
+                    return message.reply("This command can only be used in a guild.");
                 } else if (command.nsfwOnly && !(message.channel as TextChannel).nsfw) {
-                    return message.channel.send("This command can only be used in a NSFW marked channel.")
+                    return message.reply("This command can only be used in a NSFW marked channel.")
                 };
                 if (message.channel instanceof TextChannel) {
                     const userPermissions = command.userPermissions;
