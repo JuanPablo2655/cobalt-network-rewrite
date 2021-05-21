@@ -10,16 +10,43 @@ abstract class MessageEvent extends Event {
         });
     };
 
-    run(message: Message) {
+    async run(message: Message) {
+        const guild = await this.cobalt.db.getGuild(message?.guild?.id);
+
+        const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const prefixReg = new RegExp(`^(<@!?${this.cobalt?.user?.id}>|${escapeRegex(guild?.prefix)})\\s*`);
+        const prefixArr = message.content.match(prefixReg);
+        const prefix = prefixArr?.[0];
+        
         if (message.author.bot) return;
-        if (!message.content.toLowerCase().startsWith(this.cobalt.prefix)) {
+        if (!prefix) return;
+        if (!message.content.toLowerCase().startsWith(prefix)) {
             return; // handle xp and bank space
         };
-        const args = message.content.slice(this.cobalt.prefix.length).trim().split(/ +/);
+        const args = message.content.slice(prefix?.length).trim().split(/ +/);
         const commandName: string | undefined = args.shift();
+        if (message.mentions.members?.has(this.cobalt.user!.id) && !commandName) return message.channel.send(`My prefix is \`${guild?.prefix}\``)
         if (commandName) {
             const command = this.cobalt.commands.get(commandName);
+            if (!command && !message.author.id) {
+                let hasBadWord = false;
+                let badWords: string[] = [];
+                for (const word of guild!.blacklistedWords) {
+                    if (message.content.toLowerCase().includes(word.toLowerCase())) {
+                        hasBadWord = true;
+                        badWords.push(word)
+                    }
+                };
+                if (hasBadWord) {
+                    message.deletable && message.delete();
+                    const user = this.cobalt.users.cache.get(message.author.id);
+                    return user?.send(`The word(s) \`${badWords.join(", ")}\` is banned, please watch your language.`);
+                };
+            };
             if (command) {
+                if (!guild?.verified && command.name !== "verify") return message.channel.send("You have to verify your server with one of the Directors in the main server!");
+                if (guild?.disabledCategories?.includes(command.category)) return
+                if (guild?.disabledCategories?.includes(command.name)) return
                 if (command.devOnly && !process.env.OWNERS?.split(",").includes(message.author.id)) {
                     return
                 } else if (command.ownerOnly && (message.guild as Guild).ownerID !== message.author.id) {
@@ -92,6 +119,9 @@ abstract class MessageEvent extends Event {
                 };
                 try {
                     if (isInCooldown()) return
+                    const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
+                    bot!.totalCommandsUsed += 1
+                    await bot?.save();
                     return command.run(message, args, updateCooldown);
                 } catch (err) {
                     console.error(err);

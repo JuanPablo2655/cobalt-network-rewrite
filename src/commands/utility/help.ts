@@ -5,15 +5,16 @@ abstract class HelpCommand extends GenericCommand {
     constructor() {
         super({
             name: "help",
-            description: "Help menu",
+            description: "Get the a list of all the commands avaliable.",
             category: "utility",
             usage: "[category | command]",
             aliases: ["h", "halp"]
         });
     };
 
-    run(message: Message, args: string[], addCD: Function) {
+    async run(message: Message, args: string[], addCD: Function) {
         addCD();
+        const guild = await this.cobalt.db.getGuild(message.guild?.id)
         const command = this.cobalt.commands.get(args[0]);
         const categories = this.removeDuplicates(this.cobalt.commands.map(c => c.category));
         if (command) {
@@ -21,7 +22,7 @@ abstract class HelpCommand extends GenericCommand {
             const helpEmbed = new MessageEmbed().setColor("RANDOM");
             helpEmbed.setDescription(`${command.name} Info`)
                 .addField("Description:", `${command.description}`)
-                .addField("Usage:", `\`${this.cobalt.prefix}${usage}\``)
+                .addField("Usage:", `\`${guild?.prefix}${usage}\``)
                 .addField("Aliases:", `${command.aliases?.length ? command.aliases.join(", ") : "None"}`)
                 .addField("Cooldown:", `${command.cooldown}`)
                 .addField("Perms Needed:", `${command.clientPermissions?.map(p => `\`${p}\``).join(", ")}`);
@@ -42,7 +43,7 @@ abstract class HelpCommand extends GenericCommand {
             const helpEmbed = new MessageEmbed().setColor("RANDOM");
             helpEmbed.setDescription(`${this.cobalt.user?.username} Command List`);
             for (const category of categories) {
-                helpEmbed.addField(`${this.cobalt.utils.toCapitalize(category)}`, `\`${this.cobalt.prefix}help ${category}\``, true);
+                helpEmbed.addField(`${this.cobalt.utils.toCapitalize(category)}`, `\`${guild?.prefix}help ${category}\``, true);
             };
             return message.reply(helpEmbed);
         };

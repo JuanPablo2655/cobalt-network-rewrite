@@ -46,7 +46,7 @@ export type IGuild = Document & GuildData;
 const guildSchema = new Schema<IGuild>({
     _id: { type: String, required: true },
     prefix: { type: String, default: "cn!" },
-    verified: { type: String, default: false },
+    verified: { type: Boolean, default: false },
     blacklistedWords: { type: Array, default: [] },
     disabledCommands: { type: Array, default: [] },
     disabledCategories: { type: Array, default: [] },

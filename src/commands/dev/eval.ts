@@ -7,7 +7,7 @@ abstract class EvalCommand extends GenericCommand {
     constructor() {
         super({
             name: "eval",
-            description: "eval raw code",
+            description: "Eval raw code. Be careful of people who might want to gain access to the bot though this command!",
             category: "dev",
             usage: "<code>",
             aliases: ["e"],

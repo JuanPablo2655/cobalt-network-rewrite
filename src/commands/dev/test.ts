@@ -5,7 +5,7 @@ abstract class TestCommand extends GenericCommand {
     constructor() {
         super({
             name: "test",
-            description: "test command",
+            description: "Test comamnd for the bot when testing new features.",
             category: "dev",
             ownerOnly: true
         });

@@ -11,7 +11,8 @@ async function database() {
             autoIndex: false,
             poolSize: 5,
             connectTimeoutMS: 10000,
-            family: 4
+            family: 4,
+            useFindAndModify: false
         });
         console.log("[Mongoose]\tMongoose connection successfully opened")
     } catch (err) {

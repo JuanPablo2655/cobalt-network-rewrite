@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { CommandRegistry, EventRegistry } from "./registries/export/RegistryIndex";
 import { CommandOptions, EventOptions, InteractionCommandOptions } from "../types/Options";
 import Util from "../utils/Util";
+import Database from "../utils/Database";
 dotenv.config();
 
 export class CobaltClient extends Client {
@@ -13,6 +14,7 @@ export class CobaltClient extends Client {
     public interactions = new Collection<string, InteractionCommandOptions>();
     public prefix: string;
     public utils: Util;
+    public db: Database;
 
     constructor() {
         super({
@@ -21,8 +23,9 @@ export class CobaltClient extends Client {
             allowedMentions: { repliedUser: false }
         });
 
-        this.prefix = 't!!';
+        // this.prefix = 't!!';
         this.utils = new Util(this);
+        this.db = new Database(this);
     };
 
 

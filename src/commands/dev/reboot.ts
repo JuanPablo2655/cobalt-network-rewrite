@@ -5,7 +5,7 @@ abstract class RebootCommand extends GenericCommand {
     constructor() {
         super({
             name: "reboot",
-            description: "reboot the bot. Only works if using pm2 or anything else simillar",
+            description: "Reboot the bot. Only works if using pm2 or anything else simillar.",
             category: "dev",
             devOnly: true
         });

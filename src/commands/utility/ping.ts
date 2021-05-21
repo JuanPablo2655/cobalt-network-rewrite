@@ -5,7 +5,7 @@ abstract class PingCommand extends GenericCommand {
     constructor() {
         super({
             name: "ping",
-            description: "check the bot ping",
+            description: "Check the bot ping.",
             category: "utility",
             aliases: ["p"]
         });
