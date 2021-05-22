@@ -1,5 +1,5 @@
-import { Collection, Guild, Message, TextChannel } from "discord.js";
-import Event from "../struct/Event"
+import { Collection, Guild, Message, TextChannel, Permissions } from "discord.js";
+import Event from "../../struct/Event"
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -17,8 +17,24 @@ abstract class MessageEvent extends Event {
         const prefixReg = new RegExp(`^(<@!?${this.cobalt?.user?.id}>|${escapeRegex(guild?.prefix)})\\s*`);
         const prefixArr = message.content.match(prefixReg);
         const prefix = prefixArr?.[0];
-        
         if (message.author.bot) return;
+        if (!message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && !message.author.bot) {        
+            let hasBadWord = false;
+            let badWords: string[] = [];
+            guild?.blacklistedWords.forEach((word) => {
+                message.content.split(" ").forEach((messageWord) => {
+                    if (word.toLowerCase() === messageWord.toLowerCase()) {
+                        badWords.push(word);
+                        return (hasBadWord = true);
+                    };
+                });
+            });
+            if (hasBadWord) {
+                message.deletable && message.delete();
+                const user = this.cobalt.users.cache.get(message.author.id);
+                return user?.send(`The word(s) \`${badWords.join(", ")}\` is banned, please watch your language.`);
+            };
+        };
         if (!prefix) return;
         if (!message.content.toLowerCase().startsWith(prefix)) {
             return; // handle xp and bank space
@@ -28,25 +44,10 @@ abstract class MessageEvent extends Event {
         if (message.mentions.members?.has(this.cobalt.user!.id) && !commandName) return message.channel.send(`My prefix is \`${guild?.prefix}\``)
         if (commandName) {
             const command = this.cobalt.commands.get(commandName);
-            if (!command && !message.author.id) {
-                let hasBadWord = false;
-                let badWords: string[] = [];
-                for (const word of guild!.blacklistedWords) {
-                    if (message.content.toLowerCase().includes(word.toLowerCase())) {
-                        hasBadWord = true;
-                        badWords.push(word)
-                    }
-                };
-                if (hasBadWord) {
-                    message.deletable && message.delete();
-                    const user = this.cobalt.users.cache.get(message.author.id);
-                    return user?.send(`The word(s) \`${badWords.join(", ")}\` is banned, please watch your language.`);
-                };
-            };
             if (command) {
                 if (!guild?.verified && command.name !== "verify") return message.channel.send("You have to verify your server with one of the Directors in the main server!");
                 if (guild?.disabledCategories?.includes(command.category)) return
-                if (guild?.disabledCategories?.includes(command.name)) return
+                if (guild?.disabledCommands?.includes(command.name)) return
                 if (command.devOnly && !process.env.OWNERS?.split(",").includes(message.author.id)) {
                     return
                 } else if (command.ownerOnly && (message.guild as Guild).ownerID !== message.author.id) {

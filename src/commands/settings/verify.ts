@@ -14,9 +14,13 @@ abstract class VerifyCommand extends GenericCommand {
 
     async run (message: Message, _args: string[], addCD: Function) {
         addCD();
-        const director = await this.cobalt.guilds.cache.get("322505254098698240")?.roles.cache.get("355885679076442112");
-        if (!director) return;
-        if (!message.member?.roles.cache.has(String(director))) return message.channel.send("not a director!");
+        const bot = await this.cobalt.db.getBot(this.cobalt.user?.id)
+        if (!bot) return;
+        let isDirector = false;
+        bot.directors.forEach(director => {
+            if (director === message.author.id) return (isDirector = true);
+        });
+        if (!isDirector) return message.channel.send("not a director!");
         const guildId = (message.guild as Guild)?.id
         const guild = this.cobalt.db.getGuild(guildId);
         if (!guild) return message.reply("Invalid guild ID, make sure it's correct and try again.");

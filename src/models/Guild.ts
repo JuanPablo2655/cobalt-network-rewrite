@@ -22,11 +22,13 @@ export interface LevelMessage {
 
 export interface WelcomeMessage {
     message: string | null;
+    channelId: string | null;
     enabled: boolean;
 };
 
 export interface LeaveMessage {
     message: string | null;
+    channelId: string | null;
     enabled: boolean;
 };
 
@@ -57,11 +59,11 @@ const guildSchema = new Schema<IGuild>({
     },
     welcomeMessage: {
         type: Object,
-        default: { message: "Welcome, {user.tag} to {guild.name}!", enabled: true }
+        default: { message: "Welcome, {user.tag} to {guild.name}!", channelId: null, enabled: true }
     },
     leaveMessage: {
         type: Object,
-        default: { message: "Goodbye {user.username}.", enabled: true }
+        default: { message: "Goodbye {user.username}.", channelId: null, enabled: true }
     },
     banMessage: {
         type: Object,

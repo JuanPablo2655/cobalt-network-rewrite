@@ -1,4 +1,4 @@
-import botModel, { IBot } from "../models/Bot";
+import botModel, { BotData, IBot } from "../models/Bot";
 import guildModel, { GuildData, IGuild } from "../models/Guild";
 import { CobaltClient } from "../struct/cobaltClient";
 
@@ -53,5 +53,13 @@ export default class Database {
 
     async getBot(botId: string | undefined): Promise<IBot | undefined> {
         return await botModel.findOne({ _id: botId }) || await botModel.create({ _id: botId });
+    };
+
+    async updateBot(botId: string | undefined, data: Partial<BotData>) {
+        try {
+            return await botModel.findOneAndUpdate({ _id: botId}, data);
+        } catch (err) {
+            console.error(err?.stack || err);
+        };
     };
 };
