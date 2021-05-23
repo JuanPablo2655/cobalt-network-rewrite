@@ -45,7 +45,7 @@ export default class Util {
     };
 
     async findRole(message: DJS.Message, arg: string): Promise<DJS.Role | null> {
-        if (!(message.guild instanceof DJS.Guild)) return null
+        if (!(message.guild instanceof DJS.Guild)) return null;
         return (
             message.mentions.roles.first() ||
             message.guild.roles.cache.get(arg) ||
@@ -53,5 +53,15 @@ export default class Util {
             message.guild.roles.cache.find((r) => r.name.startsWith(arg)) ||
             message.guild.roles.fetch(arg)
         );
+    };
+
+    async findChannel(message: DJS.Message, arg: string): Promise<DJS.TextChannel | null> {
+        if (!(message.guild instanceof DJS.Guild)) return null;
+        return (
+            message.mentions.channels.first() ||
+            message.guild.channels.cache.get(arg) ||
+            message.guild.channels.cache.find((c) => (c as DJS.TextChannel).name === arg) ||
+            message.guild.channels.cache.find((c) => (c as DJS.TextChannel).name.startsWith(arg))
+        ) as DJS.TextChannel;
     };
 };
