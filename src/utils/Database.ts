@@ -1,5 +1,6 @@
 import botModel, { BotData, IBot } from "../models/Bot";
 import guildModel, { GuildData, IGuild } from "../models/Guild";
+import userModel, { UserData, IUser } from "../models/User";
 import { CobaltClient } from "../struct/cobaltClient";
 
 export default class Database {
@@ -39,7 +40,7 @@ export default class Database {
         };
     };
 
-    async updateGuild(guildId: string | undefined, data: Partial<GuildData>) {
+    async updateGuild(guildId: string | undefined, data: Partial<GuildData>): Promise<void> {
         try {
             const guild = await this.getGuild(guildId);
 
@@ -58,6 +59,49 @@ export default class Database {
     async updateBot(botId: string | undefined, data: Partial<BotData>) {
         try {
             return await botModel.findOneAndUpdate({ _id: botId}, data);
+        } catch (err) {
+            console.error(err?.stack || err);
+        };
+    };
+
+    async addUser(userId: string | undefined): Promise<IUser | undefined> {
+        try {
+            const user: IUser = new userModel({ _id: userId });
+            await user.save();
+
+            return user;
+        } catch (err) {
+            console.error(err?.stack || err);
+        };
+    };
+
+    async removeUser(userId: string): Promise<void> {
+        try {
+            await userModel.findOneAndDelete({ _id: userId });
+        } catch (err) {
+            console.error(err?.stack || err);
+        };
+    };
+
+    async getUser(userId: string | undefined): Promise<IUser | undefined> {
+        try {
+            let user = await userModel.findOne({ _id: userId });
+
+            if (!user) user = await this.addUser(userId);
+
+            return user;
+        } catch (err) {
+            console.error(err?.stack || err);
+        };
+    };
+
+    async updateUser(userId: string | undefined, data: Partial<UserData>): Promise<void> {
+        try {
+            const user = await this.getUser(userId);
+
+            if (!user) await this.addUser(userId);
+
+            await userModel.findOneAndUpdate({ _id: userId }, data);
         } catch (err) {
             console.error(err?.stack || err);
         };

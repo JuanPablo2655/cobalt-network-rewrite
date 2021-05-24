@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/JuanPablo2655/cobalt-network-rewrite#readme",
   "dependencies": {
+    "discord-logs": "^1.9.0",
     "discord.js": "github:discordjs/discord.js",
     "dotenv": "^8.2.0",
     "glob": "^7.1.7",
