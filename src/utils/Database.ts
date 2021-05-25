@@ -64,9 +64,9 @@ export default class Database {
         };
     };
 
-    async addUser(userId: string | undefined): Promise<IUser | undefined> {
+    async addUser(userId: string | undefined, guildId: string | undefined): Promise<IUser | undefined> {
         try {
-            const user: IUser = new userModel({ _id: userId });
+            const user: IUser = new userModel({ userId, guildId });
             await user.save();
 
             return user;
@@ -75,19 +75,19 @@ export default class Database {
         };
     };
 
-    async removeUser(userId: string): Promise<void> {
+    async removeUser(userId: string, guildId: string): Promise<void> {
         try {
-            await userModel.findOneAndDelete({ _id: userId });
+            await userModel.findOneAndDelete({ userId, guildId });
         } catch (err) {
             console.error(err?.stack || err);
         };
     };
 
-    async getUser(userId: string | undefined): Promise<IUser | undefined> {
+    async getUser(userId: string | undefined, guildId: string | undefined): Promise<IUser | undefined> {
         try {
-            let user = await userModel.findOne({ _id: userId });
+            let user = await userModel.findOne({ userId, guildId });
 
-            if (!user) user = await this.addUser(userId);
+            if (!user) user = await this.addUser(guildId, userId);
 
             return user;
         } catch (err) {
@@ -95,13 +95,13 @@ export default class Database {
         };
     };
 
-    async updateUser(userId: string | undefined, data: Partial<UserData>): Promise<void> {
+    async updateUser(userId: string | undefined, guildId: string | undefined, data: Partial<UserData>): Promise<void> {
         try {
-            const user = await this.getUser(userId);
+            const user = await this.getUser(userId, guildId);
 
-            if (!user) await this.addUser(userId);
+            if (!user) await this.addUser(userId, guildId);
 
-            await userModel.findOneAndUpdate({ _id: userId }, data);
+            await userModel.findOneAndUpdate({ userId, guildId }, data);
         } catch (err) {
             console.error(err?.stack || err);
         };

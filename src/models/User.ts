@@ -1,7 +1,9 @@
-import { Document, model, Schema } from "mongoose";
+import { Document, model, ObjectId, Schema } from "mongoose";
 
 export interface UserData {
-    _id: string;
+    _id: ObjectId;
+    userId: string;
+    guildId: string;
     roles: string[];
     daily: number;
     weekly: number;
@@ -11,7 +13,8 @@ export interface UserData {
 export type IUser = Document & UserData;
 
 const userSchema = new Schema<IUser>({
-    _id: { type: String, required: true },
+    userId: { type: String, required: true },
+    guildId: { type: String, required: true },
     roles: { type: Array, default: [] },
     daily: { type: Date, default: null },
     weekly: { type: Date, default: null },
