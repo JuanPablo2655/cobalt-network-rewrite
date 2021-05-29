@@ -97,9 +97,9 @@ export default class Database {
 
     async updateUser(userId: string | undefined, guildId: string | undefined, data: Partial<UserData>): Promise<void> {
         try {
-            const user = await this.getUser(userId, guildId);
+            // const user = await this.getUser(userId, guildId);
 
-            if (!user) await this.addUser(userId, guildId);
+            // if (!user) await this.addUser(userId, guildId);
 
             await userModel.findOneAndUpdate({ userId, guildId }, data);
         } catch (err) {

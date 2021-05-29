@@ -18,8 +18,8 @@ abstract class GuildMemberAddEvent extends Event {
         const logChannelId = guild?.logChannel.channelId;
         const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
         const avatar = member.user.displayAvatarURL({ format: "png", dynamic: true });
-        if (user?.roles) {
-            user.roles.forEach(r => {
+        if (user?.roles.length !== 0) {
+            user?.roles.forEach(r => {
                 let role = member.guild.roles.cache.get(r);
                 if (!role) return;
                 if (member.guild.me!.roles.highest.comparePositionTo(role) < 0 ) return

@@ -1,4 +1,5 @@
 import { GuildMember, MessageEmbed, TextChannel } from "discord.js";
+import prettyMilliseconds from "pretty-ms";
 import Event from "../../struct/Event";
 
 abstract class GuildMemberRemoveEvent extends Event {
@@ -11,13 +12,14 @@ abstract class GuildMemberRemoveEvent extends Event {
     async run (member: GuildMember) {
         if (!member.guild) return;
         if (!member.guild.available) return;
+        const user = await this.cobalt.db.getUser(member.user.id, member.guild.id);
         const guild = await this.cobalt.db.getGuild(member.guild.id);
         if (!guild) return;
         if (!guild.logChannel.enabled) return;
         const logChannelId = guild?.logChannel.channelId;
         const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
         const avatar = member.user.displayAvatarURL({ format: "png", dynamic: true });
-        if (member.roles.cache.size !== 0) {
+        if (user && member.roles.cache.size !== 0) {
             let roleList: string[] = member.roles.cache.map(r => r.id);
             await this.cobalt.db.updateUser(member.user.id, member.guild.id, {
                 roles: roleList
@@ -36,7 +38,7 @@ abstract class GuildMemberRemoveEvent extends Event {
             .setAuthor(member.user.username, avatar)
             .setTitle(`Member Left`)
             .setColor("#8f0a0a")
-            .setDescription(`Time in the Server: **10 days**\nGuild Member Count: **50**`)
+            .setDescription(`Time in the Server: **${prettyMilliseconds(Date.now() - member.guild.joinedTimestamp)}**\nGuild Member Count: **${member.guild.memberCount}**`)
             .setFooter(`User ID: ${member.user.id}`)
             .setTimestamp();
         logChannel.send(logEmbed);

@@ -24,7 +24,8 @@
     "dotenv": "^8.2.0",
     "glob": "^7.1.7",
     "mongoose": "^5.12.10",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "pretty-ms": "^7.0.1"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",

@@ -64,4 +64,8 @@ export default class Util {
             message.guild.channels.cache.find((c) => (c as DJS.TextChannel).name.startsWith(arg))
         ) as DJS.TextChannel;
     };
+
+    async trim(str: string, max: number) {
+        return (str.length > max) ? `${str.slice(0, max - 3)}...` : str;
+    };
 };

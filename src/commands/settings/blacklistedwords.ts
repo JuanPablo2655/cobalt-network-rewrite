@@ -7,7 +7,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
             name: "blacklistedwords",
             description: "add, remove, or list blacklisted words in your server.",
             category: "settings",
-            usage: "<get|add|remove> [word]",
+            usage: "<list|add|remove> [word]",
             aliases: ["filterword", "filterwords", "blw"],
             guildOnly: true,
             userPermissions: ["MANAGE_GUILD"]
@@ -45,13 +45,13 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
                 };
                 return message.channel.send("There are no blacklisted words yet.")
             };
-            case "get": {
+            case "list": {
                 const words = blacklistWords !== null && blacklistWords?.map((w) => `\`${w}\``).join(", ");
                 return message.channel.send(words || "There are no blacklisted words yet.")
             };
             default: {
                 return message.reply("option does not exist.")
-            }
+            };
         };
     };
 };
