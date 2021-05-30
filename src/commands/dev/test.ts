@@ -11,13 +11,9 @@ abstract class TestCommand extends GenericCommand {
         });
     };
 
-    async run(message: Message, args: string[], addCD: Function) {
+    async run(message: Message, _args: string[], addCD: Function) {
         addCD();
-        const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
-        const role = await this.cobalt.utils.findRole(message, args[1]);
-        if(!role || !args[1]) return message.channel.send("Didn't find the role :(")
-        if (!member) return message.channel.send("Didn't find the member :(");
-        return message.channel.send(`${member?.user?.tag} ${role.name}`);
+        return message.channel.send(">>> works?\ntest\ntest")
     };
 };
 

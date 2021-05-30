@@ -5,10 +5,12 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
     constructor() {
         super({
             name: "setleavechannel",
-            description: "Set the weclome channel.",
+            description: "Manage the leave channel in your server.",
             category: "settings",
+            usage: "<toggle|channel|message> <[<true>|<enable>]|channel ID|[<edit>|<default>]> <null|null|leave message>",
             aliases: ["leavechannel"],
-            guildOnly: true
+            guildOnly: true,
+            userPermissions: ["MANAGE_GUILD"]
         });
     };
 
