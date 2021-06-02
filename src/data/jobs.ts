@@ -36,7 +36,7 @@ const jobs: JobData[] = [{
     entries: ["{user.username} built a shed for **₡{money}.**",
         "{user.username} helped a team of construction workers and earned **₡{money}**."],
     firedEntry: "{user.username} didn't finish building a house and got fired.",
-    minAmount: 4000
+    minAmount: 400
 }, {
     id: "chief",
     name: "Chief",
