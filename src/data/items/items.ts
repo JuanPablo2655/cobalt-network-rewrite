@@ -6,7 +6,7 @@ export type ItemCategories =
     | "apparel"
     | "weapons"
     | "potions"
-    | "misc"
+    | "misc";
 
 export interface ItemData {
     id: string;

@@ -1,13 +1,17 @@
 import { Document, model, Schema } from "mongoose";
+import { ClassOptions } from "../data/classes";
+import { RaceOptions } from "../data/races";
 
 export interface CompanionData {
     _id: string;
     name: string;
-    race: string;
+    race: RaceOptions;
     gender: string;
-    class: string;
+    class: ClassOptions;
     level: number;
     xp: number;
+    health: number;
+    magicka: number;
 }
 
 export type ICompanion = Document & CompanionData;

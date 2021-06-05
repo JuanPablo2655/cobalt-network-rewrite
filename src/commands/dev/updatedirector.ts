@@ -16,7 +16,7 @@ abstract class UpdateDirectorCommand extends GenericCommand {
         const role = await this.cobalt.utils.findRole(message, "355885679076442112");
         if (!role) return message.reply("Wrong server bruh");
         addCD();
-        let directors: string[] = new Array();
+        let directors: `${bigint}`[] = new Array();
         let directorUsernames: string[] = new Array();
         role?.members.forEach(user => {
             directors.push(user.user.id)

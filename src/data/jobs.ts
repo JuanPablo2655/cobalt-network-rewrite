@@ -21,7 +21,7 @@ const jobs: JobData[] = [{
 }, {
     id: "designer",
     name: "Designer",
-    entries: ["{user.usernmae} designed a house for *₡{money}**."],
+    entries: ["{user.usernmae} designed a house for **₡{money}**."],
     firedEntry: "{user.username} missed a deadline and go fired.",
     minAmount: 350
 }, {

@@ -1,6 +1,5 @@
-import { Message } from "discord.js";
+import { Message, MessageActionRow, MessageButton } from "discord.js";
 import GenericCommand from "../../struct/GenericCommand";
-import items from "../../data/items";
 
 abstract class TestCommand extends GenericCommand {
     constructor() {
@@ -14,13 +13,12 @@ abstract class TestCommand extends GenericCommand {
 
     async run(message: Message, _args: string[], addCD: Function) {
         addCD();
-        const itemsList = items.filter(i => i.canBuy);
-        if (!itemsList) return message.reply("nothing on the store");
-        const itemNames: Array<string> = new Array;
-        for (const item of itemsList) {
-            itemNames.push(item.name);
-        };
-        return message.channel.send(itemNames.join(", "));
+        const row = new MessageActionRow()
+            .addComponents(new MessageButton()
+                .setCustomID("test")
+                .setLabel("test")
+                .setStyle("PRIMARY"));
+        message.channel.send(row);
     };
 };
 
