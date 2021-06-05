@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message, Snowflake } from "discord.js";
 import GenericCommand from "../../struct/GenericCommand";
 
 abstract class UpdateDirectorCommand extends GenericCommand {
@@ -16,14 +16,14 @@ abstract class UpdateDirectorCommand extends GenericCommand {
         const role = await this.cobalt.utils.findRole(message, "355885679076442112");
         if (!role) return message.reply("Wrong server bruh");
         addCD();
-        let directors: `${bigint}`[] = new Array();
+        let directors: string[] = new Array();
         let directorUsernames: string[] = new Array();
         role?.members.forEach(user => {
             directors.push(user.user.id)
         });
 
         directors.forEach(userId => {
-            let username = this.cobalt.users.cache.get(userId)!.username
+            let username = this.cobalt.users.cache.get(userId as Snowflake)!.username
             directorUsernames.push(username);
         })
 

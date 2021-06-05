@@ -1,4 +1,4 @@
-import { GuildMember, MessageEmbed, TextChannel } from "discord.js";
+import { GuildMember, MessageEmbed, Snowflake, TextChannel } from "discord.js";
 import Event from "../../struct/Event";
 
 abstract class GuildMemberNicknameUpdateEvent extends Event {
@@ -15,7 +15,7 @@ abstract class GuildMemberNicknameUpdateEvent extends Event {
         if (!guild) return;
         if (!guild.logChannel.enabled) return;
         const logChannelId = guild?.logChannel.channelId;
-        const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
+        const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId as Snowflake) as TextChannel;
         const avatar = member.user.displayAvatarURL({ format: "png", dynamic: true })
         const oldNick = oldNickname || "None";
         const newNick = newNickname || "None";

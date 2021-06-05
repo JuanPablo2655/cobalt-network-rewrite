@@ -31,7 +31,7 @@ export default class Util {
 
             member = 
                 message.guild.members.cache.find((m) => m.user.id === mention?.id) ||
-                message.guild.members.cache.get(arg) ||
+                message.guild.members.cache.get(arg as DJS.Snowflake) ||
                 message.guild.members.cache.find((m) => m.user.id === args[options?.index ?? 0]) ||
                 message.guild.members.cache.find((m) => m.user.username === args[options?.index ?? 0] || m.user.username.toLowerCase().includes(args[options?.index ?? 0]?.toLowerCase())) ||
                 message.guild.members.cache.find((m) => m.displayName === args[options?.index ?? 0] || m.displayName.toLowerCase().includes(args[options?.index ?? 0]?.toLowerCase())) ||
@@ -48,10 +48,10 @@ export default class Util {
         if (!(message.guild instanceof DJS.Guild)) return null;
         return (
             message.mentions.roles.first() ||
-            message.guild.roles.cache.get(arg) ||
+            message.guild.roles.cache.get(arg as DJS.Snowflake) ||
             message.guild.roles.cache.find((r) => r.name === arg) ||
             message.guild.roles.cache.find((r) => r.name.startsWith(arg)) ||
-            message.guild.roles.fetch(arg)
+            message.guild.roles.fetch(arg as DJS.Snowflake)
         );
     };
 
@@ -59,7 +59,7 @@ export default class Util {
         if (!(message.guild instanceof DJS.Guild)) return null;
         return (
             message.mentions.channels.first() ||
-            message.guild.channels.cache.get(arg) ||
+            message.guild.channels.cache.get(arg as DJS.Snowflake) ||
             message.guild.channels.cache.find((c) => (c as DJS.TextChannel).name === arg) ||
             message.guild.channels.cache.find((c) => (c as DJS.TextChannel).name.startsWith(arg))
         ) as DJS.TextChannel;

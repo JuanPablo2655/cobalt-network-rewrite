@@ -1,5 +1,5 @@
 import { exec } from "child_process";
-import { Message } from "discord.js";
+import { Message, MessageReaction } from "discord.js";
 import { inspect, promisify } from "util";
 import GenericCommand from "../../struct/GenericCommand";
 
@@ -65,7 +65,7 @@ abstract class EvalCommand extends GenericCommand {
             await msg.awaitReactions((r, u) => r.emoji.name === '🔨' && u.id === message.author.id, { time: 20000, max: 1, errors: ['time'] });
             if (msg.deletable) await msg.delete();
         } catch {
-            if (!msg.deleted) await msg.reactions.resolve("🔨")?.users.remove();
+            if (!msg.deleted) await msg.reactions.resolve("🔨" as unknown as MessageReaction)?.users.remove();
         };
 
     };
