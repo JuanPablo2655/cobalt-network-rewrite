@@ -1,5 +1,5 @@
 import { Message, PermissionString } from "discord.js";
-import { CommandType } from "../types/Options";
+import { CommandType } from "../typings/Options";
 import { CobaltClient } from "./cobaltClient";
 
 abstract class GenericCommand {

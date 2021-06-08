@@ -1,7 +1,7 @@
 import { Client, Collection, Intents } from "discord.js";
 import dotenv from "dotenv";
 import { CommandRegistry, EventRegistry } from "./registries/export/RegistryIndex";
-import { CommandOptions, EventOptions, InteractionCommandOptions } from "../types/Options";
+import { CommandOptions, EventOptions, InteractionCommandOptions } from "../typings/Options";
 import Util from "../utils/Util";
 import Database from "../utils/Database";
 dotenv.config();

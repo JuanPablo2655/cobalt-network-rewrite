@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionData, Interaction } from "discord.js";
-import { InteractionType } from "../types/Options"
+import { InteractionType } from "../typings/Options"
 import { CobaltClient } from "./cobaltClient";
 
 abstract class InteractionCommand {

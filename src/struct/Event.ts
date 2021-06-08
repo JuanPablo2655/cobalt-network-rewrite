@@ -1,5 +1,5 @@
 import { ClientEvents } from "discord.js";
-import { EventOptions } from "../types/Options";
+import { EventOptions } from "../typings/Options";
 import { CobaltClient } from "./cobaltClient";
 
 abstract class Event {
@@ -12,7 +12,7 @@ abstract class Event {
         this.type = options.once ?? false;
     };
 
-    public abstract run(...args: any[]): unknown | Promise<unknown>;
+    public abstract run(...args: any[]): void | Promise<void>;
 };
 
 export default Event;
