@@ -32,7 +32,8 @@ abstract class MessageEvent extends Event {
             if (hasBadWord) {
                 message.deletable && message.delete();
                 const user = this.cobalt.users.cache.get(message.author.id);
-                return user?.send(`The word(s) \`${badWords.join(", ")}\` is banned, please watch your language.`);
+                user?.send(`The word(s) \`${badWords.join(", ")}\` is banned, please watch your language.`);
+                return;
             };
         };
         if (!prefix) return;
@@ -41,21 +42,24 @@ abstract class MessageEvent extends Event {
         };
         const args = message.content.slice(prefix?.length).trim().split(/ +/);
         const commandName: string | undefined = args.shift();
-        if (message.mentions.members?.has(this.cobalt.user!.id) && !commandName) return message.channel.send(`My prefix is \`${guild?.prefix}\``)
+        if (message.mentions.members?.has(this.cobalt.user!.id) && !commandName) message.channel.send(`My prefix is \`${guild?.prefix}\``)
         if (commandName) {
             const command = this.cobalt.commands.get(commandName);
             if (command) {
-                if (!guild?.verified && command.name !== "verify") return message.channel.send("You have to verify your server with one of the Directors in the main server!");
+                if (!guild?.verified && command.name !== "verify") message.channel.send("You have to verify your server with one of the Directors in the main server!");
                 if (guild?.disabledCategories?.includes(command.category)) return
                 if (guild?.disabledCommands?.includes(command.name)) return
                 if (command.devOnly && !process.env.OWNERS?.split(",").includes(message.author.id)) {
                     return
                 } else if (command.ownerOnly && (message.guild as Guild).ownerID !== message.author.id) {
-                    return message.reply("This comamnd can only be used by the owner of the guild.");
+                    message.reply("This comamnd can only be used by the owner of the guild.");
+                    return;
                 } else if (command.guildOnly && !(message.guild instanceof Guild)) {
-                    return message.reply("This command can only be used in a guild.");
+                    message.reply("This command can only be used in a guild.");
+                    return;
                 } else if (command.nsfwOnly && !(message.channel as TextChannel).nsfw) {
-                    return message.reply("This command can only be used in a NSFW marked channel.")
+                    message.reply("This command can only be used in a NSFW marked channel.");
+                    return;
                 };
                 if (message.channel instanceof TextChannel) {
                     const userPermissions = command.userPermissions;
@@ -66,14 +70,14 @@ abstract class MessageEvent extends Event {
                             const hasPermissions = message.member?.permissions.has(userPermissions[i]);
                             if (!hasPermissions) missingPermissions.push(userPermissions[i]);
                         };
-                        if (missingPermissions.length) return message.reply(`Your missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, { allowedMentions: { repliedUser: true }});
+                        if (missingPermissions.length) message.reply(`Your missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, { allowedMentions: { repliedUser: true }});
                     };
                     if (clientPermissions?.length) {
                         for (let i = 0; i < clientPermissions.length; i++) {
                             const hasPermission = message.guild?.me?.permissions.has(clientPermissions[i]);
                             if (!hasPermission) missingPermissions.push(clientPermissions[i]);
                         };
-                        if (missingPermissions.length) return message.reply(`I\'m missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, { allowedMentions: { repliedUser: true }});
+                        if (missingPermissions.length) message.reply(`I\'m missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, { allowedMentions: { repliedUser: true }});
                     };
                 };
                 const updateCooldown = () => {
@@ -123,7 +127,8 @@ abstract class MessageEvent extends Event {
                     const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
                     bot!.totalCommandsUsed += 1
                     await bot?.save();
-                    return command.run(message, args, updateCooldown);
+                    command.run(message, args, updateCooldown);
+                    return;
                 } catch (err) {
                     console.error(err);
                     message.reply("there was an error running this command.");
