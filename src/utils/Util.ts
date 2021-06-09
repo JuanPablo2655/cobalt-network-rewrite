@@ -1,5 +1,6 @@
 import { CobaltClient } from "../struct/cobaltClient";
 import * as DJS from "discord.js";
+import { diffWordsWithSpace, diffLines, Change } from "diff";
 
 export default class Util {
     cobalt: CobaltClient;
@@ -7,8 +8,9 @@ export default class Util {
         this.cobalt = cobalt;
     };
 
-    formatNumber(n: string): string {
-        let x = n.split(".");
+    formatNumber(n: string | number): string {
+        n += '';
+        let x = (n as String).split(".");
         let x1 = x[0];
         let x2 = x.length > 1 ? "." + x[1] : "";
         var rgx = /(\d+)(\d{3})/;
@@ -65,7 +67,22 @@ export default class Util {
         ) as DJS.TextChannel;
     };
 
-    async trim(str: string, max: number) {
+    trim(str: string, max: number) {
         return (str.length > max) ? `${str.slice(0, max - 3)}...` : str;
+    };
+
+    async getDiff(oldString: string, newString: string): Promise<string> {
+        const setStyle = (string: string, style: string) => `${style}${string}${style}`; 
+        oldString.replace(/\*|~~/g, "");
+        newString.replace(/\*|~~/g, "");
+        const getSmallestString = (strings: string[]): string => {
+            return strings.reduce((smallestString, currentString) => currentString.length < smallestString.length ? currentString : smallestString);
+        };
+        const diffs = [diffWordsWithSpace, diffLines].map((diffFunction): string => 
+            diffFunction(oldString, newString).reduce((diffString: string, part: Change) => {
+                diffString += setStyle(part.value, part.added ? "***" : part.removed ? "~~" : "");
+                return diffString;
+            }, ""));
+        return getSmallestString(diffs);
     };
 };

@@ -9,7 +9,7 @@ dotenv.config();
 export class CobaltClient extends Client {
     public commands = new Collection<string, CommandOptions>();
     public cooldowns = new Collection<string, Collection<string, number>>();
-    public aliases = new Collection<string, string>();
+    // public aliases = new Collection<string, CommandOptions>();
     public events = new Collection<string, EventOptions>();
     public interactions = new Collection<string, InteractionCommandOptions>();
     public prefix: string;
