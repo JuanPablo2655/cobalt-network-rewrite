@@ -26,7 +26,7 @@ abstract class HelpCommand extends GenericCommand {
                 .addField("Aliases:", `${command.aliases?.length ? command.aliases.join(", ") : "None"}`)
                 .addField("Cooldown:", `${command.cooldown}`)
                 .addField("Perms Needed:", `${command.clientPermissions?.map(p => `\`${p}\``).join(", ")}`);
-            return message.reply(helpEmbed);
+            return message.reply({ embed: helpEmbed });
         } else if (categories.includes(args[0])) {
             const helpEmbed = new MessageEmbed().setColor("RANDOM");
             const commandNames: Array<string> = new Array;
@@ -38,14 +38,14 @@ abstract class HelpCommand extends GenericCommand {
             };
             helpEmbed.setTitle(`${this.cobalt.utils.toCapitalize(args[0])} Commands`);
             helpEmbed.setDescription(`${commandNames.map(c => `\`${c}\``).join(", ")}`);
-            return message.reply(helpEmbed);
+            return message.reply({ embed: helpEmbed });
         } else {
             const helpEmbed = new MessageEmbed().setColor("RANDOM");
             helpEmbed.setDescription(`${this.cobalt.user?.username} Command List`);
             for (const category of categories) {
                 helpEmbed.addField(`${this.cobalt.utils.toCapitalize(category)}`, `\`${guild?.prefix}help ${category}\``, true);
             };
-            return message.reply(helpEmbed);
+            return message.reply({ embed: helpEmbed });
         };
     };
 

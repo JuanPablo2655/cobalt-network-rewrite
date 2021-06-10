@@ -43,7 +43,7 @@ abstract class GuildMemberAddEvent extends Event {
             .setDescription(`Account Created: **${member.user.createdAt}**\nGuild Member Count: **${member.guild.memberCount}**`)
             .setFooter(`User ID: ${member.user.id}`)
             .setTimestamp();
-        logChannel.send(logEmbed);
+        logChannel.send({ embed: logEmbed });
     };
 };
 

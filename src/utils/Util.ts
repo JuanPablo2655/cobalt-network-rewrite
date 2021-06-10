@@ -71,7 +71,7 @@ export default class Util {
         return (str.length > max) ? `${str.slice(0, max - 3)}...` : str;
     };
 
-    async getDiff(oldString: string, newString: string): Promise<string> {
+    getDiff(oldString: string, newString: string): string {
         const setStyle = (string: string, style: string) => `${style}${string}${style}`; 
         oldString.replace(/\*|~~/g, "");
         newString.replace(/\*|~~/g, "");
@@ -84,5 +84,9 @@ export default class Util {
                 return diffString;
             }, ""));
         return getSmallestString(diffs);
+    };
+
+    getImage(message: DJS.Message) {
+        return message.attachments.filter(({ proxyURL }) => /\.(gif|jpe?g|png|webp)$/i.test(proxyURL)).map(({ proxyURL }) => proxyURL);
     };
 };

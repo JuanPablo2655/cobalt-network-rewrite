@@ -18,7 +18,7 @@ abstract class InteractionEvent extends Event {
             await command?.run(interaction, interaction.options.map((v) => v.value));
         } catch (err) {
             console.log(err);
-            return interaction.reply("An unexpected error occurred");
+            return interaction.reply({content: "An unexpected error occurred"});
         };
     };
 };

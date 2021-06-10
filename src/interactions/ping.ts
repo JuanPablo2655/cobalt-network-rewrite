@@ -10,7 +10,7 @@ abstract class PingInteraction extends Interaction {
     };
 
     async run (interaction: CommandInteraction) {
-        interaction.reply(`My ping is ${Math.round(this.cobalt.ws.ping)}ms`, { ephemeral: true });
+        interaction.reply({ content: `My ping is ${Math.round(this.cobalt.ws.ping)}ms`,  ephemeral: true });
     };
 };
 

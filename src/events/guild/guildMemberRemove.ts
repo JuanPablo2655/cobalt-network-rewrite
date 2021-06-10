@@ -41,7 +41,7 @@ abstract class GuildMemberRemoveEvent extends Event {
             .setDescription(`Time in the Server: **${prettyMilliseconds(Date.now() - member.guild.joinedTimestamp)}**\nGuild Member Count: **${member.guild.memberCount}**`)
             .setFooter(`User ID: ${member.user.id}`)
             .setTimestamp();
-        logChannel.send(logEmbed);
+        logChannel.send({ embed: logEmbed });
     };
 };
 

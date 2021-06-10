@@ -56,7 +56,7 @@ abstract class EvalCommand extends GenericCommand {
             };
         };
 
-        const msg = await message.channel.send(evalued.slice(0, 1950), {
+        const msg = await message.channel.send({content: evalued.slice(0, 1950),
             code: args[0]?.toLowerCase() === "-sh" ? "sh" : "js"
         });
 

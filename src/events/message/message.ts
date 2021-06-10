@@ -70,14 +70,14 @@ abstract class MessageEvent extends Event {
                             const hasPermissions = message.member?.permissions.has(userPermissions[i]);
                             if (!hasPermissions) missingPermissions.push(userPermissions[i]);
                         };
-                        if (missingPermissions.length) message.reply(`Your missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, { allowedMentions: { repliedUser: true }});
+                        if (missingPermissions.length) message.reply({ content: `Your missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, allowedMentions: { repliedUser: true }});
                     };
                     if (clientPermissions?.length) {
                         for (let i = 0; i < clientPermissions.length; i++) {
                             const hasPermission = message.guild?.me?.permissions.has(clientPermissions[i]);
                             if (!hasPermission) missingPermissions.push(clientPermissions[i]);
                         };
-                        if (missingPermissions.length) message.reply(`I\'m missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, { allowedMentions: { repliedUser: true }});
+                        if (missingPermissions.length) message.reply({ content: `I\'m missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(", ")}`, allowedMentions: { repliedUser: true }});
                     };
                 };
                 const updateCooldown = () => {
