@@ -9,6 +9,7 @@ abstract class MessageDeleteEvent extends Event {
     };
 
     async run(message: Message) {
+        if (!this.cobalt.testEvents) return;
         if (!message.guild) return;
         if (!message.guild.available) return;
         const guild = await this.cobalt.db.getGuild(message.guild.id);

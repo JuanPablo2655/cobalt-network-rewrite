@@ -10,6 +10,7 @@ abstract class GuildMemberRemoveEvent extends Event {
     };
 
     async run (member: GuildMember) {
+        if (!this.cobalt.testEvents) return;
         if (!member.guild) return;
         if (!member.guild.available) return;
         const user = await this.cobalt.db.getUser(member.user.id, member.guild.id);

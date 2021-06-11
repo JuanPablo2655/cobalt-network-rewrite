@@ -12,7 +12,8 @@ export class CobaltClient extends Client {
     // public aliases = new Collection<string, CommandOptions>();
     public events = new Collection<string, EventOptions>();
     public interactions = new Collection<string, InteractionCommandOptions>();
-    public prefix: string;
+    public devMode: boolean;
+    public testEvents: boolean;
     public utils: Util;
     public db: Database;
 
@@ -23,7 +24,8 @@ export class CobaltClient extends Client {
             allowedMentions: { repliedUser: false }
         });
 
-        // this.prefix = 't!!';
+        this.devMode = process.env.DEVMODE === "true" ? true : false;
+        this.testEvents = process.env.TESTEVENTS === "true" ? true : false;
         this.utils = new Util(this);
         this.db = new Database(this);
     };

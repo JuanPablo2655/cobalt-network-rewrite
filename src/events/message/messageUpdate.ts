@@ -9,6 +9,7 @@ abstract class MessageUpdateEvent extends Event {
     };
 
     async run(oldMessage: Message, newMessage: Message) {
+        if (!this.cobalt.testEvents) return;
         if (oldMessage === newMessage || newMessage.author.bot) return;
         if (!newMessage.guild) return;
         if (!newMessage.guild.available) return;

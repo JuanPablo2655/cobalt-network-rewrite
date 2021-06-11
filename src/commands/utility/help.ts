@@ -1,4 +1,5 @@
 import { Message, MessageEmbed } from "discord.js";
+import prettyMilliseconds from "pretty-ms";
 import GenericCommand from "../../struct/GenericCommand";
 
 abstract class HelpCommand extends GenericCommand {
@@ -24,7 +25,7 @@ abstract class HelpCommand extends GenericCommand {
                 .addField("Description:", `${command.description}`)
                 .addField("Usage:", `\`${guild?.prefix}${usage}\``)
                 .addField("Aliases:", `${command.aliases?.length ? command.aliases.join(", ") : "None"}`)
-                .addField("Cooldown:", `${command.cooldown}`)
+                .addField("Cooldown:", `${prettyMilliseconds((command.cooldown || 1) * 1000)}`)
                 .addField("Perms Needed:", `${command.clientPermissions?.map(p => `\`${p}\``).join(", ")}`);
             return message.reply({ embed: helpEmbed });
         } else if (categories.includes(args[0])) {
