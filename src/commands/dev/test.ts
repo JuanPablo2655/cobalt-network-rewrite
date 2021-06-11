@@ -1,4 +1,4 @@
-import { Message, MessageActionRow, MessageButton } from "discord.js";
+import { Message, MessageActionRow, MessageButton, MessageComponentInteraction } from "discord.js";
 import GenericCommand from "../../struct/GenericCommand";
 
 abstract class TestCommand extends GenericCommand {
@@ -13,12 +13,20 @@ abstract class TestCommand extends GenericCommand {
 
     async run(message: Message, _args: string[], addCD: Function) {
         addCD();
-        const row = new MessageActionRow()
-            .addComponents(new MessageButton()
-                .setCustomID("test")
-                .setLabel("test")
-                .setStyle("PRIMARY"));
-        message.channel.send(row);
+        const btn = new MessageButton()
+            .setCustomID("test")
+            .setLabel("test")
+            .setStyle("PRIMARY");
+        const row = new MessageActionRow().addComponents(btn);
+        await message.channel.send({ content: "button", components: [row] });
+        const filter = (i: MessageComponentInteraction) => i.customID === 'test';
+        const collector = message.createMessageComponentInteractionCollector(filter, { time: 3000 });
+        collector.on("collect", async i => {
+            if (i.customID === "test") {
+                await i.update({ content: `${message.author.username} clicked the button!`, components: [row] });
+            };
+        });
+        // collector.on('end', collected => console.log(`Collected ${collected.size} items`));
     };
 };
 

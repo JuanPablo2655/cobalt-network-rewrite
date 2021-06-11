@@ -16,7 +16,7 @@ const jobs: JobData[] = [{
     id: "chemist",
     name: "High School Chemistry Teacher",
     entries: [],
-    firedEntry: "{user.username} got fired for mussing to many days from school.",
+    firedEntry: "{user.username} got fired for missing to many days from school.",
     minAmount: 300
 }, {
     id: "designer",
