@@ -21,13 +21,13 @@ abstract class HelpCommand extends GenericCommand {
         if (command) {
             const usage = command.usage ? `${command.name} ${command.usage}` : `${command.name}`
             const helpEmbed = new MessageEmbed().setColor("RANDOM");
-            helpEmbed.setDescription(`${command.name} Info`)
+            helpEmbed.setTitle(`${command.name} Info`)
                 .addField("Description:", `${command.description}`)
                 .addField("Usage:", `\`${guild?.prefix}${usage}\``)
                 .addField("Aliases:", `${command.aliases?.length ? command.aliases.join(", ") : "None"}`)
                 .addField("Cooldown:", `${prettyMilliseconds((command.cooldown || 1) * 1000)}`)
                 .addField("Perms Needed:", `${command.clientPermissions?.map(p => `\`${p}\``).join(", ")}`);
-            return message.reply({ embed: helpEmbed });
+            return message.reply({ embeds: [helpEmbed] });
         } else if (categories.includes(args[0])) {
             const helpEmbed = new MessageEmbed().setColor("RANDOM");
             const commandNames: Array<string> = new Array;
@@ -39,14 +39,15 @@ abstract class HelpCommand extends GenericCommand {
             };
             helpEmbed.setTitle(`${this.cobalt.utils.toCapitalize(args[0])} Commands`);
             helpEmbed.setDescription(`${commandNames.map(c => `\`${c}\``).join(", ")}`);
-            return message.reply({ embed: helpEmbed });
+            return message.reply({ embeds: [helpEmbed] });
         } else {
             const helpEmbed = new MessageEmbed().setColor("RANDOM");
             helpEmbed.setDescription(`${this.cobalt.user?.username} Command List`);
             for (const category of categories) {
+                if (category === "dev") continue;
                 helpEmbed.addField(`${this.cobalt.utils.toCapitalize(category)}`, `\`${guild?.prefix}help ${category}\``, true);
             };
-            return message.reply({ embed: helpEmbed });
+            return message.reply({ embeds: [helpEmbed] });
         };
     };
 

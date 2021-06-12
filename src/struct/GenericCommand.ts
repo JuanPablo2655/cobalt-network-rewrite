@@ -1,11 +1,11 @@
 import { Message, PermissionString } from "discord.js";
-import { CommandType } from "../typings/Options";
+import { Categories, CommandType } from "../typings/Options";
 import { CobaltClient } from "./cobaltClient";
 
 abstract class GenericCommand {
     public name: string;
     public description: string;
-    public category: string;
+    public category: Categories;
     public usage: string;
     public aliases: string[];
     public enabled: boolean;
@@ -31,7 +31,7 @@ abstract class GenericCommand {
         this.nsfwOnly = options.nsfwOnly ?? false;
         this.cooldown = options.cooldown ?? 1;
         this.userPermissions = options.userPermissions ?? ["SEND_MESSAGES"];
-        this.clientPermissions = options.clientPermissions ?? ["SEND_MESSAGES"];
+        this.clientPermissions = options.clientPermissions ?? ["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "EMBED_LINKS"];
     };
 
     public abstract run(message: Message, args: string[], addCD: Function): unknown | Promise<unknown>;

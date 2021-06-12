@@ -12,7 +12,7 @@ abstract class GuildMemberAddEvent extends Event {
         if (!this.cobalt.testEvents) return;
         if (!member.guild) return;
         if (!member.guild.available) return;
-        const user = await this.cobalt.db.getUser(member.user.id, member.guild.id);
+        const user = await this.cobalt.db.getMember(member.user.id, member.guild.id);
         const guild = await this.cobalt.db.getGuild(member.guild.id);
         if (!guild) return;
         if (!guild.logChannel.enabled) return;
@@ -44,7 +44,7 @@ abstract class GuildMemberAddEvent extends Event {
             .setDescription(`Account Created: **${member.user.createdAt}**\nGuild Member Count: **${member.guild.memberCount}**`)
             .setFooter(`User ID: ${member.user.id}`)
             .setTimestamp();
-        logChannel.send({ embed: logEmbed });
+        logChannel.send({ embeds: [logEmbed] });
     };
 };
 

@@ -13,7 +13,7 @@ abstract class GuildMemberRemoveEvent extends Event {
         if (!this.cobalt.testEvents) return;
         if (!member.guild) return;
         if (!member.guild.available) return;
-        const user = await this.cobalt.db.getUser(member.user.id, member.guild.id);
+        const user = await this.cobalt.db.getMember(member.user.id, member.guild.id);
         const guild = await this.cobalt.db.getGuild(member.guild.id);
         if (!guild) return;
         if (!guild.logChannel.enabled) return;
@@ -22,7 +22,7 @@ abstract class GuildMemberRemoveEvent extends Event {
         const avatar = member.user.displayAvatarURL({ format: "png", dynamic: true });
         if (user && member.roles.cache.size !== 0) {
             let roleList: string[] = member.roles.cache.map(r => r.id);
-            await this.cobalt.db.updateUser(member.user.id, member.guild.id, {
+            await this.cobalt.db.updateMember(member.user.id, member.guild.id, {
                 roles: roleList
             });
         };
@@ -42,7 +42,7 @@ abstract class GuildMemberRemoveEvent extends Event {
             .setDescription(`Time in the Server: **${prettyMilliseconds(Date.now() - member.guild.joinedTimestamp)}**\nGuild Member Count: **${member.guild.memberCount}**`)
             .setFooter(`User ID: ${member.user.id}`)
             .setTimestamp();
-        logChannel.send({ embed: logEmbed });
+        logChannel.send({ embeds: [logEmbed] });
     };
 };
 

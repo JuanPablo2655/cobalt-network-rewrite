@@ -4,6 +4,8 @@ import { CommandRegistry, EventRegistry } from "./registries/export/RegistryInde
 import { CommandOptions, EventOptions, InteractionCommandOptions } from "../typings/Options";
 import Util from "../utils/Util";
 import Database from "../utils/Database";
+import Experience from "../utils/Experience";
+import Economy from "../utils/Economy";
 dotenv.config();
 
 export class CobaltClient extends Client {
@@ -16,6 +18,8 @@ export class CobaltClient extends Client {
     public testEvents: boolean;
     public utils: Util;
     public db: Database;
+    public exp: Experience;
+    public econ: Economy;
 
     constructor() {
         super({
@@ -28,6 +32,8 @@ export class CobaltClient extends Client {
         this.testEvents = process.env.TESTEVENTS === "true" ? true : false;
         this.utils = new Util(this);
         this.db = new Database(this);
+        this.exp = new Experience(this);
+        this.econ = new Economy(this);
     };
 
 

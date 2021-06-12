@@ -30,7 +30,7 @@ abstract class GuildMemberUpdateEvent extends Event {
             logEmbed.setTitle("Roles Update")
                 .setColor("#2f7db1")
                 .setDescription(`Role(s) Added: ${addedRoles.join(", ")}`);
-            logChannel.send({ embed: logEmbed });
+            logChannel.send({ embeds: [logEmbed] });
             return
         };
         if (oldMember.roles.cache.size > newMember.roles.cache.size) {
@@ -41,7 +41,7 @@ abstract class GuildMemberUpdateEvent extends Event {
             logEmbed.setTitle("Roles Update")
                 .setColor("#2f7db1")
                 .setDescription(`Role(s) Removed: ${removedRoles.join(", ")}`);
-            logChannel.send({ embed: logEmbed });
+            logChannel.send({ embeds: [logEmbed] });
             return
         };
         if (oldMember.nickname !== newMember.nickname) {
@@ -50,7 +50,7 @@ abstract class GuildMemberUpdateEvent extends Event {
             logEmbed.setTitle(`Nickname Update`)
                 .setColor("#2f7db1")
                 .setDescription(`Old Nickname: **${oldNick}**\nNew Nickname: **${newNick}**`);
-            logChannel.send({ embed: logEmbed });
+            logChannel.send({ embeds: [logEmbed] });
             return
         };
     };

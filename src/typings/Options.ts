@@ -1,9 +1,16 @@
 import { ApplicationCommandOptionData, ClientEvents, Interaction, Message, PermissionString } from "discord.js";
 
+export type Categories =
+    | "dev"
+    | "economy"
+    | "experience"
+    | "settings"
+    | "utility";
+
 export interface CommandOptions {
     name: string,
     description: string,
-    category: string,
+    category: Categories,
     usage?: string,
     aliases?: string[],
     enabled?: boolean,

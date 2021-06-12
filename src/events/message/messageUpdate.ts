@@ -33,7 +33,7 @@ abstract class MessageUpdateEvent extends Event {
             }
             logEmbed.setFooter(`Message ID: ${newMessage.id}`)
             .setTimestamp()
-        logChannel.send({ embed: logEmbed });
+        logChannel.send({ embeds: [logEmbed] });
         return
     };
 };

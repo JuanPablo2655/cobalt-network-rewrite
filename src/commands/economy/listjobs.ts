@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import jobs from "../../data/jobs";
 import GenericCommand from "../../struct/GenericCommand";
 
@@ -11,12 +11,16 @@ abstract class ListJobsCommand extends GenericCommand {
         });
     };
 
-    async run(message: Message, args: string[], addCD: Function) {
-        let jobIds: string[] = new Array();
-        const jobList = jobs.forEach(job => {
-            jobIds.push(job.id)
+    async run(message: Message, _args: string[], addCD: Function) {
+        addCD();
+        let joblists: string[] = new Array();
+        jobs.forEach(job => {
+            joblists.push(`\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
         });
-        
+        const jobEmbed = new MessageEmbed()
+            .setTitle(`Job Listing`)
+            .setDescription(`${joblists.join("\n")}`);
+        message.channel.send({ embeds: [jobEmbed] });
     };
 };
 

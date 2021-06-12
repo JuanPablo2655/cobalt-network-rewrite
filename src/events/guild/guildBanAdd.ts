@@ -30,7 +30,7 @@ abstract class GuildBanAddEvent extends Event {
             .setDescription(`**Reason:** ${ban.reason || audit?.reason || "No reason provided"}`)
             .setFooter(`User ID: ${ban.user.id}`)
             .setTimestamp()
-        logChannel.send({ embed: logEmbed })
+        logChannel.send({ embeds: [logEmbed] })
         return;
     };
 };
