@@ -1,17 +1,17 @@
-import { CommandInteraction } from "discord.js";
-import Interaction from "../struct/Interaction";
+import { CommandInteraction } from 'discord.js';
+import Interaction from '../struct/Interaction';
 
 abstract class PingInteraction extends Interaction {
-    constructor() {
-        super({
-            name: "ping",
-            descrition: "check the bot ping"
-        });
-    };
+	constructor() {
+		super({
+			name: 'ping',
+			descrition: 'check the bot ping',
+		});
+	}
 
-    async run (interaction: CommandInteraction) {
-        interaction.reply({ content: `My ping is ${Math.round(this.cobalt.ws.ping)}ms`,  ephemeral: true });
-    };
-};
+	async run(interaction: CommandInteraction) {
+		interaction.reply({ content: `My ping is ${Math.round(this.cobalt.ws.ping)}ms`, ephemeral: true });
+	}
+}
 
 export default PingInteraction;

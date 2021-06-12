@@ -1,27 +1,25 @@
-import { Message, MessageEmbed } from "discord.js";
-import jobs from "../../data/jobs";
-import GenericCommand from "../../struct/GenericCommand";
+import { Message, MessageEmbed } from 'discord.js';
+import jobs from '../../data/jobs';
+import GenericCommand from '../../struct/GenericCommand';
 
 abstract class ListJobsCommand extends GenericCommand {
-    constructor() {
-        super({
-            name: "listjobs",
-            description: "Get a list of jobs you can apply for.",
-            category: "economy"
-        });
-    };
+	constructor() {
+		super({
+			name: 'listjobs',
+			description: 'Get a list of jobs you can apply for.',
+			category: 'economy',
+		});
+	}
 
-    async run(message: Message, _args: string[], addCD: Function) {
-        addCD();
-        let joblists: string[] = new Array();
-        jobs.forEach(job => {
-            joblists.push(`\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
-        });
-        const jobEmbed = new MessageEmbed()
-            .setTitle(`Job Listing`)
-            .setDescription(`${joblists.join("\n")}`);
-        message.channel.send({ embeds: [jobEmbed] });
-    };
-};
+	async run(message: Message, _args: string[], addCD: Function) {
+		addCD();
+		let joblists: string[] = new Array();
+		jobs.forEach(job => {
+			joblists.push(`\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
+		});
+		const jobEmbed = new MessageEmbed().setTitle(`Job Listing`).setDescription(`${joblists.join('\n')}`);
+		message.channel.send({ embeds: [jobEmbed] });
+	}
+}
 
 export default ListJobsCommand;

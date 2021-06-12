@@ -1,21 +1,21 @@
 export type ClassOptions =
-    | "Artificer"
-    | "Barbarian"
-    | "Bard"
-    | "Cleric"
-    | "Druid"
-    | "Fighter"
-    | "Monk"
-    | "Paladin"
-    | "Ranger"
-    | "Rogue"
-    | "Sorcerer"
-    | "Warlock"
-    | "Wizard";
+	| 'Artificer'
+	| 'Barbarian'
+	| 'Bard'
+	| 'Cleric'
+	| 'Druid'
+	| 'Fighter'
+	| 'Monk'
+	| 'Paladin'
+	| 'Ranger'
+	| 'Rogue'
+	| 'Sorcerer'
+	| 'Warlock'
+	| 'Wizard';
 
 export interface classData {
-    class: ClassOptions;
-};
+	class: ClassOptions;
+}
 
 const classes: classData[] = [];
 
