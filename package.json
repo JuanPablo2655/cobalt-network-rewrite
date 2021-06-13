@@ -6,7 +6,8 @@
   "scripts": {
     "clean": "rm -rf build",
     "build": "npx tsc && node build/cobalt.js",
-    "dev": "ts-node-dev --respawn --transpile-only ./src/cobalt.ts"
+    "dev": "ts-node-dev --respawn --transpile-only ./src/cobalt.ts",
+    "prettier": "prettier --write src"
   },
   "repository": {
     "type": "git",

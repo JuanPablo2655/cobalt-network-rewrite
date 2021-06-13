@@ -7,14 +7,14 @@ abstract class TestCommand extends GenericCommand {
 			name: 'test',
 			description: 'Test comamnd for the bot when testing new features.',
 			category: 'dev',
-			ownerOnly: true,
 		});
 	}
 
-	async run(message: Message, _args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: Function) {
 		addCD();
-		const multi = await this.cobalt.utils.calcMulti(message.author);
-		return message.channel.send({ content: String(multi) });
+		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
+		const multi = await this.cobalt.utils.calcMulti(member!.user);
+		return message.channel.send({ content: `${member?.user.username} multi: **${multi}%**` });
 	}
 }
 

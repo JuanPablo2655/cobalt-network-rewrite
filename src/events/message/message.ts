@@ -36,6 +36,34 @@ abstract class MessageEvent extends Event {
 				return;
 			}
 		}
+		if (!message.author.bot) {
+			if (!this.cobalt.disableXp) {
+				if (!this.cobalt.exp.cooldowns.has(message.author.id)) {
+					this.cobalt.exp.cooldowns.add(message.author.id);
+					setTimeout(() => {
+						this.cobalt.exp.cooldowns.delete(message.author.id);
+					}, 60000);
+					const exp = await this.cobalt.exp.manageXp(message);
+					const profile = await this.cobalt.db.getUser(message.author.id);
+					if (exp) {
+						if (guild?.levelMessage.enabled) {
+							const cleanMessage = guild.levelMessage.message
+								.replace(/{user.username}/g, `**${message.author.username}**`)
+								.replace(/{user.tag}/g, `**${message.author.tag}**`)
+								.replace(/{newLevel}/g, `**${this.cobalt.utils.formatNumber(profile!.lvl)}**`);
+							message.channel.send(cleanMessage);
+						}
+					}
+				}
+			}
+			if (!this.cobalt.exp.cooldowns.has(message.author.id)) {
+				this.cobalt.exp.cooldowns.add(message.author.id);
+				setTimeout(() => {
+					this.cobalt.exp.cooldowns.delete(message.author.id);
+				}, 60000);
+				await this.cobalt.econ.manageBankSpace(message);
+			}
+		}
 		if (!prefix) return;
 		if (!message.content.toLowerCase().startsWith(prefix)) {
 			return; // handle xp and bank space

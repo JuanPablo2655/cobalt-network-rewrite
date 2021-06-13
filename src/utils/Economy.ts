@@ -1,3 +1,4 @@
+import { Message } from 'discord.js';
 import { CobaltClient } from '../struct/cobaltClient';
 
 export default class Currency {
@@ -145,6 +146,17 @@ export default class Currency {
 				job: null,
 				deaths: user!.deaths + 1,
 			});
+		} catch (err) {
+			console.error(err?.stack || err);
+		}
+	}
+
+	async manageBankSpace(message: Message) {
+		try {
+			const multi = await this.cobalt.utils.calcMulti(message.author);
+			const bankSpaceToAdd = Math.round(Math.random() * 11 + 15);
+			const addMulit = this.cobalt.utils.addMulti(bankSpaceToAdd, multi);
+			await this.addBankSpace(message.author.id, addMulit);
 		} catch (err) {
 			console.error(err?.stack || err);
 		}

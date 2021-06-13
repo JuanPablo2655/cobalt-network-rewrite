@@ -16,7 +16,6 @@ export default class Util {
 		var rgx = /(\d+)(\d{3})/;
 		while (rgx.test(x1)) x1 = x1.replace(rgx, '$1' + ',' + '$2');
 		return x1 + x2;
-		// return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 	}
 
 	toCapitalize(str: string) {
@@ -122,10 +121,10 @@ export default class Util {
 		const funkyMonkey = roles?.get('812187141684985876');
 		if (!member) return multi;
 		if (!roles) return multi;
-		if (member.roles.cache.has(director!.id)) multi + 8; // 8%
-		if (member.roles.cache.has(patriot!.id)) multi + 5; // 5%
-		if (member.roles.cache.has(citizen!.id)) multi + 2; // 2%
-		if (member.roles.cache.has(funkyMonkey!.id)) multi + 8; // 8%
+		if (member.roles.cache.has(director!.id)) multi += 4; // 4%
+		if (member.roles.cache.has(patriot!.id)) multi += 3; // 3%
+		if (member.roles.cache.has(citizen!.id)) multi += 2; // 2%
+		if (member.roles.cache.has(funkyMonkey!.id)) multi += 4; // 4%
 		return multi;
 	}
 

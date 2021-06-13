@@ -11,11 +11,11 @@ dotenv.config();
 export class CobaltClient extends Client {
 	public commands = new Collection<string, CommandOptions>();
 	public cooldowns = new Collection<string, Collection<string, number>>();
-	// public aliases = new Collection<string, CommandOptions>();
 	public events = new Collection<string, EventOptions>();
 	public interactions = new Collection<string, InteractionCommandOptions>();
 	public devMode: boolean;
 	public testEvents: boolean;
+	public disableXp: boolean;
 	public utils: Util;
 	public db: Database;
 	public exp: Experience;
@@ -30,6 +30,7 @@ export class CobaltClient extends Client {
 
 		this.devMode = process.env.DEVMODE === 'true' ? true : false;
 		this.testEvents = process.env.TESTEVENTS === 'true' ? true : false;
+		this.disableXp = process.env.DISABLEXP === 'true' ? true : false;
 		this.utils = new Util(this);
 		this.db = new Database(this);
 		this.exp = new Experience(this);

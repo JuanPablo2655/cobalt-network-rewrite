@@ -18,7 +18,9 @@ abstract class WorkCommand extends GenericCommand {
 		addCD();
 		const job = jobs.find(j => j.id === user?.job);
 		const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
-		const moneyEarned = Math.floor(job!.minAmount + Math.random() * 250);
+		const money = Math.floor(job!.minAmount + Math.random() * 250);
+		const multi = await this.cobalt.utils.calcMulti(message.author);
+		const moneyEarned = await this.cobalt.utils.addMulti(money, multi);
 		await this.cobalt.econ.addToWallet(message.author.id, moneyEarned);
 		const cleanEntry = workEntry
 			?.replace(/{user.username}/g, message.author.username)
