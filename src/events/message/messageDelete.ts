@@ -10,6 +10,7 @@ abstract class MessageDeleteEvent extends Event {
 
 	async run(message: Message) {
 		if (!this.cobalt.testEvents) return;
+		if (!message.author) return;
 		if (!message.guild) return;
 		if (!message.guild.available) return;
 		const guild = await this.cobalt.db.getGuild(message.guild.id);
@@ -28,12 +29,12 @@ abstract class MessageDeleteEvent extends Event {
 			.setTimestamp()
 			.addField('Text Channel', `${message.channel}`);
 		if (message.content == '') {
-			logEmbed.setImage(await this.cobalt.utils.getImage(message)[0]);
+			logEmbed.setImage(this.cobalt.utils.getImage(message)[0]);
 		} else if (message.attachments.size === 0) {
 			logEmbed.setDescription(`${message.content}`);
 		} else {
 			logEmbed.setDescription(`${message.content}`);
-			logEmbed.setImage(await this.cobalt.utils.getImage(message)[0]);
+			logEmbed.setImage(this.cobalt.utils.getImage(message)[0]);
 		}
 		logChannel.send({ embeds: [logEmbed] });
 		return;

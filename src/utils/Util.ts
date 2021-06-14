@@ -129,6 +129,6 @@ export default class Util {
 	}
 
 	addMulti(amount: number, multi: number) {
-		return amount + amount * (multi / 100);
+		return Math.round(amount + amount * (multi / 100));
 	}
 }

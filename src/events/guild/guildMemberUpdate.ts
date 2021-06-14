@@ -10,6 +10,8 @@ abstract class GuildMemberUpdateEvent extends Event {
 
 	async run(oldMember: GuildMember, newMember: GuildMember) {
 		if (!this.cobalt.testEvents) return;
+		if (oldMember.partial) await oldMember.fetch();
+		if (newMember.partial) await newMember.fetch();
 		if (!oldMember.guild) return;
 		if (!oldMember.guild.available) return;
 		const guild = await this.cobalt.db.getGuild(newMember.guild.id);

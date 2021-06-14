@@ -1,4 +1,4 @@
-import { Client, Collection, Intents } from 'discord.js';
+import { Client, Collection, Intents, Snowflake } from 'discord.js';
 import dotenv from 'dotenv';
 import { CommandRegistry, EventRegistry } from './registries/export/RegistryIndex';
 import { CommandOptions, EventOptions, InteractionCommandOptions } from '../typings/Options';
@@ -13,6 +13,7 @@ export class CobaltClient extends Client {
 	public cooldowns = new Collection<string, Collection<string, number>>();
 	public events = new Collection<string, EventOptions>();
 	public interactions = new Collection<string, InteractionCommandOptions>();
+	public voiceTime = new Map<Snowflake, number>();
 	public devMode: boolean;
 	public testEvents: boolean;
 	public disableXp: boolean;
@@ -31,6 +32,7 @@ export class CobaltClient extends Client {
 		this.devMode = process.env.DEVMODE === 'true' ? true : false;
 		this.testEvents = process.env.TESTEVENTS === 'true' ? true : false;
 		this.disableXp = process.env.DISABLEXP === 'true' ? true : false;
+		this.voiceTime = new Map();
 		this.utils = new Util(this);
 		this.db = new Database(this);
 		this.exp = new Experience(this);

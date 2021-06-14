@@ -10,6 +10,7 @@ abstract class GuildBanRemoveEvent extends Event {
 
 	async run(ban: GuildBan) {
 		if (!this.cobalt.testEvents) return;
+		if (ban.user.partial) await ban.user.fetch();
 		if (!ban.guild) return;
 		if (!ban.guild.available) return;
 		const guild = await this.cobalt.db.getGuild(ban.guild.id);

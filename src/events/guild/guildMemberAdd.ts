@@ -10,6 +10,7 @@ abstract class GuildMemberAddEvent extends Event {
 
 	async run(member: GuildMember) {
 		if (!this.cobalt.testEvents) return;
+		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;
 		const user = await this.cobalt.db.getMember(member.user.id, member.guild.id);

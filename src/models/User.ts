@@ -11,6 +11,8 @@ export interface UserData {
 	bounty: number;
 	daily: number;
 	weekly: number;
+	monthly: number;
+	repTime: number;
 	inventory: object;
 	activeItems: string[];
 	xp: number;
@@ -36,6 +38,8 @@ const userSchema = new Schema<IUser>({
 	bounty: { type: Number, default: 0 },
 	daily: { type: Date, default: null },
 	weekly: { type: Date, default: null },
+	monthly: { type: Date, default: null },
+	repTime: { type: Date, default: null },
 	inventory: { type: Object, default: {} },
 	activeItems: { type: Array, default: [] },
 	xp: { type: Number, default: 0 },
