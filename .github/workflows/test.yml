@@ -7,7 +7,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      
       - name: Install Node v14
         uses: actions/setup-node@v2
         with:
@@ -15,6 +14,20 @@ jobs:
       - name: Install dependencies
         run: rm -rf node_modules && yarn install --frozen-lockfile
       - name: Run TypeScript compiler
-        run: npm run test:typescript
+        run: yarn test:typescript
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Node v14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: rm -rf node_modules && yarn install --frozen-lockfile
+      - name: Run Prettier
+        run: yarn test:prettier
       
     
