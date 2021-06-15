@@ -20,6 +20,7 @@ abstract class ReputationCommand extends GenericCommand {
 		if (!author) return message.reply('An error occured');
 		const user = await this.cobalt.db.getUser(member.id);
 		if (!user) return message.reply('An error occured');
+		if (member.id === message.author.id) return message.reply("Can't give youself a reputation point!");
 		const date = Date.now();
 		const cooldown = date + 86400000;
 		if (!isNaN(author.repTime) && author.repTime > date) {
