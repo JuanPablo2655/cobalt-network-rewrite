@@ -29,5 +29,3 @@ jobs:
         run: rm -rf node_modules && yarn install --frozen-lockfile
       - name: Run Prettier
         run: yarn test:prettier
-      
-    
