@@ -14,7 +14,7 @@ abstract class TestCommand extends GenericCommand {
 		addCD();
 		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
 		const multi = await this.cobalt.utils.calcMulti(member!.user);
-		return message.channel.send({ content: `${member?.user.username} multi: **${multi}%**` });
+		// return message.channel.send({ content: `${member?.user.username} multi: **${multi}%**` });
 	}
 }
 
