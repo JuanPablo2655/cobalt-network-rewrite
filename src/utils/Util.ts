@@ -119,12 +119,14 @@ export default class Util {
 		const patriot = roles?.get('513182271985942538');
 		const citizen = roles?.get('513027436208848896');
 		const funkyMonkey = roles?.get('812187141684985876');
+		const booster = roles?.get('698994055954300959');
 		if (!member) return multi;
 		if (!roles) return multi;
 		if (member.roles.cache.has(director!.id)) multi += 4; // 4%
 		if (member.roles.cache.has(patriot!.id)) multi += 3; // 3%
 		if (member.roles.cache.has(citizen!.id)) multi += 2; // 2%
 		if (member.roles.cache.has(funkyMonkey!.id)) multi += 4; // 4%
+		if (member.roles.cache.has(booster!.id)) multi += 4; // 6%
 		return multi;
 	}
 

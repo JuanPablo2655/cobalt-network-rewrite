@@ -12,6 +12,8 @@ abstract class PayComamnd extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: Function) {
+		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
+		if (!bot) return message.reply('An error occured');
 		const member = await this.cobalt.utils.findMember(message, args);
 		if (!member) return message.reply('Please pick a valid member');
 		const author = await this.cobalt.db.getUser(message.author.id);
@@ -31,10 +33,11 @@ abstract class PayComamnd extends GenericCommand {
 				)}**`,
 			);
 		addCD();
-		const tax = Math.round(amount * (7.5 / 100));
+		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;
 		await this.cobalt.econ.removeFromWallet(message.author.id, amount);
 		await this.cobalt.econ.addToWallet(member.id, afterTax);
+		await this.cobalt.db.updateBot(this.cobalt.user?.id, { bank: bot.bank + tax });
 		return message.channel.send(
 			`>>> Transaction to **${member.user.username}**:\nSubtotal: **₡${this.cobalt.utils.formatNumber(
 				amount,

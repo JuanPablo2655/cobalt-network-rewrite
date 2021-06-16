@@ -60,6 +60,18 @@ abstract class GuildMemberUpdateEvent extends Event {
 			logChannel.send({ embeds: [logEmbed] });
 			return;
 		}
+		if (!oldMember.premiumSince && newMember.premiumSince) {
+			await this.cobalt.econ.addToWallet(newMember.user.id, 5000);
+			newMember.user.send(`You have boosted **${newMember.guild.name}**, **₡5000** has been added to your wallet!`);
+			if (newMember.guild.id === '322505254098698240')
+				newMember.send(`You have boosted **${newMember.guild.name}**, you also have an additional **4%** multi!`);
+			logEmbed.setTitle(`Booster Added`).setColor('#118511');
+			logChannel.send({ embeds: [logEmbed] });
+		}
+		if (oldMember.premiumSince && !newMember.premiumSince) {
+			logEmbed.setTitle(`Booster Removed`).setColor('#8f0a0a');
+			logChannel.send({ embeds: [logEmbed] });
+		}
 	}
 }
 

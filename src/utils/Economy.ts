@@ -161,4 +161,46 @@ export default class Currency {
 			console.error(err?.stack || err);
 		}
 	}
+
+	async addBotBank(botId: string, amount: number) {
+		try {
+			if (isNaN(amount)) throw new TypeError('Money must be a number.');
+			if (amount <= 0) throw new TypeError('Must be more than zero.');
+			let bot = await this.cobalt.db.getBot(botId);
+
+			if (!bot) throw new Error('Bot not found');
+
+			await this.cobalt.db.updateBot(botId, { bank: bot.bank + amount });
+		} catch (err) {
+			console.error(err?.stack || err);
+		}
+	}
+
+	async removebotBank(botId: string, amount: number) {
+		try {
+			if (isNaN(amount)) throw new TypeError('Money must be a number.');
+			if (amount <= 0) throw new TypeError('Must be more than zero.');
+			let bot = await this.cobalt.db.getBot(botId);
+
+			if (!bot) throw new Error('Bot not found');
+
+			await this.cobalt.db.updateBot(botId, { bank: bot.bank - amount });
+		} catch (err) {
+			console.error(err?.stack || err);
+		}
+	}
+
+	async updateTax(botId: string, tax: number) {
+		try {
+			if (isNaN(tax)) throw new TypeError('Money must be a number.');
+			if (tax <= 0) throw new TypeError('Must be more than zero.');
+			let bot = await this.cobalt.db.getBot(botId);
+
+			if (!bot) throw new Error('Bot not found');
+
+			await this.cobalt.db.updateBot(botId, { tax });
+		} catch (err) {
+			console.error(err?.stack || err);
+		}
+	}
 }
