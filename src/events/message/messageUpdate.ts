@@ -26,25 +26,27 @@ abstract class MessageUpdateEvent extends Event {
 			.setAuthor(newMessage.author.username, avatar)
 			.setTitle('Message Update')
 			.setColor('#2f7db1');
-		if (newMessage.content == '') {
-			logEmbed.setImage(await this.cobalt.utils.getImage(newMessage)[0]);
-		} else if (newMessage.attachments.size === 0) {
-			logEmbed.setDescription(
-				`[Jump to Message](https://discordapp.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${
-					newMessage.id
-				})\n${this.cobalt.utils.getDiff(oldMessage.content, newMessage.content)}`,
-			);
-		} else {
-			logEmbed.setDescription(
-				`[Jump to Message](https://discordapp.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${
-					newMessage.id
-				})\n${this.cobalt.utils.getDiff(oldMessage.content, newMessage.content)}`,
-			);
-			logEmbed.setImage(await this.cobalt.utils.getImage(newMessage)[0]);
+		if (oldMessage.content !== newMessage.content) {
+			if (newMessage.content == '') {
+				logEmbed.setImage(await this.cobalt.utils.getImage(newMessage)[0]);
+			} else if (newMessage.attachments.size === 0) {
+				logEmbed.setDescription(
+					`[Jump to Message](https://discordapp.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${
+						newMessage.id
+					})\n${this.cobalt.utils.getDiff(oldMessage.content, newMessage.content)}`,
+				);
+			} else {
+				logEmbed.setDescription(
+					`[Jump to Message](https://discordapp.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${
+						newMessage.id
+					})\n${this.cobalt.utils.getDiff(oldMessage.content, newMessage.content)}`,
+				);
+				logEmbed.setImage(await this.cobalt.utils.getImage(newMessage)[0]);
+			}
+			logEmbed.setFooter(`Message ID: ${newMessage.id}`).setTimestamp();
+			logChannel.send({ embeds: [logEmbed] });
+			return;
 		}
-		logEmbed.setFooter(`Message ID: ${newMessage.id}`).setTimestamp();
-		logChannel.send({ embeds: [logEmbed] });
-		return;
 	}
 }
 
