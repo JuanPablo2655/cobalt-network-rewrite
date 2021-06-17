@@ -21,9 +21,9 @@ abstract class CovidCommand extends GenericCommand {
 				.setDescription(
 					`Total Cases: **${this.cobalt.utils.formatNumber(res.cases)} (+ ${this.cobalt.utils.formatNumber(
 						res.todayCases,
-					)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+${this.cobalt.utils.formatNumber(
+					)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+ ${this.cobalt.utils.formatNumber(
 						res.todayDeaths,
-					)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(res.recovered)} (+${this.cobalt.utils.formatNumber(
+					)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(res.recovered)} (+ ${this.cobalt.utils.formatNumber(
 						res.todayRecovered,
 					)})**\nActive Cases: **${this.cobalt.utils.formatNumber(res.active)}**`,
 				)
@@ -39,9 +39,9 @@ abstract class CovidCommand extends GenericCommand {
 				.setDescription(
 					`Total Cases: **${this.cobalt.utils.formatNumber(res.cases)} (+ ${this.cobalt.utils.formatNumber(
 						res.todayCases,
-					)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+${this.cobalt.utils.formatNumber(
+					)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+ ${this.cobalt.utils.formatNumber(
 						res.todayDeaths,
-					)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(res.recovered)} (+${this.cobalt.utils.formatNumber(
+					)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(res.recovered)} (+ ${this.cobalt.utils.formatNumber(
 						res.todayRecovered,
 					)})**\nActive Cases: **${this.cobalt.utils.formatNumber(res.active)}**`,
 				)
@@ -59,7 +59,7 @@ abstract class CovidCommand extends GenericCommand {
 				.setDescription(
 					`Total Cases: **${this.cobalt.utils.formatNumber(res.cases)} (+ ${this.cobalt.utils.formatNumber(
 						res.todayCases,
-					)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+${this.cobalt.utils.formatNumber(
+					)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+ ${this.cobalt.utils.formatNumber(
 						res.todayDeaths,
 					)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(
 						res.recovered,
@@ -76,9 +76,9 @@ abstract class CovidCommand extends GenericCommand {
 			.setDescription(
 				`Total Cases: **${this.cobalt.utils.formatNumber(res.cases)} (+ ${this.cobalt.utils.formatNumber(
 					res.todayCases,
-				)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+${this.cobalt.utils.formatNumber(
+				)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+ ${this.cobalt.utils.formatNumber(
 					res.todayDeaths,
-				)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(res.recovered)} (+${this.cobalt.utils.formatNumber(
+				)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(res.recovered)} (+ ${this.cobalt.utils.formatNumber(
 					res.todayRecovered,
 				)})**\nActive Cases: **${this.cobalt.utils.formatNumber(res.active)}**`,
 			)
