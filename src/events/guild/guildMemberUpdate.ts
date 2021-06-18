@@ -1,4 +1,4 @@
-import { GuildMember, MessageEmbed, Role, Snowflake, TextChannel } from 'discord.js';
+import { GuildMember, MessageEmbed, Role, TextChannel } from 'discord.js';
 import Event from '../../struct/Event';
 
 abstract class GuildMemberUpdateEvent extends Event {
@@ -20,7 +20,7 @@ abstract class GuildMemberUpdateEvent extends Event {
 		const logChannelId = guild?.logChannel.channelId;
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMember.guild.id)
-			?.channels.cache.get(logChannelId as Snowflake) as TextChannel;
+			?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = newMember.user.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor(newMember.user.username, avatar)

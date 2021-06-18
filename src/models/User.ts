@@ -1,7 +1,8 @@
+import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
 
 export interface UserData {
-	_id: string;
+	_id: Snowflake;
 	guilds: string[];
 	job: string | null;
 	wallet: number;
@@ -13,6 +14,7 @@ export interface UserData {
 	weekly: number;
 	monthly: number;
 	repTime: number;
+	vcHours: number;
 	inventory: object;
 	activeItems: string[];
 	xp: number;
@@ -39,6 +41,7 @@ const userSchema = new Schema<IUser>({
 	daily: { type: Date, default: null },
 	weekly: { type: Date, default: null },
 	monthly: { type: Date, default: null },
+	vcHours: { type: Number, default: 0 },
 	repTime: { type: Date, default: null },
 	inventory: { type: Object, default: {} },
 	activeItems: { type: Array, default: [] },

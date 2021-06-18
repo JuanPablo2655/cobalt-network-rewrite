@@ -1,7 +1,8 @@
+import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
 
 export interface GuildData {
-	_id: string;
+	_id: Snowflake;
 	prefix: string;
 	verified: boolean;
 	blacklistedWords: string[];
@@ -22,13 +23,13 @@ export interface LevelMessage {
 
 export interface WelcomeMessage {
 	message: string | null;
-	channelId: string | null;
+	channelId: Snowflake | null;
 	enabled: boolean;
 }
 
 export interface LeaveMessage {
 	message: string | null;
-	channelId: string | null;
+	channelId: Snowflake | null;
 	enabled: boolean;
 }
 
@@ -38,7 +39,7 @@ export interface BanMessage {
 }
 
 export interface LogChannel {
-	channelId: string;
+	channelId: Snowflake;
 	enabled: boolean;
 	disabledEvents: string[];
 }

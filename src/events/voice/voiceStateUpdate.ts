@@ -1,4 +1,4 @@
-import { MessageEmbed, Snowflake, TextChannel, VoiceState } from 'discord.js';
+import { MessageEmbed, TextChannel, VoiceState } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import Event from '../../struct/Event';
 
@@ -17,10 +17,10 @@ abstract class VoiceStateUpdate extends Event {
 		const guild = await this.cobalt.db.getGuild(newState.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel.enabled) return;
+		const user = await this.cobalt.db.getUser(newState.member!.id);
+		const member = await this.cobalt.db.getMember(newState.member?.id, newState.guild.id);
 		const logChannelId = guild.logChannel.channelId;
-		const logChannel = this.cobalt.guilds.cache
-			.get(newState.guild.id)
-			?.channels.cache.get(logChannelId as Snowflake) as TextChannel;
+		const logChannel = this.cobalt.guilds.cache.get(newState.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = newState.member?.user.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor(newState.member!.user.username, avatar)
@@ -42,6 +42,10 @@ abstract class VoiceStateUpdate extends Event {
 				const time = elapsed / 60000;
 				const addMoney = Math.round(time * 9) + 1;
 				await this.cobalt.econ.addToWallet(oldState.member!.id, addMoney);
+				await this.cobalt.db.updateUser(oldState.member?.id, { vcHours: user!.vcHours + elapsed });
+				await this.cobalt.db.updateMember(oldState.member?.id, oldState.guild.id, {
+					vcHours: member!.vcHours + elapsed,
+				});
 				oldState.member
 					?.send(
 						`You have earned **₡${this.cobalt.utils.formatNumber(addMoney)}** for spending **${prettyMilliseconds(

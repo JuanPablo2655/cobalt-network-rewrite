@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, Snowflake, TextChannel } from 'discord.js';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import Event from '../../struct/Event';
 
 abstract class MessageUpdateEvent extends Event {
@@ -20,7 +20,7 @@ abstract class MessageUpdateEvent extends Event {
 		const logChannelId = guild.logChannel.channelId;
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMessage.guild.id)
-			?.channels.cache.get(logChannelId as Snowflake) as TextChannel;
+			?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = newMessage.author.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor(newMessage.author.username, avatar)

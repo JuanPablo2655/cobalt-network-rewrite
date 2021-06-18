@@ -1,4 +1,4 @@
-import { GuildBan, MessageEmbed, Snowflake, TextChannel } from 'discord.js';
+import { GuildBan, MessageEmbed, TextChannel } from 'discord.js';
 import Event from '../../struct/Event';
 
 abstract class GuildBanAddEvent extends Event {
@@ -21,9 +21,7 @@ abstract class GuildBanAddEvent extends Event {
 			audit = (await ban.guild.fetchAuditLogs()).entries.first();
 		}
 		const logChannelId = guild.logChannel.channelId;
-		const logChannel = this.cobalt.guilds.cache
-			.get(ban.guild.id)
-			?.channels.cache.get(logChannelId as Snowflake) as TextChannel;
+		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = ban.user.displayAvatarURL({ format: 'png', dynamic: true });
 		console.log(ban.reason, audit?.reason);
 		const logEmbed = new MessageEmbed()

@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, Snowflake, TextChannel } from 'discord.js';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import Event from '../../struct/Event';
 
 abstract class MessageDeleteEvent extends Event {
@@ -17,9 +17,7 @@ abstract class MessageDeleteEvent extends Event {
 		if (!guild) return;
 		if (!guild.logChannel.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
-		const logChannel = this.cobalt.guilds.cache
-			.get(message.guild.id)
-			?.channels.cache.get(logChannelId as Snowflake) as TextChannel;
+		const logChannel = this.cobalt.guilds.cache.get(message.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor(message.author.username, avatar)

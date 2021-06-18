@@ -1,8 +1,9 @@
+import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
 
 export interface BotData {
-	_id: string;
-	directors: string[];
+	_id: Snowflake;
+	directors: Snowflake[];
 	tax: number;
 	bank: number;
 	totalCommandsUsed: number;
