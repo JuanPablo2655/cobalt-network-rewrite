@@ -17,18 +17,18 @@ abstract class GuildMemberAddEvent extends Event {
 		const guild = await this.cobalt.db.getGuild(member.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel.enabled) return;
-		const logChannelId = guild?.logChannel.channelId;
+		const logChannelId = guild.logChannel.channelId;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ format: 'png', dynamic: true });
-		if (user?.roles.length !== 0) {
-			user?.roles.forEach(r => {
+		if (user && user.roles.length !== 0) {
+			user.roles.forEach(r => {
 				let role = member.guild.roles.cache.get(r);
 				if (!role) return;
 				if (member.guild.me!.roles.highest.comparePositionTo(role) < 0) return;
 				member.roles.add(role.id);
 			});
 			member.user.send(
-				`Welcome back ${member.user.username}, I've give you all of your roles I could give back. If there are some missing message the staff for the remaining roles.`,
+				`Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing message the staff for the remaining roles.`,
 			);
 		}
 		if (guild.welcomeMessage.channelId) {

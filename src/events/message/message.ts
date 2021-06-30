@@ -154,10 +154,9 @@ abstract class MessageEvent extends Event {
 							if (cooldown) {
 								const expirationTime = cooldown + cooldownAmount;
 								if (now < expirationTime) {
-									const timeLeft = (expirationTime - now) / 1000;
-									message.channel.send(
-										`Wait ${timeLeft.toFixed(1)} more second(s) before reusing \`${command.name}\` command.`,
-									);
+									const timeLeft = expirationTime - now;
+									const time = Math.floor((new Date().getTime() + timeLeft) / 1000);
+									message.channel.send(`You can rerun \`${command.name}\` <t:${time}:R>.`);
 									return true;
 								}
 							}
