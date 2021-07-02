@@ -108,6 +108,32 @@ const items: ItemData[] = [
 		keep: false,
 		run: async (_message: Message, _args: string[]) => {},
 	},
+	{
+		id: 'goldingot',
+		name: 'Gold Ore',
+		category: 'material',
+		description: 'Raw gold that can be smelted into gold ingots.',
+		craftable: false,
+		canUse: true,
+		canBuy: true,
+		price: 50,
+		sellAmount: 35,
+		keep: false,
+		run: async (_message: Message, _args: string[]) => {},
+	},
+	{
+		id: 'goldingot',
+		name: 'Gold Ingot',
+		category: 'material',
+		description: 'Gold ingot used to craft items and equipment.',
+		craftable: true,
+		canUse: true,
+		canBuy: true,
+		price: 90,
+		sellAmount: 50,
+		keep: false,
+		run: async (_message: Message, _args: string[]) => {},
+	},
 ];
 
 export default items;
