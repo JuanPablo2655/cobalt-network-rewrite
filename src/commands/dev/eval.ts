@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import { Message, MessageReaction } from 'discord.js';
+import { Formatters, Message, MessageReaction, User } from 'discord.js';
 import { inspect, promisify } from 'util';
 import GenericCommand from '../../struct/GenericCommand';
 
@@ -55,13 +55,14 @@ abstract class EvalCommand extends GenericCommand {
 		}
 
 		const msg = await message.channel.send({
-			content: evalued.slice(0, 1950),
-			code: args[0]?.toLowerCase() === '-sh' ? 'sh' : 'js',
+			content: Formatters.codeBlock(args[0]?.toLowerCase() === '-sh' ? 'sh' : 'js', evalued.slice(0, 1950)),
 		});
 
 		try {
+			const filter = (r: MessageReaction, u: User) => r.emoji.name === '🔨' && u.id === message.author.id;
 			await msg.react('🔨');
-			await msg.awaitReactions((r, u) => r.emoji.name === '🔨' && u.id === message.author.id, {
+			await msg.awaitReactions({
+				filter,
 				time: 20000,
 				max: 1,
 				errors: ['time'],

@@ -1,5 +1,6 @@
 import { Client, Collection, Intents, Snowflake } from 'discord.js';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import { CommandRegistry, EventRegistry } from './registries/export/RegistryIndex';
 import { CommandOptions, EventOptions, InteractionCommandOptions } from '../typings/Options';
 import Util from '../utils/Util';
@@ -43,5 +44,12 @@ export class CobaltClient extends Client {
 		CommandRegistry(this);
 		EventRegistry(this);
 		super.login(process.env.TOKEN);
+	}
+
+	public close() {
+		mongoose.connection.close(false, () => {
+			console.log('[Mongoose]\tMongoose connection successfully closed');
+			process.exit(0);
+		});
 	}
 }
