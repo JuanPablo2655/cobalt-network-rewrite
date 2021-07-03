@@ -1,17 +1,24 @@
 import { Message } from 'discord.js';
-import apparels from './apparels';
-import food from './food';
-import materials from './materials';
-import misc from './misc';
-import potions from './potions';
-import weapons from './weapons';
+import apparels, { ApparelData } from './apparels';
+import food, { FoodData } from './food';
+import materials, { MaterialData } from './materials';
+import misc, { MiscData } from './misc';
+import potions, { PotionData } from './potions';
+import weapons, { WeaponData } from './weapons';
 
-export type ItemCategories = 'material' | 'food' | 'apparel' | 'weapons' | 'potions' | 'misc';
+export declare enum ItemType {
+	apparel = 0,
+	food = 1,
+	material = 2,
+	misc = 3,
+	potion = 4,
+	weapon = 5,
+}
 
 export interface ItemData {
 	id: string;
 	name: string;
-	category: ItemCategories;
+	category: keyof typeof ItemType;
 	description: string;
 	craftable: boolean;
 	canUse: boolean;
@@ -22,7 +29,30 @@ export interface ItemData {
 	run?: (message: Message, args: string[]) => unknown | Promise<unknown>;
 }
 
-export class Items {}
+export class Items {
+	public apparels: ApparelData[];
+	public food: FoodData[];
+	public materials: MaterialData[];
+	public misc: MiscData[];
+	public potions: PotionData[];
+	public weapons: WeaponData[];
+	constructor() {
+		this.apparels = apparels;
+		this.food = food;
+		this.materials = materials;
+		this.misc = misc;
+		this.potions = potions;
+		this.weapons = weapons;
+	}
+
+	get items() {
+		return ItemType;
+	}
+
+	usable() {
+		return false;
+	}
+}
 
 export const Apparels = apparels;
 export const Food = food;

@@ -9,7 +9,7 @@ const weapons: WeaponData[] = [
 	{
 		id: 'coppersword',
 		name: 'Copper Sword',
-		category: 'weapons',
+		category: 'weapon',
 		description: 'The most basic weapon for defense or offense.',
 		craftable: true,
 		canUse: true,
@@ -23,7 +23,7 @@ const weapons: WeaponData[] = [
 	{
 		id: 'ironsword',
 		name: 'Iron Sword',
-		category: 'weapons',
+		category: 'weapon',
 		description: "At least it's an upgrade from the copper sword.",
 		craftable: true,
 		canUse: true,
@@ -37,7 +37,7 @@ const weapons: WeaponData[] = [
 	{
 		id: 'steelsword',
 		name: 'Steel Sword',
-		category: 'weapons',
+		category: 'weapon',
 		description: "Now we're talking the most common weapon out there.",
 		craftable: true,
 		canUse: true,
