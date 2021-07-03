@@ -27,7 +27,7 @@
     "discord.js": "^13.0.0-dev.fe6cc0c.1625184228",
     "dotenv": "^8.2.0",
     "glob": "^7.1.7",
-    "mongoose": "^5.12.10",
+    "mongoose": "^5.13.1",
     "node-fetch": "^2.6.1",
     "pretty-ms": "^7.0.1"
   },
