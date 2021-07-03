@@ -36,6 +36,7 @@ export class Items {
 	public misc: MiscData[];
 	public potions: PotionData[];
 	public weapons: WeaponData[];
+	private _items: ItemData[];
 	constructor() {
 		this.apparels = apparels;
 		this.food = food;
@@ -43,16 +44,20 @@ export class Items {
 		this.misc = misc;
 		this.potions = potions;
 		this.weapons = weapons;
+		this._items = [];
 	}
 
 	get items() {
-		return ItemType;
+		return this._items.concat(this.apparels, this.food, this.materials, this.potions, this.weapons);
 	}
 
 	usable() {
 		return false;
 	}
 }
+
+const yeah = new Items();
+console.log(yeah.items.find(i => i.category === 'material'));
 
 export const Apparels = apparels;
 export const Food = food;
