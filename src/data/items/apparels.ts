@@ -1,10 +1,16 @@
-import { ItemData } from './items';
+import { Item, ItemData } from './items';
 
-export interface ApparelData extends ItemData {
-	isApparel: boolean;
-	armor: number;
+export class Apparel extends ItemData {
+	apparel: {
+		armor: number;
+	};
+
+	constructor(armor: number) {
+		super();
+		this.apparel = { armor };
+	}
 }
 
-const apparels: ApparelData[] = [];
+const apparels: Item[] = [];
 
 export default apparels;

@@ -1,10 +1,21 @@
-import { ItemData } from './items';
+import { Item, ItemData } from './items';
 
-export interface MiscData extends ItemData {
-	isBook: boolean;
-	isSoul: boolean;
+declare enum MiscType {
+	book = 0,
+	soul = 1,
 }
 
-const misc: MiscData[] = [];
+export class Misc extends ItemData {
+	misc: {
+		type: MiscType;
+	};
+
+	constructor(type: MiscType) {
+		super();
+		this.misc = { type };
+	}
+}
+
+const misc: Item[] = [];
 
 export default misc;

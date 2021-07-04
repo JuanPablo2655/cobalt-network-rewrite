@@ -1,10 +1,9 @@
-import { Message } from 'discord.js';
-import apparels, { ApparelData } from './apparels';
-import food, { FoodData } from './food';
-import materials, { MaterialData } from './materials';
-import misc, { MiscData } from './misc';
-import potions, { PotionData } from './potions';
-import weapons, { WeaponData } from './weapons';
+import apparels from './apparels';
+import food from './food';
+import materials from './materials';
+import misc from './misc';
+import potions from './potions';
+import weapons from './weapons';
 
 export declare enum ItemType {
 	apparel = 0,
@@ -15,41 +14,20 @@ export declare enum ItemType {
 	weapon = 5,
 }
 
-declare enum PotionStatType {
-	heal = 0,
-	magicka = 1,
-}
-
-declare enum PotionEffectType {
-	once = 0,
-	lasting = 1,
-	buff = 2,
-}
-
-// export interface ItemData {
-// 	id: string;
-// 	name: string;
-// 	category: keyof typeof ItemType;
-// 	description: string;
-// 	craftable: boolean;
-// 	canUse: boolean;
-// 	canBuy: boolean;
-// 	price: number;
-// 	sellAmount: number;
-// 	keep: boolean;
-// 	run?: (message: Message, args: string[]) => unknown | Promise<unknown>;
-// }
-
-export class Items {
+export class Item {
 	public id: string;
+	public name: string;
+	public description: string;
 	public other: ItemData;
-	constructor(id: string, other: ItemData) {
+	constructor(id: string, name: string, description: string, other: ItemData) {
 		this.id = id;
+		this.name = name;
+		this.description = description;
 		this.other = other;
 	}
 }
 
-class ItemData {
+export class ItemData {
 	[subtype: string]: any;
 	join(other: ItemData): ItemData {
 		for (let prop in other) {
@@ -59,22 +37,4 @@ class ItemData {
 	}
 }
 
-class Potion extends ItemData {
-	potion: {
-		stat: PotionStatType;
-		amount: number;
-		effect: PotionEffectType;
-	};
-
-	constructor(stat: PotionStatType, amount: number, effect: PotionEffectType) {
-		super();
-		this.potion = { stat: stat, amount: amount, effect: effect };
-	}
-}
-
-export const Apparels = apparels;
-export const Food = food;
-export const Materials = materials;
-export const Misc = misc;
-export const Potions = potions;
-export const Weapons = weapons;
+export default apparels.concat(food, materials, misc, potions, weapons);

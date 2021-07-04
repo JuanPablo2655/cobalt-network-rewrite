@@ -1,11 +1,29 @@
-import { ItemData } from './items';
+import { ItemData, Item } from './items';
 
-export interface PotionData extends ItemData {
-	isPotion: boolean;
-	health: number;
-	magicka: number;
+declare enum PotionStatType {
+	heal = 0,
+	magicka = 1,
 }
 
-const potions: PotionData[] = [];
+declare enum PotionEffectType {
+	once = 0,
+	lasting = 1,
+	buff = 2,
+}
+
+export class Potion extends ItemData {
+	potion: {
+		stat: PotionStatType;
+		amount: number;
+		effect: PotionEffectType;
+	};
+
+	constructor(stat: PotionStatType, amount: number, effect: PotionEffectType) {
+		super();
+		this.potion = { stat: stat, amount: amount, effect: effect };
+	}
+}
+
+const potions: Item[] = [];
 
 export default potions;

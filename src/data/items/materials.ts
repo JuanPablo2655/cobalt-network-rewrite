@@ -1,126 +1,73 @@
-import { ItemData } from './items';
+import { Item, ItemData } from './items';
 
-export interface MaterialData extends ItemData {
-	isMaterial: boolean;
+export class Material extends ItemData {
+	material: {
+		price: number;
+		sellAmount: number;
+		canBuy: boolean;
+		keep: boolean;
+	};
+
+	constructor(price: number, sellAmount: number, canBuy: boolean, keep: boolean) {
+		super();
+		this.material = { price: price, sellAmount: sellAmount, canBuy: canBuy, keep: keep };
+	}
 }
 
-const materials: MaterialData[] = [
+const materials: Item[] = [
 	{
 		id: 'rawiron',
 		name: 'Iron Ore',
-		category: 'material',
 		description: 'Raw iron that can be smelted into iron ingots.',
-		craftable: false,
-		canUse: false,
-		canBuy: true,
-		price: 10,
-		sellAmount: 4,
-		keep: false,
-		isMaterial: true,
+		other: new Material(10, 4, true, false),
 	},
 	{
 		id: 'ironingot',
 		name: 'Iron Ingot',
-		category: 'material',
 		description: 'Iron ingot used to craft items and equipment.',
-		craftable: true,
-		canUse: false,
-		canBuy: true,
-		price: 20,
-		sellAmount: 14,
-		keep: false,
-		isMaterial: true,
+		other: new Material(20, 14, true, false),
 	},
 	{
 		id: 'rawcopper',
 		name: 'Copper Ore',
-		category: 'material',
 		description: 'Raw copper that can be smelted into copper ingots.',
-		craftable: false,
-		canUse: false,
-		canBuy: true,
-		price: 8,
-		sellAmount: 4,
-		keep: false,
-		isMaterial: true,
+		other: new Material(8, 4, true, false),
 	},
 	{
 		id: 'copperingot',
 		name: 'Copper Ingot',
-		category: 'material',
 		description: 'Copper ingot used to craft items and equipment.',
-		craftable: true,
-		canUse: false,
-		canBuy: true,
-		price: 15,
-		sellAmount: 9,
-		keep: false,
-		isMaterial: true,
+		other: new Material(15, 9, true, false),
 	},
 	{
 		id: 'rawcarbonite',
 		name: 'Carbonite Ore',
-		category: 'material',
 		description: 'Raw carbonite that can be smelted into carbonite ingots.',
-		craftable: false,
-		canUse: false,
-		canBuy: true,
-		price: 6,
-		sellAmount: 3,
-		keep: false,
-		isMaterial: true,
+		other: new Material(6, 4, true, false),
 	},
 	{
 		id: 'carboniteingot',
 		name: 'Carbonite Ingot',
-		category: 'material',
 		description: 'Carbonite ingot used to craft items and equipment.',
-		craftable: true,
-		canUse: false,
-		canBuy: true,
-		price: 12,
-		sellAmount: 6,
-		keep: false,
-		isMaterial: true,
+		other: new Material(12, 6, true, false),
 	},
 	{
 		id: 'steelingot',
 		name: 'Steel Ingot',
-		category: 'material',
 		description: 'Steel ingot used to craft items and equipment.',
-		craftable: true,
-		canUse: false,
-		canBuy: true,
-		price: 12,
-		sellAmount: 6,
-		keep: false,
-		isMaterial: true,
+		other: new Material(12, 6, true, false),
 	},
 	{
 		id: 'goldingot',
 		name: 'Gold Ore',
-		category: 'material',
 		description: 'Raw gold that can be smelted into gold ingots.',
-		craftable: false,
-		canUse: false,
-		canBuy: true,
-		price: 50,
-		sellAmount: 35,
-		keep: false,
-		isMaterial: true,
+		other: new Material(50, 35, true, false),
 	},
 	{
 		id: 'goldingot',
 		name: 'Gold Ingot',
-		category: 'material',
 		description: 'Gold ingot used to craft items and equipment.',
-		craftable: true,
-		canUse: false,
-		canBuy: true,
-		price: 90,
-		sellAmount: 50,
-		keep: false,
-		isMaterial: true,
+		other: new Material(90, 50, true, false),
 	},
 ];
 

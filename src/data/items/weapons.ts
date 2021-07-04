@@ -1,52 +1,37 @@
-import { ItemData } from './items';
+import { Item, ItemData } from './items';
 
-export interface WeaponData extends ItemData {
-	isWeapon: boolean;
-	damage: number;
+export class Weapon extends ItemData {
+	weapon: {
+		damage: number;
+		price: number;
+		sellAmount: number;
+		craftable: boolean;
+	};
+
+	constructor(damage: number, price: number, sellAmount: number, craftable: boolean) {
+		super();
+		this.weapon = { damage, price, sellAmount, craftable };
+	}
 }
 
-const weapons: WeaponData[] = [
+const weapons: Item[] = [
 	{
 		id: 'coppersword',
 		name: 'Copper Sword',
-		category: 'weapon',
 		description: 'The most basic weapon for defense or offense.',
-		craftable: true,
-		canUse: true,
-		canBuy: true,
-		price: 50,
-		sellAmount: 20,
-		keep: true,
-		isWeapon: true,
-		damage: 5,
+		other: new Weapon(5, 50, 20, true),
 	},
 	{
 		id: 'ironsword',
 		name: 'Iron Sword',
-		category: 'weapon',
 		description: "At least it's an upgrade from the copper sword.",
-		craftable: true,
-		canUse: true,
-		canBuy: true,
-		price: 110,
-		sellAmount: 45,
-		keep: true,
-		isWeapon: true,
-		damage: 8,
+		other: new Weapon(8, 110, 45, true),
 	},
 	{
 		id: 'steelsword',
 		name: 'Steel Sword',
-		category: 'weapon',
 		description: "Now we're talking the most common weapon out there.",
-		craftable: true,
-		canUse: true,
-		canBuy: true,
-		price: 200,
-		sellAmount: 130,
-		keep: true,
-		isWeapon: true,
-		damage: 15,
+		other: new Weapon(15, 200, 130, true),
 	},
 ];
 

@@ -1,10 +1,16 @@
-import { ItemData } from './items';
+import { Item, ItemData } from './items';
 
-export interface FoodData extends ItemData {
-	isFood: boolean;
-	saturation: number;
+export class Food extends ItemData {
+	food: {
+		saturation: number;
+	};
+
+	constructor(saturation: number) {
+		super();
+		this.food = { saturation };
+	}
 }
 
-const food: FoodData[] = [];
+const food: Item[] = [];
 
 export default food;
