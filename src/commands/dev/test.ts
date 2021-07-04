@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { Items } from '../../data/items/items';
+import { Items } from '../../data/items';
 import GenericCommand from '../../struct/GenericCommand';
 
 abstract class TestCommand extends GenericCommand {

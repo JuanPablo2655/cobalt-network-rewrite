@@ -1,10 +1,3 @@
-import apparels from './apparels';
-import food from './food';
-import materials from './materials';
-import misc from './misc';
-import potions from './potions';
-import weapons from './weapons';
-
 export declare enum ItemType {
 	apparel = 0,
 	food = 1,
@@ -36,7 +29,3 @@ export class ItemData {
 		return this;
 	}
 }
-
-// const Items: Item[] = [];
-
-export const Items: Item[] = apparels.concat(food, materials, misc, potions, weapons);
