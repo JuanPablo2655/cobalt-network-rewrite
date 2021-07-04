@@ -15,49 +15,62 @@ export declare enum ItemType {
 	weapon = 5,
 }
 
-export interface ItemData {
-	id: string;
-	name: string;
-	category: keyof typeof ItemType;
-	description: string;
-	craftable: boolean;
-	canUse: boolean;
-	canBuy: boolean;
-	price: number;
-	sellAmount: number;
-	keep: boolean;
-	run?: (message: Message, args: string[]) => unknown | Promise<unknown>;
+declare enum PotionStatType {
+	heal = 0,
+	magicka = 1,
 }
+
+declare enum PotionEffectType {
+	once = 0,
+	lasting = 1,
+	buff = 2,
+}
+
+// export interface ItemData {
+// 	id: string;
+// 	name: string;
+// 	category: keyof typeof ItemType;
+// 	description: string;
+// 	craftable: boolean;
+// 	canUse: boolean;
+// 	canBuy: boolean;
+// 	price: number;
+// 	sellAmount: number;
+// 	keep: boolean;
+// 	run?: (message: Message, args: string[]) => unknown | Promise<unknown>;
+// }
 
 export class Items {
-	public apparels: ApparelData[];
-	public food: FoodData[];
-	public materials: MaterialData[];
-	public misc: MiscData[];
-	public potions: PotionData[];
-	public weapons: WeaponData[];
-	private _items: ItemData[];
-	constructor() {
-		this.apparels = apparels;
-		this.food = food;
-		this.materials = materials;
-		this.misc = misc;
-		this.potions = potions;
-		this.weapons = weapons;
-		this._items = [];
-	}
-
-	get items() {
-		return this._items.concat(this.apparels, this.food, this.materials, this.potions, this.weapons);
-	}
-
-	usable() {
-		return false;
+	public id: string;
+	public other: ItemData;
+	constructor(id: string, other: ItemData) {
+		this.id = id;
+		this.other = other;
 	}
 }
 
-const yeah = new Items();
-console.log(yeah.items.find(i => i.category === 'material'));
+class ItemData {
+	[subtype: string]: any;
+	join(other: ItemData): ItemData {
+		for (let prop in other) {
+			this[prop] = other[prop];
+		}
+		return this;
+	}
+}
+
+class Potion extends ItemData {
+	potion: {
+		stat: PotionStatType;
+		amount: number;
+		effect: PotionEffectType;
+	};
+
+	constructor(stat: PotionStatType, amount: number, effect: PotionEffectType) {
+		super();
+		this.potion = { stat: stat, amount: amount, effect: effect };
+	}
+}
 
 export const Apparels = apparels;
 export const Food = food;
