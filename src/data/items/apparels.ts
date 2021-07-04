@@ -7,10 +7,17 @@ export class Apparel extends ItemData {
 
 	constructor(armor: number) {
 		super();
-		this.apparel = { armor };
+		this.apparel = { armor: armor };
 	}
 }
 
-const apparels: Item[] = [];
+const apparels: Item[] = [
+	{
+		id: 'ironarmor',
+		name: 'Iron Armor',
+		description: 'Iron armor to protect you from damage.',
+		data: new Apparel(10),
+	},
+];
 
 export default apparels;

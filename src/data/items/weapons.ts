@@ -19,19 +19,19 @@ const weapons: Item[] = [
 		id: 'coppersword',
 		name: 'Copper Sword',
 		description: 'The most basic weapon for defense or offense.',
-		other: new Weapon(5, 50, 20, true),
+		data: new Weapon(5, 50, 20, true),
 	},
 	{
 		id: 'ironsword',
 		name: 'Iron Sword',
 		description: "At least it's an upgrade from the copper sword.",
-		other: new Weapon(8, 110, 45, true),
+		data: new Weapon(8, 110, 45, true),
 	},
 	{
 		id: 'steelsword',
 		name: 'Steel Sword',
 		description: "Now we're talking the most common weapon out there.",
-		other: new Weapon(15, 200, 130, true),
+		data: new Weapon(15, 200, 130, true),
 	},
 ];
 

@@ -18,23 +18,25 @@ export class Item {
 	public id: string;
 	public name: string;
 	public description: string;
-	public other: ItemData;
-	constructor(id: string, name: string, description: string, other: ItemData) {
+	public data: ItemData;
+	constructor(id: string, name: string, description: string, data: ItemData) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.other = other;
+		this.data = data;
 	}
 }
 
 export class ItemData {
 	[subtype: string]: any;
-	join(other: ItemData): ItemData {
-		for (let prop in other) {
-			this[prop] = other[prop];
+	join(data: ItemData): ItemData {
+		for (let prop in data) {
+			this[prop] = data[prop];
 		}
 		return this;
 	}
 }
 
-export default apparels.concat(food, materials, misc, potions, weapons);
+// const Items: Item[] = [];
+
+export const Items: Item[] = apparels.concat(food, materials, misc, potions, weapons);
