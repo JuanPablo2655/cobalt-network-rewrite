@@ -29,3 +29,15 @@ export class ItemData {
 		return this;
 	}
 }
+
+export class Market extends ItemData {
+	market: {
+		price: number;
+		sellAmount: number;
+	};
+
+	constructor(price: number, sellAmount: number) {
+		super();
+		this.market = { price, sellAmount };
+	}
+}
