@@ -7,7 +7,7 @@ export class Apparel extends ItemData {
 
 	constructor(armor: number) {
 		super();
-		this.apparel = { armor: armor };
+		this.apparel = { armor };
 	}
 }
 

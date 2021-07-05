@@ -20,7 +20,7 @@ export class Potion extends ItemData {
 
 	constructor(stat: PotionStatType, amount: number, effect: PotionEffectType) {
 		super();
-		this.potion = { stat: stat, amount: amount, effect: effect };
+		this.potion = { stat, amount, effect };
 	}
 }
 
