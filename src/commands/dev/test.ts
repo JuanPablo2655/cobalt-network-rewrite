@@ -13,8 +13,8 @@ abstract class TestCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: Function) {
 		addCD();
-		const bruh = Items.map(i => `${i.id} - ${i.name} - ${i.data}`);
-		return message.channel.send({ content: bruh.join('\n') });
+		const bruh = Items.map(i => `${i.id} - ${i.name} - ${i.description}`);
+		return message.channel.send({ content: this.cobalt.utils.trim(bruh.join('\n'), 2000) });
 	}
 }
 

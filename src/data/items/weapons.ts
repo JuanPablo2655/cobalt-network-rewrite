@@ -134,12 +134,6 @@ const weapons: Item[] = [
 		data: new Weapon(6, true).join(new Market(50, 25)),
 	},
 	{
-		id: 'huntbow',
-		name: 'Hunting Bow',
-		description: 'A ranged weapon.',
-		data: new Weapon(6, true).join(new Market(50, 25)),
-	},
-	{
 		id: 'ironarrow',
 		name: 'Iron Arrow',
 		description: 'A fin-stabilized projectile launched by a bow.',
