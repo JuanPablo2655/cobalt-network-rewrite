@@ -1,12 +1,3 @@
-export declare enum ItemType {
-	apparel = 0,
-	food = 1,
-	material = 2,
-	misc = 3,
-	potion = 4,
-	weapon = 5,
-}
-
 export class Item {
 	public id: string;
 	public name: string;
