@@ -55,7 +55,7 @@ const materials: Item[] = [
 		data: new Material(false).join(new Market(12, 6)),
 	},
 	{
-		id: 'goldingot',
+		id: 'rawgold',
 		name: 'Gold Ore',
 		description: 'Raw gold that can be smelted into gold ingots.',
 		data: new Material(false).join(new Market(50, 35)),
@@ -65,6 +65,24 @@ const materials: Item[] = [
 		name: 'Gold Ingot',
 		description: 'Gold ingot used to craft items and equipment.',
 		data: new Material(false).join(new Market(90, 50)),
+	},
+	{
+		id: 'rawsilver',
+		name: 'Silver Ore',
+		description: 'Raw silver that can be smelted into silver ingots.',
+		data: new Material(false).join(new Market(50, 35)),
+	},
+	{
+		id: 'silveringot',
+		name: 'Silver Ingot',
+		description: 'Silver ingot used to craft items and equipment.',
+		data: new Material(false).join(new Market(90, 50)),
+	},
+	{
+		id: 'leather',
+		name: 'Leather',
+		description: 'Leather used to craft items and equipment.',
+		data: new Material(false).join(new Market(10, 4)),
 	},
 ];
 
