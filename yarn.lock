@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@discordjs/builders@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@discordjs/builders/-/builders-0.1.1.tgz#d1e888ee8ef273cce639c79cb24abac7169cfb88"
-  integrity sha512-9eBC22bX2HBsob5ixMwZ6quy/vewU5GHuSJhpmSZ3cDGg8XPnrYdzbwI54U+V9kQBTa7M+aMu1lYVqMEPojj8A==
+"@discordjs/builders@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@discordjs/builders/-/builders-0.2.0.tgz#832c8d894aad13362db7a99f11a7826b21e4cd94"
+  integrity sha512-TVq7NZBCJrrTRc3CfxOr3IdgY5nrtqVxZ7qDUF1mN6LgxIiOldmFxsSwMrQBzLFVmOwqFyNLKCeblley8UpEuw==
   dependencies:
     discord-api-types "^0.18.1"
     tslib "^2.3.0"
@@ -276,12 +276,12 @@ discord-logs@^1.9.0:
     "@types/node" "^14.0.1"
     "@types/ws" "^7.2.1"
 
-discord.js@^13.0.0-dev.3a718d8.1625270632:
-  version "13.0.0-dev.3a718d8.1625270632"
-  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-13.0.0-dev.3a718d8.1625270632.tgz#212c70c9845f82ac6226e57b32bceabde6f83542"
-  integrity sha512-bSZgiG85kjHmYi+jvBmECN7GnTpodNLbdJpE9mtyO2FT4VEHKV3lJvuJM7I5+Gitz01DOBUztxPpFun2fT7nGQ==
+discord.js@^13.0.0-dev.676118a.1625486570:
+  version "13.0.0-dev.676118a.1625486570"
+  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-13.0.0-dev.676118a.1625486570.tgz#c45cd030c4d38bb80d57ae6c8ae197aed7ebc220"
+  integrity sha512-dRQe5BvR6AP2qYZ9g0Uir0rsT1zMXaiZKlQFM4V3JbNk8+sEsxne8Dxq4GoLoYS8EZhjDwLsYwvp9nfaveYN2w==
   dependencies:
-    "@discordjs/builders" "^0.1.1"
+    "@discordjs/builders" "^0.2.0"
     "@discordjs/collection" "^0.1.6"
     "@discordjs/form-data" "^3.0.1"
     "@sapphire/async-queue" "^1.1.4"
