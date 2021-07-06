@@ -124,13 +124,13 @@ const misc: Item[] = [
 	{
 		id: 'spelltome',
 		name: 'Fire Bolt',
-		description: 'Learn how to conjour fire bolts.',
+		description: 'Learn how to conjure fire bolts.',
 		data: new Misc(0).join(new Market(40, 16)),
 	},
 	{
 		id: 'spelltome1',
 		name: 'Fire Ball',
-		description: 'Learn how to conjour fire balls.',
+		description: 'Learn how to conjure fire balls.',
 		data: new Misc(0).join(new Market(40, 16)),
 	},
 ];
