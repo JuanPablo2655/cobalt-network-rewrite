@@ -96,13 +96,13 @@ const apparels: Item[] = [
 		data: new Apparel(10, 2).join(new Market(40, 16)),
 	},
 	{
-		id: 'heavysteelarmor5',
+		id: 'heavysteelarmor4',
 		name: 'Steel Boots',
 		description: 'Steel boots to protect you from damage.',
 		data: new Apparel(10, 3).join(new Market(40, 16)),
 	},
 	{
-		id: 'heavysteelarmor6',
+		id: 'heavysteelarmor5',
 		name: 'Steel Shield',
 		description: 'Steel shield to protect you from damage.',
 		data: new Apparel(10, 4).join(new Market(40, 16)),
@@ -126,15 +126,45 @@ const apparels: Item[] = [
 		data: new Apparel(10, 2).join(new Market(40, 16)),
 	},
 	{
-		id: 'heavysilverarmor5',
+		id: 'heavysilverarmor4',
 		name: 'Silver Boots',
 		description: 'Silver boots to protect you from damage.',
 		data: new Apparel(10, 3).join(new Market(40, 16)),
 	},
 	{
-		id: 'heavysilverarmor6',
+		id: 'heavysilverarmor5',
 		name: 'Silver Shield',
 		description: 'Silver shield to protect you from damage.',
+		data: new Apparel(10, 4).join(new Market(40, 16)),
+	},
+	{
+		id: 'leatherarmor1',
+		name: 'Leather Helmet',
+		description: 'Leather helmet to protect you from damage.',
+		data: new Apparel(10, 0).join(new Market(40, 16)),
+	},
+	{
+		id: 'leatherarmor2',
+		name: 'Leather Armor',
+		description: 'Leather armor to protect you from damage.',
+		data: new Apparel(10, 1).join(new Market(40, 16)),
+	},
+	{
+		id: 'leatherarmor3',
+		name: 'Leather Gauntlets',
+		description: 'Leather gauntlets to protect you from damage.',
+		data: new Apparel(10, 2).join(new Market(40, 16)),
+	},
+	{
+		id: 'leatherarmor4',
+		name: 'Leather Boots',
+		description: 'Leather boots to protect you from damage.',
+		data: new Apparel(10, 3).join(new Market(40, 16)),
+	},
+	{
+		id: 'leatherarmor5',
+		name: 'Leather Shield',
+		description: 'Leather shield to protect you from damage.',
 		data: new Apparel(10, 4).join(new Market(40, 16)),
 	},
 	{
