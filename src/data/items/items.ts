@@ -1,74 +1,53 @@
-import { Message } from 'discord.js';
-
-export type ItemCategories = 'material' | 'food' | 'apparel' | 'weapons' | 'potions' | 'misc';
-
-export interface ItemData {
-	id: string;
-	name: string;
-	category: ItemCategories;
-	description: string;
-	craftable: boolean;
-	canUse: boolean;
-	canBuy: boolean;
-	price: number;
-	sellAmount: number;
-	keep: boolean;
-	run?: (message: Message, args: string[]) => unknown | Promise<unknown>;
+export class Item {
+	public id: string;
+	public name: string;
+	public description: string;
+	public data: ItemData;
+	constructor(id: string, name: string, description: string, data: ItemData) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.data = data;
+	}
 }
 
-const items: ItemData[] = [
-	{
-		id: 'rawiron',
-		name: 'Iron Ore',
-		category: 'material',
-		description: 'Raw iron that can be smelted into iron ingots.',
-		craftable: true,
-		canUse: false,
-		canBuy: true,
-		price: 10,
-		sellAmount: 4,
-		keep: false,
-		run: async (_message: Message, _args: string[]) => {},
-	},
-	{
-		id: 'ironingot',
-		name: 'Iron Ingot',
-		category: 'material',
-		description: 'Iron ingot used to craft items and equipment.',
-		craftable: true,
-		canUse: true,
-		canBuy: true,
-		price: 20,
-		sellAmount: 14,
-		keep: false,
-		run: async (_message: Message, _args: string[]) => {},
-	},
-	{
-		id: 'rawcopper',
-		name: 'Copper Ore',
-		category: 'material',
-		description: 'Raw copper that can be smelted into copper ingots.',
-		craftable: true,
-		canUse: false,
-		canBuy: true,
-		price: 8,
-		sellAmount: 4,
-		keep: false,
-		run: async (_message: Message, _args: string[]) => {},
-	},
-	{
-		id: 'copperingot',
-		name: 'Copper Ingot',
-		category: 'material',
-		description: 'Copper ingot used to craft items and equipment.',
-		craftable: true,
-		canUse: false,
-		canBuy: true,
-		price: 15,
-		sellAmount: 9,
-		keep: false,
-		run: async (_message: Message, _args: string[]) => {},
-	},
-];
+declare enum EnchantType {
+	fire = 0,
+	frost = 1,
+	health = 2,
+	magicka = 3,
+}
 
-export default items;
+export class ItemData {
+	[subtype: string]: any;
+	join(data: ItemData): ItemData {
+		for (let prop in data) {
+			this[prop] = data[prop];
+		}
+		return this;
+	}
+}
+
+export class Market extends ItemData {
+	market: {
+		price: number;
+		sellAmount: number;
+	};
+
+	constructor(price: number, sellAmount: number) {
+		super();
+		this.market = { price, sellAmount };
+	}
+}
+
+export class Enchant extends ItemData {
+	enchant: {
+		type: EnchantType;
+		amount: number;
+	};
+
+	constructor(type: EnchantType, amount: number) {
+		super();
+		this.enchant = { type, amount };
+	}
+}

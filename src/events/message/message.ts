@@ -81,7 +81,7 @@ abstract class MessageEvent extends Event {
 				if (guild?.disabledCommands?.includes(command.name)) return;
 				if (command.devOnly && !process.env.OWNERS?.split(',').includes(message.author.id)) {
 					return;
-				} else if (command.ownerOnly && (message.guild as Guild).ownerID !== message.author.id) {
+				} else if (command.ownerOnly && (message.guild as Guild).ownerId !== message.author.id) {
 					message.reply('This comamnd can only be used by the owner of the guild.');
 					return;
 				} else if (command.guildOnly && !(message.guild instanceof Guild)) {

@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+import { Items } from '../../data/items';
 import GenericCommand from '../../struct/GenericCommand';
 
 abstract class TestCommand extends GenericCommand {
@@ -12,9 +13,10 @@ abstract class TestCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: Function) {
 		addCD();
-		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
-		const multi = await this.cobalt.utils.calcMulti(member!.user);
-		return message.channel.send({ content: `${member?.user.username} multi: **${multi}%**` });
+		const bruh = Items.filter(i => (i.data[args[0]] !== undefined ? i.data[args[0]] : i)).map(
+			i => `${i.id} - ${i.name}`,
+		);
+		return message.channel.send({ content: this.cobalt.utils.trim(bruh.join('\n'), 2000) });
 	}
 }
 
