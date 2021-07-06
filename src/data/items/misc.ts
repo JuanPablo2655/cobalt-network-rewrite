@@ -118,7 +118,19 @@ const misc: Item[] = [
 	{
 		id: 'book',
 		name: 'Book',
-		description: 'Just a regular book',
+		description: 'Just a regular book.',
+		data: new Misc(0).join(new Market(40, 16)),
+	},
+	{
+		id: 'spelltome',
+		name: 'Fire Bolt',
+		description: 'Learn how to conjour fire bolts.',
+		data: new Misc(0).join(new Market(40, 16)),
+	},
+	{
+		id: 'spelltome1',
+		name: 'Fire Ball',
+		description: 'Learn how to conjour fire balls.',
 		data: new Misc(0).join(new Market(40, 16)),
 	},
 ];
