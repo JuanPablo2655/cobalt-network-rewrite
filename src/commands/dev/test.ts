@@ -11,9 +11,11 @@ abstract class TestCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, _args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: Function) {
 		addCD();
-		const bruh = Items.map(i => `${i.id} - ${i.name} - ${i.description}`);
+		const bruh = Items.filter(i => (i.data[args[0]] !== undefined ? i.data[args[0]] : i)).map(
+			i => `${i.id} - ${i.name}`,
+		);
 		return message.channel.send({ content: this.cobalt.utils.trim(bruh.join('\n'), 2000) });
 	}
 }

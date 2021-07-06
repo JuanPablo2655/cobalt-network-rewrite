@@ -115,6 +115,12 @@ const misc: Item[] = [
 		description: 'A gem used to trap souls for enchanting.',
 		data: new Misc(3),
 	},
+	{
+		id: 'book',
+		name: 'Book',
+		description: 'Just a regular book',
+		data: new Misc(0),
+	},
 ];
 
 export default misc;
