@@ -24,7 +24,7 @@
   "dependencies": {
     "diff": "^5.0.0",
     "discord-logs": "^1.9.0",
-    "discord.js": "^13.0.0-dev.676118a.1625486570",
+    "discord.js": "^13.0.0-dev.2e078e4.1625573006",
     "dotenv": "^10.0.0",
     "glob": "^7.1.7",
     "mongoose": "^5.13.2",

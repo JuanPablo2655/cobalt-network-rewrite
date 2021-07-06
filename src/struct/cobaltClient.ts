@@ -59,8 +59,8 @@ export class CobaltClient extends Client {
 		super.login(process.env.TOKEN);
 	}
 
-	public close() {
-		mongoose.connection.close(false, () => {
+	public async close() {
+		mongoose.connection.close(false, async () => {
 			console.log('[Mongoose]\tMongoose connection successfully closed');
 			process.exit(0);
 		});
