@@ -1,7 +1,5 @@
 import { Collection, Guild, Message, TextChannel, Permissions } from 'discord.js';
 import Event from '../../struct/Event';
-import dotenv from 'dotenv';
-dotenv.config();
 
 abstract class MessageEvent extends Event {
 	constructor() {
