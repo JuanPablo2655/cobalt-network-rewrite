@@ -7,7 +7,8 @@
     "test:typescript": "tsc",
     "test:prettier": "prettier --check .",
     "clean": "rm -rf build",
-    "build": "npx tsc && node build/cobalt.js",
+    "build": "tsc",
+    "deploy": "node build/cobalt.js",
     "dev": "ts-node-dev --respawn --transpile-only ./src/cobalt.ts",
     "prettier": "prettier --write ."
   },
