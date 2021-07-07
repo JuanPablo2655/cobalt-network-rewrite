@@ -4,12 +4,13 @@
   "description": "",
   "main": "build/cobalt.js",
   "scripts": {
+    "test": "jest --collect-coverage",
     "test:typescript": "tsc",
     "test:prettier": "prettier --check .",
-    "test": "jest --collect-coverage",
     "test:ci": "jest --verbose --ci --no-stack-trace --collect-coverage",
     "clean": "rm -rf build",
-    "build": "npx tsc && node build/cobalt.js",
+    "build": "tsc",
+    "deploy": "node build/cobalt.js",
     "dev": "ts-node-dev --respawn --transpile-only ./src/cobalt.ts",
     "prettier": "prettier --write ."
   },
