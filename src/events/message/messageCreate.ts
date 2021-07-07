@@ -6,7 +6,7 @@ dotenv.config();
 abstract class MessageEvent extends Event {
 	constructor() {
 		super({
-			name: 'message',
+			name: 'messageCreate',
 		});
 	}
 
