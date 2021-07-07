@@ -1,4 +1,4 @@
-name: Testing
+name: Tests
 on: [push, pull_request]
 jobs:
   typescript:
@@ -29,3 +29,21 @@ jobs:
         run: rm -rf node_modules && yarn install --frozen-lockfile
       - name: Run Prettier
         run: yarn test:prettier
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Node v14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: rm -rf node_modules && yarn install --frozen-lockfile
+      - name: Build TypeScript
+        run: yarn test:typescript
+      - name: Run Tests
+        run: yarn test:ci
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v1
