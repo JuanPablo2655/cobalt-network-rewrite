@@ -36,7 +36,8 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			}
 			case 'channel': {
 				const channel = await this.cobalt.utils.findChannel(message, action);
-				if (!channel) return message.reply("Didn't find the text channel. Please try again with a valid channel");
+				if (!channel)
+					return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });
 				await this.cobalt.db.updateGuild(guildId, {
 					leaveMessage: {
 						message: guild.leaveMessage.message,

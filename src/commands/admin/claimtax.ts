@@ -21,11 +21,13 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		});
 		if (!isDirector) return message.channel.send({ content: 'not a director!' });
 		const amount = Number(args[0]);
-		if (!args[0]) return message.reply('I need to update the tax rate, please input a number.');
-		if (isNaN(amount)) return message.reply('Please I need a valid number');
+		if (!args[0]) return message.reply({ content: 'I need to update the tax rate, please input a number.' });
+		if (isNaN(amount)) return message.reply({ content: 'Please I need a valid number' });
 		if (bot.bank < amount)
-			return message.reply(`I don't have that much. I have **${this.cobalt.utils.formatNumber(bot.bank)}** left.`);
-		if (amount > 1000) return message.reply("Can't claim more than **₡1,000**");
+			return message.reply({
+				content: `I don't have that much. I have **${this.cobalt.utils.formatNumber(bot.bank)}** left.`,
+			});
+		if (amount > 1000) return message.reply({ content: "Can't claim more than **₡1,000**" });
 		addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;

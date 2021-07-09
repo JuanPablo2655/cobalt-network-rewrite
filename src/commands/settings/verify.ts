@@ -23,7 +23,7 @@ abstract class VerifyCommand extends GenericCommand {
 		if (!isDirector) return message.channel.send({ content: 'not a director!' });
 		const guildId = (message.guild as Guild)?.id;
 		const guild = this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply("Invalid guild ID, make sure it's correct and try again.");
+		if (!guild) return message.reply({ content: "Invalid guild ID, make sure it's correct and try again." });
 		await this.cobalt.db.updateGuild(guildId, { verified: true });
 		return message.channel.send({ content: 'The server is now verified!' });
 	}

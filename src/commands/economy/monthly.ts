@@ -13,9 +13,9 @@ abstract class MonthlyCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: Function) {
 		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
-		if (!member) return message.reply('An error occured');
+		if (!member) return message.reply({ content: 'An error occured' });
 		const user = await this.cobalt.db.getUser(member.id);
-		if (!user) return message.reply('An error occured');
+		if (!user) return message.reply({ content: 'An error occured' });
 		const date = Date.now();
 		const cooldown = date + 2629800000;
 		if (!isNaN(user.monthly) && user.monthly > date) {

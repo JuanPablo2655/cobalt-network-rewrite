@@ -35,7 +35,7 @@ abstract class GuildMemberRemoveEvent extends Event {
 				.message!.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);
-			return void leaveChannel.send(leave);
+			return void leaveChannel.send({ content: leave });
 		}
 
 		const logEmbed = new MessageEmbed()
