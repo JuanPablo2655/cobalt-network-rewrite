@@ -16,9 +16,9 @@ abstract class ToggleLogChannelCommand extends GenericCommand {
 		const option: boolean = args[0].toLowerCase() === 'true' || args[0].toLowerCase() === 'enable';
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply('An error has occured. Please report it the developer');
+		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
 		addCD();
-		if (guild.logChannel.enabled === option) return message.reply(`already ${option}`);
+		if (guild.logChannel.enabled === option) return message.reply({ content: `already ${option}` });
 		await this.cobalt.db.updateGuild(guildId, {
 			logChannel: {
 				enabled: option,
@@ -26,7 +26,9 @@ abstract class ToggleLogChannelCommand extends GenericCommand {
 				channelId: guild.logChannel.channelId,
 			},
 		});
-		return message.channel.send(`Successfully ${option === true ? 'enabled' : 'disabled'} the log channel.`);
+		return message.channel.send({
+			content: `Successfully ${option === true ? 'enabled' : 'disabled'} the log channel.`,
+		});
 	}
 }
 

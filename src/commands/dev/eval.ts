@@ -20,7 +20,7 @@ abstract class EvalCommand extends GenericCommand {
 		let evalued = 'undefined';
 		switch (args[0]?.toLowerCase() ?? '') {
 			case '-a': {
-				if (!args[1]) return message.channel.send('What do you want to evaluate?');
+				if (!args[1]) return message.channel.send({ content: 'What do you want to evaluate?' });
 				try {
 					evalued = await eval('(async() => {\n' + args.slice(1).join(' ') + '\n})();');
 					evalued = inspect(evalued, { depth: 0 });
@@ -30,11 +30,12 @@ abstract class EvalCommand extends GenericCommand {
 				break;
 			}
 			case '-sh': {
-				if (!args[1]) return message.channel.send('What should I run in the terminal?');
+				if (!args[1]) return message.channel.send({ content: 'What should I run in the terminal?' });
 				evalued = args.slice(1).join(' ');
 				try {
 					const { stdout, stderr } = await promisify(exec)(evalued);
-					if (!stdout && !stderr) return message.channel.send("I ran that but there's no nothing to show.");
+					if (!stdout && !stderr)
+						return message.channel.send({ content: "I ran that but there's no nothing to show." });
 					if (stdout) evalued = stdout;
 					if (stderr) evalued = stderr;
 				} catch (err) {
@@ -43,7 +44,7 @@ abstract class EvalCommand extends GenericCommand {
 				break;
 			}
 			default: {
-				if (!args[0]) return message.channel.send('What do you wanna evaluate?');
+				if (!args[0]) return message.channel.send({ content: 'What do you wanna evaluate?' });
 				try {
 					evalued = await eval(args.join(' '));
 					evalued = inspect(evalued, { depth: 0 });

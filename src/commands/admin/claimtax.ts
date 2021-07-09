@@ -14,12 +14,12 @@ abstract class ClaimTaxCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: Function) {
 		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
-		if (!bot) return message.channel.send('An error has occured');
+		if (!bot) return message.channel.send({ content: 'An error has occured' });
 		let isDirector = false;
 		bot.directors.forEach(director => {
 			if (director === message.author.id) return (isDirector = true);
 		});
-		if (!isDirector) return message.channel.send('not a director!');
+		if (!isDirector) return message.channel.send({ content: 'not a director!' });
 		const amount = Number(args[0]);
 		if (!args[0]) return message.reply('I need to update the tax rate, please input a number.');
 		if (isNaN(amount)) return message.reply('Please I need a valid number');
@@ -32,11 +32,11 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		await this.cobalt.db.updateBot(this.cobalt.user?.id, { bank: bot.bank - amount });
 		await this.cobalt.econ.addToWallet('232670598872956929', tax);
 		await this.cobalt.econ.addToWallet(message.author.id, afterTax);
-		return message.channel.send(
-			`You have claimed **₡${this.cobalt.utils.formatNumber(
+		return message.channel.send({
+			content: `You have claimed **₡${this.cobalt.utils.formatNumber(
 				afterTax,
 			)}** after paying Axalis **₡${this.cobalt.utils.formatNumber(tax)}** as tax.`,
-		);
+		});
 	}
 }
 

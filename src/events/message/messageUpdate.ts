@@ -44,8 +44,7 @@ abstract class MessageUpdateEvent extends Event {
 				logEmbed.setImage(await this.cobalt.utils.getImage(newMessage)[0]);
 			}
 			logEmbed.setFooter(`Message ID: ${newMessage.id}`).setTimestamp();
-			logChannel.send({ embeds: [logEmbed] });
-			return;
+			return void logChannel.send({ embeds: [logEmbed] });
 		}
 	}
 }

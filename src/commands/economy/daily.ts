@@ -19,24 +19,30 @@ abstract class DailyCommand extends GenericCommand {
 		const date = Date.now();
 		const cooldown = date + 86400000;
 		if (!isNaN(user.daily) && user.daily > date) {
-			return message.reply(
-				`You still have **${prettyMilliseconds(user.daily - Date.now())}** left before you can claim your daily!`,
-			);
+			return message.reply({
+				content: `You still have **${prettyMilliseconds(
+					user.daily - Date.now(),
+				)}** left before you can claim your daily!`,
+			});
 		}
 		addCD();
 		if (member?.id === message.author.id) {
 			const dailyAmount = Math.floor(250 + Math.random() * 150);
 			await this.cobalt.db.updateUser(message.author.id, { daily: cooldown });
 			await this.cobalt.econ.addToWallet(member.id, dailyAmount);
-			return message.channel.send(`You have received your daily **₡${this.cobalt.utils.formatNumber(dailyAmount)}**.`);
+			return message.channel.send({
+				content: `You have received your daily **₡${this.cobalt.utils.formatNumber(dailyAmount)}**.`,
+			});
 		}
 		const dailyAmount = Math.floor(250 + Math.random() * 150);
 		const moneyEarned = this.cobalt.utils.addMulti(dailyAmount, 10);
 		await this.cobalt.db.updateUser(message.author.id, { daily: cooldown });
 		await this.cobalt.econ.addToWallet(member!.id, moneyEarned);
-		return message.channel.send(
-			`You gave your daily of **₡${this.cobalt.utils.formatNumber(moneyEarned)}** to **${member?.user.username}**.`,
-		);
+		return message.channel.send({
+			content: `You gave your daily of **₡${this.cobalt.utils.formatNumber(moneyEarned)}** to **${
+				member?.user.username
+			}**.`,
+		});
 	}
 }
 

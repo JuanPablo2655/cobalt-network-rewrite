@@ -30,8 +30,9 @@ abstract class MessageEvent extends Event {
 			if (hasBadWord) {
 				message.deletable && message.delete();
 				const user = this.cobalt.users.cache.get(message.author.id);
-				user?.send(`The word(s) \`${badWords.join(', ')}\` is banned, please watch your language.`);
-				return;
+				return void user?.send({
+					content: `The word(s) \`${badWords.join(', ')}\` is banned, please watch your language.`,
+				});
 			}
 		}
 		if (!message.author.bot) {
@@ -49,7 +50,7 @@ abstract class MessageEvent extends Event {
 								.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
 								.replace(/{newLevel}/g, `**${this.cobalt.utils.formatNumber(profile!.lvl)}**`);
-							message.channel.send(cleanMessage);
+							message.channel.send({ content: cleanMessage });
 						}
 					}
 				}
@@ -69,25 +70,24 @@ abstract class MessageEvent extends Event {
 		const args = message.content.slice(prefix?.length).trim().split(/ +/);
 		const commandName: string | undefined = args.shift();
 		if (message.mentions.members?.has(this.cobalt.user!.id) && !commandName)
-			message.channel.send(`My prefix is \`${guild?.prefix}\``);
+			message.channel.send({ content: `My prefix is \`${guild?.prefix}\`` });
 		if (commandName) {
 			const command = this.cobalt.commands.get(commandName);
 			if (command) {
 				if (!guild?.verified && command.name !== 'verify')
-					message.channel.send('You have to verify your server with one of the Directors in the main server!');
+					message.channel.send({
+						content: 'You have to verify your server with one of the Directors in the main server!',
+					});
 				if (guild?.disabledCategories?.includes(command.category)) return;
 				if (guild?.disabledCommands?.includes(command.name)) return;
 				if (command.devOnly && !process.env.OWNERS?.split(',').includes(message.author.id)) {
 					return;
 				} else if (command.ownerOnly && (message.guild as Guild).ownerId !== message.author.id) {
-					message.reply('This comamnd can only be used by the owner of the guild.');
-					return;
+					return void message.reply('This comamnd can only be used by the owner of the guild.');
 				} else if (command.guildOnly && !(message.guild instanceof Guild)) {
-					message.reply('This command can only be used in a guild.');
-					return;
+					return void message.reply('This command can only be used in a guild.');
 				} else if (command.nsfwOnly && !(message.channel as TextChannel).nsfw) {
-					message.reply('This command can only be used in a NSFW marked channel.');
-					return;
+					return void message.reply('This command can only be used in a NSFW marked channel.');
 				}
 				if (message.channel instanceof TextChannel) {
 					const userPermissions = command.userPermissions;
@@ -154,7 +154,7 @@ abstract class MessageEvent extends Event {
 								if (now < expirationTime) {
 									const timeLeft = expirationTime - now;
 									const time = Math.floor((new Date().getTime() + timeLeft) / 1000);
-									message.channel.send(`You can rerun \`${command.name}\` <t:${time}:R>.`);
+									message.channel.send({ content: `You can rerun \`${command.name}\` <t:${time}:R>.` });
 									return true;
 								}
 							}
@@ -168,11 +168,10 @@ abstract class MessageEvent extends Event {
 					const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
 					bot!.totalCommandsUsed += 1;
 					await bot?.save();
-					command.run(message, args, updateCooldown);
-					return;
+					return void command.run(message, args, updateCooldown);
 				} catch (err) {
 					console.error(err);
-					message.reply('there was an error running this command.');
+					message.reply({ content: 'there was an error running this command.' });
 				}
 			}
 		}

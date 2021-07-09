@@ -15,25 +15,25 @@ abstract class ReputationCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: Function) {
 		const member = await this.cobalt.utils.findMember(message, args);
-		if (!member) return message.reply('Please pick a valid member');
+		if (!member) return message.reply({ content: 'Please pick a valid member' });
 		const author = await this.cobalt.db.getUser(message.author.id);
-		if (!author) return message.reply('An error occured');
+		if (!author) return message.reply({ content: 'An error occured' });
 		const user = await this.cobalt.db.getUser(member.id);
-		if (!user) return message.reply('An error occured');
-		if (member.id === message.author.id) return message.reply("Can't give youself a reputation point!");
+		if (!user) return message.reply({ content: 'An error occured' });
+		if (member.id === message.author.id) return message.reply({ content: "Can't give youself a reputation point!" });
 		const date = Date.now();
 		const cooldown = date + 86400000;
 		if (!isNaN(author.repTime) && author.repTime > date) {
-			return message.reply(
-				`You still have **${prettyMilliseconds(
+			return message.reply({
+				content: `You still have **${prettyMilliseconds(
 					author.repTime - Date.now(),
 				)}** left before you can give someone a reputation point!`,
-			);
+			});
 		}
 		addCD();
 		await this.cobalt.db.updateUser(message.author.id, { repTime: cooldown });
 		await this.cobalt.db.updateUser(member.id, { rep: user.rep + 1 });
-		return message.channel.send(`You gave **${member.user.username}** a reputation point!`);
+		return message.channel.send({ content: `You gave **${member.user.username}** a reputation point!` });
 	}
 }
 

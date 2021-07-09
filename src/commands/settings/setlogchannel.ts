@@ -14,10 +14,11 @@ abstract class SetLogChannelCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: Function) {
 		const channel = await this.cobalt.utils.findChannel(message, args[0]);
-		if (!channel) return message.reply("Didn't find the text channel. Please try again with a valid channel");
+		if (!channel)
+			return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply('An error has occured. Please report it the developer');
+		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
 		addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			logChannel: {
@@ -26,7 +27,7 @@ abstract class SetLogChannelCommand extends GenericCommand {
 				channelId: channel.id,
 			},
 		});
-		return message.channel.send(`Successfully changed the log channel to ${channel}`);
+		return message.channel.send({ content: `Successfully changed the log channel to ${channel}` });
 	}
 }
 

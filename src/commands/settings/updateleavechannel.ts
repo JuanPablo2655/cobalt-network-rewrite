@@ -18,7 +18,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 		const [option, action, ...leaveMessage] = args;
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply('An error has occured. Please report it the developer');
+		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
 		addCD();
 		switch (option) {
 			case 'toggle': {
@@ -30,7 +30,9 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 						enabled: choice,
 					},
 				});
-				return message.channel.send(`Successfully ${choice === true ? 'enabled' : 'disabled'} the leave message`);
+				return message.channel.send({
+					content: `Successfully ${choice === true ? 'enabled' : 'disabled'} the leave message`,
+				});
 			}
 			case 'channel': {
 				const channel = await this.cobalt.utils.findChannel(message, action);
@@ -42,13 +44,13 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 						enabled: guild.leaveMessage.enabled,
 					},
 				});
-				return message.channel.send(`Successfully changed the leave channel to ${channel}`);
+				return message.channel.send({ content: `Successfully changed the leave channel to ${channel}` });
 			}
 			case 'message': {
 				if (!action)
-					return message.reply(
-						`Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setleavechannel message edit <leave message>\``,
-					);
+					return message.reply({
+						content: `Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setleavechannel message edit <leave message>\``,
+					});
 				if (action === 'edit') {
 					await this.cobalt.db.updateGuild(guildId, {
 						leaveMessage: {
@@ -57,7 +59,9 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 							enabled: guild.leaveMessage.enabled,
 						},
 					});
-					return message.channel.send(`Successfully changed the leave message to:\n\`${leaveMessage.join(' ')}\``);
+					return message.channel.send({
+						content: `Successfully changed the leave message to:\n\`${leaveMessage.join(' ')}\``,
+					});
 				}
 				if (action === 'default') {
 					await this.cobalt.db.updateGuild(guildId, {
@@ -67,12 +71,12 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 							enabled: guild.leaveMessage.enabled,
 						},
 					});
-					return message.channel.send(`Successfully changed the leave message to default`);
+					return message.channel.send({ content: `Successfully changed the leave message to default` });
 				}
 				break;
 			}
 			default: {
-				return message.reply('Please choose between `toggle, channel, or message`');
+				return message.reply({ content: 'Please choose between `toggle, channel, or message`' });
 			}
 		}
 	}

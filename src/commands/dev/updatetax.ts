@@ -22,7 +22,7 @@ abstract class UpdateTaxCommand extends GenericCommand {
 		if (tax > 60) return message.reply("Can't tax users more than 60%");
 		addCD();
 		await this.cobalt.db.updateBot(this.cobalt.user?.id, { tax });
-		message.channel.send(`The global tax rate is now **${this.cobalt.utils.formatNumber(tax)}%**`);
+		message.channel.send({ content: `The global tax rate is now **${this.cobalt.utils.formatNumber(tax)}%**` });
 	}
 }
 
