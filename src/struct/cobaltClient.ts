@@ -1,4 +1,5 @@
 import { Client, Collection, Intents, Snowflake } from 'discord.js';
+import Redis from 'ioredis';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { CommandRegistry, EventRegistry } from './registries/export/RegistryIndex';
@@ -22,6 +23,7 @@ export class CobaltClient extends Client {
 	public db: Database;
 	public exp: Experience;
 	public econ: Economy;
+	public redis: Redis.Redis;
 
 	constructor() {
 		super({
@@ -43,6 +45,7 @@ export class CobaltClient extends Client {
 			allowedMentions: { repliedUser: false },
 		});
 
+		this.redis = new Redis(process.env.REDIS ?? 'localhost');
 		this.devMode = process.env.DEVMODE === 'true' ? true : false;
 		this.testEvents = process.env.TESTEVENTS === 'true' ? true : false;
 		this.disableXp = process.env.DISABLEXP === 'true' ? true : false;

@@ -24,6 +24,7 @@ export default class Database {
 	async removeGuild(guildId: string): Promise<void> {
 		try {
 			await guildModel.findOneAndDelete({ _id: guildId });
+			await this.cobalt.redis.del(`${guildId}`);
 		} catch (err) {
 			console.error(err?.stack || err);
 		}
@@ -31,10 +32,12 @@ export default class Database {
 
 	async getGuild(guildId: string | undefined): Promise<IGuild | undefined> {
 		try {
-			let guild = await guildModel.findOne({ _id: guildId });
+			let guild;
+			guild = await this.cobalt.redis.get(`${guildId}`).then(res => (res ? JSON.parse(res) : undefined));
+			if (!guild) guild = await guildModel.findOne({ _id: guildId });
 
 			if (!guild) guild = await this.addGuild(guildId);
-
+			await this.cobalt.redis.set(`${guildId}`, JSON.stringify(guild));
 			return guild;
 		} catch (err) {
 			console.error(err?.stack || err);
