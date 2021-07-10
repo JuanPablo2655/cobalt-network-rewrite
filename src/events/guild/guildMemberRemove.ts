@@ -35,7 +35,7 @@ abstract class GuildMemberRemoveEvent extends Event {
 				.message!.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);
-			leaveChannel.send(leave);
+			return void leaveChannel.send({ content: leave });
 		}
 
 		const logEmbed = new MessageEmbed()
@@ -49,7 +49,7 @@ abstract class GuildMemberRemoveEvent extends Event {
 			)
 			.setFooter(`User ID: ${member.user.id}`)
 			.setTimestamp();
-		logChannel.send({ embeds: [logEmbed] });
+		return void logChannel.send({ embeds: [logEmbed] });
 	}
 }
 

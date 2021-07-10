@@ -33,7 +33,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 				return message.channel.send({ embeds: [vcEmbed] });
 			}
 			default: {
-				return message.reply(`Please supply either \`local\` or \`global\` as the paramater please!`);
+				return message.reply({ content: `Please supply either \`local\` or \`global\` as the paramater please!` });
 			}
 		}
 	}

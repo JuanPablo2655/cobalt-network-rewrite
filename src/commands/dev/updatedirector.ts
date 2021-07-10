@@ -14,7 +14,7 @@ abstract class UpdateDirectorCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: Function) {
 		const role = await this.cobalt.utils.findRole(message, '355885679076442112');
-		if (!role) return message.reply('Wrong server bruh');
+		if (!role) return message.reply({ content: 'Wrong server bruh' });
 		addCD();
 		let directors: Snowflake[] = new Array();
 		let directorUsernames: string[] = new Array();
@@ -28,7 +28,7 @@ abstract class UpdateDirectorCommand extends GenericCommand {
 		});
 
 		await this.cobalt.db.updateBot(this.cobalt.user?.id, { directors });
-		return message.channel.send(`Updated directors with ${directorUsernames.join(', ')}`);
+		return message.channel.send({ content: `Updated directors with ${directorUsernames.join(', ')}` });
 	}
 }
 

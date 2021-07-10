@@ -34,8 +34,7 @@ abstract class MessageDeleteEvent extends Event {
 			logEmbed.setDescription(`${message.content}`);
 			logEmbed.setImage(this.cobalt.utils.getImage(message)[0]);
 		}
-		logChannel.send({ embeds: [logEmbed] });
-		return;
+		return void logChannel.send({ embeds: [logEmbed] });
 	}
 }
 

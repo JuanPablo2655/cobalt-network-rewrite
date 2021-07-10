@@ -27,9 +27,9 @@ abstract class GuildMemberAddEvent extends Event {
 				if (member.guild.me!.roles.highest.comparePositionTo(role) < 0) return;
 				member.roles.add(role.id);
 			});
-			member.user.send(
-				`Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing message the staff for the remaining roles.`,
-			);
+			return void member.user.send({
+				content: `Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing message the staff for the remaining roles.`,
+			});
 		}
 		if (guild.welcomeMessage.channelId) {
 			const welcomeChannel = this.cobalt.guilds.cache
@@ -39,7 +39,7 @@ abstract class GuildMemberAddEvent extends Event {
 				.message!.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);
-			welcomeChannel.send(welcome);
+			return void welcomeChannel.send({ content: welcome });
 		}
 
 		const logEmbed = new MessageEmbed()
@@ -51,7 +51,7 @@ abstract class GuildMemberAddEvent extends Event {
 			)
 			.setFooter(`User ID: ${member.user.id}`)
 			.setTimestamp();
-		logChannel.send({ embeds: [logEmbed] });
+		return void logChannel.send({ embeds: [logEmbed] });
 	}
 }
 

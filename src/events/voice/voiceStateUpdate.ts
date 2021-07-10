@@ -31,7 +31,7 @@ abstract class VoiceStateUpdate extends Event {
 			const start = Date.now();
 			this.cobalt.voiceTime.set(newState.member!.id, start);
 			logEmbed.setTitle(`Member Joined VC`).setDescription(`**VC Channel:** ${newState.channel}`);
-			logChannel.send({ embeds: [logEmbed] });
+			return void logChannel.send({ embeds: [logEmbed] });
 		}
 		if (oldState.channel && !newState.channel) {
 			if (oldState.member?.user.bot) return;
@@ -47,11 +47,11 @@ abstract class VoiceStateUpdate extends Event {
 					vcHours: member!.vcHours + elapsed,
 				});
 				oldState.member
-					?.send(
-						`You have earned **₡${this.cobalt.utils.formatNumber(addMoney)}** for spending **${prettyMilliseconds(
-							elapsed,
-						)}** in VC.`,
-					)
+					?.send({
+						content: `You have earned **₡${this.cobalt.utils.formatNumber(
+							addMoney,
+						)}** for spending **${prettyMilliseconds(elapsed)}** in VC.`,
+					})
 					.catch(err => console.error(err));
 				logEmbed
 					.setTitle(`Member Left VC`)
@@ -62,14 +62,14 @@ abstract class VoiceStateUpdate extends Event {
 			} else {
 				logEmbed.setTitle(`Member Left VC`).setDescription(`**VC Channel:** ${oldState.channel}`);
 			}
-			logChannel.send({ embeds: [logEmbed] });
+			return void logChannel.send({ embeds: [logEmbed] });
 		}
 		if (oldState.channel && newState.channel && oldState.channel.id !== newState.channel.id) {
 			if (newState.member?.user.bot) return;
 			logEmbed
 				.setTitle(`Member Switched VC`)
 				.setDescription(`**From:** ${oldState.channel}\n**To:** ${newState.channel}`);
-			logChannel.send({ embeds: [logEmbed] });
+			return void logChannel.send({ embeds: [logEmbed] });
 		}
 	}
 }

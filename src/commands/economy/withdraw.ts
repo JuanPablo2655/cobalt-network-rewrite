@@ -14,20 +14,21 @@ abstract class WithdrawCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: Function) {
 		const profile = await this.cobalt.db.getUser(message.author.id);
-		if (!args[0]) return message.channel.send('How much money');
+		if (!args[0]) return message.channel.send({ content: 'How much money' });
 		let money = Number(args[0]);
-		if (isNaN(money) && args[0] !== 'all') return message.channel.send('Please input a valid number');
-		if (profile!.bank - money <= 0) return message.channel.send("You don't have that much money deposited");
+		if (isNaN(money) && args[0] !== 'all') return message.channel.send({ content: 'Please input a valid number' });
+		if (profile!.bank - money <= 0)
+			return message.channel.send({ content: "You don't have that much money deposited" });
 		if (args[0] === 'all') money = profile!.bank;
-		if (money <= 0) return message.channel.send("You can't withdraw money you don't have");
+		if (money <= 0) return message.channel.send({ content: "You can't withdraw money you don't have" });
 		addCD();
 		await this.cobalt.econ.removeFrombank(message.author.id, money);
 		await this.cobalt.econ.addToWallet(message.author.id, money);
-		return message.channel.send(
-			`You withdrew **₡${this.cobalt.utils.formatNumber(
+		return message.channel.send({
+			content: `You withdrew **₡${this.cobalt.utils.formatNumber(
 				money,
 			)}**. Your bank balance is now **₡${this.cobalt.utils.formatNumber(profile!.bank - money)}**`,
-		);
+		});
 	}
 }
 

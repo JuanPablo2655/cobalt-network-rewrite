@@ -13,9 +13,9 @@ abstract class PingCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: Function) {
 		addCD();
-		const m = await message.reply('If you see this neck yourself #owned');
+		const m = await message.reply({ content: 'If you see this neck yourself #owned' });
 		const ping = m.createdTimestamp - message.createdTimestamp;
-		return m.edit(`Latency: ${ping}ms\nAPI Latency: ${Math.round(this.cobalt.ws.ping)}ms`);
+		return m.edit({ content: `Latency: ${ping}ms\nAPI Latency: ${Math.round(this.cobalt.ws.ping)}ms` });
 	}
 }
 

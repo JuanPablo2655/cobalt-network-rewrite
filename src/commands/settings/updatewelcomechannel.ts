@@ -17,7 +17,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 		const [option, action, ...welcomeMessage] = args;
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply('An error has occured. Please report it the developer');
+		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
 		addCD();
 		switch (option) {
 			case 'toggle': {
@@ -29,11 +29,14 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 						enabled: choice,
 					},
 				});
-				return message.channel.send(`Successfully ${choice === true ? 'enabled' : 'disabled'} the welcome message`);
+				return message.channel.send({
+					content: `Successfully ${choice === true ? 'enabled' : 'disabled'} the welcome message`,
+				});
 			}
 			case 'channel': {
 				const channel = await this.cobalt.utils.findChannel(message, action);
-				if (!channel) return message.reply("Didn't find the text channel. Please try again with a valid channel");
+				if (!channel)
+					return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });
 				await this.cobalt.db.updateGuild(guildId, {
 					welcomeMessage: {
 						message: guild.welcomeMessage.message,
@@ -41,13 +44,13 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 						enabled: guild.welcomeMessage.enabled,
 					},
 				});
-				return message.channel.send(`Successfully changed the welcome channel to ${channel}`);
+				return message.channel.send({ content: `Successfully changed the welcome channel to ${channel}` });
 			}
 			case 'message': {
 				if (!action)
-					return message.reply(
-						`Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setwelcomechannel message edit <welcome message>\``,
-					);
+					return message.reply({
+						content: `Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setwelcomechannel message edit <welcome message>\``,
+					});
 				if (action === 'edit') {
 					await this.cobalt.db.updateGuild(guildId, {
 						welcomeMessage: {
@@ -56,7 +59,9 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 							enabled: guild.welcomeMessage.enabled,
 						},
 					});
-					return message.channel.send(`Successfully changed the welcome message to:\n\`${welcomeMessage.join(' ')}\``);
+					return message.channel.send({
+						content: `Successfully changed the welcome message to:\n\`${welcomeMessage.join(' ')}\``,
+					});
 				}
 				if (action === 'default') {
 					await this.cobalt.db.updateGuild(guildId, {
@@ -66,12 +71,12 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 							enabled: guild.welcomeMessage.enabled,
 						},
 					});
-					return message.channel.send(`Successfully changed the welcome message to default`);
+					return message.channel.send({ content: `Successfully changed the welcome message to default` });
 				}
 				break;
 			}
 			default: {
-				return message.reply('Please choose between `toggle, channel, or message`');
+				return message.reply({ content: 'Please choose between `toggle, channel, or message`' });
 			}
 		}
 	}
