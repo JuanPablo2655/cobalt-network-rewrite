@@ -55,7 +55,15 @@ export default class Database {
 	}
 
 	async getBot(botId: string | undefined): Promise<IBot | undefined> {
-		return (await botModel.findOne({ _id: botId })) || (await botModel.create({ _id: botId }));
+		try {
+			let bot;
+			bot = await this.cobalt.redis.get(`${botId}`).then(res => (res ? JSON.parse(res) : undefined));
+			if (!bot) bot = await botModel.findOne({ _id: botId });
+			if (!bot) bot = await botModel.create({ _id: botId });
+			return bot;
+		} catch (err) {
+			console.error(err?.stack || err);
+		}
 	}
 
 	async updateBot(botId: string | undefined, data: Partial<BotData>) {
