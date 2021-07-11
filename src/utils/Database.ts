@@ -32,11 +32,11 @@ export default class Database {
 
 	async getGuild(guildId: string | undefined): Promise<IGuild | undefined> {
 		try {
-			let guild;
-			guild = await this.cobalt.redis.get(`${guildId}`).then(res => (res ? JSON.parse(res) : undefined));
+			let guild, redis;
+			guild = redis = await this.cobalt.redis.get(`${guildId}`).then(res => (res ? JSON.parse(res) : undefined));
 			if (!guild) guild = await guildModel.findOne({ _id: guildId });
 			if (!guild) guild = await this.addGuild(guildId);
-			await this.cobalt.redis.set(`${guildId}`, JSON.stringify(guild));
+			if (!redis) await this.cobalt.redis.set(`${guildId}`, JSON.stringify(guild));
 			return guild;
 		} catch (err) {
 			console.error(err?.stack || err);
@@ -56,10 +56,11 @@ export default class Database {
 
 	async getBot(botId: string | undefined): Promise<IBot | undefined> {
 		try {
-			let bot;
-			bot = await this.cobalt.redis.get(`${botId}`).then(res => (res ? JSON.parse(res) : undefined));
+			let bot, redis;
+			bot = redis = await this.cobalt.redis.get(`${botId}`).then(res => (res ? JSON.parse(res) : undefined));
 			if (!bot) bot = await botModel.findOne({ _id: botId });
 			if (!bot) bot = await botModel.create({ _id: botId });
+			if (!redis) await this.cobalt.redis.set(`${botId}`, JSON.stringify(bot));
 			return bot;
 		} catch (err) {
 			console.error(err?.stack || err);
@@ -98,10 +99,11 @@ export default class Database {
 
 	async getUser(userId: string | undefined): Promise<IUser | undefined> {
 		try {
-			let user;
-			user = await this.cobalt.redis.get(`${userId}`).then(res => (res ? JSON.parse(res) : undefined));
+			let user, redis;
+			user = redis = await this.cobalt.redis.get(`${userId}`).then(res => (res ? JSON.parse(res) : undefined));
 			if (!user) user = await userModel.findOne({ _id: userId });
 			if (!user) user = await this.addUser(userId);
+			if (!redis) await this.cobalt.redis.set(`${userId}`, JSON.stringify(user));
 			return user;
 		} catch (err) {
 			console.error(err?.stack || err);
@@ -141,10 +143,13 @@ export default class Database {
 
 	async getMember(memberId: string | undefined, guildId: string | undefined): Promise<IMember | undefined> {
 		try {
-			let member;
-			member = await this.cobalt.redis.get(`${memberId}-${guildId}`).then(res => (res ? JSON.parse(res) : undefined));
+			let member, redis;
+			member = redis = await this.cobalt.redis
+				.get(`${memberId}-${guildId}`)
+				.then(res => (res ? JSON.parse(res) : undefined));
 			if (!member) member = await memberModel.findOne({ memberId, guildId });
 			if (!member) member = await this.addMember(memberId, guildId);
+			if (!redis) await this.cobalt.redis.set(`${memberId}-${guildId}`, JSON.stringify(member));
 			return member;
 		} catch (err) {
 			console.error(err?.stack || err);
