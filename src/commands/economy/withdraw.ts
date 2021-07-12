@@ -12,7 +12,7 @@ abstract class WithdrawCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const profile = await this.cobalt.db.getUser(message.author.id);
 		if (!args[0]) return message.channel.send({ content: 'How much money' });
 		let money = Number(args[0]);

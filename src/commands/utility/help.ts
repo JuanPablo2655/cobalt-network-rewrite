@@ -13,7 +13,7 @@ abstract class HelpCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		addCD();
 		const guild = await this.cobalt.db.getGuild(message.guild?.id);
 		const command = this.cobalt.commands.get(args[0]);

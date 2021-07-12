@@ -15,7 +15,7 @@ abstract class EvalCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		addCD();
 		let evalued = 'undefined';
 		switch (args[0]?.toLowerCase() ?? '') {

@@ -34,7 +34,7 @@ abstract class GenericCommand {
 		this.clientPermissions = options.clientPermissions ?? ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'];
 	}
 
-	public abstract run(message: Message, args: string[], addCD: Function): unknown | Promise<unknown>;
+	public abstract run(message: Message, args: string[], addCD: () => Promise<void>): unknown | Promise<unknown>;
 }
 
 export default GenericCommand;

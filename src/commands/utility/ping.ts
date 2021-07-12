@@ -11,7 +11,7 @@ abstract class PingCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, _args: string[], addCD: Function) {
+	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		addCD();
 		const m = await message.reply({ content: 'If you see this neck yourself #owned' });
 		const ping = m.createdTimestamp - message.createdTimestamp;
