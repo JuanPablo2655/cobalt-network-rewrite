@@ -123,17 +123,18 @@ abstract class MessageEvent extends Event {
 				const updateCooldown = async () => {
 					if (command.cooldown) {
 						const now = Date.now();
-						const i = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
-						if (!i) await this.cobalt.redis.set(`${command.name}:${message.author.id}`, now, 'ex', command.cooldown);
+						const timestamp = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
+						if (!timestamp)
+							await this.cobalt.redis.set(`${command.name}:${message.author.id}`, now, 'ex', command.cooldown);
 					}
 				};
 				const isInCooldown = async (): Promise<boolean> => {
 					if (command.cooldown) {
 						const now = Date.now();
 						const cooldownAmount = command.cooldown * 1000;
-						const i = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
-						if (i) {
-							const expirationTime = Number(i) + cooldownAmount;
+						const timestamp = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
+						if (timestamp) {
+							const expirationTime = Number(timestamp) + cooldownAmount;
 							if (now < expirationTime) {
 								const timeLeft = expirationTime - now;
 								const time = Math.floor((new Date().getTime() + timeLeft) / 1000);
