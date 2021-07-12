@@ -177,10 +177,9 @@ abstract class MessageEvent extends Event {
 					return false;
 				};
 				try {
-					if (isInCooldown()) return;
+					if (await isInCooldown()) return;
 					const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
-					bot!.totalCommandsUsed += 1;
-					await bot?.save();
+					await this.cobalt.db.updateBot(this.cobalt.user?.id, { totalCommandsUsed: bot!.totalCommandsUsed + 1 });
 					return void command.run(message, args, updateCooldown);
 				} catch (err) {
 					console.error(err);

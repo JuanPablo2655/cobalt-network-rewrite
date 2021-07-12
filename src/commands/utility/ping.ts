@@ -8,6 +8,7 @@ abstract class PingCommand extends GenericCommand {
 			description: 'Check the bot ping.',
 			category: 'utility',
 			aliases: ['p'],
+			cooldown: 10,
 		});
 	}
 
