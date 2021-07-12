@@ -124,24 +124,7 @@ abstract class MessageEvent extends Event {
 					if (command.cooldown) {
 						const now = Date.now();
 						const i = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
-						if (!i) await this.cobalt.redis.set(`${command.name}:${message.author.id}`, now, 'EX', command.cooldown);
-						// await this.cobalt.redis.set(`${command.name}:${message.author.id}`, now, 'EX', command.cooldown);
-						// const cooldownAmount = command.cooldown * 1000;
-						// if (!this.cobalt.cooldowns.has(command.name)) {
-						// 	this.cobalt.cooldowns.set(command.name, new Collection());
-						// }
-						// const timestamps = this.cobalt.cooldowns.get(command.name);
-						// if (timestamps?.has(message.author.id)) {
-						// 	const cooldown = timestamps.get(message.author.id);
-						// 	if (cooldown) {
-						// 		const expirationTime = cooldown + cooldownAmount;
-						// 		if (now < expirationTime) {
-						// 			return;
-						// 		}
-						// 	}
-						// }
-						// timestamps?.set(message.author.id, now);
-						// setTimeout(() => timestamps?.delete(message.author.id), cooldownAmount);
+						if (!i) await this.cobalt.redis.set(`${command.name}:${message.author.id}`, now, 'ex', command.cooldown);
 					}
 				};
 				const isInCooldown = async (): Promise<boolean> => {
@@ -158,20 +141,6 @@ abstract class MessageEvent extends Event {
 								return true;
 							}
 						}
-						// const timestamps = this.cobalt.cooldowns.get(command.name);
-						// if (!timestamps) return false;
-						// if (timestamps?.has(message.author.id)) {
-						// 	const cooldown = timestamps.get(message.author.id);
-						// 	if (cooldown) {
-						// 		const expirationTime = cooldown + cooldownAmount;
-						// 		if (now < expirationTime) {
-						// 			const timeLeft = expirationTime - now;
-						// 			const time = Math.floor((new Date().getTime() + timeLeft) / 1000);
-						// 			message.channel.send({ content: `You can rerun \`${command.name}\` <t:${time}:R>.` });
-						// 			return true;
-						// 		}
-						// 	}
-						// }
 						return false;
 					}
 					return false;
