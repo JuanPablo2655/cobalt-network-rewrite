@@ -12,7 +12,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
 		if (!bot) return message.channel.send({ content: 'An error has occured' });
 		let isDirector = false;

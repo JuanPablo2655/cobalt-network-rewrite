@@ -12,7 +12,7 @@ abstract class DisableCommandCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const saveCommands = ['help', 'enablecommand', 'disablecommand'];
 		const saveCategories = ['dev', 'settings'];
 		if (!args[0]) return message.reply({ content: 'I have to disable a command.' });

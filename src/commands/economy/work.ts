@@ -12,7 +12,7 @@ abstract class WorkCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, _args: string[], addCD: Function) {
+	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		const user = await this.cobalt.db.getUser(message.author.id);
 		if (user?.job === null) return message.reply({ content: 'You need a job to work.' });
 		addCD();

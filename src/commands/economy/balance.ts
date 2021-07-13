@@ -12,7 +12,7 @@ abstract class BalanceCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		addCD();
 		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
 		const user = member?.user;

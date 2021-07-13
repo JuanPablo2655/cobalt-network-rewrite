@@ -11,7 +11,7 @@ abstract class MonthlyCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
 		if (!member) return message.reply({ content: 'An error occured' });
 		const user = await this.cobalt.db.getUser(member.id);

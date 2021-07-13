@@ -11,7 +11,7 @@ abstract class RankCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
 		const user = member?.user;
 		const profile = await this.cobalt.db.getUser(user?.id);

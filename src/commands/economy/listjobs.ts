@@ -11,7 +11,7 @@ abstract class ListJobsCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, _args: string[], addCD: Function) {
+	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		addCD();
 		let joblists: string[] = new Array();
 		jobs.forEach(job => {

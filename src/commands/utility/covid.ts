@@ -11,7 +11,7 @@ abstract class CovidCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [parameter, ...path] = args;
 		if (parameter === 'global') {
 			const all = await fetch(`https://disease.sh/v3/covid-19/all`);

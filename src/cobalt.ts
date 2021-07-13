@@ -6,14 +6,14 @@ if (cobalt.devMode) {
 	cobalt.on('debug', console.log).on('warn', console.log);
 }
 
-process.on('SIGTERM', () => {
+process.on('SIGTERM', async () => {
 	console.info('SIGTERM signal received (kill).');
-	cobalt.close();
+	await cobalt.close();
 });
 
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
 	console.info('SIGINT signal received (terminal).');
-	cobalt.close();
+	await cobalt.close();
 });
 
 cobalt.start();

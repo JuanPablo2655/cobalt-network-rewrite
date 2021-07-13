@@ -1,4 +1,4 @@
-import { Collection, Guild, Message, TextChannel, Permissions } from 'discord.js';
+import { Guild, Message, TextChannel, Permissions } from 'discord.js';
 import Event from '../../struct/Event';
 
 abstract class MessageEvent extends Event {
@@ -120,43 +120,26 @@ abstract class MessageEvent extends Event {
 							});
 					}
 				}
-				const updateCooldown = () => {
+				const updateCooldown = async () => {
 					if (command.cooldown) {
-						if (!this.cobalt.cooldowns.has(command.name)) {
-							this.cobalt.cooldowns.set(command.name, new Collection());
-						}
 						const now = Date.now();
-						const timestamps = this.cobalt.cooldowns.get(command.name);
-						const cooldownAmount = command.cooldown * 1000;
-						if (timestamps?.has(message.author.id)) {
-							const cooldown = timestamps.get(message.author.id);
-							if (cooldown) {
-								const expirationTime = cooldown + cooldownAmount;
-								if (now < expirationTime) {
-									return;
-								}
-							}
-						}
-						timestamps?.set(message.author.id, now);
-						setTimeout(() => timestamps?.delete(message.author.id), cooldownAmount);
+						const timestamp = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
+						if (!timestamp)
+							await this.cobalt.redis.set(`${command.name}:${message.author.id}`, now, 'ex', command.cooldown);
 					}
 				};
-				const isInCooldown = (): boolean => {
+				const isInCooldown = async (): Promise<boolean> => {
 					if (command.cooldown) {
 						const now = Date.now();
-						const timestamps = this.cobalt.cooldowns.get(command.name);
 						const cooldownAmount = command.cooldown * 1000;
-						if (!timestamps) return false;
-						if (timestamps?.has(message.author.id)) {
-							const cooldown = timestamps.get(message.author.id);
-							if (cooldown) {
-								const expirationTime = cooldown + cooldownAmount;
-								if (now < expirationTime) {
-									const timeLeft = expirationTime - now;
-									const time = Math.floor((new Date().getTime() + timeLeft) / 1000);
-									message.channel.send({ content: `You can rerun \`${command.name}\` <t:${time}:R>.` });
-									return true;
-								}
+						const timestamp = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
+						if (timestamp) {
+							const expirationTime = Number(timestamp) + cooldownAmount;
+							if (now < expirationTime) {
+								const timeLeft = expirationTime - now;
+								const time = Math.floor((new Date().getTime() + timeLeft) / 1000);
+								message.channel.send({ content: `You can rerun \`${command.name}\` <t:${time}:R>.` });
+								return true;
 							}
 						}
 						return false;
@@ -164,10 +147,9 @@ abstract class MessageEvent extends Event {
 					return false;
 				};
 				try {
-					if (isInCooldown()) return;
+					if (await isInCooldown()) return;
 					const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
-					bot!.totalCommandsUsed += 1;
-					await bot?.save();
+					await this.cobalt.db.updateBot(this.cobalt.user?.id, { totalCommandsUsed: bot!.totalCommandsUsed + 1 });
 					return void command.run(message, args, updateCooldown);
 				} catch (err) {
 					console.error(err);

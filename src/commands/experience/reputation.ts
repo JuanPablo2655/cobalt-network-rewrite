@@ -13,7 +13,7 @@ abstract class ReputationCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await this.cobalt.utils.findMember(message, args);
 		if (!member) return message.reply({ content: 'Please pick a valid member' });
 		const author = await this.cobalt.db.getUser(message.author.id);

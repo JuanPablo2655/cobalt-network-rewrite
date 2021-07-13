@@ -16,7 +16,7 @@ export interface CommandOptions {
 	cooldown?: number;
 	userPermissions?: PermissionString[];
 	clientPermissions?: PermissionString[];
-	run: (message: Message, args: string[], addCD: Function) => unknown | Promise<unknown>;
+	run: (message: Message, args: string[], addCD: () => Promise<void>) => unknown | Promise<unknown>;
 }
 
 export interface InteractionCommandOptions {

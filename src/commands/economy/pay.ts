@@ -11,7 +11,7 @@ abstract class PayComamnd extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
 		if (!bot) return message.reply({ content: 'An error occured' });
 		const member = await this.cobalt.utils.findMember(message, args);

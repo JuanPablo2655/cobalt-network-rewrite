@@ -12,7 +12,7 @@ abstract class SetLogChannelCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const channel = await this.cobalt.utils.findChannel(message, args[0]);
 		if (!channel)
 			return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });

@@ -29,16 +29,17 @@ abstract class VoiceStateUpdate extends Event {
 		if (!oldState.channel && newState.channel) {
 			if (newState.member?.user.bot) return;
 			const start = Date.now();
-			this.cobalt.voiceTime.set(newState.member!.id, start);
+			await this.cobalt.redis.set(`voice-${newState.member!.id}`, start);
+			// this.cobalt.voiceTime.set(newState.member!.id, start);
 			logEmbed.setTitle(`Member Joined VC`).setDescription(`**VC Channel:** ${newState.channel}`);
 			return void logChannel.send({ embeds: [logEmbed] });
 		}
 		if (oldState.channel && !newState.channel) {
 			if (oldState.member?.user.bot) return;
 			const end = Date.now();
-			let startTime = this.cobalt.voiceTime.get(oldState.member!.id);
+			let startTime = await this.cobalt.redis.get(`voice-${newState.member!.id}`);
 			if (startTime) {
-				const elapsed = end - startTime;
+				const elapsed = end - Number(startTime);
 				const time = elapsed / 60000;
 				const addMoney = Math.round(time * 9) + 1;
 				await this.cobalt.econ.addToWallet(oldState.member!.id, addMoney);
@@ -58,7 +59,7 @@ abstract class VoiceStateUpdate extends Event {
 					.setDescription(
 						`**VC Channel:** ${oldState.channel}\n**Time Elapsed:** ${prettyMilliseconds(elapsed, { verbose: true })}`,
 					);
-				this.cobalt.voiceTime.delete(oldState.member!.id);
+				await this.cobalt.redis.del(`voice-${newState.member!.id}`);
 			} else {
 				logEmbed.setTitle(`Member Left VC`).setDescription(`**VC Channel:** ${oldState.channel}`);
 			}

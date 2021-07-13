@@ -12,7 +12,7 @@ abstract class EnableCategoryCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: Function) {
+	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!args[0]) return message.reply({ content: 'I have to enable a category' });
 		let arg = args[0].toLowerCase();
 		const categories = this.removeDuplicates(this.cobalt.commands.map(c => c.category));
