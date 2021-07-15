@@ -24,6 +24,7 @@ export default class Metrics {
 		this.commandsExecuted = new Counter({
 			name: 'cobalt_commands_excuted',
 			help: 'Number of command Cobaltia has successfully excuted',
+			labelNames: ['command'],
 		});
 		this.latency = new Gauge({ name: 'cobalt_latency', help: 'Websocket latency' });
 		this.app = express();

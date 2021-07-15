@@ -151,6 +151,7 @@ abstract class MessageEvent extends Event {
 					if (await isInCooldown()) return;
 					const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
 					await this.cobalt.db.updateBot(this.cobalt.user?.id, { totalCommandsUsed: bot!.totalCommandsUsed + 1 });
+					this.cobalt.metrics.commandsExecuted.labels(command.name).inc();
 					return void command.run(message, args, updateCooldown);
 				} catch (err) {
 					console.error(err);
