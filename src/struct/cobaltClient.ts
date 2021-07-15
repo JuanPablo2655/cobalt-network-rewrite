@@ -8,6 +8,7 @@ import Util from '../utils/Util';
 import Database from '../utils/Database';
 import Experience from '../utils/Experience';
 import Economy from '../utils/Economy';
+import Metrics from '../utils/Metrics';
 dotenv.config();
 
 export class CobaltClient extends Client {
@@ -24,6 +25,7 @@ export class CobaltClient extends Client {
 	public exp: Experience;
 	public econ: Economy;
 	public redis: Redis.Redis;
+	public metrics: Metrics;
 
 	constructor() {
 		super({
@@ -54,12 +56,15 @@ export class CobaltClient extends Client {
 		this.db = new Database(this);
 		this.exp = new Experience(this);
 		this.econ = new Economy(this);
+		this.metrics = new Metrics(this);
+		this.on('raw', packet => this.metrics.eventCounter.labels(packet.t).inc());
 	}
 
 	public start() {
 		CommandRegistry(this);
 		EventRegistry(this);
 		super.login(process.env.TOKEN);
+		this.metrics.start();
 	}
 
 	public async close() {

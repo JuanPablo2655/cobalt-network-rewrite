@@ -16,4 +16,8 @@ process.on('SIGINT', async () => {
 	await cobalt.close();
 });
 
+// async () => {
+// 	// can't wait until top-level await is a thing
+// 	await cobalt.start();
+// };
 cobalt.start();
