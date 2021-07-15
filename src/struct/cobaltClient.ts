@@ -69,6 +69,7 @@ export class CobaltClient extends Client {
 
 	public async close() {
 		await this.redis.flushall();
+		this.metrics.server.close();
 		mongoose.connection.close(false, () => {
 			console.log('[Mongoose]\tMongoose connection successfully closed');
 			this.destroy();
