@@ -8,6 +8,7 @@ if (cobalt.devMode) {
 
 process.on('SIGTERM', async () => {
 	console.info('SIGTERM signal received (kill).');
+	cobalt.metrics.server.close();
 	await cobalt.close();
 });
 

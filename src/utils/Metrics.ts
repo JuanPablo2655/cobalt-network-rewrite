@@ -1,4 +1,5 @@
-import { Counter, Gauge, collectDefaultMetrics } from 'prom-client';
+import express, { Express } from 'express';
+import { Counter, Gauge, collectDefaultMetrics, register } from 'prom-client';
 import { CobaltClient } from '../struct/cobaltClient';
 
 export default class Metrics {
@@ -7,7 +8,9 @@ export default class Metrics {
 	public uptime: Gauge<string>;
 	public latency: Gauge<string>;
 	public commandsExecuted: Counter<string>;
-	cobalt: CobaltClient;
+	public app: Express;
+	public cobalt: CobaltClient;
+	server: import('http').Server;
 	constructor(cobalt: CobaltClient) {
 		this.cobalt = cobalt;
 		collectDefaultMetrics({ prefix: 'cobalt_' });
@@ -22,6 +25,7 @@ export default class Metrics {
 			name: 'cobalt_commands_excuted',
 			help: 'Number of command Cobaltia has successfully excuted',
 		});
+		this.app = express();
 	}
 
 	start() {
@@ -30,5 +34,16 @@ export default class Metrics {
 			this.latency.set(this.cobalt.ws.ping);
 		};
 		setInterval(ping, 15 * 1000); // 15s
+
+		this.app.get('/metrics', async (_, res) => {
+			try {
+				res.set('Content-Type', register.contentType);
+				res.end(await register.metrics());
+			} catch (err) {
+				res.status(500).end(err);
+			}
+		});
+
+		this.server = this.app.listen(3000, () => console.log(`[Prometheus]\tListening on port 3000!`));
 	}
 }
