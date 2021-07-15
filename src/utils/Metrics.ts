@@ -4,25 +4,43 @@ import { CobaltClient } from '../struct/cobaltClient';
 
 export default class Metrics {
 	public messageCounter: Counter<string>;
+	public messageGuildCounter: Counter<string>;
+	public voiceTimeCounter: Counter<string>;
+	public VoiceGuildTimeCounter: Counter<string>;
 	public eventCounter: Counter<string>;
 	public uptime: Gauge<string>;
 	public latency: Gauge<string>;
 	public commandsExecuted: Counter<string>;
 	public app: Express;
 	public cobalt: CobaltClient;
-	server: import('http').Server;
+	public server: import('http').Server;
+	timer: (labels?: Partial<Record<string, string | number>> | undefined) => void;
 	constructor(cobalt: CobaltClient) {
 		this.cobalt = cobalt;
 		collectDefaultMetrics({ prefix: 'cobalt_' });
-		this.messageCounter = new Counter({ name: 'cobalt_message_total', help: 'Total number of messages seen' });
+		this.messageCounter = new Counter({ name: 'cobalt_messages_total', help: 'Total number of messages seen' });
+		this.messageGuildCounter = new Counter({
+			name: 'cobalt_messages',
+			help: 'Total number of messages a guild has sent',
+			labelNames: ['guild'],
+		});
+		this.voiceTimeCounter = new Counter({
+			name: 'cobalt_voice_total',
+			help: 'Total time users have spent in VC',
+		});
+		this.VoiceGuildTimeCounter = new Counter({
+			name: 'cobalt_voice',
+			help: 'Total time users have spent in VC each guild',
+			labelNames: ['guild'],
+		});
 		this.eventCounter = new Counter({
-			name: 'cobalt_event_total',
+			name: 'cobalt_events',
 			help: 'Total amount of WebSocket events received from Discord',
 			labelNames: ['event'],
 		});
 		this.uptime = new Gauge({ name: 'cobalt_uptime', help: 'Cobaltia uptime' });
 		this.commandsExecuted = new Counter({
-			name: 'cobalt_commands_excuted',
+			name: 'cobalt_commands',
 			help: 'Number of command Cobaltia has successfully excuted',
 			labelNames: ['command'],
 		});
@@ -31,7 +49,8 @@ export default class Metrics {
 	}
 
 	start() {
-		this.uptime.startTimer();
+		this.uptime.setToCurrentTime();
+		this.timer = this.uptime.startTimer();
 		const ping = () => {
 			this.latency.set(this.cobalt.ws.ping);
 		};

@@ -10,6 +10,7 @@ abstract class MessageEvent extends Event {
 
 	async run(message: Message) {
 		this.cobalt.metrics.messageCounter.inc();
+		if (message.guild instanceof Guild) this.cobalt.metrics.messageGuildCounter.labels(message.guild.id).inc();
 		const guild = await this.cobalt.db.getGuild(message?.guild?.id);
 
 		const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
