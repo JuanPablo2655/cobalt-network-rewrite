@@ -44,7 +44,7 @@ export default class Metrics {
 			help: 'Number of command Cobaltia has successfully excuted',
 			labelNames: ['command'],
 		});
-		this.latency = new Gauge({ name: 'cobalt_latency', help: 'Websocket latency' });
+		this.latency = new Gauge({ name: 'cobalt_latency', help: 'Websocket latency', labelNames: ['type'] });
 		this.app = express();
 	}
 
@@ -52,7 +52,7 @@ export default class Metrics {
 		this.uptime.setToCurrentTime();
 		this.timer = this.uptime.startTimer();
 		const ping = () => {
-			this.latency.set(this.cobalt.ws.ping);
+			this.latency.labels('Websocket').set(this.cobalt.ws.ping);
 		};
 		setInterval(ping, 15 * 1000); // 15s
 
@@ -65,6 +65,6 @@ export default class Metrics {
 			}
 		});
 
-		this.server = this.app.listen(3000, () => console.log(`[Prometheus]\tListening on port 3000!`));
+		this.server = this.app.listen(3030, () => console.log(`[Prometheus]\tListening on port 3030!`));
 	}
 }
