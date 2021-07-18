@@ -8,13 +8,12 @@ export default class Metrics {
 	public voiceTimeCounter: Counter<string>;
 	public VoiceGuildTimeCounter: Counter<string>;
 	public eventCounter: Counter<string>;
-	public uptime: Gauge<string>;
 	public latency: Gauge<string>;
 	public commandsExecuted: Counter<string>;
 	public app: Express;
 	public cobalt: CobaltClient;
 	public server: import('http').Server;
-	timer: (labels?: Partial<Record<string, string | number>> | undefined) => void;
+	public timer: (labels?: Partial<Record<string, string | number>> | undefined) => void;
 	constructor(cobalt: CobaltClient) {
 		this.cobalt = cobalt;
 		collectDefaultMetrics({ prefix: 'cobalt_' });
@@ -38,7 +37,6 @@ export default class Metrics {
 			help: 'Total amount of WebSocket events received from Discord',
 			labelNames: ['event'],
 		});
-		this.uptime = new Gauge({ name: 'cobalt_uptime', help: 'Cobaltia uptime' });
 		this.commandsExecuted = new Counter({
 			name: 'cobalt_commands',
 			help: 'Number of command Cobaltia has successfully excuted',
@@ -49,8 +47,6 @@ export default class Metrics {
 	}
 
 	start() {
-		this.uptime.setToCurrentTime();
-		this.timer = this.uptime.startTimer();
 		const ping = () => {
 			this.latency.labels('Websocket').set(this.cobalt.ws.ping);
 		};
