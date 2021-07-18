@@ -8,12 +8,11 @@ export default class Metrics {
 	public voiceTimeCounter: Counter<string>;
 	public VoiceGuildTimeCounter: Counter<string>;
 	public eventCounter: Counter<string>;
-	public latency: Gauge<string>;
+	private latency: Gauge<string>;
 	public commandsExecuted: Counter<string>;
-	public app: Express;
+	private app: Express;
 	public cobalt: CobaltClient;
 	public server: import('http').Server;
-	public timer: (labels?: Partial<Record<string, string | number>> | undefined) => void;
 	constructor(cobalt: CobaltClient) {
 		this.cobalt = cobalt;
 		collectDefaultMetrics({ prefix: 'cobalt_' });
