@@ -9,6 +9,7 @@ abstract class GuildMemberUpdateEvent extends Event {
 	}
 
 	async run(oldMember: GuildMember, newMember: GuildMember) {
+		this.cobalt.metrics.eventCounter.labels(this.name).inc();
 		if (!this.cobalt.testEvents) return;
 		if (oldMember.partial) await oldMember.fetch();
 		if (newMember.partial) await newMember.fetch();

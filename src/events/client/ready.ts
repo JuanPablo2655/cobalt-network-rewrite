@@ -9,6 +9,7 @@ abstract class ReadyEvent extends Event {
 	}
 
 	async run() {
+		this.cobalt.metrics.eventCounter.labels(this.name).inc();
 		InteractionRegistry(this.cobalt);
 		console.log('[Cobalt]\tOnline!');
 	}

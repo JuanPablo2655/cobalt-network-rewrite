@@ -9,6 +9,7 @@ abstract class GuildBanAddEvent extends Event {
 	}
 
 	async run(ban: GuildBan) {
+		this.cobalt.metrics.eventCounter.labels(this.name).inc();
 		if (!this.cobalt.testEvents) return;
 		if (ban.user.partial) await ban.user.fetch();
 		if (!ban.guild) return;

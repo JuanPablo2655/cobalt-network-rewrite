@@ -9,6 +9,7 @@ abstract class ShardReadyEvent extends Event {
 	}
 
 	async run(id: number, unavailableGuilds: Set<string>) {
+		this.cobalt.metrics.eventCounter.labels(this.name).inc();
 		if (!this.cobalt.testEvents) return;
 		const cobaltHook = new WebhookClient(
 			'841886640682958909' as Snowflake,

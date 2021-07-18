@@ -57,7 +57,6 @@ export class CobaltClient extends Client {
 		this.exp = new Experience(this);
 		this.econ = new Economy(this);
 		this.metrics = new Metrics(this);
-		this.on('raw', packet => this.metrics.eventCounter.labels(packet.t).inc());
 	}
 
 	public start() {

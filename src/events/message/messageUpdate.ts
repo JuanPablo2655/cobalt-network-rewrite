@@ -9,6 +9,7 @@ abstract class MessageUpdateEvent extends Event {
 	}
 
 	async run(oldMessage: Message, newMessage: Message) {
+		this.cobalt.metrics.eventCounter.labels(this.name).inc();
 		if (!this.cobalt.testEvents) return;
 		if (!oldMessage.author) return;
 		if (oldMessage === newMessage || newMessage.author.bot) return;

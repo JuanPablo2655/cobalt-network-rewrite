@@ -9,6 +9,7 @@ abstract class GuildMemberAddEvent extends Event {
 	}
 
 	async run(member: GuildMember) {
+		this.cobalt.metrics.eventCounter.labels(this.name).inc();
 		if (!this.cobalt.testEvents) return;
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;

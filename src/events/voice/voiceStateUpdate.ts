@@ -10,6 +10,7 @@ abstract class VoiceStateUpdate extends Event {
 	}
 
 	async run(oldState: VoiceState, newState: VoiceState) {
+		this.cobalt.metrics.eventCounter.labels(this.name).inc();
 		if (!this.cobalt.testEvents) return;
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;
