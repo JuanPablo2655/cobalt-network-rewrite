@@ -10,7 +10,7 @@ abstract class VoiceStateUpdate extends Event {
 	}
 
 	async run(oldState: VoiceState, newState: VoiceState) {
-		this.cobalt.metrics.eventCounter.labels(this.name).inc();
+		this.cobalt.metrics.eventInc(this.name);
 		if (!this.cobalt.testEvents) return;
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;
@@ -41,8 +41,8 @@ abstract class VoiceStateUpdate extends Event {
 			let startTime = await this.cobalt.redis.get(`voice-${newState.member!.id}`);
 			if (startTime) {
 				const elapsed = end - Number(startTime);
-				this.cobalt.metrics.voiceTimeCounter.inc(elapsed);
-				this.cobalt.metrics.VoiceGuildTimeCounter.labels(oldState.guild.id).inc(elapsed);
+				this.cobalt.metrics.voiceInc(elapsed);
+				this.cobalt.metrics.voiceInc(elapsed, oldState.guild.id);
 				const time = elapsed / 60000;
 				const addMoney = Math.round(time * 9) + 1;
 				await this.cobalt.econ.addToWallet(oldState.member!.id, addMoney);

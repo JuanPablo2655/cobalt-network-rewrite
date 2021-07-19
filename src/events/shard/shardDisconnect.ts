@@ -9,7 +9,7 @@ abstract class ShardDisconnectEvent extends Event {
 	}
 
 	async run(event: CloseEvent, id: number) {
-		this.cobalt.metrics.eventCounter.labels(this.name).inc();
+		this.cobalt.metrics.eventInc(this.name);
 		if (!this.cobalt.testEvents) return;
 		const cobaltHook = new WebhookClient(
 			'841886640682958909' as Snowflake,

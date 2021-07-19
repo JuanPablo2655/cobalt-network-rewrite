@@ -9,7 +9,7 @@ abstract class MessageDeleteEvent extends Event {
 	}
 
 	async run(message: Message) {
-		this.cobalt.metrics.eventCounter.labels(this.name).inc();
+		this.cobalt.metrics.eventInc(this.name);
 		if (!this.cobalt.testEvents) return;
 		if (!message.author) return;
 		if (!message.guild) return;

@@ -1,15 +1,16 @@
+import { ClientEvents, Snowflake } from 'discord.js';
 import express, { Express } from 'express';
 import { Counter, Gauge, collectDefaultMetrics, register } from 'prom-client';
 import { CobaltClient } from '../struct/cobaltClient';
 
 export default class Metrics {
-	public messageCounter: Counter<string>;
-	public messageGuildCounter: Counter<string>;
-	public voiceTimeCounter: Counter<string>;
-	public VoiceGuildTimeCounter: Counter<string>;
-	public eventCounter: Counter<string>;
+	private messageCounter: Counter<string>;
+	private messageGuildCounter: Counter<string>;
+	private voiceTimeCounter: Counter<string>;
+	private VoiceGuildTimeCounter: Counter<string>;
+	private eventCounter: Counter<string>;
 	private latency: Gauge<string>;
-	public commandsExecuted: Counter<string>;
+	private commandsExecuted: Counter<string>;
 	private app: Express;
 	public cobalt: CobaltClient;
 	public server: import('http').Server;
@@ -43,6 +44,24 @@ export default class Metrics {
 		});
 		this.latency = new Gauge({ name: 'cobalt_latency', help: 'Websocket latency', labelNames: ['type'] });
 		this.app = express();
+	}
+
+	messageInc(guildId?: Snowflake) {
+		if (guildId) return void this.messageGuildCounter.labels(guildId).inc;
+		return void this.messageCounter.inc();
+	}
+
+	eventInc(event: keyof ClientEvents) {
+		return void this.eventCounter.labels(event).inc();
+	}
+
+	voiceInc(elapsed: number, guildId?: Snowflake) {
+		if (guildId) return void this.VoiceGuildTimeCounter.labels(guildId).inc(elapsed);
+		return void this.voiceTimeCounter.inc(elapsed);
+	}
+
+	commandInc(command: string) {
+		return void this.commandsExecuted.labels(command).inc();
 	}
 
 	start() {

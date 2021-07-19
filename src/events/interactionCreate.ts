@@ -9,7 +9,7 @@ abstract class InteractionEvent extends Event {
 	}
 
 	async run(interaction: Interaction) {
-		this.cobalt.metrics.eventCounter.labels(this.name).inc();
+		this.cobalt.metrics.eventInc(this.name);
 		if (!interaction.isCommand()) return;
 		if (!interaction.command) return;
 
