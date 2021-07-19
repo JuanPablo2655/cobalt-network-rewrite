@@ -23,7 +23,7 @@ export interface InteractionCommandOptions {
 	name: string;
 	descrition?: string;
 	options?: ApplicationCommandOptionData[];
-	run: (interactions: Interaction, args: (string | number | boolean | undefined)[]) => unknown | Promise<unknown>;
+	run: (interactions: Interaction) => unknown | Promise<unknown>;
 }
 
 export type CommandType = Omit<CommandOptions, 'run'>;

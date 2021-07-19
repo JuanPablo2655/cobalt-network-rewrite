@@ -14,10 +14,7 @@ abstract class InteractionCommand {
 		this.options = options.options;
 	}
 
-	public abstract run(
-		interactions: Interaction,
-		args: (string | number | boolean | undefined)[],
-	): unknown | Promise<unknown>;
+	public abstract run(interactions: Interaction): unknown | Promise<unknown>;
 }
 
 export default InteractionCommand;
