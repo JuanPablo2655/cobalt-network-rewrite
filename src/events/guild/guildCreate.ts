@@ -9,6 +9,7 @@ abstract class GuildCreateEvent extends Event {
 	}
 
 	async run(guild: Guild) {
+		this.cobalt.metrics.eventInc(this.name);
 		if (!this.cobalt.testEvents) return;
 		if (!guild) return;
 		if (!guild.available) return;

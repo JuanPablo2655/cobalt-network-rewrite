@@ -9,6 +9,9 @@ abstract class MessageEvent extends Event {
 	}
 
 	async run(message: Message) {
+		this.cobalt.metrics.messageInc();
+		this.cobalt.metrics.eventInc(this.name);
+		if (message.guild instanceof Guild) this.cobalt.metrics.messageInc(message.guild.id);
 		const guild = await this.cobalt.db.getGuild(message?.guild?.id);
 
 		const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -150,6 +153,7 @@ abstract class MessageEvent extends Event {
 					if (await isInCooldown()) return;
 					const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
 					await this.cobalt.db.updateBot(this.cobalt.user?.id, { totalCommandsUsed: bot!.totalCommandsUsed + 1 });
+					this.cobalt.metrics.commandInc(command.name);
 					return void command.run(message, args, updateCooldown);
 				} catch (err) {
 					console.error(err);
