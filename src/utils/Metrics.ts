@@ -46,21 +46,21 @@ export default class Metrics {
 		this.app = express();
 	}
 
-	messageInc(guildId?: Snowflake) {
+	messageInc(guildId?: Snowflake): void {
 		if (guildId) return void this.messageGuildCounter.labels(guildId).inc;
 		return void this.messageCounter.inc();
 	}
 
-	eventInc(event: keyof ClientEvents) {
+	eventInc(event: keyof ClientEvents): void {
 		return void this.eventCounter.labels(event).inc();
 	}
 
-	voiceInc(elapsed: number, guildId?: Snowflake) {
+	voiceInc(elapsed: number, guildId?: Snowflake): void {
 		if (guildId) return void this.VoiceGuildTimeCounter.labels(guildId).inc(elapsed);
 		return void this.voiceTimeCounter.inc(elapsed);
 	}
 
-	commandInc(command: string) {
+	commandInc(command: string): void {
 		return void this.commandsExecuted.labels(command).inc();
 	}
 
