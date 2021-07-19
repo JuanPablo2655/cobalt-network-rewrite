@@ -25,7 +25,7 @@ abstract class DailyCommand extends GenericCommand {
 				)}** left before you can claim your daily!`,
 			});
 		}
-		addCD();
+		await addCD();
 		if (member?.id === message.author.id) {
 			const dailyAmount = Math.floor(250 + Math.random() * 150);
 			await this.cobalt.db.updateUser(message.author.id, { daily: cooldown });

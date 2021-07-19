@@ -13,7 +13,7 @@ abstract class PrefixCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		const guild = await this.cobalt.db.getGuild(message.guild?.id);
 		const prefix = args[0];
 		if (!prefix)

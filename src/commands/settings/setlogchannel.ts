@@ -19,7 +19,7 @@ abstract class SetLogChannelCommand extends GenericCommand {
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
 		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
-		addCD();
+		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			logChannel: {
 				enabled: guild.logChannel.enabled,

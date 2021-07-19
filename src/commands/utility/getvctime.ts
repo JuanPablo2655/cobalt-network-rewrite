@@ -18,7 +18,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true, index: 1 });
 		const memberData = await this.cobalt.db.getMember(member!.id, message.guild!.id);
 		const user = await this.cobalt.db.getUser(member!.id);
-		addCD();
+		await addCD();
 		switch (option?.toLowerCase() ?? '') {
 			case 'local': {
 				const vcEmbed = new MessageEmbed()

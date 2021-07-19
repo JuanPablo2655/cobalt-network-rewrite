@@ -23,7 +23,7 @@ abstract class DisableCategoryCommand extends GenericCommand {
 		if (!categories.includes(arg)) return message.reply({ content: 'Invalid category' });
 		if (saveCategories.includes(arg)) return message.reply({ content: `Can't disabled ${arg} category` });
 		if (guild.disabledCategories.includes(arg)) return message.reply({ content: 'Already disabled' });
-		addCD();
+		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			disabledCategories: [...guild.disabledCategories, arg],
 		});

@@ -12,7 +12,7 @@ abstract class QuitJobCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		const user = await this.cobalt.db.getUser(message.author.id);
 		if (user?.job === null) return message.reply({ content: `You don't have a job to quit from.` });
 		await this.cobalt.econ.updateJob(message.author.id, null);

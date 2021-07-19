@@ -13,7 +13,7 @@ abstract class BalanceCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
 		const user = member?.user;
 		const profile = await this.cobalt.db.getUser(user?.id);

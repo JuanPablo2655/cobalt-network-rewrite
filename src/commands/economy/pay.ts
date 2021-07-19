@@ -32,7 +32,7 @@ abstract class PayComamnd extends GenericCommand {
 					author.wallet,
 				)}**`,
 			});
-		addCD();
+		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;
 		await this.cobalt.econ.removeFromWallet(message.author.id, amount);

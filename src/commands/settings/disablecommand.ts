@@ -26,7 +26,7 @@ abstract class DisableCommandCommand extends GenericCommand {
 		if (saveCategories.includes(command?.category))
 			return message.reply({ content: `Can't disable commands in ${command?.category}` });
 		if (guild.disabledCommands.includes(arg)) return message.reply({ content: 'Already disabled.' });
-		addCD();
+		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			disabledCommands: [...guild.disabledCommands, command.name],
 		});

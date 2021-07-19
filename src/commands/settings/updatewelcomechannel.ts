@@ -18,7 +18,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
 		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
-		addCD();
+		await addCD();
 		switch (option) {
 			case 'toggle': {
 				const choice: boolean = action.toLowerCase() === 'true' || action.toLowerCase() === 'enable';

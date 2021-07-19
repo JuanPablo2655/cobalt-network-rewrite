@@ -12,7 +12,7 @@ abstract class RebootCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		await message.channel.send({ content: 'Shutting down.' });
 		process.exit(1);
 	}

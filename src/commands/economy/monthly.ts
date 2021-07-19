@@ -25,7 +25,7 @@ abstract class MonthlyCommand extends GenericCommand {
 				)}** left before you can claim your monthly!`,
 			});
 		}
-		addCD();
+		await addCD();
 		if (member?.id === message.author.id) {
 			const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
 			await this.cobalt.db.updateUser(message.author.id, { monthly: cooldown });

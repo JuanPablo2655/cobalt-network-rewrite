@@ -30,7 +30,7 @@ abstract class ReputationCommand extends GenericCommand {
 				)}** left before you can give someone a reputation point!`,
 			});
 		}
-		addCD();
+		await addCD();
 		await this.cobalt.db.updateUser(message.author.id, { repTime: cooldown });
 		await this.cobalt.db.updateUser(member.id, { rep: user.rep + 1 });
 		return message.channel.send({ content: `You gave **${member.user.username}** a reputation point!` });

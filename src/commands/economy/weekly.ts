@@ -25,7 +25,7 @@ abstract class WeeklyCommand extends GenericCommand {
 				)}** left before you can claim your weekly!`,
 			});
 		}
-		addCD();
+		await addCD();
 		if (member?.id === message.author.id) {
 			const weeklyAmount = Math.floor(750 + Math.random() * 250);
 			await this.cobalt.db.updateUser(message.author.id, { weekly: cooldown });

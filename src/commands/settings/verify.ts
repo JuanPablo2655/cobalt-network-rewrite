@@ -13,7 +13,7 @@ abstract class VerifyCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
 		if (!bot) return;
 		let isDirector = false;

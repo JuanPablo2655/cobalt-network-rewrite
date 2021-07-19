@@ -14,7 +14,7 @@ abstract class HelpCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		const guild = await this.cobalt.db.getGuild(message.guild?.id);
 		const command = this.cobalt.commands.get(args[0]);
 		const categories = this.removeDuplicates(this.cobalt.commands.map(c => c.category));

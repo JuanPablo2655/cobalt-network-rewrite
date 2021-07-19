@@ -72,7 +72,7 @@ abstract class CovidCommand extends GenericCommand {
 				.setTimestamp(res.updated);
 			return message.channel.send({ embeds: [covidEmbed] });
 		}
-		addCD();
+		await addCD();
 		const all = await fetch(`https://disease.sh/v3/covid-19/all`);
 		const res = await all.json();
 		const covidEmbed = new MessageEmbed()

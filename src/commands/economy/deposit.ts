@@ -26,7 +26,7 @@ abstract class DepositCommand extends GenericCommand {
 			money = Math.min(canDeposit, profile!.wallet);
 		}
 		if (money < 0) return message.channel.send({ content: "You can't deposit negative money" });
-		addCD();
+		await addCD();
 		await this.cobalt.econ.removeFromWallet(message.author.id, money);
 		await this.cobalt.econ.addToBank(message.author.id, money);
 		return message.channel.send({

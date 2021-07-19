@@ -15,7 +15,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		const [option, item] = args;
 		const guildId = message.guild?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);

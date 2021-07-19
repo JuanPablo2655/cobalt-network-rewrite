@@ -12,7 +12,7 @@ abstract class ListJobsCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		let joblists: string[] = new Array();
 		jobs.forEach(job => {
 			joblists.push(`\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);

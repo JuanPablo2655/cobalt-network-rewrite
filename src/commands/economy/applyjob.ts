@@ -13,7 +13,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		addCD();
+		await addCD();
 		const guild = await this.cobalt.db.getGuild(message.guild!.id);
 		const user = await this.cobalt.db.getUser(message.author.id);
 		if (!args[0])

@@ -28,7 +28,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 				content: `I don't have that much. I have **${this.cobalt.utils.formatNumber(bot.bank)}** left.`,
 			});
 		if (amount > 1000) return message.reply({ content: "Can't claim more than **₡1,000**" });
-		addCD();
+		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;
 		await this.cobalt.db.updateBot(this.cobalt.user?.id, { bank: bot.bank - amount });

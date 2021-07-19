@@ -20,7 +20,7 @@ abstract class UpdateTaxCommand extends GenericCommand {
 		if (isNaN(tax)) return message.reply({ content: 'Please I need a valid number' });
 		if (tax < 1.5) return message.reply({ content: 'Tax must be greater than 1.5%' });
 		if (tax > 60) return message.reply({ content: "Can't tax users more than 60%" });
-		addCD();
+		await addCD();
 		await this.cobalt.db.updateBot(this.cobalt.user?.id, { tax });
 		message.channel.send({ content: `The global tax rate is now **${this.cobalt.utils.formatNumber(tax)}%**` });
 	}

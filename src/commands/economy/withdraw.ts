@@ -21,7 +21,7 @@ abstract class WithdrawCommand extends GenericCommand {
 			return message.channel.send({ content: "You don't have that much money deposited" });
 		if (args[0] === 'all') money = profile!.bank;
 		if (money <= 0) return message.channel.send({ content: "You can't withdraw money you don't have" });
-		addCD();
+		await addCD();
 		await this.cobalt.econ.removeFrombank(message.author.id, money);
 		await this.cobalt.econ.addToWallet(message.author.id, money);
 		return message.channel.send({
