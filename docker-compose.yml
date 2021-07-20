@@ -4,6 +4,9 @@ services:
     build: .
     ports:
       - '3030:3030'
+    depends_on:
+      - redis
+      - mongo
     restart: always
     env_file:
       - .env
@@ -18,4 +21,10 @@ services:
       - prometheus
     ports:
       - '3000:3000'
+    restart: always
+  redis:
+    image: redis
+    restart: always
+  mongo:
+    image: mongo
     restart: always
