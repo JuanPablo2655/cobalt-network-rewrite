@@ -30,6 +30,6 @@ scrape_configs:
           - 'bot:3030'
 
   - job_name: 'redis'
-  static_configs:
-    - targets:
-        - 'redis-exporter:9121'
+    static_configs:
+      - targets:
+          - 'redis-exporter:9121'

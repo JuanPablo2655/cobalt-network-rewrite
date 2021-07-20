@@ -12,13 +12,13 @@ services:
       - .env
 
   prometheus:
-    image: ./docker/prometheus
+    build: ./docker/prometheus
     ports:
       - '9090:9090'
     restart: unless-stopped
 
   grafana:
-    image: ./docker/grafana
+    build: ./docker/grafana
     depends_on:
       - prometheus
     ports:
