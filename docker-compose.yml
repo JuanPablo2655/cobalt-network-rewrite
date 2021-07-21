@@ -15,6 +15,8 @@ services:
     build: ./docker/prometheus
     ports:
       - '9090:9090'
+    volumes:
+      - prometheus-storage:/prometheus
     restart: unless-stopped
 
   grafana:
@@ -23,6 +25,10 @@ services:
       - prometheus
     ports:
       - '3000:3000'
+    environment:
+      GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-piechart-panel,flant-statusmap-panel,grafana-github-datasource'
+    volumes:
+      - grafana-storage:/var/lib/grafana
     restart: unless-stopped
 
   redis:
@@ -39,6 +45,8 @@ services:
 
   mongo:
     image: mongo
+    volumes:
+      - mongo-storage:/data/db
     restart: unless-stopped
 
   mongo-exporter:
@@ -49,3 +57,8 @@ services:
     ports:
       - '9123:9123'
     restart: unless-stopped
+
+volumes:
+  prometheus-storage:
+  grafana-storage:
+  mongo-storage:
