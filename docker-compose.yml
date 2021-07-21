@@ -43,8 +43,9 @@ services:
 
   mongo-exporter:
     image: noenv/mongo-exporter
+    command: --web.listen-address=:9123 --mongodb.uri=mongodb://mongo:27017
     depends_on:
       - mongo
     ports:
-      - '9104:9104'
+      - '9123:9123'
     restart: unless-stopped
