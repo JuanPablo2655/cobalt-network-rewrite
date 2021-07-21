@@ -1,5 +1,5 @@
 import { CobaltClient } from './struct/cobaltClient';
-import './utils/mongo';
+// import './utils/mongo';
 const cobalt: CobaltClient = new CobaltClient();
 
 if (cobalt.devMode) {

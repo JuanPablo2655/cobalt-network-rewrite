@@ -1,7 +1,6 @@
 import { Client, Collection, Intents, Snowflake } from 'discord.js';
 import Redis from 'ioredis';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import { CommandRegistry, EventRegistry } from './registries/export/RegistryIndex';
 import { CommandOptions, EventOptions, InteractionCommandOptions } from '../typings/Options';
 import Util from '../utils/Util';
@@ -53,7 +52,7 @@ export class CobaltClient extends Client {
 		this.disableXp = process.env.DISABLEXP === 'true' ? true : false;
 		this.voiceTime = new Map();
 		this.utils = new Util(this);
-		this.db = new Database(this);
+		this.db = new Database(this, process.env.MONGOURL ?? 'mongodb://localhost:27017/cobalt');
 		this.exp = new Experience(this);
 		this.econ = new Economy(this);
 		this.metrics = new Metrics(this);
@@ -69,7 +68,7 @@ export class CobaltClient extends Client {
 	public async close() {
 		await this.redis.flushall();
 		this.metrics.server.close();
-		mongoose.connection.close(false, () => {
+		this.db.mongoose.close(false, () => {
 			console.log('[Mongoose]\tMongoose connection successfully closed');
 			this.destroy();
 		});
