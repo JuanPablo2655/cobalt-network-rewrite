@@ -1,0 +1,16 @@
+**/node_modules
+
+**/build
+
+docker
+Dockerfile
+docker-compose.yml
+
+tmp
+.github
+.vscode
+.git
+.gitattributes
+.gitignore
+.npmrc
+README.md
