@@ -31,10 +31,20 @@ services:
 
   redis-exporter:
     image: oliver006/redis_exporter:alpine
+    ports:
+      - '9121:9121'
     environment:
       REDIS_ADDR: 'redis://redis:6379'
     restart: unless-stopped
 
   mongo:
     image: mongo
+    restart: unless-stopped
+
+  mongo-exporter:
+    image: noenv/mongo-exporter
+    depends_on:
+      - mongo
+    ports:
+      - '9104:9104'
     restart: unless-stopped
