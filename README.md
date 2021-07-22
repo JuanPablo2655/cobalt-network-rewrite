@@ -16,9 +16,9 @@ Go to the project directory
   cd cobalt-network-rewrite
 ```
 
-Create your .env file (see .env.example)
+Create your .env file in the root folder (see .env.example)
 
-Make sure Docker is install in your computer and then start the container
+Make sure Docker is installed in your computer and then start the container
 
 ```bash
   docker-compose up --build
