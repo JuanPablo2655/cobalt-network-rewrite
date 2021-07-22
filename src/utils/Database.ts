@@ -3,7 +3,7 @@ import guildModel, { GuildData, IGuild } from '../models/Guild';
 import userModel, { UserData, IUser } from '../models/User';
 import memberModel, { MemberData, IMember } from '../models/Member';
 import { CobaltClient } from '../struct/cobaltClient';
-import mongoose, { Connection, connect } from 'mongoose';
+import mongoose, { Connection } from 'mongoose';
 
 export default class Database {
 	cobalt: CobaltClient;
@@ -11,20 +11,16 @@ export default class Database {
 	constructor(cobalt: CobaltClient, url: string) {
 		this.cobalt = cobalt;
 		(async () => {
-			try {
-				await connect(url, {
-					useNewUrlParser: true,
-					useUnifiedTopology: true,
-					autoIndex: false,
-					poolSize: 5,
-					connectTimeoutMS: 10000,
-					family: 4,
-					useFindAndModify: false,
-				});
-			} catch (err) {
-				console.error(`[Mongoose]\tMongoose connection error: \n ${err.stack}`);
-			}
-		})();
+			await mongoose.connect(url, {
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+				autoIndex: false,
+				poolSize: 5,
+				connectTimeoutMS: 10000,
+				family: 4,
+				useFindAndModify: false,
+			});
+		})().catch(err => console.error(`[Mongoose]\tMongoose connection error: \n ${err.stack}`));
 
 		this.mongoose = mongoose.connection;
 		this.mongoose.on('connected', () => {

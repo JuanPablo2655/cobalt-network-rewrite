@@ -46,13 +46,13 @@ export class CobaltClient extends Client {
 			allowedMentions: { repliedUser: false },
 		});
 
-		this.redis = new Redis(process.env.REDIS ?? 'localhost');
+		this.redis = new Redis('6379');
 		this.devMode = process.env.DEVMODE === 'true' ? true : false;
 		this.testEvents = process.env.TESTEVENTS === 'true' ? true : false;
 		this.disableXp = process.env.DISABLEXP === 'true' ? true : false;
 		this.voiceTime = new Map();
 		this.utils = new Util(this);
-		this.db = new Database(this, process.env.MONGOURL ?? 'mongodb://localhost:27017/cobalt');
+		this.db = new Database(this, 'mongodb://localhost:27017/cobalt');
 		this.exp = new Experience(this);
 		this.econ = new Economy(this);
 		this.metrics = new Metrics(this);
