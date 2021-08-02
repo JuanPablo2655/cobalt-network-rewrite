@@ -20,7 +20,9 @@ export default class Database {
 				family: 4,
 				useFindAndModify: false,
 			});
-		})().catch(err => console.error(`[Mongoose]\tMongoose connection error: \n ${err.stack}`));
+		})().catch(err => {
+			throw err;
+		});
 
 		this.mongoose = mongoose.connection;
 		this.mongoose.on('connected', () => {
