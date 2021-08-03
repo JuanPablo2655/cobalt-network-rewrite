@@ -19,7 +19,8 @@ const registerInteraction: Function = (cobalt: CobaltClient) => {
 					description: interaction.description ?? 'Empty description',
 					options: interaction.options ?? [],
 				};
-				await cobalt.application?.commands.create(data);
+				if (cobalt.devMode) await cobalt.guilds.cache.get('823300821994569748')?.commands.create(data);
+				else await cobalt.application?.commands.create(data);
 			}
 		}
 	});
