@@ -1,6 +1,9 @@
 import { CommandInteraction } from 'discord.js';
 import Interaction from '../../struct/Interaction';
 import { settingOptions } from './options';
+import { add, list, remove } from './subcommands/blacklistword';
+import * as leavechannel from './subcommands/leavechannel';
+import * as welcomechannel from './subcommands/welcomechannel';
 
 abstract class settingsInteraction extends Interaction {
 	constructor() {
@@ -18,10 +21,16 @@ abstract class settingsInteraction extends Interaction {
 				const command = interaction.options.getSubcommand(true);
 				switch (command) {
 					case 'add': {
-						return interaction.reply({ content: 'blacklistword add' });
+						await add(this.cobalt, interaction);
+						break;
 					}
 					case 'remove': {
-						return interaction.reply({ content: 'blacklistword remove' });
+						await remove(this.cobalt, interaction);
+						break;
+					}
+					case 'list': {
+						await list(this.cobalt, interaction);
+						break;
 					}
 					default:
 						break;
@@ -32,13 +41,16 @@ abstract class settingsInteraction extends Interaction {
 				const command = interaction.options.getSubcommand(true);
 				switch (command) {
 					case 'message': {
-						return interaction.reply({ content: 'leavechannel message' });
+						await leavechannel.message(this.cobalt, interaction);
+						break;
 					}
 					case 'channel': {
-						return interaction.reply({ content: 'leavechannel channel' });
+						await leavechannel.channel(this.cobalt, interaction);
+						break;
 					}
 					case 'toggle': {
-						return interaction.reply({ content: 'leavechannel toggle' });
+						await leavechannel.toggle(this.cobalt, interaction);
+						break;
 					}
 					default:
 						break;
@@ -49,13 +61,16 @@ abstract class settingsInteraction extends Interaction {
 				const command = interaction.options.getSubcommand(true);
 				switch (command) {
 					case 'message': {
-						return interaction.reply({ content: 'logchannel message' });
+						await welcomechannel.message(this.cobalt, interaction);
+						break;
 					}
 					case 'channel': {
-						return interaction.reply({ content: 'logchannel channel' });
+						await welcomechannel.channel(this.cobalt, interaction);
+						break;
 					}
 					case 'toggle': {
-						return interaction.reply({ content: 'logchannel toggle' });
+						await welcomechannel.toggle(this.cobalt, interaction);
+						break;
 					}
 					default:
 						break;

@@ -214,6 +214,11 @@ export const settingOptions: ApplicationCommandOptionData[] = [
 					},
 				],
 			},
+			{
+				type: 1,
+				name: 'list',
+				description: 'List all the blacklisted words',
+			},
 		],
 	},
 ];
