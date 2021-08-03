@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import Interaction from '../struct/Interaction';
+import Interaction from '../../struct/Interaction';
 
 abstract class PingInteraction extends Interaction {
 	constructor() {
