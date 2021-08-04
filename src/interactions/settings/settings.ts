@@ -16,95 +16,95 @@ abstract class settingsInteraction extends Interaction {
 	}
 
 	async run(interaction: CommandInteraction) {
-		const group = interaction.options.getSubcommandGroup(true);
-		switch (group) {
-			case 'blacklistword': {
-				const command = interaction.options.getSubcommand(true);
-				switch (command) {
-					case 'add': {
-						await add(this.cobalt, interaction);
-						break;
-					}
-					case 'remove': {
-						await remove(this.cobalt, interaction);
-						break;
-					}
-					case 'list': {
-						await list(this.cobalt, interaction);
-						break;
-					}
-					default:
-						break;
-				}
-				break;
+		const command = interaction.options.getSubcommand(true);
+		switch (command) {
+			case 'category': {
+				return interaction.reply({ content: 'category' });
 			}
-			case 'leavechannel': {
-				const command = interaction.options.getSubcommand(true);
-				switch (command) {
-					case 'message': {
-						await leavechannel.message(this.cobalt, interaction);
-						break;
-					}
-					case 'channel': {
-						await leavechannel.channel(this.cobalt, interaction);
-						break;
-					}
-					case 'toggle': {
-						await leavechannel.toggle(this.cobalt, interaction);
-						break;
-					}
-					default:
-						break;
-				}
-				break;
+			case 'command': {
+				return interaction.reply({ content: 'command' });
 			}
-			case 'welcomechannel': {
-				const command = interaction.options.getSubcommand(true);
-				switch (command) {
-					case 'message': {
-						await welcomechannel.message(this.cobalt, interaction);
-						break;
-					}
-					case 'channel': {
-						await welcomechannel.channel(this.cobalt, interaction);
-						break;
-					}
-					case 'toggle': {
-						await welcomechannel.toggle(this.cobalt, interaction);
-						break;
-					}
-					default:
-						break;
-				}
-				break;
-			}
-			case 'logchannel': {
-				const command = interaction.options.getSubcommand(true);
-				switch (command) {
-					case 'channel': {
-						await logchannel.channel(this.cobalt, interaction);
-						break;
-					}
-					case 'toggle': {
-						await logchannel.toggle(this.cobalt, interaction);
-						break;
-					}
-					default:
-						break;
-				}
-				break;
+			case 'event': {
+				return interaction.reply({ content: 'event' });
 			}
 			default:
-				const command = interaction.options.getSubcommand(true);
-				switch (command) {
-					case 'category': {
-						return interaction.reply({ content: 'category' });
+				const group = interaction.options.getSubcommandGroup(true);
+				switch (group) {
+					case 'blacklistword': {
+						const command = interaction.options.getSubcommand(true);
+						switch (command) {
+							case 'add': {
+								await add(this.cobalt, interaction);
+								break;
+							}
+							case 'remove': {
+								await remove(this.cobalt, interaction);
+								break;
+							}
+							case 'list': {
+								await list(this.cobalt, interaction);
+								break;
+							}
+							default:
+								break;
+						}
+						break;
 					}
-					case 'command': {
-						return interaction.reply({ content: 'command' });
+					case 'leavechannel': {
+						const command = interaction.options.getSubcommand(true);
+						switch (command) {
+							case 'message': {
+								await leavechannel.message(this.cobalt, interaction);
+								break;
+							}
+							case 'channel': {
+								await leavechannel.channel(this.cobalt, interaction);
+								break;
+							}
+							case 'toggle': {
+								await leavechannel.toggle(this.cobalt, interaction);
+								break;
+							}
+							default:
+								break;
+						}
+						break;
 					}
-					case 'event': {
-						return interaction.reply({ content: 'event' });
+					case 'welcomechannel': {
+						const command = interaction.options.getSubcommand(true);
+						switch (command) {
+							case 'message': {
+								await welcomechannel.message(this.cobalt, interaction);
+								break;
+							}
+							case 'channel': {
+								await welcomechannel.channel(this.cobalt, interaction);
+								break;
+							}
+							case 'toggle': {
+								await welcomechannel.toggle(this.cobalt, interaction);
+								break;
+							}
+							default:
+								break;
+						}
+						break;
+					}
+					case 'logchannel': {
+						const command = interaction.options.getSubcommand(true);
+						switch (command) {
+							case 'channel': {
+								await logchannel.channel(this.cobalt, interaction);
+								break;
+							}
+							case 'toggle': {
+								await logchannel.toggle(this.cobalt, interaction);
+								break;
+							}
+							default:
+								break;
+						}
+						break;
 					}
 					default:
 						break;
