@@ -33,8 +33,9 @@ export async function remove(cobalt: CobaltClient, interaction: CommandInteracti
 }
 
 export async function list(cobalt: CobaltClient, interaction: CommandInteraction) {
+	await interaction.defer();
 	const guild = await cobalt.db.getGuild(interaction.guild!.id);
 	if (!guild) return;
 	const words = guild.blacklistedWords !== null && guild.blacklistedWords?.map(w => `\`${w}\``).join(', ');
-	return interaction.reply({ content: words || 'There are no blacklisted words yet.' });
+	return interaction.editReply({ content: words || 'There are no blacklisted words yet.' });
 }

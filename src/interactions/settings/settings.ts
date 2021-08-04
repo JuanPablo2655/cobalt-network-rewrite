@@ -3,6 +3,7 @@ import Interaction from '../../struct/Interaction';
 import { settingOptions } from './options';
 import { add, list, remove } from './subcommands/blacklistword';
 import * as leavechannel from './subcommands/leavechannel';
+import * as logchannel from './subcommands/logchannel';
 import * as welcomechannel from './subcommands/welcomechannel';
 
 abstract class settingsInteraction extends Interaction {
@@ -57,7 +58,7 @@ abstract class settingsInteraction extends Interaction {
 				}
 				break;
 			}
-			case 'logchannel': {
+			case 'welcomechannel': {
 				const command = interaction.options.getSubcommand(true);
 				switch (command) {
 					case 'message': {
@@ -70,6 +71,22 @@ abstract class settingsInteraction extends Interaction {
 					}
 					case 'toggle': {
 						await welcomechannel.toggle(this.cobalt, interaction);
+						break;
+					}
+					default:
+						break;
+				}
+				break;
+			}
+			case 'logchannel': {
+				const command = interaction.options.getSubcommand(true);
+				switch (command) {
+					case 'channel': {
+						await logchannel.channel(this.cobalt, interaction);
+						break;
+					}
+					case 'toggle': {
+						await logchannel.toggle(this.cobalt, interaction);
 						break;
 					}
 					default:
