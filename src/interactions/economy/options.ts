@@ -104,15 +104,36 @@ export const economyOptions: ApplicationCommandOptionData[] = [
 		type: 1,
 		name: 'daily',
 		description: 'Claim your daily reward.',
+		options: [
+			{
+				type: 6,
+				name: 'user',
+				description: 'The user to reward your daily.',
+			},
+		],
 	},
 	{
 		type: 1,
 		name: 'weekly',
 		description: 'Claim your weekly reward.',
+		options: [
+			{
+				type: 6,
+				name: 'user',
+				description: 'The user to reward your weekly.',
+			},
+		],
 	},
 	{
 		type: 1,
 		name: 'monthly',
 		description: 'Claim your monthly reward.',
+		options: [
+			{
+				type: 6,
+				name: 'user',
+				description: 'The user to reward your monthly.',
+			},
+		],
 	},
 ];
