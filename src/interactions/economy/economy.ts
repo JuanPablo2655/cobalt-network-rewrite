@@ -5,7 +5,7 @@ import { balance, daily, monthly, pay, weekly, work } from './subcommands';
 import { deposit, withdraw } from './subcommands/bank';
 import { apply, list, quit } from './subcommands/job';
 
-abstract class PingInteraction extends Interaction {
+abstract class EconomyInteraction extends Interaction {
 	constructor() {
 		super({
 			name: 'economy',
@@ -88,4 +88,4 @@ abstract class PingInteraction extends Interaction {
 	}
 }
 
-export default PingInteraction;
+export default EconomyInteraction;
