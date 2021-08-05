@@ -7,6 +7,7 @@ abstract class CovidInteraction extends Interaction {
 		super({
 			name: 'covid',
 			descrition: 'Get the lastest Covid-19 data.',
+			category: 'utility',
 			options: [
 				{
 					type: 3,

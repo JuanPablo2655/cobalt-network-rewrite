@@ -11,6 +11,7 @@ abstract class settingsInteraction extends Interaction {
 		super({
 			name: 'settings',
 			descrition: 'Update your server settings.',
+			category: 'settings',
 			options: settingOptions,
 		});
 	}

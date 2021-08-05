@@ -10,6 +10,7 @@ abstract class EconomyInteraction extends Interaction {
 		super({
 			name: 'economy',
 			descrition: 'Economy commands.',
+			category: 'economy',
 			options: economyOptions,
 		});
 	}

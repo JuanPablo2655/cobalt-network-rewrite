@@ -22,6 +22,13 @@ export interface CommandOptions {
 export interface InteractionCommandOptions {
 	name: string;
 	descrition?: string;
+	category: Categories;
+	ownerOnly?: boolean;
+	devOnly?: boolean;
+	guildOnly?: boolean;
+	nsfwOnly?: boolean;
+	userPermissions?: PermissionString[];
+	clientPermissions?: PermissionString[];
 	options?: ApplicationCommandOptionData[];
 	run: (interactions: Interaction) => unknown | Promise<unknown>;
 }

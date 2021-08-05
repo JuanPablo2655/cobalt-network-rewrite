@@ -6,6 +6,7 @@ abstract class PingInteraction extends Interaction {
 		super({
 			name: 'ping',
 			descrition: 'check the bot ping',
+			category: 'utility',
 		});
 	}
 
