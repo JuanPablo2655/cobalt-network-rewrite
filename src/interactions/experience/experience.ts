@@ -8,6 +8,7 @@ abstract class ExperienceInteraction extends Interaction {
 		super({
 			name: 'experience',
 			descrition: 'Experience commands.',
+			category: 'experience',
 			options: experienceOptions,
 		});
 	}
