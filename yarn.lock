@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@discordjs/builders@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@discordjs/builders/-/builders-0.3.0.tgz#af507c1c5a39039ebdba7233c7eb404c873b6f7a"
-  integrity sha512-yFBPqohVAtCWoDTQCYk5ubgmkiRbGpbiR4RfYGHCmV5S2YZc7j8WzfKVksjuy2o5IWRfXFsW6G2Lr+KpW41pEA==
+"@discordjs/builders@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@discordjs/builders/-/builders-0.4.0.tgz#bb41573ce4824aa9194a53b52c29c5219b610010"
+  integrity sha512-EiwLltKph6TSaPJIzJYdzNc1PnA2ZNaaE0t0ODg3ghnpVHqfgd0YX9/srsleYHW2cw1sfIq+kbM+h0etf7GWLA==
   dependencies:
     "@sindresorhus/is" "^4.0.1"
     discord-api-types "^0.22.0"
-    ow "^0.26.0"
-    ts-mixer "^5.4.1"
+    ow "^0.27.0"
+    ts-mixer "^6.0.0"
     tslib "^2.3.0"
 
 "@discordjs/collection@^0.2.1":
@@ -157,7 +157,7 @@
   resolved "https://registry.yarnpkg.com/@types/strip-json-comments/-/strip-json-comments-0.0.30.tgz#9aa30c04db212a9a0649d6ae6fd50accc40748a1"
   integrity sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
 
-"@types/ws@^7.4.5":
+"@types/ws@^7.4.7":
   version "7.4.7"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-7.4.7.tgz#f7c390a36f7a0679aa69de2d501319f4f8d9b702"
   integrity sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==
@@ -420,16 +420,16 @@ discord-api-types@^0.22.0:
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.22.0.tgz#34dc57fe8e016e5eaac5e393646cd42a7e1ccc2a"
   integrity sha512-l8yD/2zRbZItUQpy7ZxBJwaLX/Bs2TGaCthRppk8Sw24LOIWg12t9JEreezPoYD0SQcC2htNNo27kYEpYW/Srg==
 
-discord.js@^13.0.0-dev.t1627940041.15aea68:
-  version "13.0.0-dev.t1627940041.15aea68"
-  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-13.0.0-dev.t1627940041.15aea68.tgz#f97f242f1e11085c5f50109a499a77b86d0a58d2"
-  integrity sha512-DKcV1Z88+wVUFNwnH13/PGq4rvYf3V9iUFJZRSP0qLDuYya4ZGfXwFotruTs0MBhYF+RCx4aAEugHidiJLtH9A==
+discord.js@^13.0.0-dev.t1628208261.a56ba09:
+  version "13.0.0-dev.t1628208261.a56ba09"
+  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-13.0.0-dev.t1628208261.a56ba09.tgz#bd593b63dfe151dba6d6ab559831a1e429d61401"
+  integrity sha512-nlHXoNJ4TzBBRqOVUECqcsPk6cKrffgFPUAK+i2wlhBkw0FZWKBzBeIW/VqJoJNIagMPnQY4ULft6r+eXGqtKg==
   dependencies:
-    "@discordjs/builders" "^0.3.0"
+    "@discordjs/builders" "^0.4.0"
     "@discordjs/collection" "^0.2.1"
     "@discordjs/form-data" "^3.0.1"
     "@sapphire/async-queue" "^1.1.4"
-    "@types/ws" "^7.4.5"
+    "@types/ws" "^7.4.7"
     abort-controller "^3.0.0"
     discord-api-types "^0.22.0"
     node-fetch "^2.6.1"
@@ -920,10 +920,10 @@ optional-require@^1.0.3:
   dependencies:
     require-at "^1.0.6"
 
-ow@^0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/ow/-/ow-0.26.0.tgz#5b8f61221ab31431f964caa6eaa0ed574e21a56e"
-  integrity sha512-22YUQW9d6oUSCpIQuBV25djtC1uMtpWqmtUYnuh2UHWeNMpppCFCvq3eSBIWWMDbe2UVq26kWYvBHDzOIu5NYg==
+ow@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/ow/-/ow-0.27.0.tgz#d44da088e8184fa11de64b5813206f9f86ab68d0"
+  integrity sha512-SGnrGUbhn4VaUGdU0EJLMwZWSupPmF46hnTRII7aCLCrqixTAC5eKo8kI4/XXf1eaaI8YEVT+3FeGNJI9himAQ==
   dependencies:
     "@sindresorhus/is" "^4.0.1"
     callsites "^3.1.0"
@@ -1218,10 +1218,10 @@ tree-kill@^1.2.2:
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
 
-ts-mixer@^5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/ts-mixer/-/ts-mixer-5.4.1.tgz#b90db9ced48531aa17ce9184a2890d1e3c99b1e5"
-  integrity sha512-Zo9HgPCtNouDgJ+LGtrzVOjSg8+7WGQktIKLwAfaNrlOK1mWGlz1ejsAF/YqUEqAGjUTeB5fEg8gH9Aui6w9xA==
+ts-mixer@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/ts-mixer/-/ts-mixer-6.0.0.tgz#4e631d3a36e3fa9521b973b132e8353bc7267f9f"
+  integrity sha512-nXIb1fvdY5CBSrDIblLn73NW0qRDk5yJ0Sk1qPBF560OdJfQp9jhl+0tzcY09OZ9U+6GpeoI9RjwoIKFIoB9MQ==
 
 ts-node-dev@^1.1.6:
   version "1.1.8"

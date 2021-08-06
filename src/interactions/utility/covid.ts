@@ -39,7 +39,7 @@ abstract class CovidInteraction extends Interaction {
 	}
 
 	async run(interaction: CommandInteraction) {
-		await interaction.defer();
+		await interaction.deferReply();
 		const parameter = interaction.options.getString('parameter', true);
 		if (parameter === 'global') {
 			const all = await fetch(`https://disease.sh/v3/covid-19/all`);

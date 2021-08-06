@@ -7,6 +7,7 @@ abstract class PingInteraction extends Interaction {
 			name: 'ping',
 			descrition: 'check the bot ping',
 			category: 'utility',
+			devOnly: true,
 		});
 	}
 

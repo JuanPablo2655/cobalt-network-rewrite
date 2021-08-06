@@ -21,14 +21,14 @@ abstract class InteractionEvent extends Event {
 			if (command.devOnly && !process.env.OWNERS?.split(',').includes(interaction.user.id)) {
 				return;
 			} else if (command.ownerOnly && (interaction.guild as Guild).ownerId !== interaction.user.id) {
-				return void interaction.reply({
+				return interaction.reply({
 					content: 'This comamnd can only be used by the owner of the guild.',
 					ephemeral: true,
 				});
 			} else if (command.guildOnly && !(interaction.guild instanceof Guild)) {
-				return void interaction.reply({ content: 'This command can only be used in a guild.', ephemeral: true });
+				return interaction.reply({ content: 'This command can only be used in a guild.', ephemeral: true });
 			} else if (command.nsfwOnly && !(interaction.channel as TextChannel).nsfw) {
-				return void interaction.reply({
+				return interaction.reply({
 					content: 'This command can only be used in a NSFW marked channel.',
 					ephemeral: true,
 				});
@@ -45,7 +45,7 @@ abstract class InteractionEvent extends Event {
 						if (!hasPermissions) missingPermissions.push(userPermissions[i]);
 					}
 					if (missingPermissions.length)
-						interaction.reply({
+						return interaction.reply({
 							content: `Your missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(', ')}`,
 							ephemeral: true,
 						});
@@ -56,7 +56,7 @@ abstract class InteractionEvent extends Event {
 						if (!hasPermission) missingPermissions.push(clientPermissions[i]);
 					}
 					if (missingPermissions.length)
-						interaction.reply({
+						return interaction.reply({
 							content: `I\'m missing these required permissions: ${missingPermissions.map(p => `\`${p}\``).join(', ')}`,
 							ephemeral: true,
 						});
