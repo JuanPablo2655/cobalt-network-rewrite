@@ -67,7 +67,7 @@ export const economyOptions: ApplicationCommandOptionData[] = [
 	{
 		type: 1,
 		name: 'work',
-		description: 'Work in you job.',
+		description: 'Work in your job.',
 	},
 	{
 		type: 1,

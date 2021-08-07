@@ -16,11 +16,11 @@ abstract class VcDataInteraction extends Interaction {
 					choices: [
 						{
 							name: 'local',
-							value: 'Get VC data in the guild.',
+							value: 'local',
 						},
 						{
 							name: 'global',
-							value: 'Get VC data globally.',
+							value: 'global',
 						},
 					],
 					required: true,
@@ -35,7 +35,8 @@ abstract class VcDataInteraction extends Interaction {
 	}
 
 	async run(interaction: CommandInteraction) {
-		const option = interaction.options.getString('option', true);
+		await interaction.deferReply();
+		const option = interaction.options.get('option')?.value;
 		const user = interaction.options.getUser('user') ?? interaction.user;
 		const memberData = await this.cobalt.db.getMember(user.id, interaction.guild!.id);
 		const userData = await this.cobalt.db.getUser(user.id);
@@ -43,13 +44,13 @@ abstract class VcDataInteraction extends Interaction {
 			const vcEmbed = new MessageEmbed()
 				.setTitle(`${user.username}'s VC Data`)
 				.setDescription(`Total Time: **${prettyMilliseconds(memberData!.vcHours)}**`);
-			return interaction.reply({ embeds: [vcEmbed] });
+			return interaction.editReply({ embeds: [vcEmbed] });
 		}
 		if (option === 'global') {
 			const vcEmbed = new MessageEmbed()
 				.setTitle(`${user.username}'s Global VC Data`)
 				.setDescription(`Total Time: **${prettyMilliseconds(userData!.vcHours)}**`);
-			return interaction.reply({ embeds: [vcEmbed] });
+			return interaction.editReply({ embeds: [vcEmbed] });
 		}
 	}
 }

@@ -16,4 +16,8 @@ process.on('SIGINT', async () => {
 	await cobalt.close();
 });
 
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection:', error);
+});
+
 cobalt.start();
