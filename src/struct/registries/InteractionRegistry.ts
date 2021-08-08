@@ -18,9 +18,20 @@ const registerInteraction: Function = (cobalt: CobaltClient) => {
 					name: interaction.name,
 					description: interaction.description ?? 'Empty description',
 					options: interaction.options ?? [],
+					defaultPermission: interaction.defaultPermission ?? true,
 				};
-				if (cobalt.devMode) await cobalt.guilds.cache.get('823300821994569748')?.commands.create(data);
-				else await cobalt.application?.commands.create(data);
+				if (cobalt.devMode) {
+					await (
+						await cobalt.guilds.cache.get('823300821994569748')?.commands.create(data)
+					)?.permissions.add({ permissions: interaction.permissions });
+				} else {
+					await (
+						await cobalt.application?.commands.create(data)
+					)?.permissions.add({
+						guild: '823300821994569748',
+						permissions: interaction.permissions,
+					});
+				}
 			}
 		}
 	});
