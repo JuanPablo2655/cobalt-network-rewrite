@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { REST } from '@discordjs/rest';
 import {
 	ApplicationCommandPermissionType,
