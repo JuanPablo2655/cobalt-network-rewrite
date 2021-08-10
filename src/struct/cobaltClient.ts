@@ -71,7 +71,7 @@ export class CobaltClient extends Client {
 		this.metrics.server.close();
 		mongoose.connection.close(false, () => {
 			console.log('[Mongoose]\tMongoose connection successfully closed');
-			this.destroy();
 		});
+		this.destroy();
 	}
 }

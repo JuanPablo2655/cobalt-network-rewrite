@@ -7,14 +7,6 @@ abstract class PingInteraction extends Interaction {
 			name: 'ping',
 			descrition: 'check the bot ping',
 			category: 'utility',
-			permissions: [
-				{
-					id: '288703114473635841',
-					type: 'USER',
-					permission: true,
-				},
-			],
-			defaultPermission: false,
 		});
 	}
 
