@@ -1,15 +1,13 @@
 import { CommandInteraction } from 'discord.js';
 import Interaction from '../../struct/Interaction';
-import { experienceOptions } from './options';
+import { experienceCommand } from './options';
 import { rank, reputation } from './subcommands';
 
 abstract class ExperienceInteraction extends Interaction {
 	constructor() {
 		super({
-			name: 'experience',
-			description: 'Experience commands.',
+			name: experienceCommand.name,
 			category: 'experience',
-			options: experienceOptions,
 		});
 	}
 

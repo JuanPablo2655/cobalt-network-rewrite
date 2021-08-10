@@ -1,3 +1,1 @@
-import { ApplicationCommandOptionData } from 'discord.js';
-
-export const adminOptions: ApplicationCommandOptionData[] = [];
+export const adminCommand = {} as const;

@@ -1,16 +1,14 @@
 import { CommandInteraction } from 'discord.js';
 import Interaction from '../../struct/Interaction';
-import { devOptions } from './options';
+import { devCommand } from './options';
 import { pay, reboot } from './subcommands';
 import { directors, tax } from './subcommands/update';
 
 abstract class PingInteraction extends Interaction {
 	constructor() {
 		super({
-			name: 'dev',
-			description: 'dev only commands',
+			name: devCommand.name,
 			category: 'dev',
-			options: devOptions,
 			permissions: [
 				{
 					id: '288703114473635841',
@@ -18,7 +16,6 @@ abstract class PingInteraction extends Interaction {
 					permission: true,
 				},
 			],
-			defaultPermission: false,
 		});
 	}
 

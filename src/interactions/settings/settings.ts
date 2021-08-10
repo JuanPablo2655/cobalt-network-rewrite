@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 import Interaction from '../../struct/Interaction';
-import { settingOptions } from './options';
+import { settingCommand } from './options';
 import { add, list, remove } from './subcommands/blacklistword';
 import * as leavechannel from './subcommands/leavechannel';
 import * as logchannel from './subcommands/logchannel';
@@ -9,10 +9,8 @@ import * as welcomechannel from './subcommands/welcomechannel';
 abstract class settingsInteraction extends Interaction {
 	constructor() {
 		super({
-			name: 'settings',
-			description: 'Update your server settings.',
+			name: settingCommand.name,
 			category: 'settings',
-			options: settingOptions,
 		});
 	}
 

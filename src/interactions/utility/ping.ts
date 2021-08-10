@@ -1,11 +1,11 @@
 import { CommandInteraction } from 'discord.js';
 import Interaction from '../../struct/Interaction';
+import { pingCommand } from './options';
 
 abstract class PingInteraction extends Interaction {
 	constructor() {
 		super({
-			name: 'ping',
-			description: 'check the bot ping',
+			name: pingCommand.name,
 			category: 'utility',
 		});
 	}

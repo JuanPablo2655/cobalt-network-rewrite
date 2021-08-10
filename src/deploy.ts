@@ -5,18 +5,15 @@ import {
 	Routes,
 	Snowflake,
 } from 'discord-api-types/v9';
-import { ApplicationCommandData } from 'discord.js';
-import { cobalt } from './cobalt';
-
-const body = cobalt.interactions.map(
-	c =>
-		({
-			name: c.name,
-			description: c.description,
-			options: c.options,
-			defaultPermission: c.defaultPermission,
-		} as ApplicationCommandData),
-);
+import {
+	covidCommand,
+	devCommand,
+	economyCommand,
+	experienceCommand,
+	pingCommand,
+	settingCommand,
+	vcdataCommand,
+} from './interactions';
 
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
 
@@ -27,7 +24,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
 		const commands = (await rest.put(
 			Routes.applicationGuildCommands(process.env.CLIENT_ID as Snowflake, '823300821994569748' as Snowflake),
 			{
-				body,
+				body: [devCommand, economyCommand, experienceCommand, settingCommand, covidCommand, pingCommand, vcdataCommand],
 			},
 		)) as RESTGetAPIApplicationGuildCommandsResult;
 

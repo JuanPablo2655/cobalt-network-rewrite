@@ -1,11 +1,4 @@
-import {
-	ApplicationCommandOptionData,
-	ApplicationCommandPermissionData,
-	ClientEvents,
-	Interaction,
-	Message,
-	PermissionString,
-} from 'discord.js';
+import { ApplicationCommandPermissionData, ClientEvents, Interaction, Message, PermissionString } from 'discord.js';
 
 export type Categories = 'dev' | 'economy' | 'experience' | 'settings' | 'utility' | 'admin';
 
@@ -28,14 +21,11 @@ export interface CommandOptions {
 
 export interface InteractionCommandOptions {
 	name: string;
-	description?: string;
 	category: Categories;
 	devOnly?: boolean;
 	permissions?: ApplicationCommandPermissionData[];
-	defaultPermission?: boolean;
 	userPermissions?: PermissionString[];
 	clientPermissions?: PermissionString[];
-	options?: ApplicationCommandOptionData[];
 	run: (interactions: Interaction) => unknown | Promise<unknown>;
 }
 

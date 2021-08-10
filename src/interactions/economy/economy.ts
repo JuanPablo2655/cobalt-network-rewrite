@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 import Interaction from '../../struct/Interaction';
-import { economyOptions } from './options';
+import { economyCommand } from './options';
 import { balance, daily, monthly, pay, weekly, work } from './subcommands';
 import { deposit, withdraw } from './subcommands/bank';
 import { apply, list, quit } from './subcommands/job';
@@ -8,10 +8,8 @@ import { apply, list, quit } from './subcommands/job';
 abstract class EconomyInteraction extends Interaction {
 	constructor() {
 		super({
-			name: 'economy',
-			description: 'Economy commands.',
+			name: economyCommand.name,
 			category: 'economy',
-			options: economyOptions,
 		});
 	}
 

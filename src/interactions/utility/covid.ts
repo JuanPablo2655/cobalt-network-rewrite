@@ -1,46 +1,13 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import Interaction from '../../struct/Interaction';
+import { covidCommand } from './options';
 
 abstract class CovidInteraction extends Interaction {
 	constructor() {
 		super({
-			name: 'covid',
-			description: 'Get the lastest Covid-19 data.',
+			name: covidCommand.name,
 			category: 'utility',
-			options: [
-				{
-					type: 1,
-					name: 'country',
-					description: 'Get covid-19 data from a country.',
-					options: [
-						{
-							type: 3,
-							name: 'country',
-							description: 'The country.',
-							required: true,
-						},
-					],
-				},
-				{
-					type: 1,
-					name: 'state',
-					description: 'Get covid-19 data from a state.',
-					options: [
-						{
-							type: 3,
-							name: 'state',
-							description: 'The state.',
-							required: true,
-						},
-					],
-				},
-				{
-					type: 1,
-					name: 'global',
-					description: 'Get covid-19 data globally.',
-				},
-			],
 		});
 	}
 
