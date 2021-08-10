@@ -6,7 +6,7 @@ abstract class VcDataInteraction extends Interaction {
 	constructor() {
 		super({
 			name: 'vcdata',
-			descrition: "Get your's or someone else's vc data locally or globally.",
+			description: "Get your's or someone else's vc data locally or globally.",
 			category: 'utility',
 			options: [
 				{

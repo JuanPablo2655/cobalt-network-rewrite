@@ -6,7 +6,7 @@ abstract class CovidInteraction extends Interaction {
 	constructor() {
 		super({
 			name: 'covid',
-			descrition: 'Get the lastest Covid-19 data.',
+			description: 'Get the lastest Covid-19 data.',
 			category: 'utility',
 			options: [
 				{

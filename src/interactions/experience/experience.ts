@@ -7,7 +7,7 @@ abstract class ExperienceInteraction extends Interaction {
 	constructor() {
 		super({
 			name: 'experience',
-			descrition: 'Experience commands.',
+			description: 'Experience commands.',
 			category: 'experience',
 			options: experienceOptions,
 		});

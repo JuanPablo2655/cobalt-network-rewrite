@@ -5,7 +5,7 @@ abstract class PingInteraction extends Interaction {
 	constructor() {
 		super({
 			name: 'ping',
-			descrition: 'check the bot ping',
+			description: 'check the bot ping',
 			category: 'utility',
 		});
 	}

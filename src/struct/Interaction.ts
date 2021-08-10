@@ -21,7 +21,7 @@ abstract class InteractionCommand {
 
 	constructor(options: InteractionType) {
 		this.name = options.name;
-		this.description = options.descrition ?? '';
+		this.description = options.description ?? '';
 		this.category = options.category;
 		this.devOnly = options.devOnly ?? false;
 		this.permissions = options.permissions ?? [];

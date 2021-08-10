@@ -21,3 +21,5 @@ process.on('unhandledRejection', error => {
 });
 
 cobalt.start();
+
+export { cobalt };

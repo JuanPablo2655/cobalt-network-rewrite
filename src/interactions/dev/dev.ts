@@ -8,7 +8,7 @@ abstract class PingInteraction extends Interaction {
 	constructor() {
 		super({
 			name: 'dev',
-			descrition: 'dev only commands',
+			description: 'dev only commands',
 			category: 'dev',
 			options: devOptions,
 			permissions: [

@@ -10,7 +10,7 @@ abstract class settingsInteraction extends Interaction {
 	constructor() {
 		super({
 			name: 'settings',
-			descrition: 'Update your server settings.',
+			description: 'Update your server settings.',
 			category: 'settings',
 			options: settingOptions,
 		});

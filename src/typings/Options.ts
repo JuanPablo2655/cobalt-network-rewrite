@@ -28,7 +28,7 @@ export interface CommandOptions {
 
 export interface InteractionCommandOptions {
 	name: string;
-	descrition?: string;
+	description?: string;
 	category: Categories;
 	devOnly?: boolean;
 	permissions?: ApplicationCommandPermissionData[];
