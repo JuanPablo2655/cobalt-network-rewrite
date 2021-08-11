@@ -11,9 +11,8 @@ abstract class InteractionEvent extends Event {
 	async run(interaction: Interaction) {
 		this.cobalt.metrics.eventInc(this.name);
 		if (!interaction.isCommand()) return;
-		if (!interaction.command) return;
 
-		const command = this.cobalt.interactions.get(interaction.command.name);
+		const command = this.cobalt.interactions.get(interaction.commandName);
 		if (command) {
 			const guild = await this.cobalt.db.getGuild(interaction.guild?.id);
 			if (guild) {
