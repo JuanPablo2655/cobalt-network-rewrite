@@ -32,6 +32,8 @@
   color: '5663e9'
 - name: 'priority:high'
   color: 'fc1423'
+- name: 'quests'
+  color: '5663e9'
 - name: 'refactor'
   color: '1d637f'
 - name: 'RPG'
