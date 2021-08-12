@@ -1,3 +1,5 @@
+- name: 'balancing'
+  color: '5663e9'
 - name: 'bug'
   color: 'd73a4a'
 - name: 'caching'
