@@ -3,11 +3,37 @@ import guildModel, { GuildData, IGuild } from '../models/Guild';
 import userModel, { UserData, IUser } from '../models/User';
 import memberModel, { MemberData, IMember } from '../models/Member';
 import { CobaltClient } from '../struct/cobaltClient';
+import mongoose, { Connection } from 'mongoose';
 
 export default class Database {
 	cobalt: CobaltClient;
-	constructor(cobalt: CobaltClient) {
+	public mongoose: Connection;
+	constructor(cobalt: CobaltClient, url: string) {
 		this.cobalt = cobalt;
+		(async () => {
+			await mongoose.connect(url, {
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+				autoIndex: false,
+				poolSize: 5,
+				connectTimeoutMS: 10000,
+				family: 4,
+				useFindAndModify: false,
+			});
+		})().catch(err => {
+			throw err;
+		});
+
+		this.mongoose = mongoose.connection;
+		this.mongoose.on('connected', () => {
+			console.log('[Mongoose]\tMongoose connection successfully opened');
+		});
+		this.mongoose.on('err', err => {
+			console.error(`[Mongoose]\tMongoose connection error: \n ${err.stack}`);
+		});
+		this.mongoose.on('disconnected', () => {
+			console.log('[Mongoose]\tMongoose connection disconnected');
+		});
 	}
 
 	async addGuild(guildId: string | undefined): Promise<IGuild | undefined> {
@@ -47,7 +73,7 @@ export default class Database {
 		try {
 			const guild = await this.getGuild(guildId);
 			if (!guild) await this.addGuild(guildId);
-			const _guild = await guildModel.findOneAndUpdate({ _id: guildId }, data);
+			const _guild = await guildModel.findOneAndUpdate({ _id: guildId }, data, { new: true });
 			await this.cobalt.redis.set(`guild:${guildId}`, JSON.stringify(_guild));
 		} catch (err) {
 			console.error(err?.stack || err);
@@ -67,11 +93,10 @@ export default class Database {
 		}
 	}
 
-	async updateBot(botId: string | undefined, data: Partial<BotData>) {
+	async updateBot(botId: string | undefined, data: Partial<BotData>): Promise<void> {
 		try {
-			const bot = await botModel.findOneAndUpdate({ _id: botId }, data);
+			const bot = await botModel.findOneAndUpdate({ _id: botId }, data, { new: true });
 			await this.cobalt.redis.set(`bot:${botId}`, JSON.stringify(bot));
-			return bot;
 		} catch (err) {
 			console.error(err?.stack || err);
 		}
@@ -114,7 +139,7 @@ export default class Database {
 		try {
 			const user = await this.getUser(userId);
 			if (!user) await this.addUser(userId);
-			const _user = await userModel.findOneAndUpdate({ _id: userId }, data);
+			const _user = await userModel.findOneAndUpdate({ _id: userId }, data, { new: true });
 			await this.cobalt.redis.set(`user:${userId}`, JSON.stringify(_user));
 		} catch (err) {
 			console.error(err?.stack || err);
@@ -164,7 +189,7 @@ export default class Database {
 		try {
 			const member = await this.getMember(memberId, guildId);
 			if (!member) await this.addMember(memberId, guildId);
-			const _member = await memberModel.findOneAndUpdate({ memberId, guildId }, data);
+			const _member = await memberModel.findOneAndUpdate({ memberId, guildId }, data, { new: true });
 			await this.cobalt.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(_member));
 		} catch (err) {
 			console.error(err?.stack || err);

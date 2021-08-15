@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:16
 WORKDIR /cobalt
 COPY package.json ./
 COPY yarn.lock ./
