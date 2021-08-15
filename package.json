@@ -9,6 +9,7 @@
     "clean": "rm -rf build",
     "build": "tsc",
     "deploy": "node build/cobalt.js",
+    "deploy:commands": "node build/deploy.js",
     "dev": "ts-node-dev --respawn --transpile-only ./src/cobalt.ts",
     "prettier": "prettier --write ."
   },
@@ -23,8 +24,9 @@
   },
   "homepage": "https://github.com/JuanPablo2655/cobalt-network-rewrite#readme",
   "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
     "diff": "^5.0.0",
-    "discord.js": "^13.0.0-dev.4886ae2.1627300977",
+    "discord.js": "^13.0.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "glob": "^7.1.7",
@@ -43,7 +45,6 @@
     "@types/node-fetch": "^2.5.12",
     "bufferutil": "^4.0.3",
     "cloc": "^2.8.0",
-    "erlpack": "discord/erlpack",
     "prettier": "2.3.2",
     "ts-node-dev": "^1.1.6",
     "tslib": "^2.0.3",

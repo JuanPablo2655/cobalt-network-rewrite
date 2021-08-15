@@ -35,7 +35,7 @@ export default class Util {
 			const mention =
 				message.mentions?.users.first()?.id !== this.cobalt.user?.id
 					? message.mentions?.users.first()
-					: message.mentions?.users.array()[1];
+					: message.mentions?.users.first(1)[1];
 
 			member =
 				message.guild.members.cache.find(m => m.user.id === mention?.id) ||

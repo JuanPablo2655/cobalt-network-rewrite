@@ -1,4 +1,3 @@
-import { ApplicationCommandData } from 'discord.js';
 import { sync } from 'glob';
 import { resolve } from 'path';
 import { CobaltClient } from '../cobaltClient';
@@ -14,12 +13,6 @@ const registerInteraction: Function = (cobalt: CobaltClient) => {
 				const interaction: Interaction = new File();
 				interaction.cobalt = cobalt;
 				cobalt.interactions.set(interaction.name, interaction);
-				const data: ApplicationCommandData = {
-					name: interaction.name,
-					description: interaction.description ?? 'Empty description',
-					options: interaction.options ?? [],
-				};
-				await cobalt.application?.commands.create(data);
 			}
 		}
 	});
