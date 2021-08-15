@@ -3,11 +3,37 @@ import guildModel, { GuildData, IGuild } from '../models/Guild';
 import userModel, { UserData, IUser } from '../models/User';
 import memberModel, { MemberData, IMember } from '../models/Member';
 import { CobaltClient } from '../struct/cobaltClient';
+import mongoose, { Connection } from 'mongoose';
 
 export default class Database {
 	cobalt: CobaltClient;
-	constructor(cobalt: CobaltClient) {
+	public mongoose: Connection;
+	constructor(cobalt: CobaltClient, url: string) {
 		this.cobalt = cobalt;
+		(async () => {
+			await mongoose.connect(url, {
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+				autoIndex: false,
+				poolSize: 5,
+				connectTimeoutMS: 10000,
+				family: 4,
+				useFindAndModify: false,
+			});
+		})().catch(err => {
+			throw err;
+		});
+
+		this.mongoose = mongoose.connection;
+		this.mongoose.on('connected', () => {
+			console.log('[Mongoose]\tMongoose connection successfully opened');
+		});
+		this.mongoose.on('err', err => {
+			console.error(`[Mongoose]\tMongoose connection error: \n ${err.stack}`);
+		});
+		this.mongoose.on('disconnected', () => {
+			console.log('[Mongoose]\tMongoose connection disconnected');
+		});
 	}
 
 	async addGuild(guildId: string | undefined): Promise<IGuild | undefined> {
