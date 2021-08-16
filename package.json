@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/cobalt.js",
   "scripts": {
-    "test:typescript": "tsc",
+    "test:typescript": "tsc -b src",
     "test:prettier": "prettier --check .",
     "clean": "rm -rf build",
     "build": "tsc -b src",
