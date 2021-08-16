@@ -1,0 +1,3 @@
+afterAll(() => {
+	process.exit();
+});
