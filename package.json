@@ -4,6 +4,8 @@
   "description": "",
   "main": "build/cobalt.js",
   "scripts": {
+    "test": "jest --collect-coverage",
+    "test:ci": "yarn test --verbose --noStackTrace",
     "test:typescript": "tsc -b src",
     "test:prettier": "prettier --check .",
     "clean": "rm -rf build",
