@@ -17,11 +17,11 @@ abstract class MessageUpdateEvent extends Event {
 		if (!newMessage.guild.available) return;
 		const guild = await this.cobalt.db.getGuild(newMessage.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMessage.guild.id)
-			?.channels.cache.get(logChannelId) as TextChannel;
+			?.channels.cache.get(logChannelId!) as TextChannel;
 		const avatar = newMessage.author.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor(newMessage.author.username, avatar)

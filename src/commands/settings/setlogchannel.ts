@@ -22,8 +22,8 @@ abstract class SetLogChannelCommand extends GenericCommand {
 		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			logChannel: {
-				enabled: guild.logChannel.enabled,
-				disabledEvents: guild.logChannel.disabledEvents,
+				enabled: guild.logChannel?.enabled ?? true,
+				disabledEvents: guild.logChannel?.disabledEvents ?? null,
 				channelId: channel.id,
 			},
 		});

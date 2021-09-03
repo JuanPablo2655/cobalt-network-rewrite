@@ -16,7 +16,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
 		if (!bot) return message.channel.send({ content: 'An error has occured' });
 		let isDirector = false;
-		bot.directors.forEach(director => {
+		bot.directors?.forEach(director => {
 			if (director === message.author.id) return (isDirector = true);
 		});
 		if (!isDirector) return message.channel.send({ content: 'not a director!' });

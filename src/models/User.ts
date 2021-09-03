@@ -3,20 +3,20 @@ import { Document, model, Schema } from 'mongoose';
 
 export interface UserData {
 	_id: Snowflake;
-	guilds: string[];
-	job: string | null;
+	guilds?: string[] | null;
+	job?: string | null;
 	wallet: number;
 	bank: number;
 	bankSpace: number;
 	netWorth: number;
 	bounty: number;
-	daily: number;
-	weekly: number;
-	monthly: number;
-	repTime: number;
+	daily?: number | null;
+	weekly?: number | null;
+	monthly?: number | null;
+	repTime?: number | null;
 	vcHours: number;
 	inventory: object;
-	activeItems: string[];
+	activeItems?: string[] | null;
 	xp: number;
 	lvl: number;
 	rep: number;

@@ -7,9 +7,9 @@ export async function channel(cobalt: CobaltClient, interaction: CommandInteract
 	if (!guild) return;
 	await cobalt.db.updateGuild(interaction.guild!.id, {
 		welcomeMessage: {
-			message: guild.welcomeMessage.message,
+			message: guild.welcomeMessage?.message ?? null,
 			channelId: channel.id,
-			enabled: guild.welcomeMessage.enabled,
+			enabled: guild.welcomeMessage?.enabled ?? true,
 		},
 	});
 	return interaction.reply({ content: `Successfully changed the log channel to ${channel}` });
@@ -22,8 +22,8 @@ export async function message(cobalt: CobaltClient, interaction: CommandInteract
 	await cobalt.db.updateGuild(interaction.guild!.id, {
 		welcomeMessage: {
 			message: message,
-			channelId: guild.welcomeMessage.channelId,
-			enabled: guild.welcomeMessage.enabled,
+			channelId: guild.welcomeMessage?.channelId ?? null,
+			enabled: guild.welcomeMessage?.enabled ?? true,
 		},
 	});
 	return interaction.reply({ content: `Successfully changed the welcome message to:\n\`${message}\`` });
@@ -33,12 +33,12 @@ export async function toggle(cobalt: CobaltClient, interaction: CommandInteracti
 	const option = interaction.options.getBoolean('toggle', true);
 	const guild = await cobalt.db.getGuild(interaction.guild!.id);
 	if (!guild) return;
-	if (guild.welcomeMessage.enabled === option)
+	if (guild.welcomeMessage?.enabled === option)
 		return interaction.reply({ content: `Already ${option}`, ephemeral: true });
 	await cobalt.db.updateGuild(interaction.guild!.id, {
 		welcomeMessage: {
-			message: guild.welcomeMessage.message,
-			channelId: guild.welcomeMessage.channelId,
+			message: guild.welcomeMessage?.message ?? null,
+			channelId: guild.welcomeMessage?.channelId ?? null,
 			enabled: option,
 		},
 	});

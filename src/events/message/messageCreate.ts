@@ -22,7 +22,7 @@ abstract class MessageEvent extends Event {
 		if (!message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && !message.author.bot) {
 			let hasBadWord = false;
 			let badWords: string[] = [];
-			guild?.blacklistedWords.forEach(word => {
+			guild?.blacklistedWords?.forEach(word => {
 				message.content.split(' ').forEach(messageWord => {
 					if (word.toLowerCase() === messageWord.toLowerCase()) {
 						badWords.push(word);
@@ -48,7 +48,7 @@ abstract class MessageEvent extends Event {
 					const exp = await this.cobalt.exp.manageXp(message);
 					const profile = await this.cobalt.db.getUser(message.author.id);
 					if (exp) {
-						if (guild?.levelMessage.enabled) {
+						if (guild?.levelMessage?.enabled) {
 							const cleanMessage = guild.levelMessage.message
 								.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)

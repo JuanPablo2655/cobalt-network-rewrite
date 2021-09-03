@@ -17,7 +17,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { wallet: user!.wallet + money, netWorth: user!.netWorth + money });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -31,7 +31,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { wallet: user!.wallet - money, netWorth: user!.netWorth - money });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -45,7 +45,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bank: user!.bank + money, netWorth: user!.netWorth + money });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -59,7 +59,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bank: user!.bank - money, netWorth: user!.netWorth - money });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -73,7 +73,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bankSpace: user!.bankSpace + space });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -87,7 +87,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bankSpace: user!.bankSpace - space });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -101,7 +101,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bounty: user!.bounty + amount });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -115,7 +115,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bounty: user!.bounty - amount });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -128,7 +128,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { job });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -147,7 +147,7 @@ export default class Currency {
 				deaths: user!.deaths + 1,
 			});
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -158,7 +158,7 @@ export default class Currency {
 			const addMulit = this.cobalt.utils.addMulti(bankSpaceToAdd, multi);
 			await this.addBankSpace(message.author.id, addMulit);
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -172,7 +172,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateBot(botId, { bank: bot.bank + amount });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -186,7 +186,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateBot(botId, { bank: bot.bank - amount });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -200,7 +200,7 @@ export default class Currency {
 
 			await this.cobalt.db.updateBot(botId, { tax });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 }

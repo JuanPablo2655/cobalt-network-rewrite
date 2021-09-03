@@ -18,10 +18,10 @@ abstract class DailyCommand extends GenericCommand {
 		if (!user) return message.reply({ content: 'An error occured' });
 		const date = Date.now();
 		const cooldown = date + 86400000;
-		if (!isNaN(user.daily) && user.daily > date) {
+		if (!isNaN(user.daily!) && user.daily! > date) {
 			return message.reply({
 				content: `You still have **${prettyMilliseconds(
-					user.daily - Date.now(),
+					user.daily! - Date.now(),
 				)}** left before you can claim your daily!`,
 			});
 		}

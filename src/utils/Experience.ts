@@ -19,7 +19,7 @@ export default class Experience {
 
 			await this.cobalt.db.updateUser(userId, { xp: user!.xp + amount, totalXp: user!.totalXp + amount });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -34,7 +34,7 @@ export default class Experience {
 			if (levelUp) await this.cobalt.db.updateUser(userId, { xp: user!.xp - amount });
 			else await this.cobalt.db.updateUser(userId, { xp: user!.xp - amount, totalXp: user!.totalXp - amount });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -48,7 +48,7 @@ export default class Experience {
 
 			await this.cobalt.db.updateUser(userId, { lvl: user!.lvl + amount });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -62,7 +62,7 @@ export default class Experience {
 
 			await this.cobalt.db.updateUser(userId, { lvl: user!.lvl - amount });
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -85,7 +85,7 @@ export default class Experience {
 			await this.addXp(message.author.id, xpToAdd);
 			return false;
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 }

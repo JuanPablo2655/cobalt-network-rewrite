@@ -11,17 +11,17 @@ export async function category(cobalt: CobaltClient, interaction: CommandInterac
 	if (!categories.includes(category)) return interaction.reply({ content: 'Invalid category' });
 	if (saveCategories.includes(category))
 		return interaction.reply({ content: `Can't disabled **${category}** category` });
-	if (guild.disabledCategories.includes(category) && option === true)
+	if (guild.disabledCategories?.includes(category) && option === true)
 		return interaction.reply({ content: `${category} is already disabled.` });
-	if (!guild.disabledCategories.includes(category) && option === false)
+	if (!guild.disabledCategories?.includes(category) && option === false)
 		return interaction.reply({ content: `${category} is already enabled.` });
 	if (option === true) {
 		await cobalt.db.updateGuild(interaction.guildId!, {
-			disabledCategories: [...guild.disabledCategories, category],
+			disabledCategories: [...(guild.disabledCategories ?? []), category],
 		});
 	} else {
 		await cobalt.db.updateGuild(interaction.guildId!, {
-			disabledCategories: guild.disabledCategories.filter(c => c !== category),
+			disabledCategories: guild.disabledCategories?.filter(c => c !== category),
 		});
 	}
 }
@@ -38,17 +38,17 @@ export async function command(cobalt: CobaltClient, interaction: CommandInteract
 	if (saveCommands.includes(command.name)) return interaction.reply({ content: "Can't disable this command" });
 	if (saveCategories.includes(command?.category))
 		return interaction.reply({ content: `Can't disable commands in ${command?.category}` });
-	if (guild.disabledCommands.includes(command.name) && option === true)
+	if (guild.disabledCommands?.includes(command.name) && option === true)
 		return interaction.reply({ content: 'Already disabled.' });
-	if (!guild.disabledCommands.includes(command.name) && option === false)
+	if (!guild.disabledCommands?.includes(command.name) && option === false)
 		return interaction.reply({ content: 'Already enabled.' });
 	if (option === true) {
 		await cobalt.db.updateGuild(interaction.guildId!, {
-			disabledCommands: [...guild.disabledCommands, command.name],
+			disabledCommands: [...(guild.disabledCommands ?? []), command.name],
 		});
 	} else {
 		await cobalt.db.updateGuild(interaction.guildId!, {
-			disabledCommands: guild.disabledCommands.filter(c => c !== command.name),
+			disabledCommands: guild.disabledCommands?.filter(c => c !== command.name),
 		});
 	}
 }

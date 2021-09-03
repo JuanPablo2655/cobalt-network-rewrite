@@ -5,7 +5,7 @@ export async function add(cobalt: CobaltClient, interaction: CommandInteraction)
 	const word = interaction.options.getString('word', true);
 	const guild = await cobalt.db.getGuild(interaction.guild!.id);
 	if (!guild) return;
-	if (guild.blacklistedWords.includes(word)) return interaction.reply({ content: 'Word already exists in the list.' });
+	if (guild.blacklistedWords?.includes(word)) return interaction.reply({ content: 'Word already exists in the list.' });
 	if (guild?.blacklistedWords === null || !guild?.blacklistedWords) {
 		await cobalt.db.updateGuild(interaction.guild!.id, {
 			blacklistedWords: [word],

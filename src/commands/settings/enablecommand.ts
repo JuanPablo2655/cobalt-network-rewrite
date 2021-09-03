@@ -20,7 +20,7 @@ abstract class EnableCommandCommand extends GenericCommand {
 		const guild = await this.cobalt.db.getGuild(guildId);
 		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
 		if (!command) return message.reply({ content: 'Invalid command' });
-		if (!guild.disabledCommands.includes(arg)) return message.reply({ content: 'Already enabled' });
+		if (!guild.disabledCommands?.includes(arg)) return message.reply({ content: 'Already enabled' });
 		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			disabledCommands: guild.disabledCommands.filter(c => c !== command.name),

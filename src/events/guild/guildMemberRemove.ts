@@ -18,9 +18,9 @@ abstract class GuildMemberRemoveEvent extends Event {
 		const user = await this.cobalt.db.getMember(member.user.id, member.guild.id);
 		const guild = await this.cobalt.db.getGuild(member.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild?.logChannel.channelId;
-		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
+		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId!) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ format: 'png', dynamic: true });
 		if (user && member.roles.cache.size !== 0) {
 			let roleList: Snowflake[] = member.roles.cache.map(r => r.id);
@@ -28,7 +28,7 @@ abstract class GuildMemberRemoveEvent extends Event {
 				roles: roleList,
 			});
 		}
-		if (guild.leaveMessage.channelId) {
+		if (guild.leaveMessage?.channelId) {
 			const leaveChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.leaveMessage.channelId) as TextChannel;

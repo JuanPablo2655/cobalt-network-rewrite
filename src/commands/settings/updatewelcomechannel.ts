@@ -24,8 +24,8 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 				const choice: boolean = action.toLowerCase() === 'true' || action.toLowerCase() === 'enable';
 				await this.cobalt.db.updateGuild(guildId, {
 					welcomeMessage: {
-						message: guild.welcomeMessage.message,
-						channelId: guild.welcomeMessage.channelId,
+						message: guild.welcomeMessage?.message ?? null,
+						channelId: guild.welcomeMessage?.channelId ?? null,
 						enabled: choice,
 					},
 				});
@@ -39,9 +39,9 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 					return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });
 				await this.cobalt.db.updateGuild(guildId, {
 					welcomeMessage: {
-						message: guild.welcomeMessage.message,
+						message: guild.welcomeMessage?.message ?? null,
 						channelId: channel.id,
-						enabled: guild.welcomeMessage.enabled,
+						enabled: guild.welcomeMessage?.enabled ?? true,
 					},
 				});
 				return message.channel.send({ content: `Successfully changed the welcome channel to ${channel}` });
@@ -55,8 +55,8 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 					await this.cobalt.db.updateGuild(guildId, {
 						welcomeMessage: {
 							message: welcomeMessage.join(' '),
-							channelId: guild.welcomeMessage.channelId,
-							enabled: guild.welcomeMessage.enabled,
+							channelId: guild.welcomeMessage?.channelId ?? null,
+							enabled: guild.welcomeMessage?.enabled ?? true,
 						},
 					});
 					return message.channel.send({
@@ -67,8 +67,8 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 					await this.cobalt.db.updateGuild(guildId, {
 						welcomeMessage: {
 							message: 'Welcome, {user.tag} to {guild.name}!',
-							channelId: guild.welcomeMessage.channelId,
-							enabled: guild.welcomeMessage.enabled,
+							channelId: guild.welcomeMessage?.channelId ?? null,
+							enabled: guild.welcomeMessage?.enabled ?? true,
 						},
 					});
 					return message.channel.send({ content: `Successfully changed the welcome message to default` });
