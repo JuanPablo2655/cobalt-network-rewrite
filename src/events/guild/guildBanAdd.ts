@@ -16,13 +16,13 @@ abstract class GuildBanAddEvent extends Event {
 		if (!ban.guild.available) return;
 		const guild = await this.cobalt.db.getGuild(ban.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		let audit;
 		if (ban.guild.me?.permissions.has('VIEW_AUDIT_LOG')) {
 			audit = (await ban.guild.fetchAuditLogs()).entries.first();
 		}
 		const logChannelId = guild.logChannel.channelId;
-		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
+		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId!) as TextChannel;
 		const avatar = ban.user.displayAvatarURL({ format: 'png', dynamic: true });
 		console.log(ban.reason, audit?.reason);
 		const logEmbed = new MessageEmbed()

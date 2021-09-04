@@ -18,10 +18,10 @@ abstract class WeeklyCommand extends GenericCommand {
 		if (!user) return message.reply({ content: 'An error occured' });
 		const date = Date.now();
 		const cooldown = date + 604800000;
-		if (!isNaN(user.weekly) && user.weekly > date) {
+		if (!isNaN(user.weekly!) && user.weekly! > date) {
 			return message.reply({
 				content: `You still have **${prettyMilliseconds(
-					user.weekly - Date.now(),
+					user.weekly! - Date.now(),
 				)}** left before you can claim your weekly!`,
 			});
 		}

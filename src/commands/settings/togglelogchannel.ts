@@ -18,12 +18,12 @@ abstract class ToggleLogChannelCommand extends GenericCommand {
 		const guild = await this.cobalt.db.getGuild(guildId);
 		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
 		await addCD();
-		if (guild.logChannel.enabled === option) return message.reply({ content: `already ${option}` });
+		if (guild.logChannel?.enabled === option) return message.reply({ content: `already ${option}` });
 		await this.cobalt.db.updateGuild(guildId, {
 			logChannel: {
 				enabled: option,
-				disabledEvents: guild.logChannel.disabledEvents,
-				channelId: guild.logChannel.channelId,
+				disabledEvents: guild.logChannel!.disabledEvents,
+				channelId: guild.logChannel!.channelId,
 			},
 		});
 		return message.channel.send({

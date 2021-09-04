@@ -1,6 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import Interaction from '../../struct/Interaction';
+import { CovidAll, covidCountry, covidState } from '../../typings/Covid';
 import { covidCommand } from './options';
 
 abstract class CovidInteraction extends Interaction {
@@ -34,7 +35,7 @@ abstract class CovidInteraction extends Interaction {
 		await interaction.deferReply();
 		const name = interaction.options.getString('country', true);
 		const country = await fetch(`https://disease.sh/v3/covid-19/countries/${name}?strict=false`);
-		const res = await country.json();
+		const res = (await country.json()) as covidCountry;
 		const covidEmbed = new MessageEmbed()
 			.setTitle(`COVID-19: ${res.country}`)
 			.setDescription(
@@ -54,7 +55,7 @@ abstract class CovidInteraction extends Interaction {
 		await interaction.deferReply();
 		const name = interaction.options.getString('state', true);
 		const state = await fetch(`https://disease.sh/v3/covid-19/states/${name}`);
-		const res = await state.json();
+		const res = (await state.json()) as covidState;
 		const covidEmbed = new MessageEmbed()
 			.setTitle(`COVID-19: ${res.state}`)
 			.setDescription(
@@ -73,7 +74,7 @@ abstract class CovidInteraction extends Interaction {
 	async global(interaction: CommandInteraction) {
 		await interaction.deferReply();
 		const all = await fetch(`https://disease.sh/v3/covid-19/all`);
-		const res = await all.json();
+		const res = (await all.json()) as CovidAll;
 		const covidEmbed = new MessageEmbed()
 			.setTitle(`COVID-19 World Data`)
 			.setDescription(

@@ -18,10 +18,10 @@ abstract class MonthlyCommand extends GenericCommand {
 		if (!user) return message.reply({ content: 'An error occured' });
 		const date = Date.now();
 		const cooldown = date + 2629800000;
-		if (!isNaN(user.monthly) && user.monthly > date) {
+		if (!isNaN(user.monthly!) && user.monthly! > date) {
 			return message.reply({
 				content: `You still have **${prettyMilliseconds(
-					user.monthly - Date.now(),
+					user.monthly! - Date.now(),
 				)}** left before you can claim your monthly!`,
 			});
 		}

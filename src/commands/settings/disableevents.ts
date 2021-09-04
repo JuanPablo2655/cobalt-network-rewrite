@@ -18,7 +18,7 @@ abstract class DisableEventsCommand extends GenericCommand {
 		const guild = await this.cobalt.db.getGuild(guildId);
 		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
 		await addCD();
-		if (guild.logChannel.disabledEvents.includes(event)) return message.reply({ content: 'Event already disabled' });
+		if (guild.logChannel?.disabledEvents?.includes(event)) return message.reply({ content: 'Event already disabled' });
 	}
 }
 

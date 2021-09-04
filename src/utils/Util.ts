@@ -59,7 +59,8 @@ export default class Util {
 				(options?.allowAuthor === true ? message.member : null);
 			return member;
 		} catch (err) {
-			if (err?.includes?.('DiscordAPIError: Unknown Member')) return undefined;
+			if (err instanceof DJS.DiscordAPIError ? err?.message?.includes('DiscordAPIError: Unknown Member') : null)
+				return undefined;
 			console.error(err);
 		}
 	}

@@ -13,7 +13,7 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 	const bot = await cobalt.db.getBot(cobalt.user?.id);
 	if (!bot) return interaction.editReply({ content: 'An error has occured' });
 	let isDirector = false;
-	bot.directors.forEach(director => {
+	bot.directors?.forEach(director => {
 		if (director === interaction.user.id) return (isDirector = true);
 	});
 	if (!isDirector) return interaction.editReply({ content: 'not a director!' });

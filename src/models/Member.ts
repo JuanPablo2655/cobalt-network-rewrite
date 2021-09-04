@@ -5,10 +5,10 @@ export interface MemberData {
 	_id: ObjectId;
 	memberId: Snowflake;
 	guildId: Snowflake;
-	roles: Snowflake[];
 	vcHours: number;
-	mutes: string[];
-	warns: string[];
+	roles?: Snowflake[] | null;
+	mutes?: string[] | null;
+	warns?: string[] | null;
 }
 
 export type IMember = Document & MemberData;

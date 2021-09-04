@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import GenericCommand from '../../struct/GenericCommand';
+import { CovidAll, covidCountry, covidState } from '../../typings/Covid';
 
 abstract class CovidCommand extends GenericCommand {
 	constructor() {
@@ -15,7 +16,7 @@ abstract class CovidCommand extends GenericCommand {
 		const [parameter, ...path] = args;
 		if (parameter === 'global') {
 			const all = await fetch(`https://disease.sh/v3/covid-19/all`);
-			const res = await all.json();
+			const res = (await all.json()) as CovidAll;
 			const covidEmbed = new MessageEmbed()
 				.setTitle(`COVID-19 World Data`)
 				.setDescription(
@@ -35,7 +36,7 @@ abstract class CovidCommand extends GenericCommand {
 		if (parameter === 'country') {
 			if (!path[0]) return message.reply({ content: 'I need a correct country name. Ex: USA or United States.' });
 			const country = await fetch(`https://disease.sh/v3/covid-19/countries/${path.join('%20')}?strict=false`);
-			const res = await country.json();
+			const res = (await country.json()) as covidCountry;
 			const covidEmbed = new MessageEmbed()
 				.setTitle(`COVID-19 World Data`)
 				.setDescription(
@@ -55,7 +56,7 @@ abstract class CovidCommand extends GenericCommand {
 		if (parameter === 'state') {
 			if (!path[0]) return message.reply({ content: 'I need a correct state name. Ex. New York.' });
 			const state = await fetch(`https://disease.sh/v3/covid-19/states/${path.join('%20')}`);
-			const res = await state.json();
+			const res = (await state.json()) as covidState;
 			if (res.message === "State not found or doesn't have any cases")
 				return message.reply({ content: 'I need a correct state name. Ex. New York.' });
 			const covidEmbed = new MessageEmbed()
@@ -74,7 +75,7 @@ abstract class CovidCommand extends GenericCommand {
 		}
 		await addCD();
 		const all = await fetch(`https://disease.sh/v3/covid-19/all`);
-		const res = await all.json();
+		const res = (await all.json()) as CovidAll;
 		const covidEmbed = new MessageEmbed()
 			.setTitle(`COVID-19 World Data`)
 			.setDescription(

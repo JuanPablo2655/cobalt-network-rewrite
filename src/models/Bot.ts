@@ -3,7 +3,7 @@ import { Document, model, Schema } from 'mongoose';
 
 export interface BotData {
 	_id: Snowflake;
-	directors: Snowflake[];
+	directors?: Snowflake[] | null;
 	tax: number;
 	bank: number;
 	totalCommandsUsed: number;

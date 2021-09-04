@@ -65,10 +65,10 @@ export async function daily(cobalt: CobaltClient, interaction: CommandInteractio
 	const user = await cobalt.db.getUser(member.id);
 	const date = Date.now();
 	const cooldown = date + 86400000;
-	if (!isNaN(user!.daily) && user!.daily > date) {
+	if (!isNaN(user!.daily!) && user!.daily! > date) {
 		return interaction.reply({
 			content: `You still have **${prettyMilliseconds(
-				user!.daily - Date.now(),
+				user!.daily! - Date.now(),
 			)}** left before you can claim your daily!`,
 		});
 	}
@@ -94,10 +94,10 @@ export async function weekly(cobalt: CobaltClient, interaction: CommandInteracti
 	const user = await cobalt.db.getUser(member.id);
 	const date = Date.now();
 	const cooldown = date + 604800000;
-	if (!isNaN(user!.weekly) && user!.weekly > date) {
+	if (!isNaN(user!.weekly!) && user!.weekly! > date) {
 		return interaction.reply({
 			content: `You still have **${prettyMilliseconds(
-				user!.weekly - Date.now(),
+				user!.weekly! - Date.now(),
 			)}** left before you can claim your weekly!`,
 		});
 	}
@@ -123,10 +123,10 @@ export async function monthly(cobalt: CobaltClient, interaction: CommandInteract
 	const user = await cobalt.db.getUser(member.id);
 	const date = Date.now();
 	const cooldown = date + 2629800000;
-	if (!isNaN(user!.monthly) && user!.monthly > date) {
+	if (!isNaN(user!.monthly!) && user!.monthly! > date) {
 		return interaction.reply({
 			content: `You still have **${prettyMilliseconds(
-				user!.monthly - Date.now(),
+				user!.monthly! - Date.now(),
 			)}** left before you can claim your monthly!`,
 		});
 	}

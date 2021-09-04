@@ -7,8 +7,8 @@ export async function channel(cobalt: CobaltClient, interaction: CommandInteract
 	if (!guild) return;
 	await cobalt.db.updateGuild(interaction.guild!.id, {
 		logChannel: {
-			enabled: guild.logChannel.enabled,
-			disabledEvents: guild.logChannel.disabledEvents,
+			enabled: guild.logChannel?.enabled ?? true,
+			disabledEvents: guild.logChannel?.disabledEvents ?? [],
 			channelId: channel.id,
 		},
 	});
@@ -19,12 +19,12 @@ export async function toggle(cobalt: CobaltClient, interaction: CommandInteracti
 	const option = interaction.options.getBoolean('boolean', true);
 	const guild = await cobalt.db.getGuild(interaction.guild!.id);
 	if (!guild) return;
-	if (guild.logChannel.enabled === option) return interaction.reply({ content: `Already ${option}`, ephemeral: true });
+	if (guild.logChannel?.enabled === option) return interaction.reply({ content: `Already ${option}`, ephemeral: true });
 	await cobalt.db.updateGuild(interaction.guild!.id, {
 		logChannel: {
 			enabled: option,
-			disabledEvents: guild.logChannel.disabledEvents,
-			channelId: guild.logChannel.channelId,
+			disabledEvents: guild.logChannel?.disabledEvents ?? [],
+			channelId: guild.logChannel?.channelId ?? null,
 		},
 	});
 	return interaction.reply({ content: `Successfully ${option === true ? 'enabled' : 'disabled'} the log channel.` });
