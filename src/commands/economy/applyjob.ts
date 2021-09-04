@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import jobs from '../../data/jobs';
 import GenericCommand from '../../struct/GenericCommand';
-import { formatNumber } from '../../utils/util';
+import { formatMoney } from '../../utils/util';
 
 abstract class ApplyJobCommand extends GenericCommand {
 	constructor() {
@@ -26,7 +26,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 		if (user?.job === null) {
 			await this.cobalt.econ.updateJob(message.author.id, job.id);
 			return message.reply({
-				content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **₡${formatNumber(
+				content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
 					job.minAmount,
 				)}**`,
 			});

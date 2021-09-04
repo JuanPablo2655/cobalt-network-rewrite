@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import jobs from '../../../../data/jobs';
 import { CobaltClient } from '../../../../struct/cobaltClient';
-import { formatNumber } from '../../../../utils/util';
+import { formatMoney } from '../../../../utils/util';
 
 export async function apply(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = await cobalt.db.getUser(interaction.user.id);
@@ -11,7 +11,7 @@ export async function apply(cobalt: CobaltClient, interaction: CommandInteractio
 	if (user?.job === null) {
 		await cobalt.econ.updateJob(interaction.user.id, job.id);
 		return interaction.reply({
-			content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **₡${formatNumber(
+			content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
 				job.minAmount,
 			)}**`,
 		});

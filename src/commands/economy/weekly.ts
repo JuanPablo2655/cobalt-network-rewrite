@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import GenericCommand from '../../struct/GenericCommand';
-import { addMulti, findMember, formatNumber } from '../../utils/util';
+import { addMulti, findMember, formatMoney } from '../../utils/util';
 
 abstract class WeeklyCommand extends GenericCommand {
 	constructor() {
@@ -32,7 +32,7 @@ abstract class WeeklyCommand extends GenericCommand {
 			await this.cobalt.db.updateUser(message.author.id, { weekly: cooldown });
 			await this.cobalt.econ.addToWallet(member.id, weeklyAmount);
 			return message.channel.send({
-				content: `You have received your weekly **₡${formatNumber(weeklyAmount)}**.`,
+				content: `You have received your weekly **${formatMoney(weeklyAmount)}**.`,
 			});
 		}
 		const weeklyAmount = Math.floor(750 + Math.random() * 750);
@@ -40,7 +40,7 @@ abstract class WeeklyCommand extends GenericCommand {
 		await this.cobalt.db.updateUser(message.author.id, { weekly: cooldown });
 		await this.cobalt.econ.addToWallet(member!.id, moneyEarned);
 		return message.channel.send({
-			content: `You gave your weekly of **₡${formatNumber(moneyEarned)}** to **${member?.user.username}**.`,
+			content: `You gave your weekly of **${formatMoney(moneyEarned)}** to **${member?.user.username}**.`,
 		});
 	}
 }

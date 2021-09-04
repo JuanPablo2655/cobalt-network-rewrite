@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
-import { findMember, formatNumber } from '../../utils/util';
+import { findMember, formatMoney } from '../../utils/util';
 
 abstract class BalanceCommand extends GenericCommand {
 	constructor() {
@@ -22,11 +22,11 @@ abstract class BalanceCommand extends GenericCommand {
 		const balanceEmbed = new MessageEmbed()
 			.setTitle(`${user?.username}'s balance`)
 			.setDescription(
-				`**Wallet**: ₡${formatNumber(profile!.wallet)}\n**Bank**: ₡${formatNumber(profile!.bank)} / ₡${formatNumber(
+				`**Wallet**: ${formatMoney(profile!.wallet)}\n**Bank**: ${formatMoney(profile!.bank)} / ${formatMoney(
 					profile!.bankSpace,
-				)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ₡${formatNumber(
+				)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
 					profile!.netWorth,
-				)}\n**Bounty**: ₡${formatNumber(profile!.bounty)}`,
+				)}\n**Bounty**: ${formatMoney(profile!.bounty)}`,
 			);
 		message.reply({ embeds: [balanceEmbed] });
 	}

@@ -3,13 +3,11 @@ import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
 
 export function formatNumber(n: string | number): string {
-	n += '';
-	let x = (n as String).split('.');
-	let x1 = x[0];
-	let x2 = x.length > 1 ? '.' + x[1] : '';
-	var rgx = /(\d+)(\d{3})/;
-	while (rgx.test(x1)) x1 = x1.replace(rgx, '$1' + ',' + '$2');
-	return x1 + x2;
+	return Number.parseFloat(String(n)).toLocaleString('en-US');
+}
+
+export function formatMoney(n: string | number): string {
+	return `₡ ${formatNumber(n)}`;
 }
 
 export function toCapitalize(str: string) {

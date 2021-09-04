@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
-import { formatNumber } from '../../utils/util';
+import { formatMoney } from '../../utils/util';
 
 abstract class WithdrawCommand extends GenericCommand {
 	constructor() {
@@ -26,7 +26,7 @@ abstract class WithdrawCommand extends GenericCommand {
 		await this.cobalt.econ.removeFrombank(message.author.id, money);
 		await this.cobalt.econ.addToWallet(message.author.id, money);
 		return message.channel.send({
-			content: `You withdrew **₡${formatNumber(money)}**. Your bank balance is now **₡${formatNumber(
+			content: `You withdrew **${formatMoney(money)}**. Your bank balance is now **${formatMoney(
 				profile!.bank - money,
 			)}**`,
 		});
