@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import GenericCommand from '../../struct/GenericCommand';
+import { findMember } from '../../utils/util';
 
 abstract class GetVcTimeCommand extends GenericCommand {
 	constructor() {
@@ -15,7 +16,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [option] = args;
-		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true, index: 1 });
+		const member = await findMember(this.cobalt, message, args, { allowAuthor: true, index: 1 });
 		const memberData = await this.cobalt.db.getMember(member!.id, message.guild!.id);
 		const user = await this.cobalt.db.getUser(member!.id);
 		await addCD();

@@ -1,6 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import jobs from '../../../../data/jobs';
 import { CobaltClient } from '../../../../struct/cobaltClient';
+import { formatNumber } from '../../../../utils/util';
 
 export async function apply(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = await cobalt.db.getUser(interaction.user.id);
@@ -10,9 +11,9 @@ export async function apply(cobalt: CobaltClient, interaction: CommandInteractio
 	if (user?.job === null) {
 		await cobalt.econ.updateJob(interaction.user.id, job.id);
 		return interaction.reply({
-			content: `Congraduations on becoming a **${
-				job.name
-			}**. Your minimum payment is now **₡${cobalt.utils.formatNumber(job.minAmount)}**`,
+			content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **₡${formatNumber(
+				job.minAmount,
+			)}**`,
 		});
 	} else {
 		return interaction.reply({ content: `You have a job already. If you want to switch you have to quit your job` });

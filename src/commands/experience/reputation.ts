@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import GenericCommand from '../../struct/GenericCommand';
+import { findMember } from '../../utils/util';
 
 abstract class ReputationCommand extends GenericCommand {
 	constructor() {
@@ -14,7 +15,7 @@ abstract class ReputationCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const member = await this.cobalt.utils.findMember(message, args);
+		const member = await findMember(this.cobalt, message, args);
 		if (!member) return message.reply({ content: 'Please pick a valid member' });
 		const author = await this.cobalt.db.getUser(message.author.id);
 		if (!author) return message.reply({ content: 'An error occured' });

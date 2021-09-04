@@ -1,5 +1,6 @@
 import { Guild, Message, TextChannel, Permissions } from 'discord.js';
 import Event from '../../struct/Event';
+import { formatNumber } from '../../utils/util';
 
 abstract class MessageEvent extends Event {
 	constructor() {
@@ -52,7 +53,7 @@ abstract class MessageEvent extends Event {
 							const cleanMessage = guild.levelMessage.message
 								.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
-								.replace(/{newLevel}/g, `**${this.cobalt.utils.formatNumber(profile!.lvl)}**`);
+								.replace(/{newLevel}/g, `**${formatNumber(profile!.lvl)}**`);
 							message.channel.send({ content: cleanMessage });
 						}
 					}

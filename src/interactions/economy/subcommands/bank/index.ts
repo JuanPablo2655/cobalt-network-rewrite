@@ -1,5 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 import { CobaltClient } from '../../../../struct/cobaltClient';
+import { formatNumber } from '../../../../utils/util';
 
 export async function deposit(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const profile = await cobalt.db.getUser(interaction.user.id);
@@ -11,9 +12,9 @@ export async function deposit(cobalt: CobaltClient, interaction: CommandInteract
 	await cobalt.econ.removeFromWallet(interaction.user.id, amount);
 	await cobalt.econ.addToBank(interaction.user.id, amount);
 	return interaction.reply({
-		content: `You deposited **₡${cobalt.utils.formatNumber(
-			amount,
-		)}**. Your bank balance is now **₡${cobalt.utils.formatNumber(profile!.bank + amount)}**`,
+		content: `You deposited **₡${formatNumber(amount)}**. Your bank balance is now **₡${formatNumber(
+			profile!.bank + amount,
+		)}**`,
 	});
 }
 
@@ -25,8 +26,8 @@ export async function withdraw(cobalt: CobaltClient, interaction: CommandInterac
 	await cobalt.econ.removeFrombank(interaction.user.id, amount);
 	await cobalt.econ.addToWallet(interaction.user.id, amount);
 	return interaction.reply({
-		content: `You withdrew **₡${cobalt.utils.formatNumber(
-			amount,
-		)}**. Your bank balance is now **₡${cobalt.utils.formatNumber(profile!.bank - amount)}**`,
+		content: `You withdrew **₡${formatNumber(amount)}**. Your bank balance is now **₡${formatNumber(
+			profile!.bank - amount,
+		)}**`,
 	});
 }

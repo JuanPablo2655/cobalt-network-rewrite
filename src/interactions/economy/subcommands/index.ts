@@ -2,6 +2,7 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import jobs from '../../../data/jobs';
 import { CobaltClient } from '../../../struct/cobaltClient';
+import { addMulti, calcMulti, formatNumber } from '../../../utils/util';
 
 export async function work(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = await cobalt.db.getUser(interaction.user.id);
@@ -9,12 +10,12 @@ export async function work(cobalt: CobaltClient, interaction: CommandInteraction
 	const job = jobs.find(j => j.id === user?.job);
 	const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
 	const money = Math.floor(job!.minAmount + Math.random() * 250);
-	const multi = await cobalt.utils.calcMulti(interaction.user);
-	const moneyEarned = cobalt.utils.addMulti(money, multi);
+	const multi = await calcMulti(interaction.user, cobalt);
+	const moneyEarned = addMulti(money, multi);
 	await cobalt.econ.addToWallet(interaction.user.id, moneyEarned);
 	const cleanEntry = workEntry
 		?.replace(/{user.username}/g, interaction.user.username)
-		.replace(/{money}/g, cobalt.utils.formatNumber(moneyEarned));
+		.replace(/{money}/g, formatNumber(moneyEarned));
 	return interaction.reply({ content: cleanEntry });
 }
 
@@ -26,9 +27,7 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 	if (member.id === interaction.user.id) return interaction.reply({ content: "You can't pay yourself!" });
 	if (author!.wallet < amount)
 		return interaction.reply({
-			content: `You don't have enough to pay that much. You currently have **₡${cobalt.utils.formatNumber(
-				author!.wallet,
-			)}**`,
+			content: `You don't have enough to pay that much. You currently have **₡${formatNumber(author!.wallet)}**`,
 		});
 	const tax = Math.round(amount * (bot!.tax / 100));
 	const afterTax = amount - tax;
@@ -36,9 +35,9 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 	await cobalt.econ.addToWallet(member.id, afterTax);
 	await cobalt.db.updateBot(interaction.client.user?.id, { bank: bot!.bank + tax });
 	return interaction.reply({
-		content: `>>> Transaction to **${member.username}**:\nSubtotal: **₡${cobalt.utils.formatNumber(
+		content: `>>> Transaction to **${member.username}**:\nSubtotal: **₡${formatNumber(
 			amount,
-		)}**\nTaxes: **₡${cobalt.utils.formatNumber(tax)}**\nTotal: **₡${cobalt.utils.formatNumber(afterTax)}**`,
+		)}**\nTaxes: **₡${formatNumber(tax)}**\nTotal: **₡${formatNumber(afterTax)}**`,
 	});
 }
 
@@ -49,13 +48,11 @@ export async function balance(cobalt: CobaltClient, interaction: CommandInteract
 	const balanceEmbed = new MessageEmbed()
 		.setTitle(`${user.username}'s balance`)
 		.setDescription(
-			`**Wallet**: ₡${cobalt.utils.formatNumber(profile!.wallet)}\n**Bank**: ₡${cobalt.utils.formatNumber(
-				profile!.bank,
-			)} / ₡${cobalt.utils.formatNumber(profile!.bankSpace)} \`${bankPercent
-				.toString()
-				.substring(0, 4)}%\`\n**Net Worth**: ₡${cobalt.utils.formatNumber(
+			`**Wallet**: ₡${formatNumber(profile!.wallet)}\n**Bank**: ₡${formatNumber(profile!.bank)} / ₡${formatNumber(
+				profile!.bankSpace,
+			)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ₡${formatNumber(
 				profile!.netWorth,
-			)}\n**Bounty**: ₡${cobalt.utils.formatNumber(profile!.bounty)}`,
+			)}\n**Bounty**: ₡${formatNumber(profile!.bounty)}`,
 		);
 	interaction.reply({ embeds: [balanceEmbed] });
 }
@@ -77,15 +74,15 @@ export async function daily(cobalt: CobaltClient, interaction: CommandInteractio
 		await cobalt.db.updateUser(interaction.user.id, { daily: cooldown });
 		await cobalt.econ.addToWallet(member.id, dailyAmount);
 		return interaction.reply({
-			content: `You have received your daily **₡${cobalt.utils.formatNumber(dailyAmount)}**.`,
+			content: `You have received your daily **₡${formatNumber(dailyAmount)}**.`,
 		});
 	}
 	const dailyAmount = Math.floor(250 + Math.random() * 150);
-	const moneyEarned = cobalt.utils.addMulti(dailyAmount, 10);
+	const moneyEarned = addMulti(dailyAmount, 10);
 	await cobalt.db.updateUser(interaction.user.id, { daily: cooldown });
 	await cobalt.econ.addToWallet(member!.id, moneyEarned);
 	return interaction.reply({
-		content: `You gave your daily of **₡${cobalt.utils.formatNumber(moneyEarned)}** to **${member?.username}**.`,
+		content: `You gave your daily of **₡${formatNumber(moneyEarned)}** to **${member?.username}**.`,
 	});
 }
 
@@ -106,15 +103,15 @@ export async function weekly(cobalt: CobaltClient, interaction: CommandInteracti
 		await cobalt.db.updateUser(interaction.user.id, { weekly: cooldown });
 		await cobalt.econ.addToWallet(member.id, weeklyAmount);
 		return interaction.reply({
-			content: `You have received your weekly **₡${cobalt.utils.formatNumber(weeklyAmount)}**.`,
+			content: `You have received your weekly **₡${formatNumber(weeklyAmount)}**.`,
 		});
 	}
 	const weeklyAmount = Math.floor(750 + Math.random() * 750);
-	const moneyEarned = cobalt.utils.addMulti(weeklyAmount, 10);
+	const moneyEarned = addMulti(weeklyAmount, 10);
 	await cobalt.db.updateUser(interaction.user.id, { weekly: cooldown });
 	await cobalt.econ.addToWallet(member!.id, moneyEarned);
 	return interaction.reply({
-		content: `You gave your weekly of **₡${cobalt.utils.formatNumber(moneyEarned)}** to **${member?.username}**.`,
+		content: `You gave your weekly of **₡${formatNumber(moneyEarned)}** to **${member?.username}**.`,
 	});
 }
 
@@ -135,14 +132,14 @@ export async function monthly(cobalt: CobaltClient, interaction: CommandInteract
 		await cobalt.db.updateUser(interaction.user.id, { monthly: cooldown });
 		await cobalt.econ.addToWallet(member.id, monthlyAmount);
 		return interaction.reply({
-			content: `You have received your monthly **₡${cobalt.utils.formatNumber(monthlyAmount)}**.`,
+			content: `You have received your monthly **₡${formatNumber(monthlyAmount)}**.`,
 		});
 	}
 	const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
-	const moneyEarned = cobalt.utils.addMulti(monthlyAmount, 10);
+	const moneyEarned = addMulti(monthlyAmount, 10);
 	await cobalt.db.updateUser(interaction.user.id, { monthly: cooldown });
 	await cobalt.econ.addToWallet(member!.id, moneyEarned);
 	return interaction.reply({
-		content: `You gave your monthly of **₡${cobalt.utils.formatNumber(moneyEarned)}** to **${member?.username}**.`,
+		content: `You gave your monthly of **₡${formatNumber(moneyEarned)}** to **${member?.username}**.`,
 	});
 }

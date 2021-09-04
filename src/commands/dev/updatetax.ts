@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
+import { formatNumber } from '../../utils/util';
 
 abstract class UpdateTaxCommand extends GenericCommand {
 	constructor() {
@@ -22,7 +23,7 @@ abstract class UpdateTaxCommand extends GenericCommand {
 		if (tax > 60) return message.reply({ content: "Can't tax users more than 60%" });
 		await addCD();
 		await this.cobalt.db.updateBot(this.cobalt.user?.id, { tax });
-		message.channel.send({ content: `The global tax rate is now **${this.cobalt.utils.formatNumber(tax)}%**` });
+		message.channel.send({ content: `The global tax rate is now **${formatNumber(tax)}%**` });
 	}
 }
 
