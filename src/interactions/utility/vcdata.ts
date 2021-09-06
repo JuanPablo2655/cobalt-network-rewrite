@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import Interaction from '../../struct/Interaction';
+import Interaction from '../../struct/InteractionCommand';
 import { vcdataCommand } from './options';
 
 abstract class VcDataInteraction extends Interaction {

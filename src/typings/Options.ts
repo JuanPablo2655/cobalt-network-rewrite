@@ -1,36 +1,4 @@
-import { ApplicationCommandPermissionData, ClientEvents, Interaction, Message, PermissionString } from 'discord.js';
-
-export type Categories = 'dev' | 'economy' | 'experience' | 'settings' | 'utility' | 'admin';
-
-export interface CommandOptions {
-	name: string;
-	description: string;
-	category: Categories;
-	usage?: string;
-	aliases?: string[];
-	enabled?: boolean;
-	ownerOnly?: boolean;
-	devOnly?: boolean;
-	guildOnly?: boolean;
-	nsfwOnly?: boolean;
-	cooldown?: number;
-	userPermissions?: PermissionString[];
-	clientPermissions?: PermissionString[];
-	run: (message: Message, args: string[], addCD: () => Promise<void>) => unknown | Promise<unknown>;
-}
-
-export interface InteractionCommandOptions {
-	name: string;
-	category: Categories;
-	devOnly?: boolean;
-	permissions?: ApplicationCommandPermissionData[];
-	userPermissions?: PermissionString[];
-	clientPermissions?: PermissionString[];
-	run: (interactions: Interaction) => unknown | Promise<unknown>;
-}
-
-export type CommandType = Omit<CommandOptions, 'run'>;
-export type InteractionType = Omit<InteractionCommandOptions, 'run'>;
+import { ClientEvents } from 'discord.js';
 
 export interface EventOptions {
 	name: keyof ClientEvents;

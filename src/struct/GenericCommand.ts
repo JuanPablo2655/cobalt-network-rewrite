@@ -1,32 +1,24 @@
-import { Message, PermissionString } from 'discord.js';
-import { Categories, CommandType } from '../typings/Options';
-import { CobaltClient } from './cobaltClient';
+import { Message } from 'discord.js';
+import { GenericCommandType } from '../typings/CommandOptions';
+import BaseCommand from './BaseCommand';
 
-abstract class GenericCommand {
-	public name: string;
+abstract class GenericCommand extends BaseCommand {
 	public description: string;
-	public category: Categories;
 	public usage: string;
 	public aliases: string[];
 	public enabled: boolean;
 	public ownerOnly: boolean;
-	public devOnly: boolean;
 	public guildOnly: boolean;
 	public nsfwOnly: boolean;
 	public cooldown: number;
-	public userPermissions: PermissionString[];
-	public clientPermissions: PermissionString[];
-	public abstract cobalt: CobaltClient;
 
-	constructor(options: CommandType) {
-		this.name = options.name;
+	constructor(options: GenericCommandType) {
+		super(options);
 		this.description = options.description;
-		this.category = options.category;
 		this.usage = options.usage ?? '';
 		this.aliases = options.aliases ?? [];
 		this.enabled = options.enabled ?? true;
 		this.ownerOnly = options.ownerOnly ?? false;
-		this.devOnly = options.devOnly ?? false;
 		this.guildOnly = options.guildOnly ?? false;
 		this.nsfwOnly = options.nsfwOnly ?? false;
 		this.cooldown = options.cooldown ?? 1;

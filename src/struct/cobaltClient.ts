@@ -2,16 +2,17 @@ import { Client, Collection, Intents, Snowflake } from 'discord.js';
 import Redis from 'ioredis';
 import dotenv from 'dotenv';
 import { CommandRegistry, EventRegistry, InteractionRegistry } from './registries/export/RegistryIndex';
-import { CommandOptions, EventOptions, InteractionCommandOptions } from '../typings/Options';
+import { EventOptions } from '../typings/Options';
 import Util from '../utils/Util';
 import Database from '../utils/Database';
 import Experience from '../utils/Experience';
 import Economy from '../utils/Economy';
 import Metrics from '../utils/Metrics';
+import { GenericCommandOptions, InteractionCommandOptions } from '../typings/CommandOptions';
 dotenv.config();
 
 export class CobaltClient extends Client {
-	public commands = new Collection<string, CommandOptions>();
+	public commands = new Collection<string, GenericCommandOptions>();
 	public cooldowns = new Collection<string, Collection<string, number>>();
 	public events = new Collection<string, EventOptions>();
 	public interactions = new Collection<string, InteractionCommandOptions>();

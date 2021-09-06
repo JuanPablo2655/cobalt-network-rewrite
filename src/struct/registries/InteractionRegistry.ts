@@ -1,7 +1,7 @@
 import { sync } from 'glob';
 import { resolve } from 'path';
 import { CobaltClient } from '../cobaltClient';
-import Interaction from '../Interaction';
+import InteractionCommand from '../InteractionCommand';
 
 const registerInteraction: Function = (cobalt: CobaltClient) => {
 	const interactionFiles = sync(resolve(__dirname + '/../../interactions/**/*'));
@@ -9,8 +9,8 @@ const registerInteraction: Function = (cobalt: CobaltClient) => {
 	interactionFiles.forEach(async file => {
 		if (/\.(j|t)s$/iu.test(file)) {
 			const File = require(file).default;
-			if (File && File.prototype instanceof Interaction) {
-				const interaction: Interaction = new File();
+			if (File && File.prototype instanceof InteractionCommand) {
+				const interaction: InteractionCommand = new File();
 				interaction.cobalt = cobalt;
 				cobalt.interactions.set(interaction.name, interaction);
 			}
