@@ -19,11 +19,11 @@ export async function findMember(
 	message: Partial<DJS.Message>,
 	args: string[],
 	options?: { allowAuthor?: boolean; index?: number },
-): Promise<DJS.GuildMember | undefined | null> {
-	if (!(message.guild instanceof DJS.Guild)) return;
+): Promise<DJS.GuildMember | null> {
+	if (!(message.guild instanceof DJS.Guild)) return null;
 
 	try {
-		let member: DJS.GuildMember | undefined | null;
+		let member: DJS.GuildMember | null;
 		const arg = args[options?.index ?? 0]?.replace?.(/[<@!>]/gi, '') || args[options?.index ?? 0];
 		const mention =
 			message.mentions?.users.first()?.id !== client.user?.id
@@ -52,9 +52,11 @@ export async function findMember(
 			(options?.allowAuthor === true ? message.member : null);
 		return member;
 	} catch (err) {
-		if (err instanceof DJS.DiscordAPIError ? err?.message?.includes('DiscordAPIError: Unknown Member') : null)
-			return undefined;
-		console.error(err);
+		if (err instanceof DJS.DiscordAPIError ? err?.message?.includes('DiscordAPIError: Unknown Member') : null) {
+			console.error(err);
+			return null;
+		}
+		return null;
 	}
 }
 
