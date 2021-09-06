@@ -57,8 +57,7 @@ export default class Database {
 		try {
 			let guild, redis;
 			guild = redis = await this.cobalt.redis.get(`guild:${guildId}`).then(res => (res ? JSON.parse(res) : undefined));
-			if (!guild) guild = await guildModel.findOne({ _id: guildId });
-			if (!guild) guild = await this.addGuild(guildId);
+			guild ??= (await guildModel.findOne({ _id: guildId })) ?? (await this.addGuild(guildId));
 			if (!redis) await this.cobalt.redis.set(`guild:${guildId}`, JSON.stringify(guild));
 			return guild;
 		} catch (err) {
@@ -81,8 +80,7 @@ export default class Database {
 		try {
 			let bot, redis;
 			bot = redis = await this.cobalt.redis.get(`bot:${botId}`).then(res => (res ? JSON.parse(res) : undefined));
-			if (!bot) bot = await botModel.findOne({ _id: botId });
-			if (!bot) bot = await botModel.create({ _id: botId });
+			bot ??= (await botModel.findOne({ _id: botId })) ?? (await botModel.create({ _id: botId }));
 			if (!redis) await this.cobalt.redis.set(`bot:${botId}`, JSON.stringify(bot));
 			return bot;
 		} catch (err) {
@@ -123,8 +121,7 @@ export default class Database {
 		try {
 			let user, redis;
 			user = redis = await this.cobalt.redis.get(`user:${userId}`).then(res => (res ? JSON.parse(res) : undefined));
-			if (!user) user = await userModel.findOne({ _id: userId });
-			if (!user) user = await this.addUser(userId);
+			user ??= (await userModel.findOne({ _id: userId })) ?? (await this.addUser(userId));
 			if (!redis) await this.cobalt.redis.set(`user:${userId}`, JSON.stringify(user));
 			return user;
 		} catch (err) {
@@ -169,8 +166,7 @@ export default class Database {
 			member = redis = await this.cobalt.redis
 				.get(`member:${memberId}:${guildId}`)
 				.then(res => (res ? JSON.parse(res) : undefined));
-			if (!member) member = await memberModel.findOne({ memberId, guildId });
-			if (!member) member = await this.addMember(memberId, guildId);
+			member ??= (await memberModel.findOne({ memberId, guildId })) ?? (await this.addMember(memberId, guildId));
 			if (!redis) await this.cobalt.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(member));
 			return member;
 		} catch (err) {
