@@ -106,8 +106,7 @@ export default class Currency {
 	async updateJob(userId: string, job: string | null) {
 		try {
 			if (!job && job !== null) throw new TypeError('Must supply a job id');
-			let user = await this.cobalt.db.getUser(userId);
-			user ??= await this.cobalt.db.addUser(userId);
+			(await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { job });
 		} catch (err) {
