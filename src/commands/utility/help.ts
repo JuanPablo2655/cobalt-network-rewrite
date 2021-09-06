@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import GenericCommand from '../../struct/GenericCommand';
+import { toCapitalize } from '../../utils/util';
 
 abstract class HelpCommand extends GenericCommand {
 	constructor() {
@@ -38,7 +39,7 @@ abstract class HelpCommand extends GenericCommand {
 					commandNames.push(command[1].name);
 				}
 			}
-			helpEmbed.setTitle(`${this.cobalt.utils.toCapitalize(args[0])} Commands`);
+			helpEmbed.setTitle(`${toCapitalize(args[0])} Commands`);
 			helpEmbed.setDescription(`${commandNames.map(c => `\`${c}\``).join(', ')}`);
 			return message.reply({ embeds: [helpEmbed] });
 		} else {
@@ -46,7 +47,7 @@ abstract class HelpCommand extends GenericCommand {
 			helpEmbed.setDescription(`${this.cobalt.user?.username} Command List`);
 			for (const category of categories) {
 				if (category === 'dev') continue;
-				helpEmbed.addField(`${this.cobalt.utils.toCapitalize(category)}`, `\`${guild?.prefix}help ${category}\``, true);
+				helpEmbed.addField(`${toCapitalize(category)}`, `\`${guild?.prefix}help ${category}\``, true);
 			}
 			return message.reply({ embeds: [helpEmbed] });
 		}

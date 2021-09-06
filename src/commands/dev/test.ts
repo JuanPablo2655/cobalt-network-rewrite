@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { Items } from '../../data/items';
 import GenericCommand from '../../struct/GenericCommand';
+import { trim } from '../../utils/util';
 
 abstract class TestCommand extends GenericCommand {
 	constructor() {
@@ -16,7 +17,7 @@ abstract class TestCommand extends GenericCommand {
 		const bruh = Items.filter(i => (i.data[args[0]] !== undefined ? i.data[args[0]] : i)).map(
 			i => `${i.id} - ${i.name}`,
 		);
-		return message.channel.send({ content: this.cobalt.utils.trim(bruh.join('\n'), 2000) });
+		return message.channel.send({ content: trim(bruh.join('\n'), 2000) });
 	}
 }
 

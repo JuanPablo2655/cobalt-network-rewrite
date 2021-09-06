@@ -1,5 +1,6 @@
 import { CommandInteraction, Snowflake } from 'discord.js';
 import { CobaltClient } from '../../../../struct/cobaltClient';
+import { formatNumber } from '../../../../utils/util';
 
 export async function directors(cobalt: CobaltClient, interaction: CommandInteraction) {
 	await interaction.deferReply();
@@ -26,5 +27,5 @@ export async function tax(cobalt: CobaltClient, interaction: CommandInteraction)
 	if (tax < 1.5) return interaction.editReply({ content: 'Tax must be greater than 1.5%' });
 	if (tax > 60) return interaction.editReply({ content: "Can't tax users more than 60%" });
 	await cobalt.db.updateBot(cobalt.user?.id, { tax });
-	interaction.editReply({ content: `The global tax rate is now **${cobalt.utils.formatNumber(tax)}%**` });
+	interaction.editReply({ content: `The global tax rate is now **${formatNumber(tax)}%**` });
 }

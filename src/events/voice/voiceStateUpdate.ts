@@ -1,6 +1,7 @@
 import { MessageEmbed, TextChannel, VoiceState } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import Event from '../../struct/Event';
+import { formatMoney } from '../../utils/util';
 
 abstract class VoiceStateUpdate extends Event {
 	constructor() {
@@ -54,9 +55,9 @@ abstract class VoiceStateUpdate extends Event {
 				});
 				oldState.member
 					?.send({
-						content: `You have earned **₡${this.cobalt.utils.formatNumber(
-							addMoney,
-						)}** for spending **${prettyMilliseconds(elapsed)}** in VC.`,
+						content: `You have earned **${formatMoney(addMoney)}** for spending **${prettyMilliseconds(
+							elapsed,
+						)}** in VC.`,
 					})
 					.catch(err => console.error(err));
 				logEmbed

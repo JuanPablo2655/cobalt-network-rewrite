@@ -3,7 +3,6 @@ import Redis from 'ioredis';
 import dotenv from 'dotenv';
 import { CommandRegistry, EventRegistry, InteractionRegistry } from './registries/export/RegistryIndex';
 import { CommandOptions, EventOptions, InteractionCommandOptions } from '../typings/Options';
-import Util from '../utils/Util';
 import Database from '../utils/Database';
 import Experience from '../utils/Experience';
 import Economy from '../utils/Economy';
@@ -19,7 +18,6 @@ export class CobaltClient extends Client {
 	public devMode: boolean;
 	public testEvents: boolean;
 	public disableXp: boolean;
-	public utils: Util;
 	public db: Database;
 	public exp: Experience;
 	public econ: Economy;
@@ -51,7 +49,6 @@ export class CobaltClient extends Client {
 		this.testEvents = process.env.TESTEVENTS === 'true' ? true : false;
 		this.disableXp = process.env.DISABLEXP === 'true' ? true : false;
 		this.voiceTime = new Map();
-		this.utils = new Util(this);
 		this.db = new Database(this, process.env.MONGOURL || 'mongodb://localhost:27017/cobalt');
 		this.exp = new Experience(this);
 		this.econ = new Economy(this);
