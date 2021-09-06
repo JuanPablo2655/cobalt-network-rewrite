@@ -11,9 +11,7 @@ export default class Currency {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { wallet: user!.wallet + money, netWorth: user!.netWorth + money });
 		} catch (err) {
@@ -25,9 +23,7 @@ export default class Currency {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { wallet: user!.wallet - money, netWorth: user!.netWorth - money });
 		} catch (err) {
@@ -39,9 +35,7 @@ export default class Currency {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { bank: user!.bank + money, netWorth: user!.netWorth + money });
 		} catch (err) {
@@ -53,9 +47,7 @@ export default class Currency {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { bank: user!.bank - money, netWorth: user!.netWorth - money });
 		} catch (err) {
@@ -67,9 +59,7 @@ export default class Currency {
 		try {
 			if (isNaN(space)) throw new TypeError('Money must be a number.');
 			if (space <= 0) throw new TypeError('Must be more than zero.');
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { bankSpace: user!.bankSpace + space });
 		} catch (err) {
@@ -81,9 +71,7 @@ export default class Currency {
 		try {
 			if (isNaN(space)) throw new TypeError('Money must be a number.');
 			if (space <= 0) throw new TypeError('Must be more than zero.');
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { bankSpace: user!.bankSpace - space });
 		} catch (err) {
@@ -95,9 +83,7 @@ export default class Currency {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { bounty: user!.bounty + amount });
 		} catch (err) {
@@ -109,9 +95,7 @@ export default class Currency {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, { bounty: user!.bounty - amount });
 		} catch (err) {
@@ -123,8 +107,7 @@ export default class Currency {
 		try {
 			if (!job && job !== null) throw new TypeError('Must supply a job id');
 			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			user ??= await this.cobalt.db.addUser(userId);
 
 			await this.cobalt.db.updateUser(userId, { job });
 		} catch (err) {
@@ -134,9 +117,7 @@ export default class Currency {
 
 	async killUser(userId: string) {
 		try {
-			let user = await this.cobalt.db.getUser(userId);
-
-			if (!user) user = await this.cobalt.db.addUser(userId);
+			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, {
 				wallet: 0,
