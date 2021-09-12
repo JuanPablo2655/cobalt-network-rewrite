@@ -34,6 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Upload Coverage
-        uses: codecov/codecov-action@2
+        uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

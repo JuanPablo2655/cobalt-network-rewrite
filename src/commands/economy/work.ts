@@ -25,7 +25,7 @@ abstract class WorkCommand extends GenericCommand {
 		await this.cobalt.econ.addToWallet(message.author.id, moneyEarned);
 		const cleanEntry = workEntry
 			?.replace(/{user.username}/g, message.author.username)
-			.replace(/{money}/g, formatNumber(moneyEarned));
+			.replace(/{money}/g, formatNumber(moneyEarned)!);
 		return message.channel.send({ content: cleanEntry });
 	}
 }
