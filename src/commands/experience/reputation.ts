@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import GenericCommand from '../../struct/GenericCommand';
+import { findMember } from '../../utils/util';
 
 abstract class ReputationCommand extends GenericCommand {
 	constructor() {
@@ -14,7 +15,7 @@ abstract class ReputationCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const member = await this.cobalt.utils.findMember(message, args);
+		const member = await findMember(this.cobalt, message, args);
 		if (!member) return message.reply({ content: 'Please pick a valid member' });
 		const author = await this.cobalt.db.getUser(message.author.id);
 		if (!author) return message.reply({ content: 'An error occured' });
@@ -23,10 +24,10 @@ abstract class ReputationCommand extends GenericCommand {
 		if (member.id === message.author.id) return message.reply({ content: "Can't give youself a reputation point!" });
 		const date = Date.now();
 		const cooldown = date + 86400000;
-		if (!isNaN(author.repTime) && author.repTime > date) {
+		if (!isNaN(author.repTime!) && author.repTime! > date) {
 			return message.reply({
 				content: `You still have **${prettyMilliseconds(
-					author.repTime - Date.now(),
+					author.repTime! - Date.now(),
 				)}** left before you can give someone a reputation point!`,
 			});
 		}

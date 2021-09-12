@@ -1,5 +1,6 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import Event from '../../struct/Event';
+import { getDiff, getImage } from '../../utils/util';
 
 abstract class MessageUpdateEvent extends Event {
 	constructor() {
@@ -17,11 +18,11 @@ abstract class MessageUpdateEvent extends Event {
 		if (!newMessage.guild.available) return;
 		const guild = await this.cobalt.db.getGuild(newMessage.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMessage.guild.id)
-			?.channels.cache.get(logChannelId) as TextChannel;
+			?.channels.cache.get(logChannelId!) as TextChannel;
 		const avatar = newMessage.author.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor(newMessage.author.username, avatar)
@@ -29,20 +30,20 @@ abstract class MessageUpdateEvent extends Event {
 			.setColor('#2f7db1');
 		if (oldMessage.content !== newMessage.content) {
 			if (newMessage.content == '') {
-				logEmbed.setImage(await this.cobalt.utils.getImage(newMessage)[0]);
+				logEmbed.setImage(getImage(newMessage)[0]);
 			} else if (newMessage.attachments.size === 0) {
 				logEmbed.setDescription(
 					`[Jump to Message](https://discordapp.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${
 						newMessage.id
-					})\n${this.cobalt.utils.getDiff(oldMessage.content, newMessage.content)}`,
+					})\n${getDiff(oldMessage.content, newMessage.content)}`,
 				);
 			} else {
 				logEmbed.setDescription(
 					`[Jump to Message](https://discordapp.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${
 						newMessage.id
-					})\n${this.cobalt.utils.getDiff(oldMessage.content, newMessage.content)}`,
+					})\n${getDiff(oldMessage.content, newMessage.content)}`,
 				);
-				logEmbed.setImage(await this.cobalt.utils.getImage(newMessage)[0]);
+				logEmbed.setImage(getImage(newMessage)[0]);
 			}
 			logEmbed.setFooter(`Message ID: ${newMessage.id}`).setTimestamp();
 			return void logChannel.send({ embeds: [logEmbed] });

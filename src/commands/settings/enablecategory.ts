@@ -20,7 +20,7 @@ abstract class EnableCategoryCommand extends GenericCommand {
 		const guild = await this.cobalt.db.getGuild(guildId);
 		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
 		if (!categories.includes(arg)) return message.reply({ content: 'Invalid category' });
-		if (!guild.disabledCategories.includes(arg)) return message.reply({ content: 'Already enabled' });
+		if (!guild.disabledCategories?.includes(arg)) return message.reply({ content: 'Already enabled' });
 		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			disabledCategories: guild.disabledCategories.filter(c => c !== arg),

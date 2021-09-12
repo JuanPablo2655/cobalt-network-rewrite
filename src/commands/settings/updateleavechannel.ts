@@ -1,5 +1,6 @@
 import { Guild, Message } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
+import { findChannel } from '../../utils/util';
 
 abstract class UpdateLeaveChannelCommand extends GenericCommand {
 	constructor() {
@@ -25,8 +26,8 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 				const choice: boolean = action.toLowerCase() === 'true' || action.toLowerCase() === 'enable';
 				await this.cobalt.db.updateGuild(guildId, {
 					leaveMessage: {
-						message: guild.leaveMessage.message,
-						channelId: guild.leaveMessage.channelId,
+						message: guild.leaveMessage?.message ?? null,
+						channelId: guild.leaveMessage?.channelId ?? null,
 						enabled: choice,
 					},
 				});
@@ -35,14 +36,14 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 				});
 			}
 			case 'channel': {
-				const channel = await this.cobalt.utils.findChannel(message, action);
+				const channel = await findChannel(message, action);
 				if (!channel)
 					return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });
 				await this.cobalt.db.updateGuild(guildId, {
 					leaveMessage: {
-						message: guild.leaveMessage.message,
+						message: guild.leaveMessage?.message ?? null,
 						channelId: channel.id,
-						enabled: guild.leaveMessage.enabled,
+						enabled: guild.leaveMessage?.enabled ?? true,
 					},
 				});
 				return message.channel.send({ content: `Successfully changed the leave channel to ${channel}` });
@@ -56,8 +57,8 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 					await this.cobalt.db.updateGuild(guildId, {
 						leaveMessage: {
 							message: leaveMessage.join(' '),
-							channelId: guild.leaveMessage.channelId,
-							enabled: guild.leaveMessage.enabled,
+							channelId: guild.leaveMessage?.channelId ?? null,
+							enabled: guild.leaveMessage?.enabled ?? true,
 						},
 					});
 					return message.channel.send({
@@ -68,8 +69,8 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 					await this.cobalt.db.updateGuild(guildId, {
 						leaveMessage: {
 							message: 'Goodbye {user.username}.',
-							channelId: guild.leaveMessage.channelId,
-							enabled: guild.leaveMessage.enabled,
+							channelId: guild.leaveMessage?.channelId ?? null,
+							enabled: guild.leaveMessage?.enabled ?? true,
 						},
 					});
 					return message.channel.send({ content: `Successfully changed the leave message to default` });

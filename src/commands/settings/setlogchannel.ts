@@ -1,5 +1,6 @@
 import { Guild, Message } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
+import { findChannel } from '../../utils/util';
 
 abstract class SetLogChannelCommand extends GenericCommand {
 	constructor() {
@@ -13,7 +14,7 @@ abstract class SetLogChannelCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const channel = await this.cobalt.utils.findChannel(message, args[0]);
+		const channel = await findChannel(message, args[0]);
 		if (!channel)
 			return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });
 		const guildId = (message.guild as Guild)?.id;
@@ -22,8 +23,8 @@ abstract class SetLogChannelCommand extends GenericCommand {
 		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			logChannel: {
-				enabled: guild.logChannel.enabled,
-				disabledEvents: guild.logChannel.disabledEvents,
+				enabled: guild.logChannel?.enabled ?? true,
+				disabledEvents: guild.logChannel?.disabledEvents ?? null,
 				channelId: channel.id,
 			},
 		});

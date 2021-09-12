@@ -5,15 +5,15 @@ export interface GuildData {
 	_id: Snowflake;
 	prefix: string;
 	verified: boolean;
-	blacklistedWords: string[];
-	disabledCommands: string[];
-	disabledCategories: string[];
-	mutedRoleId: string;
-	levelMessage: LevelMessage;
-	welcomeMessage: WelcomeMessage;
-	leaveMessage: LeaveMessage;
-	banMessage: BanMessage;
-	logChannel: LogChannel;
+	blacklistedWords?: string[] | null;
+	disabledCommands?: string[] | null;
+	disabledCategories?: string[] | undefined | null;
+	mutedRoleId?: string | null;
+	levelMessage?: LevelMessage | null;
+	welcomeMessage?: WelcomeMessage | null;
+	leaveMessage?: LeaveMessage | null;
+	banMessage?: BanMessage | null;
+	logChannel?: LogChannel | null;
 }
 
 export interface LevelMessage {
@@ -39,9 +39,9 @@ export interface BanMessage {
 }
 
 export interface LogChannel {
-	channelId: Snowflake;
+	channelId: Snowflake | null;
 	enabled: boolean;
-	disabledEvents: string[];
+	disabledEvents: string[] | null;
 }
 
 export type IGuild = Document & GuildData;

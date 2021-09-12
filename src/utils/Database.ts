@@ -12,13 +12,10 @@ export default class Database {
 		this.cobalt = cobalt;
 		(async () => {
 			await mongoose.connect(url, {
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
 				autoIndex: false,
-				poolSize: 5,
+				maxPoolSize: 5,
 				connectTimeoutMS: 10000,
 				family: 4,
-				useFindAndModify: false,
 			});
 		})().catch(err => {
 			throw err;
@@ -43,7 +40,7 @@ export default class Database {
 			await this.cobalt.redis.set(`guild:${guildId}`, JSON.stringify(guild));
 			return guild;
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -52,7 +49,7 @@ export default class Database {
 			await guildModel.findOneAndDelete({ _id: guildId });
 			await this.cobalt.redis.del(`guild:${guildId}`);
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -60,12 +57,11 @@ export default class Database {
 		try {
 			let guild, redis;
 			guild = redis = await this.cobalt.redis.get(`guild:${guildId}`).then(res => (res ? JSON.parse(res) : undefined));
-			if (!guild) guild = await guildModel.findOne({ _id: guildId });
-			if (!guild) guild = await this.addGuild(guildId);
+			guild ??= (await guildModel.findOne({ _id: guildId })) ?? (await this.addGuild(guildId));
 			if (!redis) await this.cobalt.redis.set(`guild:${guildId}`, JSON.stringify(guild));
 			return guild;
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -76,7 +72,7 @@ export default class Database {
 			const _guild = await guildModel.findOneAndUpdate({ _id: guildId }, data, { new: true });
 			await this.cobalt.redis.set(`guild:${guildId}`, JSON.stringify(_guild));
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -84,12 +80,11 @@ export default class Database {
 		try {
 			let bot, redis;
 			bot = redis = await this.cobalt.redis.get(`bot:${botId}`).then(res => (res ? JSON.parse(res) : undefined));
-			if (!bot) bot = await botModel.findOne({ _id: botId });
-			if (!bot) bot = await botModel.create({ _id: botId });
+			bot ??= (await botModel.findOne({ _id: botId })) ?? (await botModel.create({ _id: botId }));
 			if (!redis) await this.cobalt.redis.set(`bot:${botId}`, JSON.stringify(bot));
 			return bot;
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -98,7 +93,7 @@ export default class Database {
 			const bot = await botModel.findOneAndUpdate({ _id: botId }, data, { new: true });
 			await this.cobalt.redis.set(`bot:${botId}`, JSON.stringify(bot));
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -109,7 +104,7 @@ export default class Database {
 			await this.cobalt.redis.set(`user:${userId}`, JSON.stringify(user));
 			return user;
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -118,7 +113,7 @@ export default class Database {
 			await userModel.findOneAndDelete({ _id: userId });
 			await this.cobalt.redis.del(`user:${userId}`);
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -126,12 +121,11 @@ export default class Database {
 		try {
 			let user, redis;
 			user = redis = await this.cobalt.redis.get(`user:${userId}`).then(res => (res ? JSON.parse(res) : undefined));
-			if (!user) user = await userModel.findOne({ _id: userId });
-			if (!user) user = await this.addUser(userId);
+			user ??= (await userModel.findOne({ _id: userId })) ?? (await this.addUser(userId));
 			if (!redis) await this.cobalt.redis.set(`user:${userId}`, JSON.stringify(user));
 			return user;
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -142,7 +136,7 @@ export default class Database {
 			const _user = await userModel.findOneAndUpdate({ _id: userId }, data, { new: true });
 			await this.cobalt.redis.set(`user:${userId}`, JSON.stringify(_user));
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -153,7 +147,7 @@ export default class Database {
 			await this.cobalt.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(member));
 			return member;
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -162,7 +156,7 @@ export default class Database {
 			await memberModel.findOneAndDelete({ memberId, guildId });
 			await this.cobalt.redis.del(`member:${memberId}:${guildId}`);
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -172,12 +166,11 @@ export default class Database {
 			member = redis = await this.cobalt.redis
 				.get(`member:${memberId}:${guildId}`)
 				.then(res => (res ? JSON.parse(res) : undefined));
-			if (!member) member = await memberModel.findOne({ memberId, guildId });
-			if (!member) member = await this.addMember(memberId, guildId);
+			member ??= (await memberModel.findOne({ memberId, guildId })) ?? (await this.addMember(memberId, guildId));
 			if (!redis) await this.cobalt.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(member));
 			return member;
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 
@@ -192,7 +185,7 @@ export default class Database {
 			const _member = await memberModel.findOneAndUpdate({ memberId, guildId }, data, { new: true });
 			await this.cobalt.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(_member));
 		} catch (err) {
-			console.error(err?.stack || err);
+			console.error(err instanceof Error ? err?.stack : err);
 		}
 	}
 }

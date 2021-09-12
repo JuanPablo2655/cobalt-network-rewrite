@@ -25,7 +25,7 @@ abstract class EvalCommand extends GenericCommand {
 					evalued = await eval('(async() => {\n' + args.slice(1).join(' ') + '\n})();');
 					evalued = inspect(evalued, { depth: 0 });
 				} catch (err) {
-					evalued = err.toString();
+					evalued = err instanceof Error ? err.toString() : 'Unknown Error';
 				}
 				break;
 			}
@@ -39,7 +39,7 @@ abstract class EvalCommand extends GenericCommand {
 					if (stdout) evalued = stdout;
 					if (stderr) evalued = stderr;
 				} catch (err) {
-					evalued = err.toString();
+					evalued = err instanceof Error ? err.toString() : 'Unknown Error';
 				}
 				break;
 			}
@@ -49,7 +49,7 @@ abstract class EvalCommand extends GenericCommand {
 					evalued = await eval(args.join(' '));
 					evalued = inspect(evalued, { depth: 0 });
 				} catch (err) {
-					evalued = err.toString();
+					evalued = err instanceof Error ? err.toString() : 'Unknown Error';
 				}
 				break;
 			}

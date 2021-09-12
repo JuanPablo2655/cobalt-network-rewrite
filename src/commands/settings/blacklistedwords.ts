@@ -32,7 +32,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 					});
 				} else {
 					await this.cobalt.db.updateGuild(guildId, {
-						blacklistedWords: [...guild.blacklistedWords, item],
+						blacklistedWords: [...(guild.blacklistedWords ?? []), item],
 					});
 				}
 				return message.channel.send({ content: `${item} was added to the list of blacklisted words` });

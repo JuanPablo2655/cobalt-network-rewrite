@@ -1,5 +1,6 @@
 import { Message, Snowflake } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
+import { findRole } from '../../utils/util';
 
 abstract class UpdateDirectorCommand extends GenericCommand {
 	constructor() {
@@ -13,7 +14,7 @@ abstract class UpdateDirectorCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		const role = await this.cobalt.utils.findRole(message, '355885679076442112');
+		const role = await findRole(message, '355885679076442112');
 		if (!role) return message.reply({ content: 'Wrong server bruh' });
 		await addCD();
 		let directors: Snowflake[] = new Array();

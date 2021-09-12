@@ -5,10 +5,10 @@ import { RaceOptions } from '../data/races';
 
 export interface CompanionData {
 	_id: Snowflake;
-	name: string;
-	race: RaceOptions;
-	gender: string;
-	class: ClassOptions;
+	name?: string | null;
+	race?: RaceOptions | null;
+	gender?: string | null;
+	class?: ClassOptions | null;
 	level: number;
 	xp: number;
 	health: number;

@@ -1,5 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 import { CobaltClient } from '../../../struct/cobaltClient';
+import { formatMoney } from '../../../utils/util';
 
 export async function reboot(cobalt: CobaltClient, interaction: CommandInteraction) {
 	await interaction.reply({ content: 'Shutting down.' });
@@ -13,17 +14,17 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 	const bot = await cobalt.db.getBot(cobalt.user?.id);
 	if (!bot) return interaction.editReply({ content: 'An error has occured' });
 	let isDirector = false;
-	bot.directors.forEach(director => {
+	bot.directors?.forEach(director => {
 		if (director === interaction.user.id) return (isDirector = true);
 	});
 	if (!isDirector) return interaction.editReply({ content: 'not a director!' });
 	if (bot.bank < amount)
 		return interaction.editReply({
-			content: `I don't have that much. I have **${cobalt.utils.formatNumber(bot.bank)}** left.`,
+			content: `I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
 		});
 	await cobalt.db.updateBot(cobalt.user?.id, { bank: bot.bank - amount });
 	await cobalt.econ.addToWallet(user.id, amount);
 	return interaction.editReply({
-		content: `You paid **${user.username}** **₡${cobalt.utils.formatNumber(amount)}** tax money.`,
+		content: `You paid **${user.username}** **${formatMoney(amount)}** tax money.`,
 	});
 }

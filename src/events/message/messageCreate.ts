@@ -1,5 +1,6 @@
 import { Guild, Message, TextChannel, Permissions } from 'discord.js';
 import Event from '../../struct/Event';
+import { formatNumber } from '../../utils/util';
 
 abstract class MessageEvent extends Event {
 	constructor() {
@@ -22,7 +23,7 @@ abstract class MessageEvent extends Event {
 		if (!message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && !message.author.bot) {
 			let hasBadWord = false;
 			let badWords: string[] = [];
-			guild?.blacklistedWords.forEach(word => {
+			guild?.blacklistedWords?.forEach(word => {
 				message.content.split(' ').forEach(messageWord => {
 					if (word.toLowerCase() === messageWord.toLowerCase()) {
 						badWords.push(word);
@@ -48,11 +49,11 @@ abstract class MessageEvent extends Event {
 					const exp = await this.cobalt.exp.manageXp(message);
 					const profile = await this.cobalt.db.getUser(message.author.id);
 					if (exp) {
-						if (guild?.levelMessage.enabled) {
+						if (guild?.levelMessage?.enabled) {
 							const cleanMessage = guild.levelMessage.message
 								.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
-								.replace(/{newLevel}/g, `**${this.cobalt.utils.formatNumber(profile!.lvl)}**`);
+								.replace(/{newLevel}/g, `**${formatNumber(profile!.lvl)}**`);
 							message.channel.send({ content: cleanMessage });
 						}
 					}
