@@ -3,6 +3,7 @@ import type { Config } from '@jest/types';
 export default async (): Promise<Config.InitialOptions> => ({
 	coverageProvider: 'v8',
 	displayName: 'unit test',
+	preset: 'ts-jest',
 	testMatch: ['<rootDir>/tests/**/*.test.ts'],
 	setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
 	testEnvironment: 'node',
@@ -15,6 +16,11 @@ export default async (): Promise<Config.InitialOptions> => ({
 			branches: 70,
 			lines: 70,
 			statements: 70,
+		},
+	},
+	globals: {
+		'ts-jest': {
+			tsconfig: '<rootDir>/tests/tsconfig.json',
 		},
 	},
 });

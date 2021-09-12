@@ -1,3 +1,1 @@
-afterAll(() => {
-	process.exit();
-});
+afterAll(() => {});
