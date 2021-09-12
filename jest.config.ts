@@ -10,7 +10,6 @@ export default async (): Promise<Config.InitialOptions> => ({
 	collectCoverage: true,
 	collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
 	coverageDirectory: 'coverage',
-	coverageReporters: ['html', 'text', 'clover'],
 	coverageThreshold: {
 		global: {
 			branches: 70,
