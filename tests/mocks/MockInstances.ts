@@ -1,12 +1,13 @@
 import { CobaltClient } from '../../src/struct/cobaltClient';
 import {
 	APIChannel,
-	APIGuildMember,
-	APIUser,
 	APIGuild,
+	APIGuildMember,
 	APIRole,
+	APIUser,
 	ChannelType,
 	GuildFeature,
+	GuildNSFWLevel,
 } from 'discord-api-types/v9';
 import { Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
 
@@ -33,7 +34,7 @@ export const guildMemberData: APIGuildMember = {
 };
 
 export function createGuildMember(data: Partial<APIGuildMember> = {}, g: Guild = guild) {
-	return new GuildMember(client, { ...guildMemberData, ...data }, g);
+	return new GuildMember(client, { ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user! } }, g);
 }
 
 export const roleData: APIRole = {
@@ -58,8 +59,14 @@ export const guildData: APIGuild = {
 	name: 'Cobalt Network',
 	icon: 'a_933397e7006838cf97fe70e47605b274',
 	description: null,
-	splash: null,
 	discovery_splash: null,
+	afk_channel_id: null,
+	afk_timeout: 60,
+	application_id: null,
+	banner: null,
+	default_message_notifications: 1,
+	emojis: [],
+	explicit_content_filter: 2,
 	features: [
 		GuildFeature.News,
 		GuildFeature.AnimatedIcon,
@@ -68,33 +75,27 @@ export const guildData: APIGuild = {
 		GuildFeature.InviteSplash,
 		GuildFeature.Community,
 	],
-	emojis: [],
-	banner: null,
-	owner_id: '232670598872956929',
-	application_id: null,
-	region: 'eu-central',
-	afk_channel_id: null,
-	afk_timeout: 60,
-	system_channel_id: '254360814063058944',
-	widget_enabled: true,
-	widget_channel_id: '409663610780909569',
-	verification_level: 2,
-	roles: [roleData],
-	default_message_notifications: 1,
-	mfa_level: 1,
-	explicit_content_filter: 2,
-	max_presences: null,
 	max_members: 100000,
+	max_presences: null,
 	max_video_channel_users: 25,
-	vanity_url_code: null,
-	premium_tier: 1,
-	premium_subscription_count: 3,
-	system_channel_flags: 0,
+	mfa_level: 1,
+	nsfw_level: GuildNSFWLevel.Default,
+	owner_id: '232670598872956929',
 	preferred_locale: 'en-US',
-	rules_channel_id: '409663610780909569',
+	premium_subscription_count: 3,
+	premium_tier: 1,
 	public_updates_channel_id: '700806874294911067',
-	nsfw_level: 0,
+	region: 'eu-central',
+	roles: [roleData],
+	rules_channel_id: '409663610780909569',
+	splash: null,
 	stickers: [],
+	system_channel_flags: 0,
+	system_channel_id: '254360814063058944',
+	vanity_url_code: null,
+	verification_level: 2,
+	widget_channel_id: '409663610780909569',
+	widget_enabled: true,
 };
 
 export function createGuild(data: Partial<APIGuild> = {}) {
