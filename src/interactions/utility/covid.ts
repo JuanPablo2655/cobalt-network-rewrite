@@ -2,6 +2,7 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import Interaction from '../../struct/InteractionCommand';
 import { CovidAll, covidCountry, covidState } from '../../typings/Covid';
+import { formatNumber } from '../../utils/util';
 import { covidCommand } from './options';
 
 abstract class CovidInteraction extends Interaction {
@@ -39,13 +40,13 @@ abstract class CovidInteraction extends Interaction {
 		const covidEmbed = new MessageEmbed()
 			.setTitle(`COVID-19: ${res.country}`)
 			.setDescription(
-				`Total Cases: **${this.cobalt.utils.formatNumber(res.cases)} (+ ${this.cobalt.utils.formatNumber(
+				`Total Cases: **${formatNumber(res.cases)} (+ ${formatNumber(
 					res.todayCases,
-				)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+ ${this.cobalt.utils.formatNumber(
+				)})**\nTotal Deaths: **${formatNumber(res.deaths)} (+ ${formatNumber(
 					res.todayDeaths,
-				)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(res.recovered)} (+ ${this.cobalt.utils.formatNumber(
+				)})**\nTotal Recovered: **${formatNumber(res.recovered)} (+ ${formatNumber(
 					res.todayRecovered,
-				)})**\nActive Cases: **${this.cobalt.utils.formatNumber(res.active)}**`,
+				)})**\nActive Cases: **${formatNumber(res.active)}**`,
 			)
 			.setTimestamp(res.updated);
 		return interaction.editReply({ embeds: [covidEmbed] });
@@ -59,13 +60,11 @@ abstract class CovidInteraction extends Interaction {
 		const covidEmbed = new MessageEmbed()
 			.setTitle(`COVID-19: ${res.state}`)
 			.setDescription(
-				`Total Cases: **${this.cobalt.utils.formatNumber(res.cases)} (+ ${this.cobalt.utils.formatNumber(
+				`Total Cases: **${formatNumber(res.cases)} (+ ${formatNumber(
 					res.todayCases,
-				)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+ ${this.cobalt.utils.formatNumber(
+				)})**\nTotal Deaths: **${formatNumber(res.deaths)} (+ ${formatNumber(
 					res.todayDeaths,
-				)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(
-					res.recovered,
-				)}**\nActive Cases: **${this.cobalt.utils.formatNumber(res.active)}**`,
+				)})**\nTotal Recovered: **${formatNumber(res.recovered)}**\nActive Cases: **${formatNumber(res.active)}**`,
 			)
 			.setTimestamp(res.updated);
 		return interaction.editReply({ embeds: [covidEmbed] });
@@ -78,13 +77,13 @@ abstract class CovidInteraction extends Interaction {
 		const covidEmbed = new MessageEmbed()
 			.setTitle(`COVID-19 World Data`)
 			.setDescription(
-				`Total Cases: **${this.cobalt.utils.formatNumber(res.cases)} (+ ${this.cobalt.utils.formatNumber(
+				`Total Cases: **${formatNumber(res.cases)} (+ ${formatNumber(
 					res.todayCases,
-				)})**\nTotal Deaths: **${this.cobalt.utils.formatNumber(res.deaths)} (+ ${this.cobalt.utils.formatNumber(
+				)})**\nTotal Deaths: **${formatNumber(res.deaths)} (+ ${formatNumber(
 					res.todayDeaths,
-				)})**\nTotal Recovered: **${this.cobalt.utils.formatNumber(res.recovered)} (+ ${this.cobalt.utils.formatNumber(
+				)})**\nTotal Recovered: **${formatNumber(res.recovered)} (+ ${formatNumber(
 					res.todayRecovered,
-				)})**\nActive Cases: **${this.cobalt.utils.formatNumber(res.active)}**`,
+				)})**\nActive Cases: **${formatNumber(res.active)}**`,
 			)
 			.setTimestamp(res.updated);
 		return interaction.editReply({ embeds: [covidEmbed] });

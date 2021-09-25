@@ -8,11 +8,13 @@ if (cobalt.devMode) {
 process.on('SIGTERM', async () => {
 	console.info('SIGTERM signal received (kill).');
 	await cobalt.close();
+	process.exit(1);
 });
 
 process.on('SIGINT', async () => {
 	console.info('SIGINT signal received (terminal).');
 	await cobalt.close();
+	process.exit(0);
 });
 
 process.on('unhandledRejection', error => {

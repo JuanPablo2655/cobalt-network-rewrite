@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
+import { findMember, formatMoney } from '../../utils/util';
 
 abstract class PayComamnd extends GenericCommand {
 	constructor() {
@@ -14,7 +15,7 @@ abstract class PayComamnd extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
 		if (!bot) return message.reply({ content: 'An error occured' });
-		const member = await this.cobalt.utils.findMember(message, args);
+		const member = await findMember(this.cobalt, message, args);
 		if (!member) return message.reply({ content: 'Please pick a valid member' });
 		const author = await this.cobalt.db.getUser(message.author.id);
 		if (!author) return message.reply({ content: 'An error occured' });
@@ -28,9 +29,7 @@ abstract class PayComamnd extends GenericCommand {
 		if (isNaN(amount) && args[1] !== 'all') return message.reply({ content: 'Amount must be a number.' });
 		if (author.wallet < amount)
 			return message.channel.send({
-				content: `You don't have enough to pay that much. You currently have **₡${this.cobalt.utils.formatNumber(
-					author.wallet,
-				)}**`,
+				content: `You don't have enough to pay that much. You currently have **${formatMoney(author.wallet)}**`,
 			});
 		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
@@ -39,11 +38,9 @@ abstract class PayComamnd extends GenericCommand {
 		await this.cobalt.econ.addToWallet(member.id, afterTax);
 		await this.cobalt.db.updateBot(this.cobalt.user?.id, { bank: bot.bank + tax });
 		return message.channel.send({
-			content: `>>> Transaction to **${member.user.username}**:\nSubtotal: **₡${this.cobalt.utils.formatNumber(
+			content: `>>> Transaction to **${member.user.username}**:\nSubtotal: **${formatMoney(
 				amount,
-			)}**\nTaxes: **₡${this.cobalt.utils.formatNumber(tax)}**\nTotal: **₡${this.cobalt.utils.formatNumber(
-				afterTax,
-			)}**`,
+			)}**\nTaxes: **${formatMoney(tax)}**\nTotal: **${formatMoney(afterTax)}**`,
 		});
 	}
 }

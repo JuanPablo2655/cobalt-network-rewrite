@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import GenericCommand from '../../struct/GenericCommand';
+import { addMulti, findMember, formatMoney } from '../../utils/util';
 
 abstract class MonthlyCommand extends GenericCommand {
 	constructor() {
@@ -12,7 +13,7 @@ abstract class MonthlyCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
+		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		if (!member) return message.reply({ content: 'An error occured' });
 		const user = await this.cobalt.db.getUser(member.id);
 		if (!user) return message.reply({ content: 'An error occured' });
@@ -31,17 +32,15 @@ abstract class MonthlyCommand extends GenericCommand {
 			await this.cobalt.db.updateUser(message.author.id, { monthly: cooldown });
 			await this.cobalt.econ.addToWallet(member.id, monthlyAmount);
 			return message.channel.send({
-				content: `You have received your monthly **₡${this.cobalt.utils.formatNumber(monthlyAmount)}**.`,
+				content: `You have received your monthly **${formatMoney(monthlyAmount)}**.`,
 			});
 		}
 		const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
-		const moneyEarned = this.cobalt.utils.addMulti(monthlyAmount, 10);
+		const moneyEarned = addMulti(monthlyAmount, 10);
 		await this.cobalt.db.updateUser(message.author.id, { monthly: cooldown });
 		await this.cobalt.econ.addToWallet(member!.id, moneyEarned);
 		return message.channel.send({
-			content: `You gave your monthly of **₡${this.cobalt.utils.formatNumber(moneyEarned)}** to **${
-				member?.user.username
-			}**.`,
+			content: `You gave your monthly of **${formatMoney(moneyEarned)}** to **${member?.user.username}**.`,
 		});
 	}
 }

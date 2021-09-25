@@ -1,5 +1,6 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import Event from '../../struct/Event';
+import { getImage } from '../../utils/util';
 
 abstract class MessageDeleteEvent extends Event {
 	constructor() {
@@ -28,12 +29,12 @@ abstract class MessageDeleteEvent extends Event {
 			.setTimestamp()
 			.addField('Text Channel', `${message.channel}`);
 		if (message.content == '') {
-			logEmbed.setImage(this.cobalt.utils.getImage(message)[0]);
+			logEmbed.setImage(getImage(message)[0]);
 		} else if (message.attachments.size === 0) {
 			logEmbed.setDescription(`${message.content}`);
 		} else {
 			logEmbed.setDescription(`${message.content}`);
-			logEmbed.setImage(this.cobalt.utils.getImage(message)[0]);
+			logEmbed.setImage(getImage(message)[0]);
 		}
 		return void logChannel.send({ embeds: [logEmbed] });
 	}

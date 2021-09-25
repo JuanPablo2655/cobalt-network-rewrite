@@ -1,5 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
+import { findMember, formatNumber } from '../../utils/util';
 
 abstract class RankCommand extends GenericCommand {
 	constructor() {
@@ -12,7 +13,7 @@ abstract class RankCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const member = await this.cobalt.utils.findMember(message, args, { allowAuthor: true });
+		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		const user = member?.user;
 		const profile = await this.cobalt.db.getUser(user?.id);
 		await addCD();
@@ -20,11 +21,9 @@ abstract class RankCommand extends GenericCommand {
 		const rankEmbed = new MessageEmbed()
 			.setTitle(`${user?.username}'s Rank`)
 			.setDescription(
-				`**Level**: ${this.cobalt.utils.formatNumber(profile!.lvl)}\n**Experience**: ${this.cobalt.utils.formatNumber(
-					profile!.xp,
-				)} / ${this.cobalt.utils.formatNumber(this.cobalt.exp.nextLevel(profile!.lvl))} \`${xpPercent
-					.toString()
-					.substring(0, 4)}%\``,
+				`**Level**: ${formatNumber(profile!.lvl)}\n**Experience**: ${formatNumber(profile!.xp)} / ${formatNumber(
+					this.cobalt.exp.nextLevel(profile!.lvl),
+				)} \`${xpPercent.toString().substring(0, 4)}%\``,
 			);
 		message.channel.send({ embeds: [rankEmbed] });
 	}

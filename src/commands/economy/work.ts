@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import jobs from '../../data/jobs';
 import GenericCommand from '../../struct/GenericCommand';
+import { addMulti, calcMulti, formatNumber } from '../../utils/util';
 
 abstract class WorkCommand extends GenericCommand {
 	constructor() {
@@ -19,12 +20,12 @@ abstract class WorkCommand extends GenericCommand {
 		const job = jobs.find(j => j.id === user?.job);
 		const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
 		const money = Math.floor(job!.minAmount + Math.random() * 250);
-		const multi = await this.cobalt.utils.calcMulti(message.author);
-		const moneyEarned = this.cobalt.utils.addMulti(money, multi);
+		const multi = await calcMulti(message.author, this.cobalt);
+		const moneyEarned = addMulti(money, multi);
 		await this.cobalt.econ.addToWallet(message.author.id, moneyEarned);
 		const cleanEntry = workEntry
 			?.replace(/{user.username}/g, message.author.username)
-			.replace(/{money}/g, this.cobalt.utils.formatNumber(moneyEarned));
+			.replace(/{money}/g, formatNumber(moneyEarned));
 		return message.channel.send({ content: cleanEntry });
 	}
 }

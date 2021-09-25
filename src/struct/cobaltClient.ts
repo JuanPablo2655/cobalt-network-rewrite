@@ -20,7 +20,6 @@ export class CobaltClient extends Client {
 	public devMode: boolean;
 	public testEvents: boolean;
 	public disableXp: boolean;
-	public utils: Util;
 	public db: Database;
 	public exp: Experience;
 	public econ: Economy;
@@ -52,7 +51,6 @@ export class CobaltClient extends Client {
 		this.testEvents = process.env.TESTEVENTS === 'true' ? true : false;
 		this.disableXp = process.env.DISABLEXP === 'true' ? true : false;
 		this.voiceTime = new Map();
-		this.utils = new Util(this);
 		this.db = new Database(this, process.env.MONGOURL || 'mongodb://localhost:27017/cobalt');
 		this.exp = new Experience(this);
 		this.econ = new Economy(this);

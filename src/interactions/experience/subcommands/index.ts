@@ -1,6 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { CobaltClient } from '../../../struct/cobaltClient';
+import { formatNumber } from '../../../utils/util';
 
 export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
@@ -9,11 +10,9 @@ export async function rank(cobalt: CobaltClient, interaction: CommandInteraction
 	const rankEmbed = new MessageEmbed()
 		.setTitle(`${user?.username}'s Rank`)
 		.setDescription(
-			`**Level**: ${cobalt.utils.formatNumber(profile!.lvl)}\n**Experience**: ${cobalt.utils.formatNumber(
-				profile!.xp,
-			)} / ${cobalt.utils.formatNumber(cobalt.exp.nextLevel(profile!.lvl))} \`${xpPercent
-				.toString()
-				.substring(0, 4)}%\``,
+			`**Level**: ${formatNumber(profile!.lvl)}\n**Experience**: ${formatNumber(profile!.xp)} / ${formatNumber(
+				cobalt.exp.nextLevel(profile!.lvl),
+			)} \`${xpPercent.toString().substring(0, 4)}%\``,
 		);
 	return interaction.reply({ embeds: [rankEmbed] });
 }

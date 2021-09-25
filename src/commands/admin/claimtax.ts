@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import GenericCommand from '../../struct/GenericCommand';
+import { formatMoney } from '../../utils/util';
 
 abstract class ClaimTaxCommand extends GenericCommand {
 	constructor() {
@@ -25,7 +26,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		if (isNaN(amount)) return message.reply({ content: 'Please I need a valid number' });
 		if (bot.bank < amount)
 			return message.reply({
-				content: `I don't have that much. I have **${this.cobalt.utils.formatNumber(bot.bank)}** left.`,
+				content: `I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
 			});
 		if (amount > 1000) return message.reply({ content: "Can't claim more than **₡1,000**" });
 		await addCD();
@@ -35,9 +36,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		await this.cobalt.econ.addToWallet('232670598872956929', tax);
 		await this.cobalt.econ.addToWallet(message.author.id, afterTax);
 		return message.channel.send({
-			content: `You have claimed **₡${this.cobalt.utils.formatNumber(
-				afterTax,
-			)}** after paying Axalis **₡${this.cobalt.utils.formatNumber(tax)}** as tax.`,
+			content: `You have claimed **${formatMoney(afterTax)}** after paying Axalis **${formatMoney(tax)}** as tax.`,
 		});
 	}
 }
