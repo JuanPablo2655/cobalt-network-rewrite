@@ -10,13 +10,13 @@ export default async (): Promise<Config.InitialOptions> => ({
 	collectCoverage: true,
 	collectCoverageFrom: ['<rootDir>/src/utils/util.ts', '<rootDir>/src/data/**/*.ts'],
 	coverageDirectory: 'coverage',
-	// coverageThreshold: {
-	// 	global: {
-	// 		branches: 70,
-	// 		lines: 70,
-	// 		statements: 70,
-	// 	},
-	// },
+	coverageThreshold: {
+		global: {
+			branches: 70,
+			lines: 70,
+			statements: 70,
+		},
+	},
 	globals: {
 		'ts-jest': {
 			tsconfig: '<rootDir>/tests/tsconfig.json',
