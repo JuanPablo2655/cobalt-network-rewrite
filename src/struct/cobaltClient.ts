@@ -3,7 +3,6 @@ import Redis from 'ioredis';
 import dotenv from 'dotenv';
 import { CommandRegistry, EventRegistry, InteractionRegistry } from './registries/export/RegistryIndex';
 import { EventOptions } from '../typings/Options';
-import Util from '../utils/Util';
 import Database from '../utils/Database';
 import Experience from '../utils/Experience';
 import Economy from '../utils/Economy';
