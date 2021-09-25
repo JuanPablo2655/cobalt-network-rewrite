@@ -10,4 +10,12 @@ describe('Jobs', () => {
 			minAmount: 500,
 		});
 	});
+
+	test("GIVE 'devleoper.minAmount' THEN return 500", () => {
+		expect(jobs.find(j => j.id === 'developer')?.minAmount).toEqual(500);
+	});
+
+	test("GIVE 'random.minAmount' THEN return UNDEFINED", () => {
+		expect(jobs.find(j => j.id === 'random')?.minAmount).toBeUndefined();
+	});
 });
