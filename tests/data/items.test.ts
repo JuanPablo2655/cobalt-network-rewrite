@@ -1,4 +1,4 @@
-import { Items } from '../../src/data/items';
+import { Items, isFood } from '../../src/data/items';
 
 describe('Items', () => {
 	test("GIVEN 'redapple' THEN return red Apple Object", () => {
@@ -11,5 +11,9 @@ describe('Items', () => {
 				market: { price: 10, sellAmount: 4 },
 			},
 		});
+	});
+
+	test("GIVEN 'readapple' THEN return true if obj is Food", () => {
+		expect(isFood(Items.find(i => i.id === 'redapple')!.data)).toBe(true);
 	});
 });
