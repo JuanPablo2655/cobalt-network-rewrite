@@ -36,7 +36,7 @@
     "mongoose": "^6.0.4",
     "node-fetch": "2.6.1",
     "pretty-ms": "^7.0.1",
-    "prom-client": "^13.1.0"
+    "prom-client": "^14.0.0"
   },
   "devDependencies": {
     "@types/diff": "^5.0.0",
