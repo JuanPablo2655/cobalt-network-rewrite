@@ -48,6 +48,7 @@
     "@types/node-fetch": "2.5.12",
     "bufferutil": "^4.0.3",
     "cloc": "^2.8.0",
+    "discord-api-types": "^0.23.1",
     "jest": "^27.0.6",
     "prettier": "2.3.2",
     "ts-jest": "^27.0.5",
