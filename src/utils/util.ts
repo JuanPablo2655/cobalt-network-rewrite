@@ -3,9 +3,8 @@ import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
 
 export function formatNumber(n: string | number): string | null {
-	return Number.parseFloat(String(n)).toLocaleString('en-US') !== 'NaN'
-		? Number.parseFloat(String(n)).toLocaleString('en-US')
-		: null;
+	const number = Number.parseFloat(String(n)).toLocaleString('en-US');
+	return number !== 'NaN' ? number : null;
 }
 
 export function formatMoney(n: string | number): string | null {
