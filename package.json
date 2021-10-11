@@ -45,7 +45,7 @@
     "@types/ioredis": "^4.27.1",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.10",
-    "@types/node-fetch": "2.5.12",
+    "@types/node-fetch": "3.0.3",
     "bufferutil": "^4.0.3",
     "cloc": "^2.8.0",
     "jest": "^27.0.6",
