@@ -2,12 +2,13 @@ import { CobaltClient } from '../struct/cobaltClient';
 import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
 
-export function formatNumber(n: string | number): string {
-	return Number.parseFloat(String(n)).toLocaleString('en-US');
+export function formatNumber(n: string | number): string | null {
+	const number = Number.parseFloat(String(n)).toLocaleString('en-US');
+	return number !== 'NaN' ? number : null;
 }
 
-export function formatMoney(n: string | number): string {
-	return `₡ ${formatNumber(n)}`;
+export function formatMoney(n: string | number): string | null {
+	return formatNumber(n) !== null ? `₡ ${formatNumber(n)}` : null;
 }
 
 export function toCapitalize(str: string) {
