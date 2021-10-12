@@ -72,3 +72,61 @@ export const vcdataCommand = {
 	],
 	default_permission: true,
 } as const;
+
+export const socialcreditCommand = {
+	name: 'socialcredit',
+	description: '',
+	options: [
+		{
+			type: 1,
+			name: 'check',
+			description: 'Check your or someone elses social credit',
+			options: [
+				{
+					type: 6,
+					name: 'user',
+					description: 'The user.',
+				},
+			],
+		},
+		{
+			type: 1,
+			name: 'add',
+			description: 'add social credit to a user',
+			options: [
+				{
+					type: 6,
+					name: 'user',
+					description: 'The user.',
+					required: true,
+				},
+				{
+					type: 4,
+					name: 'amount',
+					description: 'The amount of points to add.',
+					required: true,
+				},
+			],
+		},
+		{
+			type: 1,
+			name: 'remove',
+			description: 'The amount of points to remove',
+			options: [
+				{
+					type: 6,
+					name: 'user',
+					description: 'The user.',
+					required: true,
+				},
+				{
+					type: 4,
+					name: 'amount',
+					description: 'The amount to remove.',
+					required: true,
+				},
+			],
+		},
+	],
+	default_permission: true,
+} as const;
