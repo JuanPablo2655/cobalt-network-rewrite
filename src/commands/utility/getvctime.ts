@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import GenericCommand from '../../struct/GenericCommand';
-import { findMember } from '../../utils/util';
+import { findMember, formatNumber } from '../../utils/util';
 
 abstract class GetVcTimeCommand extends GenericCommand {
 	constructor() {
@@ -22,15 +22,39 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		await addCD();
 		switch (option?.toLowerCase() ?? '') {
 			case 'local': {
+				if (!memberData?.vcHours) return message.reply("You haven't joined VC in this server!");
+				const sum = memberData.vcHours.reduce((a, b) => a + b);
+				const average = sum / memberData.vcHours.length;
+				const sorted = memberData.vcHours.sort((a, b) => b - a);
 				const vcEmbed = new MessageEmbed()
 					.setTitle(`${member?.user.username}'s VC Data`)
-					.setDescription(`Total Time: **${prettyMilliseconds(memberData!.vcHours)}**`);
+					.setDescription(
+						`**Total Time:** ${prettyMilliseconds(sum)}\n**Average Time:** ${prettyMilliseconds(
+							average,
+						)}\n**Min Time:** ${prettyMilliseconds(
+							sorted[memberData.vcHours.length - 1],
+						)}\n**Max Time:** ${prettyMilliseconds(sorted[0])}\n**Number of VCs:** ${formatNumber(
+							memberData.vcHours.length,
+						)}`,
+					);
 				return message.channel.send({ embeds: [vcEmbed] });
 			}
 			case 'global': {
+				if (!user?.vcHours) return message.reply("You haven't joined VC once!");
+				const sum = user.vcHours.reduce((a, b) => a + b);
+				const average = sum / user.vcHours.length;
+				const sorted = user.vcHours.sort((a, b) => b - a);
 				const vcEmbed = new MessageEmbed()
 					.setTitle(`${member?.user.username}'s Global VC Data`)
-					.setDescription(`Total Time: **${prettyMilliseconds(user!.vcHours)}**`);
+					.setDescription(
+						`**Total Time:** ${prettyMilliseconds(sum)}\n**Average Time:** ${prettyMilliseconds(
+							average,
+						)}\n**Min Time:** ${prettyMilliseconds(
+							sorted[user.vcHours.length - 1],
+						)}\n**Max Time:** ${prettyMilliseconds(sorted[0])}\n**Number of VCs:** ${formatNumber(
+							user.vcHours.length,
+						)}`,
+					);
 				return message.channel.send({ embeds: [vcEmbed] });
 			}
 			default: {

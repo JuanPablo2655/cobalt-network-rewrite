@@ -49,9 +49,9 @@ abstract class VoiceStateUpdate extends Event {
 				const time = elapsed / 60000;
 				const addMoney = Math.round(time * 9) + 1;
 				await this.cobalt.econ.addToWallet(oldState.member!.id, addMoney);
-				await this.cobalt.db.updateUser(oldState.member?.id, { vcHours: user!.vcHours + elapsed });
+				await this.cobalt.db.updateUser(oldState.member?.id, { vcHours: [...(user?.vcHours ?? []), elapsed] });
 				await this.cobalt.db.updateMember(oldState.member?.id, oldState.guild.id, {
-					vcHours: member!.vcHours + elapsed,
+					vcHours: [...(member?.vcHours ?? []), elapsed],
 				});
 				oldState.member
 					?.send({
