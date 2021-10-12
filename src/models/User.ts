@@ -5,6 +5,7 @@ export interface UserData {
 	_id: Snowflake;
 	guilds?: string[] | null;
 	job?: string | null;
+	socialCredit: number;
 	wallet: number;
 	bank: number;
 	bankSpace: number;
@@ -33,6 +34,7 @@ const userSchema = new Schema<IUser>({
 	_id: { type: String, required: true },
 	guilds: { type: Array, default: [] },
 	job: { type: String, default: null },
+	socialCredit: { type: Number, default: 1000 },
 	wallet: { type: Number, default: 0 },
 	bank: { type: Number, default: 0 },
 	bankSpace: { type: Number, default: 1000 },
