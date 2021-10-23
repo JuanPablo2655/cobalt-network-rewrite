@@ -1,5 +1,4 @@
 import { GuildMember, MessageEmbed, Snowflake, TextChannel } from 'discord.js';
-import prettyMilliseconds from 'pretty-ms';
 import Event from '../../struct/Event';
 
 abstract class GuildMemberRemoveEvent extends Event {
@@ -39,14 +38,13 @@ abstract class GuildMemberRemoveEvent extends Event {
 			return void leaveChannel.send({ content: leave });
 		}
 
+		const joined = Math.floor((Date.now() - member.guild.joinedTimestamp) / 100);
 		const logEmbed = new MessageEmbed()
 			.setAuthor(member.user.username, avatar)
 			.setTitle(`Member Left`)
 			.setColor('#8f0a0a')
 			.setDescription(
-				`Time in the Server: **${prettyMilliseconds(
-					Date.now() - member.guild.joinedTimestamp,
-				)}**\nGuild Member Count: **${member.guild.memberCount}**`,
+				`Joined **<t:${joined}:R>** on **<t:${joined}:D>**\nGuild Member Count: **${member.guild.memberCount}**`,
 			)
 			.setFooter(`User ID: ${member.user.id}`)
 			.setTimestamp();
