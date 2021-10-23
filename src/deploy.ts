@@ -15,7 +15,7 @@ import {
 	pingCommand,
 	settingCommand,
 	vcdataCommand,
-	socialcreditCommand,
+	socialCreditCommand,
 } from './interactions';
 
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
@@ -35,7 +35,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
 					covidCommand,
 					pingCommand,
 					vcdataCommand,
-					socialcreditCommand,
+					socialCreditCommand,
 				],
 			},
 		)) as RESTGetAPIApplicationGuildCommandsResult;

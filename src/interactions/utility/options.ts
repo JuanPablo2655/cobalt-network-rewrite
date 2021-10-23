@@ -73,9 +73,9 @@ export const vcdataCommand = {
 	default_permission: true,
 } as const;
 
-export const socialcreditCommand = {
+export const socialCreditCommand = {
 	name: 'socialcredit',
-	description: '',
+	description: 'Social credit system',
 	options: [
 		{
 			type: 1,

@@ -1,12 +1,12 @@
 import { CommandInteraction } from 'discord.js';
 import Interaction from '../../struct/InteractionCommand';
-import { socialcreditCommand } from './options';
+import { socialCreditCommand } from './options';
 import { add, check, remove } from './subcommands';
 
 abstract class SocialCreditInteraction extends Interaction {
 	constructor() {
 		super({
-			name: socialcreditCommand.name,
+			name: socialCreditCommand.name,
 			category: 'utility',
 		});
 	}
