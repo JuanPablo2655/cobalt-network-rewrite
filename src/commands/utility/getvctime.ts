@@ -22,7 +22,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		await addCD();
 		switch (option?.toLowerCase() ?? '') {
 			case 'local': {
-				if (!memberData?.vcHours) return message.reply("You haven't joined VC in this server!");
+				if (!memberData?.vcHours) return message.reply({ content: "You haven't joined VC in this server!" });
 				const sum = memberData.vcHours.reduce((a, b) => a + b);
 				const average = sum / memberData.vcHours.length;
 				const sorted = memberData.vcHours.sort((a, b) => b - a);
@@ -40,7 +40,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 				return message.channel.send({ embeds: [vcEmbed] });
 			}
 			case 'global': {
-				if (!user?.vcHours) return message.reply("You haven't joined VC once!");
+				if (!user?.vcHours) return message.reply({ content: "You haven't joined VC once!" });
 				const sum = user.vcHours.reduce((a, b) => a + b);
 				const average = sum / user.vcHours.length;
 				const sorted = user.vcHours.sort((a, b) => b - a);

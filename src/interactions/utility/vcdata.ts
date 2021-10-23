@@ -19,7 +19,7 @@ abstract class VcDataInteraction extends Interaction {
 		const memberData = await this.cobalt.db.getMember(user.id, interaction.guild!.id);
 		const userData = await this.cobalt.db.getUser(user.id);
 		if (option === 'local') {
-			if (!memberData?.vcHours) return interaction.reply("You haven't joined VC in this server!");
+			if (!memberData?.vcHours) return interaction.editReply({ content: "You haven't joined VC in this server!" });
 			const sum = memberData.vcHours.reduce((a, b) => a + b);
 			const average = sum / memberData.vcHours.length;
 			const sorted = memberData.vcHours.sort((a, b) => b - a);
@@ -37,7 +37,7 @@ abstract class VcDataInteraction extends Interaction {
 			return interaction.editReply({ embeds: [vcEmbed] });
 		}
 		if (option === 'global') {
-			if (!userData?.vcHours) return interaction.reply("You haven't joined VC once!");
+			if (!userData?.vcHours) return interaction.editReply({ content: "You haven't joined VC once!" });
 			const sum = userData.vcHours.reduce((a, b) => a + b);
 			const average = sum / userData.vcHours.length;
 			const sorted = userData.vcHours.sort((a, b) => b - a);
