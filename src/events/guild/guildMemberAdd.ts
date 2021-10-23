@@ -48,7 +48,9 @@ abstract class GuildMemberAddEvent extends Event {
 			.setTitle(`New Member Joined`)
 			.setColor('#118511')
 			.setDescription(
-				`Account Created: **${member.user.createdAt}**\nGuild Member Count: **${member.guild.memberCount}**`,
+				`Account Created: **<t:${Math.floor(member.user.createdTimestamp / 100)}:D>**\nGuild Member Count: **${
+					member.guild.memberCount
+				}**`,
 			)
 			.setFooter(`User ID: ${member.user.id}`)
 			.setTimestamp();
