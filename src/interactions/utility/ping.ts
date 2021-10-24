@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { InteractionCommand } from '../../lib/structures/commands';
+import { InteractionCommand } from '../../lib/structures';
 import { pingCommand } from './options';
 
 abstract class PingInteractionCommand extends InteractionCommand {

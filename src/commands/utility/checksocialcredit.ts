@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { GenericCommand } from '../../lib/structures/commands';
+import { GenericCommand } from '../../lib/structures';
 import { findMember, formatNumber } from '../../lib/utils/util';
 
 abstract class checkSocialCredit extends GenericCommand {

@@ -1,5 +1,5 @@
 import { Guild, Message, TextChannel, Permissions } from 'discord.js';
-import { Event } from '../../lib/structures/events';
+import { Event } from '../../lib/structures';
 import { formatNumber } from '../../lib/utils/util';
 
 abstract class MessageEvent extends Event {

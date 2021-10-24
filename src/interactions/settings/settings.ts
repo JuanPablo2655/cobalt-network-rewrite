@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { InteractionCommand } from '../../lib/structures/commands';
+import { InteractionCommand } from '../../lib/structures';
 import { settingCommand } from './options';
 import { add, list, remove } from './subcommands/blacklistword';
 import * as leavechannel from './subcommands/leavechannel';

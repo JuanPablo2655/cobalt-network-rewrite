@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { InteractionCommand } from '../../lib/structures/commands';
+import { InteractionCommand } from '../../lib/structures';
 import { devCommand } from './options';
 import { pay, reboot } from './subcommands';
 import { directors, tax } from './subcommands/update';

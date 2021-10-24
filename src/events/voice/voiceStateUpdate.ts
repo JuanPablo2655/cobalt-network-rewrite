@@ -1,6 +1,6 @@
 import { MessageEmbed, TextChannel, VoiceState } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { Event } from '../../lib/structures/events';
+import { Event } from '../../lib/structures';
 import { formatMoney } from '../../lib/utils/util';
 
 abstract class VoiceStateUpdate extends Event {

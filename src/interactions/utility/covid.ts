@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
-import { InteractionCommand } from '../../lib/structures/commands';
+import { InteractionCommand } from '../../lib/structures';
 import { CovidAll, covidCountry, covidState } from '../../lib/typings/Covid';
 import { formatNumber } from '../../lib/utils/util';
 import { covidCommand } from './options';

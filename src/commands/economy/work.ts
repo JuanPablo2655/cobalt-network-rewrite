@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import jobs from '../../lib/data/jobs';
-import { GenericCommand } from '../../lib/structures/commands';
+import { GenericCommand } from '../../lib/structures';
 import { addMulti, calcMulti, formatNumber } from '../../lib/utils/util';
 
 abstract class WorkCommand extends GenericCommand {

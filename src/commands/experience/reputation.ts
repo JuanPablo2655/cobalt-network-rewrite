@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { GenericCommand } from '../../lib/structures/commands';
+import { GenericCommand } from '../../lib/structures';
 import { findMember } from '../../lib/utils/util';
 
 abstract class ReputationCommand extends GenericCommand {

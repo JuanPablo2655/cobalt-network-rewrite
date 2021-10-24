@@ -1,5 +1,5 @@
 import { Message, Snowflake } from 'discord.js';
-import { GenericCommand } from '../../lib/structures/commands';
+import { GenericCommand } from '../../lib/structures';
 import { findRole } from '../../lib/utils/util';
 
 abstract class UpdateDirectorCommand extends GenericCommand {

@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { GenericCommand } from '../../lib/structures/commands';
+import { GenericCommand } from '../../lib/structures';
 
 abstract class BlacklistedWordsCommand extends GenericCommand {
 	constructor() {
