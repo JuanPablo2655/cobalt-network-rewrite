@@ -1,4 +1,4 @@
-import { CobaltClient } from '../../src/struct/cobaltClient';
+import { CobaltClient } from '../../src/lib/cobaltClient';
 import {
 	APIChannel,
 	APIGuild,

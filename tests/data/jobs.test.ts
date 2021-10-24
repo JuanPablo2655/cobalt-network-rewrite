@@ -1,4 +1,4 @@
-import jobs from '../../src/data/jobs';
+import jobs from '../../src/lib/data/jobs';
 
 describe('Jobs', () => {
 	test("GIVEN 'developer' THEN return developer object", () => {
