@@ -14,7 +14,7 @@ export interface UserData {
 	weekly?: number | null;
 	monthly?: number | null;
 	repTime?: number | null;
-	vcHours: number;
+	vcHours?: number[] | null;
 	inventory: object;
 	activeItems?: string[] | null;
 	xp: number;
@@ -41,7 +41,7 @@ const userSchema = new Schema<IUser>({
 	daily: { type: Number, default: null },
 	weekly: { type: Number, default: null },
 	monthly: { type: Number, default: null },
-	vcHours: { type: Number, default: 0 },
+	vcHours: { type: [Number], default: null },
 	repTime: { type: Number, default: null },
 	inventory: { type: Object, default: {} },
 	activeItems: { type: Array, default: [] },
