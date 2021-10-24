@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { GenericCommand } from '../../structures/commands';
+import { GenericCommand } from '../../lib/structures/commands';
 import { addMulti, findMember, formatMoney } from '../../utils/util';
 
 abstract class MonthlyCommand extends GenericCommand {

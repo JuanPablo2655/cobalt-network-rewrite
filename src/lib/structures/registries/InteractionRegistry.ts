@@ -1,6 +1,6 @@
 import { sync } from 'glob';
 import { resolve } from 'path';
-import { CobaltClient } from '../../lib/cobaltClient';
+import { CobaltClient } from '../../cobaltClient';
 import { InteractionCommand } from '../commands';
 
 const registerInteraction: Function = (cobalt: CobaltClient) => {

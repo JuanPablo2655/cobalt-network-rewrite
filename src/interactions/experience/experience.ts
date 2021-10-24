@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { InteractionCommand } from '../../structures/commands';
+import { InteractionCommand } from '../../lib/structures/commands';
 import { experienceCommand } from './options';
 import { rank, reputation } from './subcommands';
 

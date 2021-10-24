@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { GenericCommandType } from '../../typings/CommandOptions';
+import { GenericCommandType } from '../../../typings/CommandOptions';
 import { BaseCommand } from './BaseCommand';
 
 export abstract class GenericCommand extends BaseCommand {

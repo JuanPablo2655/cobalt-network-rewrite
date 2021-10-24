@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { InteractionCommand } from '../../structures/commands';
+import { InteractionCommand } from '../../lib/structures/commands';
 import { formatNumber } from '../../utils/util';
 import { vcdataCommand } from './options';
 

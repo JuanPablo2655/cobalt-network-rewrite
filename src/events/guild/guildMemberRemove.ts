@@ -1,5 +1,5 @@
 import { GuildMember, MessageEmbed, Snowflake, TextChannel } from 'discord.js';
-import { Event } from '../../structures/events';
+import { Event } from '../../lib/structures/events';
 
 abstract class GuildMemberRemoveEvent extends Event {
 	constructor() {

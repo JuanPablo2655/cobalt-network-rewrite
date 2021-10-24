@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { GenericCommand } from '../../structures/commands';
+import { GenericCommand } from '../../lib/structures/commands';
 
 abstract class PingCommand extends GenericCommand {
 	constructor() {

@@ -1,5 +1,5 @@
 import { CommandInteraction, GuildMember, Interaction, TextChannel } from 'discord.js';
-import { Event } from './../structures/events';
+import { Event } from '../lib/structures/events';
 
 abstract class InteractionEvent extends Event {
 	constructor() {
