@@ -43,14 +43,13 @@ abstract class GuildMemberAddEvent extends Event {
 			return void welcomeChannel.send({ content: welcome });
 		}
 
+		const created = Math.floor(member.user.createdTimestamp / 100);
 		const logEmbed = new MessageEmbed()
 			.setAuthor(member.user.username, avatar)
 			.setTitle(`New Member Joined`)
 			.setColor('#118511')
 			.setDescription(
-				`Account Created: **<t:${Math.floor(member.user.createdTimestamp / 100)}:D>**\nGuild Member Count: **${
-					member.guild.memberCount
-				}**`,
+				`Registered **<t:${created}:R>** on **<t:${created}:D>** \nGuild Member Count: **${member.guild.memberCount}**`,
 			)
 			.setFooter(`User ID: ${member.user.id}`)
 			.setTimestamp();
