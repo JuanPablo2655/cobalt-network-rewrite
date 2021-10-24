@@ -10,8 +10,8 @@
     "test:prettier": "prettier --check .",
     "clean": "rm -rf build",
     "build": "tsc -b src",
-    "deploy": "node build/cobalt.js",
-    "deploy:commands": "node build/deploy.js",
+    "deploy": "node --enable-source-maps build/cobalt.js",
+    "deploy:commands": "node --enable-source-maps build/deploy.js",
     "dev": "ts-node-dev --respawn --transpile-only ./src/cobalt.ts",
     "prettier": "prettier --write ."
   },
@@ -59,7 +59,7 @@
     "zlib-sync": "^0.1.7"
   },
   "engines": {
-    "node": "^16",
-    "npm": "^7"
+    "node": "^16.0.0",
+    "npm": "^7.0.0"
   }
 }

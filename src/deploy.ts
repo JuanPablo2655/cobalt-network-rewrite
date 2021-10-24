@@ -15,6 +15,7 @@ import {
 	pingCommand,
 	settingCommand,
 	vcdataCommand,
+	socialCreditCommand,
 } from './interactions';
 
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
@@ -26,7 +27,16 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
 		const commands = (await rest.put(
 			Routes.applicationGuildCommands(process.env.CLIENT_ID as Snowflake, '823300821994569748' as Snowflake),
 			{
-				body: [devCommand, economyCommand, experienceCommand, settingCommand, covidCommand, pingCommand, vcdataCommand],
+				body: [
+					devCommand,
+					economyCommand,
+					experienceCommand,
+					settingCommand,
+					covidCommand,
+					pingCommand,
+					vcdataCommand,
+					socialCreditCommand,
+				],
 			},
 		)) as RESTGetAPIApplicationGuildCommandsResult;
 
