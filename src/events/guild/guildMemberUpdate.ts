@@ -1,5 +1,5 @@
 import { GuildMember, MessageEmbed, Role, TextChannel } from 'discord.js';
-import Event from '../../struct/Event';
+import Event from '../../structures/Event';
 
 abstract class GuildMemberUpdateEvent extends Event {
 	constructor() {

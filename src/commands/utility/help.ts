@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import GenericCommand from '../../struct/GenericCommand';
+import GenericCommand from '../../structures/GenericCommand';
 import { toCapitalize } from '../../utils/util';
 
 abstract class HelpCommand extends GenericCommand {

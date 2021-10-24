@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { CobaltClient } from '../../../../struct/cobaltClient';
+import { CobaltClient } from '../../../../structures/cobaltClient';
 import { formatMoney } from '../../../../utils/util';
 
 export async function deposit(cobalt: CobaltClient, interaction: CommandInteraction) {

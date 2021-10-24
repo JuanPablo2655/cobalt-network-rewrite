@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { CobaltClient } from '../../../../struct/cobaltClient';
+import { CobaltClient } from '../../../../structures/cobaltClient';
 
 export async function channel(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const channel = interaction.options.getChannel('channel', true);

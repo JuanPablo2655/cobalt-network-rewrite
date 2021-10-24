@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { Items } from '../../data/items';
-import GenericCommand from '../../struct/GenericCommand';
+import GenericCommand from '../../structures/GenericCommand';
 import { trim } from '../../utils/util';
 
 abstract class TestCommand extends GenericCommand {

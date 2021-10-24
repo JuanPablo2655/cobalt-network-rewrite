@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import GenericCommand from '../../struct/GenericCommand';
+import GenericCommand from '../../structures/GenericCommand';
 
 abstract class RebootCommand extends GenericCommand {
 	constructor() {

@@ -1,5 +1,5 @@
 import { CommandInteraction, Snowflake } from 'discord.js';
-import { CobaltClient } from '../../../../struct/cobaltClient';
+import { CobaltClient } from '../../../../structures/cobaltClient';
 import { formatNumber } from '../../../../utils/util';
 
 export async function directors(cobalt: CobaltClient, interaction: CommandInteraction) {

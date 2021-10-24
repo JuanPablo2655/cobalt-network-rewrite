@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import GenericCommand from '../../struct/GenericCommand';
+import GenericCommand from '../../structures/GenericCommand';
 import { findMember, formatNumber } from '../../utils/util';
 
 abstract class removeSocialCredit extends GenericCommand {

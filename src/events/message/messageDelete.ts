@@ -1,5 +1,5 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
-import Event from '../../struct/Event';
+import Event from '../../structures/Event';
 import { getImage } from '../../utils/util';
 
 abstract class MessageDeleteEvent extends Event {

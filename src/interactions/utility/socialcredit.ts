@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import Interaction from '../../struct/InteractionCommand';
+import Interaction from '../../structures/InteractionCommand';
 import { socialCreditCommand } from './options';
 import { add, check, remove } from './subcommands';
 

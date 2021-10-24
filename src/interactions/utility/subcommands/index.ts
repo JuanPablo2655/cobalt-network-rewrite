@@ -1,5 +1,5 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { CobaltClient } from '../../../struct/cobaltClient';
+import { CobaltClient } from '../../../structures/cobaltClient';
 import { formatNumber } from '../../../utils/util';
 
 export async function check(cobalt: CobaltClient, interaction: CommandInteraction) {

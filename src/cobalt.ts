@@ -1,4 +1,4 @@
-import { CobaltClient } from './struct/cobaltClient';
+import { CobaltClient } from './structures/cobaltClient';
 const cobalt: CobaltClient = new CobaltClient();
 
 if (cobalt.devMode) {
