@@ -6,4 +6,4 @@ RUN yarn install
 COPY . .
 RUN npx tsc
 EXPOSE 3030
-CMD ["yarn", "deploy"]
+CMD ["yarn", "start"]

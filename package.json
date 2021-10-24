@@ -10,9 +10,9 @@
     "test:prettier": "prettier --check .",
     "clean": "rm -rf build",
     "build": "tsc -b src",
-    "deploy": "node --enable-source-maps build/cobalt.js",
+    "start": "node --enable-source-maps build/cobalt.js",
     "deploy:commands": "node --enable-source-maps build/deploy.js",
-    "dev": "ts-node-dev --respawn --transpile-only ./src/cobalt.ts",
+    "dev": "yarn build && yarn start",
     "prettier": "prettier --write ."
   },
   "repository": {

@@ -4,7 +4,7 @@ import { CobaltClient } from '../../cobaltClient';
 import { InteractionCommand } from '../commands';
 
 const registerInteraction: Function = (cobalt: CobaltClient) => {
-	const interactionFiles = sync(resolve(__dirname + '/../../interactions/**/*'));
+	const interactionFiles = sync(resolve(__dirname + '/../../../interactions/**/*'));
 	console.log(`[Interactions]\tLoaded ${interactionFiles.length} commands`);
 	interactionFiles.forEach(async file => {
 		if (/\.(j|t)s$/iu.test(file)) {
