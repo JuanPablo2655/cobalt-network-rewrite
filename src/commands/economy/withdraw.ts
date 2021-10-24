@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '../../lib/structures/commands';
-import { formatMoney } from '../../utils/util';
+import { formatMoney } from '../../lib/utils/util';
 
 abstract class WithdrawCommand extends GenericCommand {
 	constructor() {

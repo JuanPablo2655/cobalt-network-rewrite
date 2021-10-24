@@ -1,7 +1,7 @@
 import { ClientEvents, Snowflake } from 'discord.js';
 import express, { Express } from 'express';
 import { Counter, Gauge, collectDefaultMetrics, register } from 'prom-client';
-import { CobaltClient } from '../lib/cobaltClient';
+import { CobaltClient } from '../cobaltClient';
 
 export default class Metrics {
 	private messageCounter: Counter<string>;

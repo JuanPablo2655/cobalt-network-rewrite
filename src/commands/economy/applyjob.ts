@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import jobs from '../../data/jobs';
 import { GenericCommand } from '../../lib/structures/commands';
-import { formatMoney } from '../../utils/util';
+import { formatMoney } from '../../lib/utils/util';
 
 abstract class ApplyJobCommand extends GenericCommand {
 	constructor() {

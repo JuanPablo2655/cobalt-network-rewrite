@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '../../lib/structures/commands';
-import { formatNumber } from '../../utils/util';
+import { formatNumber } from '../../lib/utils/util';
 
 abstract class UpdateTaxCommand extends GenericCommand {
 	constructor() {

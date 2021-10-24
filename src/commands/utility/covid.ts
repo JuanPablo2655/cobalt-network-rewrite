@@ -2,7 +2,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import { GenericCommand } from '../../lib/structures/commands';
 import { CovidAll, covidCountry, covidState } from '../../lib/typings/Covid';
-import { formatNumber } from '../../utils/util';
+import { formatNumber } from '../../lib/utils/util';
 
 abstract class CovidCommand extends GenericCommand {
 	constructor() {

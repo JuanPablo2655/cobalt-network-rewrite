@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { CobaltClient } from '../../../lib/cobaltClient';
-import { formatNumber } from '../../../utils/util';
+import { formatNumber } from '../../../lib/utils/util';
 
 export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;

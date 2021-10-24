@@ -1,4 +1,4 @@
-import { CobaltClient } from '../lib/cobaltClient';
+import { CobaltClient } from '../cobaltClient';
 import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
 
