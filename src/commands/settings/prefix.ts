@@ -1,6 +1,5 @@
 import { Message } from 'discord.js';
-import GenericCommand from '../../structures/GenericCommand';
-
+import { GenericCommand } from '../../structures/commands';
 abstract class PrefixCommand extends GenericCommand {
 	constructor() {
 		super({

@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
-import GenericCommand from '../../structures/GenericCommand';
+import { GenericCommand } from '../../structures/commands';
 import { CovidAll, covidCountry, covidState } from '../../typings/Covid';
 import { formatNumber } from '../../utils/util';
 

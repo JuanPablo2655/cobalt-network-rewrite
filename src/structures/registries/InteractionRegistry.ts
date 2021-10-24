@@ -1,7 +1,7 @@
 import { sync } from 'glob';
 import { resolve } from 'path';
 import { CobaltClient } from '../cobaltClient';
-import InteractionCommand from '../InteractionCommand';
+import { InteractionCommand } from '../commands';
 
 const registerInteraction: Function = (cobalt: CobaltClient) => {
 	const interactionFiles = sync(resolve(__dirname + '/../../interactions/**/*'));

@@ -1,8 +1,8 @@
 import { PermissionString } from 'discord.js';
-import { BaseCommandOptions, Categories } from '../typings/CommandOptions';
-import { CobaltClient } from './cobaltClient';
+import { BaseCommandOptions, Categories } from '../../typings/CommandOptions';
+import { CobaltClient } from '../cobaltClient';
 
-abstract class BaseCommand {
+export abstract class BaseCommand {
 	public name: string;
 	public category: Categories;
 	public devOnly: boolean;
@@ -17,5 +17,3 @@ abstract class BaseCommand {
 		this.clientPermissions = options.clientPermissions ?? [];
 	}
 }
-
-export default BaseCommand;

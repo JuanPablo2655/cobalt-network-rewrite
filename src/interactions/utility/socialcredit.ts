@@ -1,9 +1,9 @@
 import { CommandInteraction } from 'discord.js';
-import Interaction from '../../structures/InteractionCommand';
+import { InteractionCommand } from '../../structures/commands';
 import { socialCreditCommand } from './options';
 import { add, check, remove } from './subcommands';
 
-abstract class SocialCreditInteraction extends Interaction {
+abstract class SocialCreditInteractionCommand extends InteractionCommand {
 	constructor() {
 		super({
 			name: socialCreditCommand.name,
@@ -32,4 +32,4 @@ abstract class SocialCreditInteraction extends Interaction {
 	}
 }
 
-export default SocialCreditInteraction;
+export default SocialCreditInteractionCommand;

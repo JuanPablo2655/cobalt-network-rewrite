@@ -1,11 +1,11 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
-import Interaction from '../../structures/InteractionCommand';
+import { InteractionCommand } from '../../structures/commands';
 import { CovidAll, covidCountry, covidState } from '../../typings/Covid';
 import { formatNumber } from '../../utils/util';
 import { covidCommand } from './options';
 
-abstract class CovidInteraction extends Interaction {
+abstract class CovidInteractionCommand extends InteractionCommand {
 	constructor() {
 		super({
 			name: covidCommand.name,
@@ -90,4 +90,4 @@ abstract class CovidInteraction extends Interaction {
 	}
 }
 
-export default CovidInteraction;
+export default CovidInteractionCommand;

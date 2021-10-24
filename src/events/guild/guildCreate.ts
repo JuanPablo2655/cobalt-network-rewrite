@@ -1,5 +1,5 @@
 import { Guild, MessageEmbed, WebhookClient } from 'discord.js';
-import Event from '../../structures/Event';
+import { Event } from '../../structures/events';
 
 abstract class GuildCreateEvent extends Event {
 	constructor() {
