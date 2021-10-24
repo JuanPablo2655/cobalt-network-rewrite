@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
-import jobs from '../../data/jobs';
+import jobs from '../../lib/data/jobs';
 import { GenericCommand } from '../../lib/structures/commands';
 
 abstract class ListJobsCommand extends GenericCommand {

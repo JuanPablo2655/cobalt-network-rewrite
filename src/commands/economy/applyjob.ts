@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import jobs from '../../data/jobs';
+import jobs from '../../lib/data/jobs';
 import { GenericCommand } from '../../lib/structures/commands';
 import { formatMoney } from '../../lib/utils/util';
 

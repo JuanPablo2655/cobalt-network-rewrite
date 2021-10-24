@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import jobs from '../../../data/jobs';
+import jobs from '../../../lib/data/jobs';
 import { CobaltClient } from '../../../lib/cobaltClient';
 import { addMulti, calcMulti, formatMoney, formatNumber } from '../../../lib/utils/util';
 

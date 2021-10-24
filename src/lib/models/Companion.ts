@@ -1,7 +1,7 @@
 import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
-import { ClassOptions } from '../../data/classes';
-import { RaceOptions } from '../../data/races';
+import { ClassOptions } from '../data/classes';
+import { RaceOptions } from '../data/races';
 
 export interface CompanionData {
 	_id: Snowflake;
