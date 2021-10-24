@@ -1,5 +1,5 @@
 import { Message, Snowflake } from 'discord.js';
-import { CobaltClient } from '../structures/cobaltClient';
+import { CobaltClient } from '../lib/cobaltClient';
 
 export default class Experience {
 	cobalt: CobaltClient;

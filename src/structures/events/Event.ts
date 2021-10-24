@@ -1,6 +1,6 @@
 import { ClientEvents } from 'discord.js';
 import { EventOptions } from '../../typings/Options';
-import { CobaltClient } from '../cobaltClient';
+import { CobaltClient } from '../../lib/cobaltClient';
 
 export abstract class Event {
 	public name: keyof ClientEvents;

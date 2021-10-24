@@ -1,7 +1,7 @@
 import { Client, Collection, Intents, Snowflake } from 'discord.js';
 import Redis from 'ioredis';
 import * as dotenv from 'dotenv';
-import { CommandRegistry, EventRegistry, InteractionRegistry } from './registries/export/RegistryIndex';
+import { CommandRegistry, EventRegistry, InteractionRegistry } from '../structures/registries/export/RegistryIndex';
 import { EventOptions } from '../typings/Options';
 import Database from '../utils/Database';
 import Experience from '../utils/Experience';

@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import jobs from '../../../../data/jobs';
-import { CobaltClient } from '../../../../structures/cobaltClient';
+import { CobaltClient } from '../../../../lib/cobaltClient';
 import { formatMoney } from '../../../../utils/util';
 
 export async function apply(cobalt: CobaltClient, interaction: CommandInteraction) {

@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { CobaltClient } from '../../../../structures/cobaltClient';
+import { CobaltClient } from '../../../../lib/cobaltClient';
 
 export async function add(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const word = interaction.options.getString('word', true);

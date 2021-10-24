@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { CobaltClient } from '../../../structures/cobaltClient';
+import { CobaltClient } from '../../../lib/cobaltClient';
 import { formatMoney } from '../../../utils/util';
 
 export async function reboot(cobalt: CobaltClient, interaction: CommandInteraction) {

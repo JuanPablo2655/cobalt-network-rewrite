@@ -1,8 +1,8 @@
-import botModel, { BotData, IBot } from '../models/Bot';
-import guildModel, { GuildData, IGuild } from '../models/Guild';
-import userModel, { UserData, IUser } from '../models/User';
-import memberModel, { MemberData, IMember } from '../models/Member';
-import { CobaltClient } from '../structures/cobaltClient';
+import botModel, { BotData, IBot } from '../lib/models/Bot';
+import guildModel, { GuildData, IGuild } from '../lib/models/Guild';
+import userModel, { UserData, IUser } from '../lib/models/User';
+import memberModel, { MemberData, IMember } from '../lib/models/Member';
+import { CobaltClient } from '../lib/cobaltClient';
 import mongoose, { Connection } from 'mongoose';
 
 export default class Database {

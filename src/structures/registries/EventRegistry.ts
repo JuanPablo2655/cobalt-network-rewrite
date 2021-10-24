@@ -1,6 +1,6 @@
 import { sync } from 'glob';
 import { resolve } from 'path';
-import { CobaltClient } from '../cobaltClient';
+import { CobaltClient } from '../../lib/cobaltClient';
 import { Event } from '../events';
 
 const registerEvent: Function = (cobalt: CobaltClient) => {

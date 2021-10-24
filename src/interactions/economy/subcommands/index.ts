@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import jobs from '../../../data/jobs';
-import { CobaltClient } from '../../../structures/cobaltClient';
+import { CobaltClient } from '../../../lib/cobaltClient';
 import { addMulti, calcMulti, formatMoney, formatNumber } from '../../../utils/util';
 
 export async function work(cobalt: CobaltClient, interaction: CommandInteraction) {

@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { CobaltClient } from '../../../structures/cobaltClient';
+import { CobaltClient } from '../../../lib/cobaltClient';
 import { formatNumber } from '../../../utils/util';
 
 export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {

@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { CobaltClient } from '../structures/cobaltClient';
+import { CobaltClient } from '../lib/cobaltClient';
 import { addMulti, calcMulti } from './util';
 
 export default class Currency {
