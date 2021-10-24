@@ -1,5 +1,5 @@
 import { ClientEvents } from 'discord.js';
-import { EventOptions } from '../../../typings/Options';
+import { EventOptions } from '../../typings/Options';
 import { CobaltClient } from '../../cobaltClient';
 
 export abstract class Event {
