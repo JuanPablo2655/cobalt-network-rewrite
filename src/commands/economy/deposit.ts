@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
-import { GenericCommand } from '../../lib/structures';
-import { formatMoney } from '../../lib/utils/util';
+import { GenericCommand } from '@lib/structures/commands';
+import { formatMoney } from '@utils/util';
 
 abstract class DepositCommand extends GenericCommand {
 	constructor() {

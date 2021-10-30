@@ -1,5 +1,5 @@
 import { GuildBan, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from '../../lib/structures';
+import { Event } from '@lib/structures/events';
 
 abstract class GuildBanRemoveEvent extends Event {
 	constructor() {

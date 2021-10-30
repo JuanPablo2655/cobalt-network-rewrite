@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
-import { GenericCommand } from '../../lib/structures';
-import { findMember, formatNumber } from '../../lib/utils/util';
+import { GenericCommand } from '@lib/structures/commands';
+import { findMember, formatNumber } from '@utils/util';
 
 abstract class addSocialCredit extends GenericCommand {
 	constructor() {

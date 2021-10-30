@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
-import { GenericCommand } from '../../lib/structures';
-import { findMember, formatMoney } from '../../lib/utils/util';
+import { GenericCommand } from '@lib/structures/commands';
+import { findMember, formatMoney } from '@utils/util';
 
 abstract class PayComamnd extends GenericCommand {
 	constructor() {

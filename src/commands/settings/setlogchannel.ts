@@ -1,6 +1,6 @@
 import { Guild, Message } from 'discord.js';
-import { GenericCommand } from '../../lib/structures';
-import { findChannel } from '../../lib/utils/util';
+import { GenericCommand } from '@lib/structures/commands';
+import { findChannel } from '@utils/util';
 
 abstract class SetLogChannelCommand extends GenericCommand {
 	constructor() {

@@ -1,5 +1,5 @@
 import { MessageEmbed, WebhookClient } from 'discord.js';
-import { Event } from '../../lib/structures';
+import { Event } from '@lib/structures/events';
 
 abstract class ShardResumeEvent extends Event {
 	constructor() {

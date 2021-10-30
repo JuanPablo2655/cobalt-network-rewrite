@@ -1,5 +1,5 @@
 import { Guild, Message } from 'discord.js';
-import { GenericCommand } from '../../lib/structures';
+import { GenericCommand } from '@lib/structures/commands';
 
 abstract class DisableEventsCommand extends GenericCommand {
 	constructor() {
