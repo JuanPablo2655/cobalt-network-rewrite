@@ -2,16 +2,21 @@
   "name": "cobalt-network-rewrite",
   "version": "1.0.0",
   "description": "",
-  "main": "build/cobalt.js",
+  "main": "./dist/cobalt.js",
+  "import": {
+    "@lib/*": "./dist/lib/*.js",
+    "@root/*": "./dist/*.js",
+    "@utils/*": "./dist/lib/util/*js"
+  },
   "scripts": {
     "test": "jest --collect-coverage",
     "test:ci": "yarn test --verbose --noStackTrace",
     "test:typescript": "tsc -b src",
     "test:prettier": "prettier --check .",
-    "clean": "rm -rf build",
+    "clean": "rm -rf dist",
     "build": "tsc -b src",
-    "start": "node --enable-source-maps build/cobalt.js",
-    "deploy:commands": "node --enable-source-maps build/deploy.js",
+    "start": "node --enable-source-maps dist/cobalt.js",
+    "deploy:commands": "node --enable-source-maps dist/deploy.js",
     "dev": "yarn build && yarn start",
     "prettier": "prettier --write ."
   },
@@ -31,7 +36,6 @@
     "diff": "^5.0.0",
     "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",
-    "erlpack": "discord/erlpack",
     "express": "^4.17.1",
     "glob": "^7.1.7",
     "ioredis": "^4.27.9",

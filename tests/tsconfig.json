@@ -9,6 +9,6 @@
 		}
 	},
 	"include": [".", "../src/**/*"],
-	"exclude": ["../build/**/*"],
+	"exclude": ["../dist/**/*"],
 	"references": [{ "path": "../src" }]
 }

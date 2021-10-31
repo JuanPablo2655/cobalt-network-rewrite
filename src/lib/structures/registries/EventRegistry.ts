@@ -1,7 +1,7 @@
 import { sync } from 'glob';
 import { resolve } from 'path';
-import { CobaltClient } from '../../cobaltClient';
-import { Event } from '../events';
+import { CobaltClient } from '@lib/cobaltClient';
+import { Event } from '@lib/structures/events';
 
 const registerEvent: Function = (cobalt: CobaltClient) => {
 	const eventFiles = sync(resolve(__dirname + '/../../../events/**/*'));
