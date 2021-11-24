@@ -38,7 +38,7 @@
     "mongoose": "^6.0.4",
     "node-fetch": "2.6.4",
     "pretty-ms": "^7.0.1",
-    "prom-client": "^14.0.0",
+    "prom-client": "^14.0.1",
     "utf-8-validate": "^5.0.7",
     "zlib-sync": "^0.1.7"
   },
