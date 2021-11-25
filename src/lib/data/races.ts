@@ -21,7 +21,7 @@ export interface RaceData {
 	attack: number;
 }
 
-const races: RaceData[] = [
+export const races: RaceData[] = [
 	{
 		race: 'Human',
 		description: 'Humans are the most common of the common races in the world.', // TODO: redo
@@ -31,5 +31,3 @@ const races: RaceData[] = [
 		attack: 10,
 	},
 ];
-
-export default races;

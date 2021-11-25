@@ -5,8 +5,13 @@
   "main": "./dist/cobalt.js",
   "import": {
     "@lib/*": "./dist/lib/*.js",
+    "@lib/cobaltClient": "./dist/lib/cobaltClient.js",
+    "@lib/data/*": "./dist/lib/data/index.js",
+    "@lib/models/*": "./dist/lib/models/index.js",
+    "@lib/structures/*": "./dist/lib/structures/index.js",
+    "@lib/typings/*": "./dist/lib/typings/*.js",
     "@root/*": "./dist/*.js",
-    "@utils/*": "./dist/lib/util/*js"
+    "@utils/*": "./dist/lib/utils/*.js"
   },
   "scripts": {
     "test": "jest --collect-coverage",

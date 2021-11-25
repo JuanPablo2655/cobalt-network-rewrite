@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { Items } from '@lib/data/items';
+import { Items } from '@lib/data';
 import { GenericCommand } from '@lib/structures/commands';
 import { trim } from '@utils/util';
 

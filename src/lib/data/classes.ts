@@ -17,6 +17,4 @@ export interface classData {
 	class: ClassOptions;
 }
 
-const classes: classData[] = [];
-
-export default classes;
+export const classes: classData[] = [];

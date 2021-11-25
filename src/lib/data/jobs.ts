@@ -6,7 +6,7 @@ export interface JobData {
 	minAmount: number;
 }
 
-const jobs: JobData[] = [
+export const jobs: JobData[] = [
 	{
 		id: 'developer',
 		name: 'Developer',
@@ -139,5 +139,3 @@ const jobs: JobData[] = [
 		minAmount: 450,
 	},
 ];
-
-export default jobs;

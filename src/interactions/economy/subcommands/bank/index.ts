@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js';
-import { CobaltClient } from '../../../../lib/cobaltClient';
-import { formatMoney } from '../../../../lib/utils/util';
+import { CobaltClient } from '@lib/cobaltClient';
+import { formatMoney } from '@utils/util';
 
 export async function deposit(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const profile = await cobalt.db.getUser(interaction.user.id);

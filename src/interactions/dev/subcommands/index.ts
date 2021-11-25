@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js';
-import { CobaltClient } from '../../../lib/cobaltClient';
-import { formatMoney } from '../../../lib/utils/util';
+import { CobaltClient } from '@lib/cobaltClient';
+import { formatMoney } from '@utils/util';
 
 export async function reboot(cobalt: CobaltClient, interaction: CommandInteraction) {
 	await interaction.reply({ content: 'Shutting down.' });
