@@ -5,6 +5,11 @@ export default async (): Promise<Config.InitialOptions> => ({
 	displayName: 'unit test',
 	preset: 'ts-jest',
 	testMatch: ['<rootDir>/tests/**/*.test.ts'],
+	moduleNameMapper: {
+		'^#utils/(.*)$': '<rootDir>/src/lib/utils/$1',
+		'^#lib/(.*)$': '<rootDir>/src/lib/$1',
+		'^#root/(.*)$': '<rootDir>/src/$1',
+	},
 	setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
 	testEnvironment: 'node',
 	collectCoverage: true,

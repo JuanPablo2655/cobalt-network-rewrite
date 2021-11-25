@@ -1,8 +1,8 @@
 import { ClientEvents } from 'discord.js';
-import { EventOptions } from '../typings/Options';
-import { CobaltClient } from './cobaltClient';
+import { EventOptions } from '../../typings/Options';
+import { CobaltClient } from '../../cobaltClient';
 
-abstract class Event {
+export abstract class Event {
 	public name: keyof ClientEvents;
 	public type: boolean;
 	public abstract cobalt: CobaltClient;
@@ -14,5 +14,3 @@ abstract class Event {
 
 	public abstract run(...args: any[]): void | Promise<void>;
 }
-
-export default Event;

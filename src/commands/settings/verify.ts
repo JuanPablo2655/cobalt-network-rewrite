@@ -1,5 +1,5 @@
 import { Guild, Message } from 'discord.js';
-import GenericCommand from '../../struct/GenericCommand';
+import { GenericCommand } from '#lib/structures/commands';
 
 abstract class VerifyCommand extends GenericCommand {
 	constructor() {

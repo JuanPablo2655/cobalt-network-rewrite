@@ -1,11 +1,11 @@
 import { CommandInteraction } from 'discord.js';
-import Interaction from '../../struct/InteractionCommand';
+import { InteractionCommand } from '#lib/structures/commands';
 import { economyCommand } from './options';
 import { balance, daily, monthly, pay, weekly, work } from './subcommands';
 import { deposit, withdraw } from './subcommands/bank';
 import { apply, list, quit } from './subcommands/job';
 
-abstract class EconomyInteraction extends Interaction {
+abstract class EconomyInteractionCommand extends InteractionCommand {
 	constructor() {
 		super({
 			name: economyCommand.name,
@@ -87,4 +87,4 @@ abstract class EconomyInteraction extends Interaction {
 	}
 }
 
-export default EconomyInteraction;
+export default EconomyInteractionCommand;

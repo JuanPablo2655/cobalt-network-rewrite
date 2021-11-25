@@ -1,6 +1,6 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
-import Event from '../../struct/Event';
-import { getDiff, getImage } from '../../utils/util';
+import { Event } from '#lib/structures/events';
+import { getDiff, getImage } from '#utils/util';
 
 abstract class MessageUpdateEvent extends Event {
 	constructor() {

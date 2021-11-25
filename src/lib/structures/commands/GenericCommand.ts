@@ -1,8 +1,8 @@
 import { Message } from 'discord.js';
-import { GenericCommandType } from '../typings/CommandOptions';
-import BaseCommand from './BaseCommand';
+import { GenericCommandType } from '../../typings/CommandOptions';
+import { BaseCommand } from './BaseCommand';
 
-abstract class GenericCommand extends BaseCommand {
+export abstract class GenericCommand extends BaseCommand {
 	public description: string;
 	public usage: string;
 	public aliases: string[];
@@ -28,5 +28,3 @@ abstract class GenericCommand extends BaseCommand {
 
 	public abstract run(message: Message, args: string[], addCD: () => Promise<void>): unknown | Promise<unknown>;
 }
-
-export default GenericCommand;

@@ -1,4 +1,4 @@
-import { addMulti, formatMoney, formatNumber, getDiff, toCapitalize, trim } from '../../src/utils/util';
+import { addMulti, formatMoney, formatNumber, getDiff, toCapitalize, trim } from '#utils/util';
 
 describe('Cobalt', () => {
 	describe('util', () => {

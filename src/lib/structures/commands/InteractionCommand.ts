@@ -1,8 +1,8 @@
 import { ApplicationCommandPermissionData, Interaction } from 'discord.js';
-import { InteractionCommandType } from '../typings/CommandOptions';
-import BaseCommand from './BaseCommand';
+import { InteractionCommandType } from '../../typings/CommandOptions';
+import { BaseCommand } from './BaseCommand';
 
-abstract class InteractionCommand extends BaseCommand {
+export abstract class InteractionCommand extends BaseCommand {
 	public permissions: ApplicationCommandPermissionData[];
 
 	constructor(options: InteractionCommandType) {
@@ -12,5 +12,3 @@ abstract class InteractionCommand extends BaseCommand {
 
 	public abstract run(interactions: Interaction): unknown | Promise<unknown>;
 }
-
-export default InteractionCommand;

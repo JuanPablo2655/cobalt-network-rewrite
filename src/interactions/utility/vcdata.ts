@@ -1,10 +1,10 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import Interaction from '../../struct/InteractionCommand';
-import { formatNumber } from '../../utils/util';
+import { InteractionCommand } from '#lib/structures/commands';
+import { formatNumber } from '#utils/util';
 import { vcdataCommand } from './options';
 
-abstract class VcDataInteraction extends Interaction {
+abstract class VcDataInteractionCommand extends InteractionCommand {
 	constructor() {
 		super({
 			name: vcdataCommand.name,
@@ -57,4 +57,4 @@ abstract class VcDataInteraction extends Interaction {
 	}
 }
 
-export default VcDataInteraction;
+export default VcDataInteractionCommand;

@@ -1,8 +1,8 @@
 import { CommandInteraction } from 'discord.js';
-import Interaction from '../../struct/InteractionCommand';
+import { InteractionCommand } from '#lib/structures/commands';
 import { pingCommand } from './options';
 
-abstract class PingInteraction extends Interaction {
+abstract class PingInteractionCommand extends InteractionCommand {
 	constructor() {
 		super({
 			name: pingCommand.name,
@@ -15,4 +15,4 @@ abstract class PingInteraction extends Interaction {
 	}
 }
 
-export default PingInteraction;
+export default PingInteractionCommand;

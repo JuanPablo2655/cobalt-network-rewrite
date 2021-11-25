@@ -1,5 +1,5 @@
 import { CloseEvent, MessageEmbed, WebhookClient } from 'discord.js';
-import Event from '../../struct/Event';
+import { Event } from '#lib/structures/events';
 
 abstract class ShardDisconnectEvent extends Event {
 	constructor() {

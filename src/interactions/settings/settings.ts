@@ -1,12 +1,12 @@
 import { CommandInteraction } from 'discord.js';
-import Interaction from '../../struct/InteractionCommand';
+import { InteractionCommand } from '#lib/structures/commands';
 import { settingCommand } from './options';
 import { add, list, remove } from './subcommands/blacklistword';
 import * as leavechannel from './subcommands/leavechannel';
 import * as logchannel from './subcommands/logchannel';
 import * as welcomechannel from './subcommands/welcomechannel';
 
-abstract class settingsInteraction extends Interaction {
+abstract class settingsInteractionCommand extends InteractionCommand {
 	constructor() {
 		super({
 			name: settingCommand.name,
@@ -113,4 +113,4 @@ abstract class settingsInteraction extends Interaction {
 	}
 }
 
-export default settingsInteraction;
+export default settingsInteractionCommand;

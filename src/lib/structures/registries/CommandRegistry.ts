@@ -1,15 +1,16 @@
 import { resolve } from 'path';
 import { sync } from 'glob';
-import { CobaltClient } from '../cobaltClient';
-import GenericCommand from '../../struct/GenericCommand';
+import { CobaltClient } from '#lib/cobaltClient';
+import { GenericCommand } from '#lib/structures/commands';
 
 const registerCommand: Function = (cobalt: CobaltClient) => {
-	const commandFiles = sync(resolve(__dirname + '/../../commands/**/*'));
-	console.log(`[Commands]\tLoaded ${commandFiles.length} commands`);
+	const commandFiles = sync(resolve(__dirname + '/../../../commands/**/*'));
+	let count = 0;
 	commandFiles.forEach(file => {
-		if (/\.(j|t)s$/iu.test(file)) {
+		if (/\.js$/iu.test(file)) {
 			const File = require(file).default;
 			if (File && File.prototype instanceof GenericCommand) {
+				count++;
 				const command: GenericCommand = new File();
 				command.cobalt = cobalt;
 				cobalt.commands.set(command.name, command);
@@ -17,6 +18,7 @@ const registerCommand: Function = (cobalt: CobaltClient) => {
 			}
 		}
 	});
+	console.log(`[Commands]\tLoaded ${count} commands`);
 };
 
 export default registerCommand;

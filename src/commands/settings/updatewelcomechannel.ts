@@ -1,6 +1,6 @@
 import { Guild, Message } from 'discord.js';
-import GenericCommand from '../../struct/GenericCommand';
-import { findChannel } from '../../utils/util';
+import { GenericCommand } from '#lib/structures/commands';
+import { findChannel } from '#utils/util';
 
 abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 	constructor() {

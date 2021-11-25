@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { CobaltClient } from '../../../struct/cobaltClient';
+import { CobaltClient } from '../../../lib/cobaltClient';
 
 export async function category(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const saveCategories = ['dev', 'settings'];
