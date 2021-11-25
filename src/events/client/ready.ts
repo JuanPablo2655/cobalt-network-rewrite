@@ -1,4 +1,4 @@
-import { Event } from '@lib/structures/events';
+import { Event } from '#lib/structures/events';
 
 abstract class ReadyEvent extends Event {
 	constructor() {

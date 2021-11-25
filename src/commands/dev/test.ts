@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
-import { Items } from '@lib/data';
-import { GenericCommand } from '@lib/structures/commands';
-import { trim } from '@utils/util';
+import { Items } from '#lib/data';
+import { GenericCommand } from '#lib/structures/commands';
+import { trim } from '#utils/util';
 
 abstract class TestCommand extends GenericCommand {
 	constructor() {

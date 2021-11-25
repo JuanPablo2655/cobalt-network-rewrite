@@ -16,7 +16,7 @@ import {
 	settingCommand,
 	vcdataCommand,
 	socialCreditCommand,
-} from '@root/interactions';
+} from '#root/interactions';
 
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
 

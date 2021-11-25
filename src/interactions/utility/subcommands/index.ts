@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { CobaltClient } from '@lib/cobaltClient';
-import { formatNumber } from '@utils/util';
+import { CobaltClient } from '#lib/cobaltClient';
+import { formatNumber } from '#utils/util';
 
 export async function check(cobalt: CobaltClient, interaction: CommandInteraction) {
 	await interaction.deferReply();

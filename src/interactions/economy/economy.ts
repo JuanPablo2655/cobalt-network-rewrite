@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { InteractionCommand } from '@lib/structures/commands';
+import { InteractionCommand } from '#lib/structures/commands';
 import { economyCommand } from './options';
 import { balance, daily, monthly, pay, weekly, work } from './subcommands';
 import { deposit, withdraw } from './subcommands/bank';

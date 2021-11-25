@@ -5,9 +5,9 @@
 		"rootDir": ".",
 		"baseUrl": ".",
 		"paths": {
-			"@utils/*": ["lib/utils/*"],
-			"@lib/*": ["lib/*"],
-			"@root/*": ["*"]
+			"#utils/*": ["lib/utils/*"],
+			"#lib/*": ["lib/*"],
+			"#root/*": ["*"]
 		},
 		"composite": true
 	},

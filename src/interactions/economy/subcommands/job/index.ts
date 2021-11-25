@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { jobs } from '@lib/data';
-import { CobaltClient } from '@lib/cobaltClient';
-import { formatMoney } from '@utils/util';
+import { jobs } from '#lib/data';
+import { CobaltClient } from '#lib/cobaltClient';
+import { formatMoney } from '#utils/util';
 
 export async function apply(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = await cobalt.db.getUser(interaction.user.id);

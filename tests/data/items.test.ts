@@ -1,4 +1,4 @@
-import { Items, isFood, isWeapon } from '@lib/data';
+import { Items, isFood, isWeapon } from '#lib/data';
 
 describe('Items', () => {
 	test("GIVEN 'redapple' THEN return red Apple Object", () => {

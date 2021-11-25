@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { sync } from 'glob';
-import { CobaltClient } from '@lib/cobaltClient';
-import { GenericCommand } from '@lib/structures/commands';
+import { CobaltClient } from '#lib/cobaltClient';
+import { GenericCommand } from '#lib/structures/commands';
 
 const registerCommand: Function = (cobalt: CobaltClient) => {
 	const commandFiles = sync(resolve(__dirname + '/../../../commands/**/*'));

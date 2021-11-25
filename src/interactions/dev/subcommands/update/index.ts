@@ -1,6 +1,6 @@
 import { CommandInteraction, Snowflake } from 'discord.js';
-import { CobaltClient } from '@lib/cobaltClient';
-import { formatNumber } from '@lib/utils/util';
+import { CobaltClient } from '#lib/cobaltClient';
+import { formatNumber } from '#lib/utils/util';
 
 export async function directors(cobalt: CobaltClient, interaction: CommandInteraction) {
 	await interaction.deferReply();
