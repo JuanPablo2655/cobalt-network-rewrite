@@ -4,7 +4,7 @@ import { CobaltClient } from '#lib/cobaltClient';
 import { GenericCommand } from '#lib/structures/commands';
 
 const registerCommand: Function = (cobalt: CobaltClient) => {
-	const commandFiles = sync(resolve(__dirname + '/../../../commands/**/*'));
+	const commandFiles = sync(resolve(__dirname + '/../../../../commands/**/*'));
 	console.log(`[Commands]\tLoaded ${commandFiles.length} commands`);
 	commandFiles.forEach(file => {
 		if (/\.(j|t)s$/iu.test(file)) {
