@@ -5,6 +5,7 @@
   "main": "./dist/cobalt.js",
   "imports": {
     "#lib/*": "./dist/lib/*.js",
+    "#lib/data": "./dist/lib/data/index.js",
     "#lib/structures": "./dist/lib/structures/index.js",
     "#lib/structures/commands": "./dist/lib/structures/commands/index.js",
     "#lib/structures/events": "./dist/lib/structures/events/index.js",
