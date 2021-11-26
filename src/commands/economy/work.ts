@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { jobs } from '../../lib/data';
+import { jobs } from '#lib/data';
 import { GenericCommand } from '#lib/structures/commands';
 import { addMulti, calcMulti, formatNumber } from '#utils/util';
 
