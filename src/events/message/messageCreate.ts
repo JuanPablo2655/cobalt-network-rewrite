@@ -53,7 +53,7 @@ abstract class MessageEvent extends Event {
 							const cleanMessage = guild.levelMessage.message
 								.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
-								.replace(/{newLevel}/g, `**${formatNumber(profile!.lvl)}**`);
+								.replace(/{newLevel}/g, `**${formatNumber(profile?.lvl ?? 0)}**`);
 							message.channel.send({ content: cleanMessage });
 						}
 					}

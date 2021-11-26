@@ -19,6 +19,7 @@ abstract class GuildMemberAddEvent extends Event {
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
+		// TODO(Isidro): logChannelId is nullable
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId!) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ format: 'png', dynamic: true });
 		if (user && user.roles?.length !== 0) {
@@ -37,11 +38,11 @@ abstract class GuildMemberAddEvent extends Event {
 			const welcomeChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.welcomeMessage.channelId) as TextChannel;
-			const welcome = guild.welcomeMessage
-				.message!.replace('{user.tag}', member.user.tag)
+			const welcome = guild.welcomeMessage.message
+				?.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);
-			return void welcomeChannel.send({ content: welcome });
+			return void welcomeChannel.send({ content: welcome ?? `Welcome ${member.user.tag}` });
 		}
 
 		const created = Math.floor(member.user.createdTimestamp / 100);

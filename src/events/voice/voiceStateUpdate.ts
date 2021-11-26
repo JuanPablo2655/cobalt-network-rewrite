@@ -22,6 +22,7 @@ abstract class VoiceStateUpdate extends Event {
 		const user = await this.cobalt.db.getUser(newState.member?.id);
 		const member = await this.cobalt.db.getMember(newState.member?.id, newState.guild.id);
 		const logChannelId = guild.logChannel.channelId;
+		// TODO(Isidro): logChannelId is nullable
 		const logChannel = this.cobalt.guilds.cache
 			.get(newState.guild.id)
 			?.channels.cache.get(logChannelId!) as TextChannel;

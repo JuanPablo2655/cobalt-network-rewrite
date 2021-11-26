@@ -17,7 +17,7 @@ export async function work(cobalt: CobaltClient, interaction: CommandInteraction
 	await cobalt.econ.addToWallet(interaction.user.id, moneyEarned);
 	const cleanEntry = workEntry
 		?.replace(/{user.username}/g, interaction.user.username)
-		.replace(/{money}/g, formatNumber(moneyEarned)!);
+		.replace(/{money}/g, formatNumber(moneyEarned) ?? '0');
 	return interaction.reply({ content: cleanEntry });
 }
 

@@ -20,6 +20,7 @@ abstract class MessageUpdateEvent extends Event {
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
+		// TODO(Isidro): logChannelId is nullable
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMessage.guild.id)
 			?.channels.cache.get(logChannelId!) as TextChannel;

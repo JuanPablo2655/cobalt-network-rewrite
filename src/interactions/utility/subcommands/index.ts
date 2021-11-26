@@ -24,7 +24,7 @@ export async function add(cobalt: CobaltClient, interaction: CommandInteraction)
 	const newAmount = (userData?.socialCredit ?? 0) + amount;
 	if (newAmount > 2000) return interaction.editReply({ content: 'The max social credit someone can have is 2,000!' });
 	cobalt.db.updateUser(user.id, { socialCredit: newAmount });
-	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount)}!` });
+	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount) ?? '0'}!` });
 }
 
 export async function remove(cobalt: CobaltClient, interaction: CommandInteraction) {
@@ -37,5 +37,5 @@ export async function remove(cobalt: CobaltClient, interaction: CommandInteracti
 	const newAmount = (userData?.socialCredit ?? 0) + amount;
 	if (newAmount < 0) return interaction.editReply({ content: 'The min social credit someone can have is 0!' });
 	cobalt.db.updateUser(user.id, { socialCredit: newAmount });
-	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount)}!` });
+	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount) ?? '0'}!` });
 }
