@@ -3,9 +3,10 @@ import { CobaltClient } from '#lib/cobaltClient';
 
 export async function channel(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const channel = interaction.options.getChannel('channel', true);
-	const guild = await cobalt.db.getGuild(interaction.guild!.id);
+	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
+	const guild = await cobalt.db.getGuild(interaction.guild.id);
 	if (!guild) return;
-	await cobalt.db.updateGuild(interaction.guild!.id, {
+	await cobalt.db.updateGuild(interaction.guild.id, {
 		leaveMessage: {
 			message: guild.leaveMessage?.message ?? null,
 			channelId: channel.id,
@@ -17,9 +18,10 @@ export async function channel(cobalt: CobaltClient, interaction: CommandInteract
 
 export async function message(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const message = interaction.options.getString('message', true);
-	const guild = await cobalt.db.getGuild(interaction.guild!.id);
+	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
+	const guild = await cobalt.db.getGuild(interaction.guild.id);
 	if (!guild) return;
-	await cobalt.db.updateGuild(interaction.guild!.id, {
+	await cobalt.db.updateGuild(interaction.guild.id, {
 		leaveMessage: {
 			message: message,
 			channelId: guild.leaveMessage?.channelId ?? null,
@@ -31,11 +33,12 @@ export async function message(cobalt: CobaltClient, interaction: CommandInteract
 
 export async function toggle(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const option = interaction.options.getBoolean('toggle', true);
-	const guild = await cobalt.db.getGuild(interaction.guild!.id);
+	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
+	const guild = await cobalt.db.getGuild(interaction.guild.id);
 	if (!guild) return;
 	if (guild.leaveMessage?.enabled === option)
 		return interaction.reply({ content: `Already ${option}`, ephemeral: true });
-	await cobalt.db.updateGuild(interaction.guild!.id, {
+	await cobalt.db.updateGuild(interaction.guild.id, {
 		leaveMessage: {
 			message: guild.leaveMessage?.message ?? null,
 			channelId: guild.leaveMessage?.channelId ?? null,

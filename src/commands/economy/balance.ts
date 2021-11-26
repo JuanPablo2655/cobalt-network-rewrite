@@ -18,15 +18,15 @@ abstract class BalanceCommand extends GenericCommand {
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		const user = member?.user;
 		const profile = await this.cobalt.db.getUser(user?.id);
-		const bankPercent = (profile!.bank / profile!.bankSpace) * 100;
+		const bankPercent = ((profile?.bank ?? 0) / (profile?.bankSpace ?? 0)) * 100;
 		const balanceEmbed = new MessageEmbed()
 			.setTitle(`${user?.username}'s balance`)
 			.setDescription(
-				`**Wallet**: ${formatMoney(profile!.wallet)}\n**Bank**: ${formatMoney(profile!.bank)} / ${formatMoney(
-					profile!.bankSpace,
+				`**Wallet**: ${formatMoney(profile?.wallet ?? 0)}\n**Bank**: ${formatMoney(profile?.bank ?? 0)} / ${formatMoney(
+					profile?.bankSpace ?? 0,
 				)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
-					profile!.netWorth,
-				)}\n**Bounty**: ${formatMoney(profile!.bounty)}`,
+					profile?.netWorth ?? 0,
+				)}\n**Bounty**: ${formatMoney(profile?.bounty ?? 0)}`,
 			);
 		message.reply({ embeds: [balanceEmbed] });
 	}

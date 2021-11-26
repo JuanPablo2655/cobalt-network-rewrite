@@ -18,13 +18,13 @@ abstract class DepositCommand extends GenericCommand {
 		if (!args[0]) return message.channel.send({ content: 'How much money?' });
 		let money = Number(args[0]);
 		if (isNaN(money) && args[0] !== 'max') return message.channel.send({ content: 'Please input a valid number' });
-		if (profile!.wallet - money <= 0) return message.channel.send({ content: "You don't have that much money" });
-		if (profile!.bank + money > profile!.bankSpace)
+		if ((profile?.wallet ?? 0) - money <= 0) return message.channel.send({ content: "You don't have that much money" });
+		if ((profile?.bank ?? 0) + money > (profile?.bankSpace ?? 0))
 			return message.channel.send({ content: "You don't have that much bank space" });
 		if (args[0] == 'max') {
-			const canDeposit = profile!.bankSpace - profile!.bank;
+			const canDeposit = (profile?.bankSpace ?? 0) - (profile?.bank ?? 0);
 			if (canDeposit === 0) return message.channel.send({ content: "You don't have bank space" });
-			money = Math.min(canDeposit, profile!.wallet);
+			money = Math.min(canDeposit, profile?.wallet ?? 0);
 		}
 		if (money < 0) return message.channel.send({ content: "You can't deposit negative money" });
 		await addCD();
@@ -32,7 +32,7 @@ abstract class DepositCommand extends GenericCommand {
 		await this.cobalt.econ.addToBank(message.author.id, money);
 		return message.channel.send({
 			content: `You deposited **${formatMoney(money)}**. Your bank balance is now **${formatMoney(
-				profile!.bank + money,
+				(profile?.bank ?? 0) + money,
 			)}**`,
 		});
 	}

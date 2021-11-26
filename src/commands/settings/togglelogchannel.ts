@@ -22,8 +22,8 @@ abstract class ToggleLogChannelCommand extends GenericCommand {
 		await this.cobalt.db.updateGuild(guildId, {
 			logChannel: {
 				enabled: option,
-				disabledEvents: guild.logChannel!.disabledEvents,
-				channelId: guild.logChannel!.channelId,
+				disabledEvents: guild.logChannel?.disabledEvents ?? [],
+				channelId: guild.logChannel?.channelId ?? null,
 			},
 		});
 		return message.channel.send({

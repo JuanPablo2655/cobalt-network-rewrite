@@ -16,7 +16,7 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 		await interaction.deferReply();
 		const option = interaction.options.get('option')?.value;
 		const user = interaction.options.getUser('user') ?? interaction.user;
-		const memberData = await this.cobalt.db.getMember(user.id, interaction.guild!.id);
+		const memberData = await this.cobalt.db.getMember(user.id, interaction.guild?.id);
 		const userData = await this.cobalt.db.getUser(user.id);
 		if (option === 'local') {
 			if (!memberData?.vcHours) return interaction.editReply({ content: "You haven't joined VC in this server!" });

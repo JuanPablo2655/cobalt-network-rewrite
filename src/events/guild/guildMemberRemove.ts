@@ -31,11 +31,11 @@ abstract class GuildMemberRemoveEvent extends Event {
 			const leaveChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.leaveMessage.channelId) as TextChannel;
-			const leave = guild.leaveMessage
-				.message!.replace('{user.tag}', member.user.tag)
+			const leave = guild.leaveMessage.message
+				?.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);
-			return void leaveChannel.send({ content: leave });
+			return void leaveChannel.send({ content: leave ?? `${member.user.tag} left the server` });
 		}
 
 		const joined = Math.floor((Date.now() - member.guild.joinedTimestamp) / 100);

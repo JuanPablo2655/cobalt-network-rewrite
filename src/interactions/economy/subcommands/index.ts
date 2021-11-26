@@ -8,8 +8,10 @@ export async function work(cobalt: CobaltClient, interaction: CommandInteraction
 	const user = await cobalt.db.getUser(interaction.user.id);
 	if (user?.job === null) return interaction.reply({ content: 'You need a job to work.' });
 	const job = jobs.find(j => j.id === user?.job);
+	// TODO(Isidro): return an error
+	if (!job) return;
 	const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
-	const money = Math.floor(job!.minAmount + Math.random() * 250);
+	const money = Math.floor(job.minAmount + Math.random() * 250);
 	const multi = await calcMulti(interaction.user, cobalt);
 	const moneyEarned = addMulti(money, multi);
 	await cobalt.econ.addToWallet(interaction.user.id, moneyEarned);
@@ -25,15 +27,15 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 	const amount = interaction.options.getInteger('amount', true);
 	const author = await cobalt.db.getUser(interaction.user.id);
 	if (member.id === interaction.user.id) return interaction.reply({ content: "You can't pay yourself!" });
-	if (author!.wallet < amount)
+	if ((author?.wallet ?? 0) < amount)
 		return interaction.reply({
-			content: `You don't have enough to pay that much. You currently have **${formatMoney(author!.wallet)}**`,
+			content: `You don't have enough to pay that much. You currently have **${formatMoney(author?.wallet ?? 0)}**`,
 		});
-	const tax = Math.round(amount * (bot!.tax / 100));
+	const tax = Math.round(amount * ((bot?.tax ?? 6.5) / 100));
 	const afterTax = amount - tax;
 	await cobalt.econ.removeFromWallet(interaction.user.id, amount);
 	await cobalt.econ.addToWallet(member.id, afterTax);
-	await cobalt.db.updateBot(interaction.client.user?.id, { bank: bot!.bank + tax });
+	await cobalt.db.updateBot(interaction.client.user?.id, { bank: (bot?.bank ?? 0) + tax });
 	return interaction.reply({
 		content: `>>> Transaction to **${member.username}**:\nSubtotal: **${formatMoney(amount)}**\nTaxes: **${formatMoney(
 			tax,
@@ -44,15 +46,15 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 export async function balance(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await cobalt.db.getUser(user.id);
-	const bankPercent = (profile!.bank / profile!.bankSpace) * 100;
+	const bankPercent = ((profile?.bank ?? 0) / (profile?.bankSpace ?? 0)) * 100;
 	const balanceEmbed = new MessageEmbed()
 		.setTitle(`${user.username}'s balance`)
 		.setDescription(
-			`**Wallet**: ${formatMoney(profile!.wallet)}\n**Bank**: ${formatMoney(profile!.bank)} / ${formatMoney(
-				profile!.bankSpace,
+			`**Wallet**: ${formatMoney(profile?.wallet ?? 0)}\n**Bank**: ${formatMoney(profile?.bank ?? 0)} / ${formatMoney(
+				profile?.bankSpace ?? 0,
 			)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
-				profile!.netWorth,
-			)}\n**Bounty**: ${formatMoney(profile!.bounty)}`,
+				profile?.netWorth ?? 0,
+			)}\n**Bounty**: ${formatMoney(profile?.bounty ?? 0)}`,
 		);
 	interaction.reply({ embeds: [balanceEmbed] });
 }
@@ -62,7 +64,8 @@ export async function daily(cobalt: CobaltClient, interaction: CommandInteractio
 	const user = await cobalt.db.getUser(member.id);
 	const date = Date.now();
 	const cooldown = date + 86400000;
-	if (!isNaN(user!.daily!) && user!.daily! > date) {
+	// TODO(Isidro): fix the is doodoo code
+	if (!isNaN(user?.daily!) && user!.daily! > date) {
 		return interaction.reply({
 			content: `You still have **${prettyMilliseconds(
 				user!.daily! - Date.now(),

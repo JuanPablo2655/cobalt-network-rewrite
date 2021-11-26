@@ -17,13 +17,15 @@ abstract class RankCommand extends GenericCommand {
 		const user = member?.user;
 		const profile = await this.cobalt.db.getUser(user?.id);
 		await addCD();
-		let xpPercent = (profile!.xp / this.cobalt.exp.nextLevel(profile!.lvl)) * 100;
+		let xpPercent = ((profile?.xp ?? 0) / this.cobalt.exp.nextLevel(profile?.lvl ?? 0)) * 100;
 		const rankEmbed = new MessageEmbed()
 			.setTitle(`${user?.username}'s Rank`)
 			.setDescription(
-				`**Level**: ${formatNumber(profile!.lvl)}\n**Experience**: ${formatNumber(profile!.xp)} / ${formatNumber(
-					this.cobalt.exp.nextLevel(profile!.lvl),
-				)} \`${xpPercent.toString().substring(0, 4)}%\``,
+				`**Level**: ${formatNumber(profile?.lvl ?? 0)}\n**Experience**: ${formatNumber(
+					profile?.xp ?? 0,
+				)} / ${formatNumber(this.cobalt.exp.nextLevel(profile?.lvl ?? 0))} \`${xpPercent
+					.toString()
+					.substring(0, 4)}%\``,
 			);
 		message.channel.send({ embeds: [rankEmbed] });
 	}

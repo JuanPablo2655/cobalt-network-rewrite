@@ -6,13 +6,13 @@ import { formatNumber } from '#utils/util';
 export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await cobalt.db.getUser(user.id);
-	let xpPercent = (profile!.xp / cobalt.exp.nextLevel(profile!.lvl)) * 100;
+	let xpPercent = ((profile?.xp ?? 0) / cobalt.exp.nextLevel(profile?.lvl ?? 0)) * 100;
 	const rankEmbed = new MessageEmbed()
 		.setTitle(`${user?.username}'s Rank`)
 		.setDescription(
-			`**Level**: ${formatNumber(profile!.lvl)}\n**Experience**: ${formatNumber(profile!.xp)} / ${formatNumber(
-				cobalt.exp.nextLevel(profile!.lvl),
-			)} \`${xpPercent.toString().substring(0, 4)}%\``,
+			`**Level**: ${formatNumber(profile?.lvl ?? 0)}\n**Experience**: ${formatNumber(
+				profile?.xp ?? 0,
+			)} / ${formatNumber(cobalt.exp.nextLevel(profile?.lvl ?? 0))} \`${xpPercent.toString().substring(0, 4)}%\``,
 		);
 	return interaction.reply({ embeds: [rankEmbed] });
 }
@@ -25,6 +25,7 @@ export async function reputation(cobalt: CobaltClient, interaction: CommandInter
 		return interaction.reply({ content: "Can't give youself a reputation point!" });
 	const date = Date.now();
 	const cooldown = date + 86400000;
+	// TODO(Isidro): fix this
 	if (!isNaN(author!.repTime!) && author!.repTime! > date) {
 		return interaction.reply({
 			content: `You still have **${prettyMilliseconds(

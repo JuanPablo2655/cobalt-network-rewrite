@@ -19,13 +19,14 @@ abstract class VoiceStateUpdate extends Event {
 		const guild = await this.cobalt.db.getGuild(newState.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
-		const user = await this.cobalt.db.getUser(newState.member!.id);
+		const user = await this.cobalt.db.getUser(newState.member?.id);
 		const member = await this.cobalt.db.getMember(newState.member?.id, newState.guild.id);
 		const logChannelId = guild.logChannel.channelId;
 		const logChannel = this.cobalt.guilds.cache
 			.get(newState.guild.id)
 			?.channels.cache.get(logChannelId!) as TextChannel;
 		const avatar = newState.member?.user.displayAvatarURL({ format: 'png', dynamic: true });
+		// TODO(Isidro): fix newState.member null possibly
 		const logEmbed = new MessageEmbed()
 			.setAuthor(newState.member!.user.username, avatar)
 			.setFooter(`User ID: ${newState.member!.id}`)
