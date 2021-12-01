@@ -43,7 +43,7 @@
     "express": "^4.17.1",
     "glob": "^7.1.7",
     "ioredis": "^4.27.9",
-    "mongoose": "^6.0.4",
+    "mongoose": "^6.0.14",
     "node-fetch": "2.6.5",
     "pretty-ms": "^7.0.1",
     "prom-client": "^14.0.1",
