@@ -19,7 +19,8 @@ abstract class GuildMemberRemoveEvent extends Event {
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild?.logChannel.channelId;
-		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId!) as TextChannel;
+		if (!logChannelId) return;
+		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ format: 'png', dynamic: true });
 		if (user && member.roles.cache.size !== 0) {
 			let roleList: Snowflake[] = member.roles.cache.map(r => r.id);

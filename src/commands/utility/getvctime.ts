@@ -18,12 +18,14 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		const [option] = args;
 		// TODO(Isidro): return an error
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true, index: 1 });
-		const memberData = await this.cobalt.db.getMember(member!.id, message.guild!.id);
-		const user = await this.cobalt.db.getUser(member!.id);
+		if (!member) return message.reply({ content: 'Member not found!' });
+		const memberData = await this.cobalt.db.getMember(member.id, message.guild?.id);
+		const user = await this.cobalt.db.getUser(member.id);
 		await addCD();
 		switch (option?.toLowerCase() ?? '') {
 			case 'local': {
 				if (!memberData?.vcHours) return message.reply({ content: "You haven't joined VC in this server!" });
+				// TODO(Isidro): condense reduce and sort into one loop
 				const sum = memberData.vcHours.reduce((a, b) => a + b);
 				const average = sum / memberData.vcHours.length;
 				const sorted = memberData.vcHours.sort((a, b) => b - a);
@@ -42,6 +44,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 			}
 			case 'global': {
 				if (!user?.vcHours) return message.reply({ content: "You haven't joined VC once!" });
+				// TODO(Isidro): condense reduce and sort into one loop
 				const sum = user.vcHours.reduce((a, b) => a + b);
 				const average = sum / user.vcHours.length;
 				const sorted = user.vcHours.sort((a, b) => b - a);

@@ -19,8 +19,8 @@ abstract class MessageDeleteEvent extends Event {
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
-		// TODO(Isidro): logChannelId is nullable
-		const logChannel = this.cobalt.guilds.cache.get(message.guild.id)?.channels.cache.get(logChannelId!) as TextChannel;
+		if (!logChannelId) return;
+		const logChannel = this.cobalt.guilds.cache.get(message.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor(message.author.username, avatar)
