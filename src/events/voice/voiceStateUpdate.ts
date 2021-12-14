@@ -20,8 +20,7 @@ abstract class VoiceStateUpdate extends Event {
 		const guild = await this.cobalt.db.getGuild(newState.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
-		if (!oldState.member) return;
-		if (!newState.member) return;
+		if (!oldState.member || !newState.member) return;
 		const user = await this.cobalt.db.getUser(newState.member.id);
 		const member = await this.cobalt.db.getMember(newState.member.id, newState.guild.id);
 		const logChannelId = guild.logChannel.channelId;

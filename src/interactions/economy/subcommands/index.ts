@@ -3,6 +3,7 @@ import prettyMilliseconds from 'pretty-ms';
 import { jobs } from '#lib/data';
 import { CobaltClient } from '#lib/cobaltClient';
 import { addMulti, calcMulti, formatMoney, formatNumber } from '#utils/util';
+import { Default } from '#lib/typings';
 
 export async function work(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = await cobalt.db.getUser(interaction.user.id);
@@ -27,11 +28,13 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 	const amount = interaction.options.getInteger('amount', true);
 	const author = await cobalt.db.getUser(interaction.user.id);
 	if (member.id === interaction.user.id) return interaction.reply({ content: "You can't pay yourself!" });
-	if ((author?.wallet ?? 0) < amount)
+	if ((author?.wallet ?? Default.Wallet) < amount)
 		return interaction.reply({
-			content: `You don't have enough to pay that much. You currently have **${formatMoney(author?.wallet ?? 0)}**`,
+			content: `You don't have enough to pay that much. You currently have **${formatMoney(
+				author?.wallet ?? Default.Wallet,
+			)}**`,
 		});
-	const tax = Math.round(amount * ((bot?.tax ?? 6.5) / 100));
+	const tax = Math.round(amount * ((bot?.tax ?? Default.Tax) / 100));
 	const afterTax = amount - tax;
 	await cobalt.econ.removeFromWallet(interaction.user.id, amount);
 	await cobalt.econ.addToWallet(member.id, afterTax);
@@ -46,15 +49,17 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 export async function balance(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await cobalt.db.getUser(user.id);
-	const bankPercent = ((profile?.bank ?? 0) / (profile?.bankSpace ?? 0)) * 100;
+	const bankPercent = ((profile?.bank ?? Default.Bank) / (profile?.bankSpace ?? Default.BankSpace)) * 100;
 	const balanceEmbed = new MessageEmbed()
 		.setTitle(`${user.username}'s balance`)
 		.setDescription(
-			`**Wallet**: ${formatMoney(profile?.wallet ?? 0)}\n**Bank**: ${formatMoney(profile?.bank ?? 0)} / ${formatMoney(
-				profile?.bankSpace ?? 0,
-			)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
-				profile?.netWorth ?? 0,
-			)}\n**Bounty**: ${formatMoney(profile?.bounty ?? 0)}`,
+			`**Wallet**: ${formatMoney(profile?.wallet ?? Default.Wallet)}\n**Bank**: ${formatMoney(
+				profile?.bank ?? Default.Bank,
+			)} / ${formatMoney(profile?.bankSpace ?? Default.BankSpace)} \`${bankPercent
+				.toString()
+				.substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(profile?.netWorth ?? 0)}\n**Bounty**: ${formatMoney(
+				profile?.bounty ?? 0,
+			)}`,
 		);
 	interaction.reply({ embeds: [balanceEmbed] });
 }

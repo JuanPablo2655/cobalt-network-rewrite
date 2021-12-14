@@ -1,3 +1,4 @@
+import { Default } from '#lib/typings';
 import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
 import { ClassOptions } from '../data/classes';
@@ -23,8 +24,8 @@ const companionSchema = new Schema<ICompanion>({
 	race: { type: String, default: null },
 	gender: { type: String, default: null },
 	class: { type: String, default: null },
-	level: { type: Number, default: 0 },
-	xp: { type: Number, default: 0 },
+	level: { type: Number, default: Default.Level },
+	xp: { type: Number, default: Default.Xp },
 });
 
 export default model('Companion', companionSchema);

@@ -1,3 +1,4 @@
+import { Default } from '#lib/typings';
 import { Message } from 'discord.js';
 import { CobaltClient } from '../cobaltClient';
 import { addMulti, calcMulti } from './util';
@@ -15,7 +16,7 @@ export default class Currency {
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, {
-				wallet: (user?.wallet ?? 0) + money,
+				wallet: (user?.wallet ?? Default.Wallet) + money,
 				netWorth: (user?.netWorth ?? 0) + money,
 			});
 		} catch (err) {
@@ -30,7 +31,7 @@ export default class Currency {
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, {
-				wallet: (user?.wallet ?? 0) - money,
+				wallet: (user?.wallet ?? Default.Wallet) - money,
 				netWorth: (user?.netWorth ?? 0) - money,
 			});
 		} catch (err) {
@@ -45,7 +46,7 @@ export default class Currency {
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, {
-				bank: (user?.bank ?? 0) + money,
+				bank: (user?.bank ?? Default.Bank) + money,
 				netWorth: (user?.netWorth ?? 0) + money,
 			});
 		} catch (err) {
@@ -60,7 +61,7 @@ export default class Currency {
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
 			await this.cobalt.db.updateUser(userId, {
-				bank: (user?.bank ?? 0) - money,
+				bank: (user?.bank ?? Default.Bank) - money,
 				netWorth: (user?.netWorth ?? 0) - money,
 			});
 		} catch (err) {
@@ -74,7 +75,7 @@ export default class Currency {
 			if (space <= 0) throw new TypeError('Must be more than zero.');
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? 0) + space });
+			await this.cobalt.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) + space });
 		} catch (err) {
 			console.error(err instanceof Error ? err?.stack : err);
 		}
@@ -86,7 +87,7 @@ export default class Currency {
 			if (space <= 0) throw new TypeError('Must be more than zero.');
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? 0) - space });
+			await this.cobalt.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) - space });
 		} catch (err) {
 			console.error(err instanceof Error ? err?.stack : err);
 		}
