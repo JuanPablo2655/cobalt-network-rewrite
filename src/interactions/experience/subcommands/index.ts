@@ -2,17 +2,20 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { CobaltClient } from '#lib/cobaltClient';
 import { formatNumber } from '#utils/util';
+import { Default } from '#lib/typings';
 
 export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await cobalt.db.getUser(user.id);
-	let xpPercent = (profile!.xp / cobalt.exp.nextLevel(profile!.lvl)) * 100;
+	let xpPercent = ((profile?.xp ?? Default.Xp) / cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
 	const rankEmbed = new MessageEmbed()
 		.setTitle(`${user?.username}'s Rank`)
 		.setDescription(
-			`**Level**: ${formatNumber(profile!.lvl)}\n**Experience**: ${formatNumber(profile!.xp)} / ${formatNumber(
-				cobalt.exp.nextLevel(profile!.lvl),
-			)} \`${xpPercent.toString().substring(0, 4)}%\``,
+			`**Level**: ${formatNumber(profile?.lvl ?? Default.Level)}\n**Experience**: ${formatNumber(
+				profile?.xp ?? Default.Xp,
+			)} / ${formatNumber(cobalt.exp.nextLevel(profile?.lvl ?? Default.Level))} \`${xpPercent
+				.toString()
+				.substring(0, 4)}%\``,
 		);
 	return interaction.reply({ embeds: [rankEmbed] });
 }
@@ -25,6 +28,7 @@ export async function reputation(cobalt: CobaltClient, interaction: CommandInter
 		return interaction.reply({ content: "Can't give youself a reputation point!" });
 	const date = Date.now();
 	const cooldown = date + 86400000;
+	// TODO(Isidro): fix this
 	if (!isNaN(author!.repTime!) && author!.repTime! > date) {
 		return interaction.reply({
 			content: `You still have **${prettyMilliseconds(

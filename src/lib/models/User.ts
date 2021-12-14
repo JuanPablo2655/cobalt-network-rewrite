@@ -1,3 +1,4 @@
+import { Default } from '#lib/typings';
 import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
 
@@ -34,12 +35,12 @@ const userSchema = new Schema<IUser>({
 	_id: { type: String, required: true },
 	guilds: { type: Array, default: [] },
 	job: { type: String, default: null },
-	socialCredit: { type: Number, default: 1000 },
-	wallet: { type: Number, default: 0 },
-	bank: { type: Number, default: 0 },
-	bankSpace: { type: Number, default: 1000 },
-	netWorth: { type: Number, default: 0 },
-	bounty: { type: Number, default: 0 },
+	socialCredit: { type: Number, default: Default.SocialCredit },
+	wallet: { type: Number, default: Default.Wallet },
+	bank: { type: Number, default: Default.Bank },
+	bankSpace: { type: Number, default: Default.BankSpace },
+	netWorth: { type: Number, default: Default.Default },
+	bounty: { type: Number, default: Default.Default },
 	daily: { type: Number, default: null },
 	weekly: { type: Number, default: null },
 	monthly: { type: Number, default: null },
@@ -47,14 +48,14 @@ const userSchema = new Schema<IUser>({
 	repTime: { type: Number, default: null },
 	inventory: { type: Object, default: {} },
 	activeItems: { type: Array, default: [] },
-	xp: { type: Number, default: 0 },
-	lvl: { type: Number, default: 0 },
-	rep: { type: Number, default: 0 },
-	totalXp: { type: Number, default: 0 },
-	lost: { type: Number, default: 0 },
-	won: { type: Number, default: 0 },
-	deaths: { type: Number, default: 0 },
-	totalCommandsUsed: { type: Number, default: 0 },
+	xp: { type: Number, default: Default.Xp },
+	lvl: { type: Number, default: Default.Level },
+	rep: { type: Number, default: Default.Default },
+	totalXp: { type: Number, default: Default.Default },
+	lost: { type: Number, default: Default.Default },
+	won: { type: Number, default: Default.Default },
+	deaths: { type: Number, default: Default.Default },
+	totalCommandsUsed: { type: Number, default: Default.Default },
 });
 
 export default model('User', userSchema);

@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember, formatNumber } from '#utils/util';
+import { Default } from '#lib/typings';
 
 abstract class checkSocialCredit extends GenericCommand {
 	constructor() {
@@ -20,7 +21,9 @@ abstract class checkSocialCredit extends GenericCommand {
 		const embed = new MessageEmbed()
 			.setTitle(`${member?.user.username}'s social credit`)
 			.setDescription(
-				`**Score:** ${formatNumber(user?.socialCredit ?? 0)} / 2,000\nReduced Taxes: **0%**\nBonus Rewards: **0%**`,
+				`**Score:** ${formatNumber(
+					user?.socialCredit ?? Default.SocialCredit,
+				)} / 2,000\nReduced Taxes: **0%**\nBonus Rewards: **0%**`,
 			);
 		return message.channel.send({ embeds: [embed] });
 	}

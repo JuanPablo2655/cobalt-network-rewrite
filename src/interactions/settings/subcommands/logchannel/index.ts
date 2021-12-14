@@ -3,9 +3,10 @@ import { CobaltClient } from '#lib/cobaltClient';
 
 export async function channel(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const channel = interaction.options.getChannel('channel', true);
-	const guild = await cobalt.db.getGuild(interaction.guild!.id);
+	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
+	const guild = await cobalt.db.getGuild(interaction.guild.id);
 	if (!guild) return;
-	await cobalt.db.updateGuild(interaction.guild!.id, {
+	await cobalt.db.updateGuild(interaction.guild.id, {
 		logChannel: {
 			enabled: guild.logChannel?.enabled ?? true,
 			disabledEvents: guild.logChannel?.disabledEvents ?? [],
@@ -17,10 +18,11 @@ export async function channel(cobalt: CobaltClient, interaction: CommandInteract
 
 export async function toggle(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const option = interaction.options.getBoolean('boolean', true);
-	const guild = await cobalt.db.getGuild(interaction.guild!.id);
+	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
+	const guild = await cobalt.db.getGuild(interaction.guild.id);
 	if (!guild) return;
 	if (guild.logChannel?.enabled === option) return interaction.reply({ content: `Already ${option}`, ephemeral: true });
-	await cobalt.db.updateGuild(interaction.guild!.id, {
+	await cobalt.db.updateGuild(interaction.guild.id, {
 		logChannel: {
 			enabled: option,
 			disabledEvents: guild.logChannel?.disabledEvents ?? [],

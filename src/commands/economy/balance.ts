@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember, formatMoney } from '#utils/util';
+import { Default } from '#lib/typings';
 
 abstract class BalanceCommand extends GenericCommand {
 	constructor() {
@@ -18,15 +19,17 @@ abstract class BalanceCommand extends GenericCommand {
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		const user = member?.user;
 		const profile = await this.cobalt.db.getUser(user?.id);
-		const bankPercent = (profile!.bank / profile!.bankSpace) * 100;
+		const bankPercent = ((profile?.bank ?? Default.Bank) / (profile?.bankSpace ?? Default.BankSpace)) * 100;
 		const balanceEmbed = new MessageEmbed()
 			.setTitle(`${user?.username}'s balance`)
 			.setDescription(
-				`**Wallet**: ${formatMoney(profile!.wallet)}\n**Bank**: ${formatMoney(profile!.bank)} / ${formatMoney(
-					profile!.bankSpace,
-				)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
-					profile!.netWorth,
-				)}\n**Bounty**: ${formatMoney(profile!.bounty)}`,
+				`**Wallet**: ${formatMoney(profile?.wallet ?? Default.Wallet)}\n**Bank**: ${formatMoney(
+					profile?.bank ?? Default.Bank,
+				)} / ${formatMoney(profile?.bankSpace ?? Default.BankSpace)} \`${bankPercent
+					.toString()
+					.substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
+					profile?.netWorth ?? Default.Default,
+				)}\n**Bounty**: ${formatMoney(profile?.bounty ?? Default.Default)}`,
 			);
 		message.reply({ embeds: [balanceEmbed] });
 	}

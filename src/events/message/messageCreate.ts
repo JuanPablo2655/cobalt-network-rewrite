@@ -1,6 +1,7 @@
 import { Guild, Message, TextChannel, Permissions } from 'discord.js';
 import { Event } from '#lib/structures/events';
 import { formatNumber } from '#utils/util';
+import { Default } from '#lib/typings';
 
 abstract class MessageEvent extends Event {
 	constructor() {
@@ -53,7 +54,7 @@ abstract class MessageEvent extends Event {
 							const cleanMessage = guild.levelMessage.message
 								.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
-								.replace(/{newLevel}/g, `**${formatNumber(profile!.lvl)}**`);
+								.replace(/{newLevel}/g, `**${formatNumber(profile?.lvl ?? Default.Level)}**`);
 							message.channel.send({ content: cleanMessage });
 						}
 					}
@@ -153,7 +154,9 @@ abstract class MessageEvent extends Event {
 				try {
 					if (await isInCooldown()) return;
 					const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
-					await this.cobalt.db.updateBot(this.cobalt.user?.id, { totalCommandsUsed: bot!.totalCommandsUsed + 1 });
+					await this.cobalt.db.updateBot(this.cobalt.user?.id, {
+						totalCommandsUsed: (bot?.totalCommandsUsed ?? 0) + 1,
+					});
 					this.cobalt.metrics.commandInc(command.name);
 					return void command.run(message, args, updateCooldown);
 				} catch (err) {

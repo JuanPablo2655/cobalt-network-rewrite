@@ -15,11 +15,13 @@ abstract class ApplyJobCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const guild = await this.cobalt.db.getGuild(message.guild!.id);
+		const guild = await this.cobalt.db.getGuild(message.guild?.id);
 		const user = await this.cobalt.db.getUser(message.author.id);
 		if (!args[0])
 			return message.reply({
-				content: `Please provide a job id. You can find a list by running \`${guild?.prefix}listjobs\``,
+				content: `Please provide a job id. You can find a list by running \`${
+					guild?.prefix ?? `@${this.cobalt.user?.username}`
+				}listjobs\``,
 			});
 		const job = jobs.find(j => j.id === args[0].toLowerCase());
 		if (!job) return message.reply({ content: 'Please pick a valid job with a valid job id to apply for.' });

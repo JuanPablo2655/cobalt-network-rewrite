@@ -1,3 +1,4 @@
+import { Default } from '#lib/typings';
 import { Message, Snowflake } from 'discord.js';
 import { CobaltClient } from '../cobaltClient';
 
@@ -15,7 +16,10 @@ export default class Experience {
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { xp: user!.xp + amount, totalXp: user!.totalXp + amount });
+			await this.cobalt.db.updateUser(userId, {
+				xp: (user?.xp ?? Default.Xp) + amount,
+				totalXp: (user?.totalXp ?? 0) + amount,
+			});
 		} catch (err) {
 			console.error(err instanceof Error ? err?.stack : err);
 		}
@@ -27,8 +31,12 @@ export default class Experience {
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
-			if (levelUp) await this.cobalt.db.updateUser(userId, { xp: user!.xp - amount });
-			else await this.cobalt.db.updateUser(userId, { xp: user!.xp - amount, totalXp: user!.totalXp - amount });
+			if (levelUp) await this.cobalt.db.updateUser(userId, { xp: (user?.xp ?? Default.Xp) - amount });
+			else
+				await this.cobalt.db.updateUser(userId, {
+					xp: (user?.xp ?? Default.Xp) - amount,
+					totalXp: (user?.totalXp ?? 0) - amount,
+				});
 		} catch (err) {
 			console.error(err instanceof Error ? err?.stack : err);
 		}
@@ -40,7 +48,7 @@ export default class Experience {
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { lvl: user!.lvl + amount });
+			await this.cobalt.db.updateUser(userId, { lvl: (user?.lvl ?? Default.Level) + amount });
 		} catch (err) {
 			console.error(err instanceof Error ? err?.stack : err);
 		}
@@ -52,7 +60,7 @@ export default class Experience {
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { lvl: user!.lvl - amount });
+			await this.cobalt.db.updateUser(userId, { lvl: (user?.lvl ?? Default.Level) - amount });
 		} catch (err) {
 			console.error(err instanceof Error ? err?.stack : err);
 		}
@@ -66,8 +74,8 @@ export default class Experience {
 		try {
 			const user = await this.cobalt.db.getUser(message.author.id);
 			const xpToAdd = Math.round(Math.random() * 11 + 15);
-			const nextLevel = this.nextLevel(user!.lvl);
-			const newXp = user!.xp + xpToAdd;
+			const nextLevel = this.nextLevel(user?.lvl ?? Default.Xp);
+			const newXp = (user?.xp ?? Default.Xp) + xpToAdd;
 			if (newXp > nextLevel) {
 				await this.addLevel(message.author.id, 1);
 				await this.addXp(message.author.id, xpToAdd);

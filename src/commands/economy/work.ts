@@ -18,14 +18,16 @@ abstract class WorkCommand extends GenericCommand {
 		if (user?.job === null) return message.reply({ content: 'You need a job to work.' });
 		await addCD();
 		const job = jobs.find(j => j.id === user?.job);
+		// TODO(Isidro): return an error
+		if (!job) return;
 		const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
-		const money = Math.floor(job!.minAmount + Math.random() * 250);
+		const money = Math.floor(job.minAmount + Math.random() * 250);
 		const multi = await calcMulti(message.author, this.cobalt);
 		const moneyEarned = addMulti(money, multi);
 		await this.cobalt.econ.addToWallet(message.author.id, moneyEarned);
 		const cleanEntry = workEntry
 			?.replace(/{user.username}/g, message.author.username)
-			.replace(/{money}/g, formatNumber(moneyEarned)!);
+			.replace(/{money}/g, formatNumber(moneyEarned) ?? '0');
 		return message.channel.send({ content: cleanEntry });
 	}
 }

@@ -19,9 +19,10 @@ abstract class GuildMemberUpdateEvent extends Event {
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild?.logChannel.channelId;
+		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMember.guild.id)
-			?.channels.cache.get(logChannelId!) as TextChannel;
+			?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = newMember.user.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor(newMember.user.username, avatar)
