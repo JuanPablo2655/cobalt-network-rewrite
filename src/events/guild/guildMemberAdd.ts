@@ -19,28 +19,30 @@ abstract class GuildMemberAddEvent extends Event {
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
-		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId!) as TextChannel;
+		if (!logChannelId) return;
+		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ format: 'png', dynamic: true });
-		if (user && user.roles?.length !== 0) {
-			user.roles?.forEach(r => {
+		if (user?.roles?.length !== 0) {
+			user?.roles?.forEach(r => {
+				if (!member.guild.me) return;
 				let role = member.guild.roles.cache.get(r);
 				if (!role) return;
-				if (member.guild.me!.roles.highest.comparePositionTo(role) < 0) return;
+				if (member.guild.me.roles.highest.comparePositionTo(role) < 0) return;
 				member.roles.add(role.id);
 			});
 			return void member.user.send({
-				content: `Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing message the staff for the remaining roles.`,
+				content: `Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing, message the staff for the remaining roles.`,
 			});
 		}
 		if (guild.welcomeMessage?.channelId) {
 			const welcomeChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.welcomeMessage.channelId) as TextChannel;
-			const welcome = guild.welcomeMessage
-				.message!.replace('{user.tag}', member.user.tag)
+			const welcome = guild.welcomeMessage.message
+				?.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);
-			return void welcomeChannel.send({ content: welcome });
+			return void welcomeChannel.send({ content: welcome ?? `Welcome ${member.user.tag}` });
 		}
 
 		const created = Math.floor(member.user.createdTimestamp / 100);
