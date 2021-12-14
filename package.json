@@ -5,6 +5,7 @@
   "main": "./dist/cobalt.js",
   "imports": {
     "#lib/*": "./dist/lib/*.js",
+    "#lib/typings": "./dist/lib/typings/index.js",
     "#lib/data": "./dist/lib/data/index.js",
     "#lib/structures": "./dist/lib/structures/index.js",
     "#lib/structures/commands": "./dist/lib/structures/commands/index.js",
@@ -56,7 +57,7 @@
     "@types/glob": "^7.1.3",
     "@types/ioredis": "^4.27.1",
     "@types/jest": "^27.0.1",
-    "@types/node": "^16.11.10",
+    "@types/node": "^16.11.13",
     "@types/node-fetch": "2.5.12",
     "cloc": "^2.8.0",
     "discord-api-types": "^0.24.0",
