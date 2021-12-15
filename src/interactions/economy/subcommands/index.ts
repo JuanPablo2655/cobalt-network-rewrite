@@ -4,6 +4,7 @@ import { jobs } from '#lib/data';
 import { CobaltClient } from '#lib/cobaltClient';
 import { addMulti, calcMulti, formatMoney, formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
+import { days, months } from '#utils/common';
 
 export async function work(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = await cobalt.db.getUser(interaction.user.id);
@@ -68,7 +69,7 @@ export async function daily(cobalt: CobaltClient, interaction: CommandInteractio
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
 	const date = Date.now();
-	const cooldown = date + 86400000;
+	const cooldown = date + days(1);
 	// TODO(Isidro): fix the is doodoo code
 	if (!isNaN(user?.daily!) && user!.daily! > date) {
 		return interaction.reply({
@@ -98,7 +99,7 @@ export async function weekly(cobalt: CobaltClient, interaction: CommandInteracti
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
 	const date = Date.now();
-	const cooldown = date + 604800000;
+	const cooldown = date + days(7);
 	if (!isNaN(user!.weekly!) && user!.weekly! > date) {
 		return interaction.reply({
 			content: `You still have **${prettyMilliseconds(
@@ -127,7 +128,7 @@ export async function monthly(cobalt: CobaltClient, interaction: CommandInteract
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
 	const date = Date.now();
-	const cooldown = date + 2629800000;
+	const cooldown = date + months(1);
 	if (!isNaN(user!.monthly!) && user!.monthly! > date) {
 		return interaction.reply({
 			content: `You still have **${prettyMilliseconds(

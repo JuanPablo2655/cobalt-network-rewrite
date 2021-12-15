@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
+import { seconds } from '#utils/common';
 
 abstract class PingCommand extends GenericCommand {
 	constructor() {
@@ -8,7 +9,7 @@ abstract class PingCommand extends GenericCommand {
 			description: 'Check the bot ping.',
 			category: 'utility',
 			aliases: ['p'],
-			cooldown: 10,
+			cooldown: seconds(10),
 		});
 	}
 

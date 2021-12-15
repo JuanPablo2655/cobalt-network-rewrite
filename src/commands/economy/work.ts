@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { jobs } from '#lib/data';
 import { GenericCommand } from '#lib/structures/commands';
 import { addMulti, calcMulti, formatNumber } from '#utils/util';
+import { minutes } from '#utils/common';
 
 abstract class WorkCommand extends GenericCommand {
 	constructor() {
@@ -9,7 +10,7 @@ abstract class WorkCommand extends GenericCommand {
 			name: 'work',
 			description: 'Go to work if not you get fired.',
 			category: 'economy',
-			cooldown: 60 * 10,
+			cooldown: minutes(10),
 		});
 	}
 

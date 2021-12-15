@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/util';
+import { hours } from '#utils/common';
 
 abstract class ClaimTaxCommand extends GenericCommand {
 	constructor() {
@@ -9,7 +10,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 			description: 'Claim up to 1k of the tax fund.',
 			category: 'admin',
 			usage: '<amount>',
-			cooldown: 60 * 60,
+			cooldown: hours(1),
 		});
 	}
 

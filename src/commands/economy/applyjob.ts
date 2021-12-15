@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { jobs } from '#lib/data';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/util';
+import { minutes } from '#utils/common';
 
 abstract class ApplyJobCommand extends GenericCommand {
 	constructor() {
@@ -9,7 +10,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 			name: 'applyjob',
 			description: 'Apply for a job you want.',
 			category: 'economy',
-			cooldown: 60,
+			cooldown: minutes(1),
 		});
 	}
 

@@ -2,6 +2,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember, formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
+import { seconds } from '#utils/common';
 
 abstract class checkSocialCredit extends GenericCommand {
 	constructor() {
@@ -10,7 +11,7 @@ abstract class checkSocialCredit extends GenericCommand {
 			description: 'Check your or someone elses social credit.',
 			category: 'utility',
 			usage: '[user]',
-			cooldown: 30,
+			cooldown: seconds(30),
 		});
 	}
 

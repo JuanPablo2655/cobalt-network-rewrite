@@ -3,6 +3,7 @@ import prettyMilliseconds from 'pretty-ms';
 import { CobaltClient } from '#lib/cobaltClient';
 import { formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
+import { days } from '#utils/common';
 
 export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
@@ -27,7 +28,7 @@ export async function reputation(cobalt: CobaltClient, interaction: CommandInter
 	if (member.id === interaction.user.id)
 		return interaction.reply({ content: "Can't give youself a reputation point!" });
 	const date = Date.now();
-	const cooldown = date + 86400000;
+	const cooldown = date + days(1);
 	// TODO(Isidro): fix this
 	if (!isNaN(author!.repTime!) && author!.repTime! > date) {
 		return interaction.reply({
