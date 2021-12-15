@@ -525,6 +525,18 @@
   resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-1.3.6.tgz#166e8c5c08d01c861edd7e2edc80b5739741715f"
   integrity sha512-QnzuLp+p9D7agynVub/zqlDVriDza9y3STArBhNiNBUgIX8+GL5FpQxstRfw1jDr5jkZUjcuKYAHxjIuXKdJAg==
 
+"@sapphire/time-utilities@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/time-utilities/-/time-utilities-1.5.0.tgz#72b8e248a1902c7b392be850994aadf533c7e688"
+  integrity sha512-D0k03sFafueJ/O9sIVJNfL9COYh9T0Ce/kzU8JWdZwUvvkVV9vv18/xP5LgRfiINunO22OxbCbC1vYLrshi7SA==
+  dependencies:
+    "@sapphire/utilities" "^3.1.0"
+
+"@sapphire/utilities@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-3.1.0.tgz#50f18c8ae10535c4fde6b2c68c2a45262c45756f"
+  integrity sha512-Vwsd567hZ1LPDh791r4DHwxlO1EzUefjYhNj+kwbliHWK2TVPhMvF5v1eZKtUCgdBmobqa8CBPwCwymHstuj5w==
+
 "@sindresorhus/is@^4.0.1", "@sindresorhus/is@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.2.0.tgz#667bfc6186ae7c9e0b45a08960c551437176e1ca"
@@ -1328,15 +1340,15 @@ diff@^5.0.0:
   resolved "https://registry.yarnpkg.com/diff/-/diff-5.0.0.tgz#7ed6ad76d859d030787ec35855f5b1daf31d852b"
   integrity sha512-/VTCrvm5Z0JGty/BWHljh+BAiw3IK+2j87NGMu8Nwc/f48WoDAC395uomO9ZD117ZOBaHmkX1oyLvkVM/aIT3w==
 
-discord-api-types@0.24.0, discord-api-types@^0.24.0:
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.24.0.tgz#9e429b8a1ddb4147134dfb3109093422de7ec549"
-  integrity sha512-X0uA2a92cRjowUEXpLZIHWl4jiX1NsUpDhcEOpa1/hpO1vkaokgZ8kkPtPih9hHth5UVQ3mHBu/PpB4qjyfJ4A==
-
 discord-api-types@^0.18.1:
   version "0.18.1"
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.18.1.tgz#5d08ed1263236be9c21a22065d0e6b51f790f492"
   integrity sha512-hNC38R9ZF4uaujaZQtQfm5CdQO58uhdkoHQAVvMfIL0LgOSZeW575W8H6upngQOuoxWd8tiRII3LLJm9zuQKYg==
+
+discord-api-types@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.24.0.tgz#9e429b8a1ddb4147134dfb3109093422de7ec549"
+  integrity sha512-X0uA2a92cRjowUEXpLZIHWl4jiX1NsUpDhcEOpa1/hpO1vkaokgZ8kkPtPih9hHth5UVQ3mHBu/PpB4qjyfJ4A==
 
 discord.js@^13.3.1:
   version "13.3.1"

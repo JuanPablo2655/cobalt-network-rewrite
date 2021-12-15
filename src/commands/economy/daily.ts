@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { addMulti, findMember, formatMoney } from '#utils/util';
+import { days } from '#utils/common';
 
 abstract class DailyCommand extends GenericCommand {
 	constructor() {
@@ -18,7 +19,7 @@ abstract class DailyCommand extends GenericCommand {
 		const user = await this.cobalt.db.getUser(member.id);
 		if (!user) return message.reply({ content: 'An error occured' });
 		const date = Date.now();
-		const cooldown = date + 86400000;
+		const cooldown = date + days(1);
 		if (!isNaN(user.daily!) && user.daily! > date) {
 			return message.reply({
 				content: `You still have **${prettyMilliseconds(

@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
+import { minutes } from '#utils/common';
 
 abstract class QuitJobCommand extends GenericCommand {
 	constructor() {
@@ -7,7 +8,7 @@ abstract class QuitJobCommand extends GenericCommand {
 			name: 'quitjob',
 			description: "You know maybe minimum wage isn't the best.",
 			category: 'economy',
-			cooldown: 60,
+			cooldown: minutes(1),
 		});
 	}
 

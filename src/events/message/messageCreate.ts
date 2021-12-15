@@ -2,6 +2,7 @@ import { Guild, Message, TextChannel, Permissions } from 'discord.js';
 import { Event } from '#lib/structures/events';
 import { formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
+import { minutes, seconds } from '#utils/common';
 
 abstract class MessageEvent extends Event {
 	constructor() {
@@ -46,7 +47,7 @@ abstract class MessageEvent extends Event {
 					this.cobalt.exp.cooldowns.add(message.author.id);
 					setTimeout(() => {
 						this.cobalt.exp.cooldowns.delete(message.author.id);
-					}, 60000);
+					}, minutes(1));
 					const exp = await this.cobalt.exp.manageXp(message);
 					const profile = await this.cobalt.db.getUser(message.author.id);
 					if (exp) {
@@ -64,7 +65,7 @@ abstract class MessageEvent extends Event {
 				this.cobalt.exp.cooldowns.add(message.author.id);
 				setTimeout(() => {
 					this.cobalt.exp.cooldowns.delete(message.author.id);
-				}, 60000);
+				}, minutes(1));
 				await this.cobalt.econ.manageBankSpace(message);
 			}
 		}
@@ -136,13 +137,13 @@ abstract class MessageEvent extends Event {
 				const isInCooldown = async (): Promise<boolean> => {
 					if (command.cooldown) {
 						const now = Date.now();
-						const cooldownAmount = command.cooldown * 1000;
+						const cooldownAmount = command.cooldown;
 						const timestamp = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
 						if (timestamp) {
 							const expirationTime = Number(timestamp) + cooldownAmount;
 							if (now < expirationTime) {
 								const timeLeft = expirationTime - now;
-								const time = Math.floor((new Date().getTime() + timeLeft) / 1000);
+								const time = Math.floor((new Date().getTime() + timeLeft) / seconds(1));
 								message.channel.send({ content: `You can rerun \`${command.name}\` <t:${time}:R>.` });
 								return true;
 							}
