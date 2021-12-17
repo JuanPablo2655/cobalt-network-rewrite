@@ -80,6 +80,6 @@ export default class Metrics {
 			}
 		});
 
-		this.server = this.app.listen(3030, () => logger.info(`[Prometheus]\tListening on port 3030!`));
+		this.server = this.app.listen(3030, () => logger.info(`Prometheus listening on port 3030!`));
 	}
 }
