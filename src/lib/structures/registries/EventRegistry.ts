@@ -2,6 +2,7 @@ import { sync } from 'glob';
 import { resolve } from 'path';
 import { CobaltClient } from '#lib/cobaltClient';
 import { Event } from '#lib/structures/events';
+import { logger } from '../logger';
 
 const registerEvent: Function = (cobalt: CobaltClient) => {
 	const eventFiles = sync(resolve(__dirname + '/../../../events/**/*'));
@@ -15,10 +16,11 @@ const registerEvent: Function = (cobalt: CobaltClient) => {
 				event.cobalt = cobalt;
 				cobalt.events.set(event.name, event);
 				cobalt[event.type ? 'once' : 'on'](event.name, (...args: any[]) => event.run(...args));
+				logger.info({ event: { name: event.name } }, `Registering event: ${event.name}`);
 			}
 		}
 	});
-	console.log(`[Events]\tLoaded ${count} events`);
+	logger.info(`Loaded ${count} events`);
 };
 
 export default registerEvent;

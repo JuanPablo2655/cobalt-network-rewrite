@@ -1,5 +1,6 @@
 import { CommandInteraction, GuildMember, Interaction, TextChannel } from 'discord.js';
 import { Event } from '#lib/structures/events';
+import { logger } from '#lib/structures';
 
 abstract class InteractionEvent extends Event {
 	constructor() {
@@ -58,7 +59,7 @@ abstract class InteractionEvent extends Event {
 			try {
 				await command.run(interaction);
 			} catch (err) {
-				console.log(err);
+				logger.error(err);
 				return interaction.reply({ content: 'An unexpected error occurred' });
 			}
 		}

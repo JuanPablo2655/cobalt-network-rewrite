@@ -12,7 +12,7 @@
     "#lib/structures/events": "./dist/lib/structures/events/index.js",
     "#root/*": "./dist/*.js",
     "#utils/*": "./dist/lib/utils/*.js",
-    "#uitls/common": "./dist/lib/utils/common/index.js"
+    "#utils/common": "./dist/lib/utils/common/index.js"
   },
   "scripts": {
     "test": "jest --collect-coverage",
@@ -23,7 +23,7 @@
     "build": "tsc -b src",
     "start": "node --enable-source-maps dist/cobalt.js",
     "deploy:commands": "node --enable-source-maps dist/deploy.js",
-    "dev": "yarn build && yarn start",
+    "dev": "yarn build && yarn start | pino-pretty -i pid,hostname -t yyyy-mm-dd HH:MM:ss",
     "prettier": "prettier --write ."
   },
   "repository": {
@@ -48,6 +48,7 @@
     "ioredis": "^4.28.2",
     "mongoose": "6.0.14",
     "node-fetch": "2.6.6",
+    "pino": "^7.5.1",
     "pretty-ms": "^7.0.1",
     "prom-client": "^14.0.1",
     "utf-8-validate": "^5.0.7",
@@ -64,6 +65,7 @@
     "cloc": "^2.9.0",
     "discord-api-types": "^0.24.0",
     "jest": "^27.0.6",
+    "pino-pretty": "^7.3.0",
     "prettier": "^2.5.1",
     "ts-jest": "^27.0.5",
     "ts-node-dev": "^1.1.6",

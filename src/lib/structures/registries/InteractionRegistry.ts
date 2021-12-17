@@ -2,6 +2,7 @@ import { sync } from 'glob';
 import { resolve } from 'path';
 import { CobaltClient } from '#lib/cobaltClient';
 import { InteractionCommand } from '#lib/structures/commands';
+import { logger } from '../logger';
 
 const registerInteraction: Function = (cobalt: CobaltClient) => {
 	const interactionFiles = sync(resolve(__dirname + '/../../../interactions/**/*'));
@@ -14,10 +15,11 @@ const registerInteraction: Function = (cobalt: CobaltClient) => {
 				const interaction: InteractionCommand = new File();
 				interaction.cobalt = cobalt;
 				cobalt.interactions.set(interaction.name, interaction);
+				logger.info({ interaction: { name: interaction.name } }, `Registering interaction: ${interaction.name}`);
 			}
 		}
 	});
-	console.log(`[Interactions]\tLoaded ${count} commands`);
+	logger.info({ interaction: { total: count } }, `Loaded ${count} commands`);
 };
 
 export default registerInteraction;
