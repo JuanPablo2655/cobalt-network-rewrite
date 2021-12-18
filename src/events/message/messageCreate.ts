@@ -3,6 +3,7 @@ import { Event } from '#lib/structures/events';
 import { formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
 import { minutes, seconds } from '#utils/common';
+import { logger } from '#lib/structures';
 
 abstract class MessageEvent extends Event {
 	constructor() {
@@ -161,7 +162,8 @@ abstract class MessageEvent extends Event {
 					this.cobalt.metrics.commandInc(command.name);
 					return void command.run(message, args, updateCooldown);
 				} catch (err) {
-					console.error(err);
+					const error = err as Error;
+					logger.error(error, error.message);
 					message.reply({ content: 'there was an error running this command.' });
 				}
 			}
