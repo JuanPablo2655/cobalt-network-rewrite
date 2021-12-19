@@ -19,6 +19,6 @@ const streamToElastic = pinoElastic({
 });
 
 export const logger = pino(
-	{ level: 'trace', ...ecsFormat(), name: process.env.LOGGER_NAME ?? 'log' },
+	{ level: 'trace', ...ecsFormat(), name: process.env.LOGGER_NAME },
 	pinoMultistream.multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
 );
