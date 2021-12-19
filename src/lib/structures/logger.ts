@@ -8,9 +8,9 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const streamToElastic = pinoElastic({
-	index: process.env.ELASTIC_INDEX,
+	index: process.env.ELASTIC_INDEX ?? 'index',
 	consistency: 'one',
-	node: process.env.ELASTIC_URL,
+	node: process.env.ELASTIC_URL ?? 'localhost',
 	auth: {
 		username: process.env.ELASTIC_USERNAME,
 		password: process.env.ELASTIC_PASSWORD,
@@ -19,6 +19,6 @@ const streamToElastic = pinoElastic({
 });
 
 export const logger = pino(
-	{ level: 'trace', ...ecsFormat(), name: process.env.LOGGER_NAME },
+	{ level: 'trace', ...ecsFormat(), name: process.env.LOGGER_NAME ?? 'log' },
 	pinoMultistream.multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
 );
