@@ -11,8 +11,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+          cache: yarn
       - name: Install dependencies
-        run: rm -rf node_modules && yarn install --frozen-lockfile
+        run: yarn --immutable
       - name: Run TypeScript compiler
         run: yarn test:typescript
   prettier:
@@ -25,8 +26,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+          cache: yarn
       - name: Install dependencies
-        run: rm -rf node_modules && yarn install --frozen-lockfile
+        run: yarn --immutable
       - name: Run Prettier
         run: yarn test:prettier
   codecov:
@@ -39,8 +41,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+          cache: yarn
       - name: Install dependencies
-        run: rm -rf node_modules && yarn install --frozen-lockfile
+        run: yarn --immutable
       - name: Run Test
         run: yarn test
       - name: Upload Coverage
