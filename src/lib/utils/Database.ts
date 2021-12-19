@@ -24,13 +24,14 @@ export default class Database {
 
 		this.mongoose = mongoose.connection;
 		this.mongoose.on('connected', () => {
-			logger.info('[Mongoose]\tMongoose connection successfully opened');
+			logger.info('Mongoose connection successfully opened');
 		});
 		this.mongoose.on('err', err => {
-			logger.error(`[Mongoose]\tMongoose connection error: \n ${err.stack}`);
+			const error = err as Error;
+			logger.error(error, error.message);
 		});
 		this.mongoose.on('disconnected', () => {
-			logger.info('[Mongoose]\tMongoose connection disconnected');
+			logger.info('Mongoose connection disconnected');
 		});
 	}
 

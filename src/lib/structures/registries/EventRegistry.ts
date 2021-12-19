@@ -6,12 +6,10 @@ import { logger } from '../logger';
 
 const registerEvent: Function = (cobalt: CobaltClient) => {
 	const eventFiles = sync(resolve(__dirname + '/../../../events/**/*'));
-	let count = 0;
 	eventFiles.forEach(file => {
 		if (/\.js$/iu.test(file)) {
 			const File = require(file).default;
 			if (File && File.prototype instanceof Event) {
-				count++;
 				const event: Event = new File();
 				event.cobalt = cobalt;
 				cobalt.events.set(event.name, event);
@@ -20,7 +18,6 @@ const registerEvent: Function = (cobalt: CobaltClient) => {
 			}
 		}
 	});
-	logger.info(`Loaded ${count} events`);
 };
 
 export default registerEvent;

@@ -6,12 +6,10 @@ import { logger } from '..';
 
 const registerCommand: Function = (cobalt: CobaltClient) => {
 	const commandFiles = sync(resolve(__dirname + '/../../../commands/**/*'));
-	let count = 0;
 	commandFiles.forEach(file => {
 		if (/\.js$/iu.test(file)) {
 			const File = require(file).default;
 			if (File && File.prototype instanceof GenericCommand) {
-				count++;
 				const command: GenericCommand = new File();
 				command.cobalt = cobalt;
 				cobalt.commands.set(command.name, command);
@@ -20,7 +18,6 @@ const registerCommand: Function = (cobalt: CobaltClient) => {
 			}
 		}
 	});
-	logger.info({ commands: { total: count } }, `Loaded ${count} commands`);
 };
 
 export default registerCommand;
