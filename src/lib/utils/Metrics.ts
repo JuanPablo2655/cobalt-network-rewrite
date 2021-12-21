@@ -1,3 +1,4 @@
+import { logger } from '#lib/structures';
 import { ClientEvents, Snowflake } from 'discord.js';
 import express, { Express } from 'express';
 import { Counter, Gauge, collectDefaultMetrics, register } from 'prom-client';
@@ -79,6 +80,6 @@ export default class Metrics {
 			}
 		});
 
-		this.server = this.app.listen(3030, () => console.log(`[Prometheus]\tListening on port 3030!`));
+		this.server = this.app.listen(3030, () => logger.info(`Prometheus listening on port 3030!`));
 	}
 }

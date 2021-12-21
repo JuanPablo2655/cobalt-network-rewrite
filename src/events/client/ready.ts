@@ -1,3 +1,4 @@
+import { logger } from '#lib/structures';
 import { Event } from '#lib/structures/events';
 
 abstract class ReadyEvent extends Event {
@@ -9,7 +10,7 @@ abstract class ReadyEvent extends Event {
 
 	async run() {
 		this.cobalt.metrics.eventInc(this.name);
-		console.log('[Cobalt]\tOnline!');
+		logger.info('Online!');
 	}
 }
 

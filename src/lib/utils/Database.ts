@@ -4,6 +4,7 @@ import userModel, { UserData, IUser } from '../models/User';
 import memberModel, { MemberData, IMember } from '../models/Member';
 import { CobaltClient } from '../cobaltClient';
 import mongoose, { Connection } from 'mongoose';
+import { logger } from '#lib/structures';
 
 export default class Database {
 	cobalt: CobaltClient;
@@ -23,13 +24,14 @@ export default class Database {
 
 		this.mongoose = mongoose.connection;
 		this.mongoose.on('connected', () => {
-			console.log('[Mongoose]\tMongoose connection successfully opened');
+			logger.info('Mongoose connection successfully opened');
 		});
 		this.mongoose.on('err', err => {
-			console.error(`[Mongoose]\tMongoose connection error: \n ${err.stack}`);
+			const error = err as Error;
+			logger.error(error, error.message);
 		});
 		this.mongoose.on('disconnected', () => {
-			console.log('[Mongoose]\tMongoose connection disconnected');
+			logger.info('Mongoose connection disconnected');
 		});
 	}
 
@@ -40,7 +42,8 @@ export default class Database {
 			await this.cobalt.redis.set(`guild:${guildId}`, JSON.stringify(guild));
 			return guild;
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -49,7 +52,8 @@ export default class Database {
 			await guildModel.findOneAndDelete({ _id: guildId });
 			await this.cobalt.redis.del(`guild:${guildId}`);
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -61,7 +65,8 @@ export default class Database {
 			if (!redis) await this.cobalt.redis.set(`guild:${guildId}`, JSON.stringify(guild));
 			return guild;
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -72,7 +77,8 @@ export default class Database {
 			const _guild = await guildModel.findOneAndUpdate({ _id: guildId }, data, { new: true });
 			await this.cobalt.redis.set(`guild:${guildId}`, JSON.stringify(_guild));
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -84,7 +90,8 @@ export default class Database {
 			if (!redis) await this.cobalt.redis.set(`bot:${botId}`, JSON.stringify(bot));
 			return bot;
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -93,7 +100,8 @@ export default class Database {
 			const bot = await botModel.findOneAndUpdate({ _id: botId }, data, { new: true });
 			await this.cobalt.redis.set(`bot:${botId}`, JSON.stringify(bot));
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -104,7 +112,8 @@ export default class Database {
 			await this.cobalt.redis.set(`user:${userId}`, JSON.stringify(user));
 			return user;
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -113,7 +122,8 @@ export default class Database {
 			await userModel.findOneAndDelete({ _id: userId });
 			await this.cobalt.redis.del(`user:${userId}`);
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -125,7 +135,8 @@ export default class Database {
 			if (!redis) await this.cobalt.redis.set(`user:${userId}`, JSON.stringify(user));
 			return user;
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -136,7 +147,8 @@ export default class Database {
 			const _user = await userModel.findOneAndUpdate({ _id: userId }, data, { new: true });
 			await this.cobalt.redis.set(`user:${userId}`, JSON.stringify(_user));
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -147,7 +159,8 @@ export default class Database {
 			await this.cobalt.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(member));
 			return member;
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -156,7 +169,8 @@ export default class Database {
 			await memberModel.findOneAndDelete({ memberId, guildId });
 			await this.cobalt.redis.del(`member:${memberId}:${guildId}`);
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -170,7 +184,8 @@ export default class Database {
 			if (!redis) await this.cobalt.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(member));
 			return member;
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -185,7 +200,8 @@ export default class Database {
 			const _member = await memberModel.findOneAndUpdate({ memberId, guildId }, data, { new: true });
 			await this.cobalt.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(_member));
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 }

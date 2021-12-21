@@ -1,3 +1,4 @@
+import { logger } from '#lib/structures';
 import { Default } from '#lib/typings';
 import { Message } from 'discord.js';
 import { CobaltClient } from '../cobaltClient';
@@ -20,7 +21,8 @@ export default class Currency {
 				netWorth: (user?.netWorth ?? 0) + money,
 			});
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -35,7 +37,8 @@ export default class Currency {
 				netWorth: (user?.netWorth ?? 0) - money,
 			});
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -50,7 +53,8 @@ export default class Currency {
 				netWorth: (user?.netWorth ?? 0) + money,
 			});
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -65,7 +69,8 @@ export default class Currency {
 				netWorth: (user?.netWorth ?? 0) - money,
 			});
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -77,7 +82,8 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) + space });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -89,7 +95,8 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) - space });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -101,7 +108,8 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bounty: (user?.bounty ?? 0) + amount });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -113,7 +121,8 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { bounty: (user?.bounty ?? 0) - amount });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -124,7 +133,8 @@ export default class Currency {
 
 			await this.cobalt.db.updateUser(userId, { job });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -141,7 +151,8 @@ export default class Currency {
 				deaths: (user?.deaths ?? 0) + 1,
 			});
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -152,7 +163,8 @@ export default class Currency {
 			const addMulit = addMulti(bankSpaceToAdd, multi);
 			await this.addBankSpace(message.author.id, addMulit);
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -166,7 +178,8 @@ export default class Currency {
 
 			await this.cobalt.db.updateBot(botId, { bank: bot.bank + amount });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -180,7 +193,8 @@ export default class Currency {
 
 			await this.cobalt.db.updateBot(botId, { bank: bot.bank - amount });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -194,7 +208,8 @@ export default class Currency {
 
 			await this.cobalt.db.updateBot(botId, { tax });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 }

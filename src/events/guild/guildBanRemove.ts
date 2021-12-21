@@ -25,7 +25,6 @@ abstract class GuildBanRemoveEvent extends Event {
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = ban.user.displayAvatarURL({ format: 'png', dynamic: true });
-		console.log(ban.reason, audit?.reason);
 		const logEmbed = new MessageEmbed()
 			.setAuthor(ban.user.username, avatar)
 			.setTitle('Member Unbanned')

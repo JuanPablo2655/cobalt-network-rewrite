@@ -1,3 +1,4 @@
+import { logger } from '#lib/structures';
 import { Default } from '#lib/typings';
 import { Message, Snowflake } from 'discord.js';
 import { CobaltClient } from '../cobaltClient';
@@ -21,7 +22,8 @@ export default class Experience {
 				totalXp: (user?.totalXp ?? 0) + amount,
 			});
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -38,7 +40,8 @@ export default class Experience {
 					totalXp: (user?.totalXp ?? 0) - amount,
 				});
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -50,7 +53,8 @@ export default class Experience {
 
 			await this.cobalt.db.updateUser(userId, { lvl: (user?.lvl ?? Default.Level) + amount });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -62,7 +66,8 @@ export default class Experience {
 
 			await this.cobalt.db.updateUser(userId, { lvl: (user?.lvl ?? Default.Level) - amount });
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 
@@ -85,7 +90,8 @@ export default class Experience {
 			await this.addXp(message.author.id, xpToAdd);
 			return false;
 		} catch (err) {
-			console.error(err instanceof Error ? err?.stack : err);
+			const error = err as Error;
+			logger.error(error, error.message);
 		}
 	}
 }

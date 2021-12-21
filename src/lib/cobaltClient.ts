@@ -1,7 +1,7 @@
 import { Client, Collection, Intents, Snowflake } from 'discord.js';
 import Redis from 'ioredis';
 import * as dotenv from 'dotenv';
-import { CommandRegistry, EventRegistry, InteractionRegistry } from './structures';
+import { CommandRegistry, EventRegistry, InteractionRegistry, logger } from './structures';
 import { EventOptions } from './typings/Options';
 import Database from './utils/Database';
 import Experience from './utils/Experience';
@@ -67,7 +67,7 @@ export class CobaltClient extends Client {
 		await this.redis.flushall();
 		this.metrics.server.close();
 		this.db.mongoose.close(false, () => {
-			console.log('[Mongoose]\tMongoose connection successfully closed');
+			logger.info('Mongoose connection successfully closed');
 		});
 		this.destroy();
 	}

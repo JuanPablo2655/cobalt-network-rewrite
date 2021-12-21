@@ -2,6 +2,7 @@ import { MessageEmbed, TextChannel, VoiceState } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { Event } from '#lib/structures/events';
 import { formatMoney } from '#utils/util';
+import { logger } from '#lib/structures';
 
 abstract class VoiceStateUpdate extends Event {
 	constructor() {
@@ -59,7 +60,10 @@ abstract class VoiceStateUpdate extends Event {
 							elapsed,
 						)}** in VC.`,
 					})
-					.catch(err => console.error(err));
+					.catch(err => {
+						const error = err as Error;
+						logger.error(error, error.message);
+					});
 				logEmbed
 					.setTitle(`Member Left VC`)
 					.setDescription(

@@ -1,6 +1,7 @@
 import { CobaltClient } from '../cobaltClient';
 import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
+import { logger } from '#lib/structures';
 
 export function formatNumber(n: string | number): string | null {
 	const number = Number.parseFloat(String(n)).toLocaleString('en-US');
@@ -53,8 +54,10 @@ export async function findMember(
 			(options?.allowAuthor === true ? message.member : null);
 		return member;
 	} catch (err) {
+		// TODO(Isidro): refactor
+		const error = err as Error;
 		if (err instanceof DJS.DiscordAPIError ? err?.message?.includes('DiscordAPIError: Unknown Member') : null) {
-			console.error(err);
+			logger.error(error, error.message);
 			return null;
 		}
 		return null;
