@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, Interaction, TextChannel } from 'discord.js';
+import { CommandInteraction, GuildMember, Interaction, PermissionString, TextChannel } from 'discord.js';
 import { Event } from '#lib/structures/events';
 import { logger } from '#lib/structures';
 
@@ -12,10 +12,11 @@ abstract class InteractionEvent extends Event {
 	async run(interaction: Interaction) {
 		this.cobalt.metrics.eventInc(this.name);
 		if (!interaction.isCommand()) return;
+		if (!interaction.inCachedGuild()) return;
 
 		const command = this.cobalt.interactions.get(interaction.commandName);
 		if (command) {
-			const guild = await this.cobalt.db.getGuild(interaction.guild?.id);
+			const guild = await this.cobalt.db.getGuild(interaction.guild.id);
 			if (guild) {
 				if (guild?.disabledCategories?.includes(command.category)) return;
 				if (guild?.disabledCommands?.includes(command.name)) return;
@@ -25,7 +26,7 @@ abstract class InteractionEvent extends Event {
 				if (interaction.channel instanceof TextChannel) {
 					const userPermissions = command.userPermissions;
 					const clientPermissions = command.clientPermissions;
-					const missingPermissions = new Array();
+					const missingPermissions = new Array<PermissionString>();
 					if (userPermissions?.length) {
 						for (let i = 0; i < userPermissions.length; i++) {
 							const hasPermissions = interaction.channel
@@ -59,8 +60,21 @@ abstract class InteractionEvent extends Event {
 			try {
 				await command.run(interaction);
 			} catch (err) {
-				logger.error(err);
-				return interaction.reply({ content: 'An unexpected error occurred' });
+				const error = err as Error;
+				logger.error(error, error.message);
+				try {
+					if (!interaction.deferred && !interaction.replied) {
+						logger.warn(
+							{ interaction: { name: interaction.commandName, type: interaction.type }, userId: interaction.user.id },
+							'Command interaction has not been deffered before throwing',
+						);
+						await interaction.deferReply();
+					}
+					await interaction.editReply({ content: error.message, components: [] });
+				} catch (err) {
+					const error = err as Error;
+					logger.error(error, error.message);
+				}
 			}
 		}
 	}
