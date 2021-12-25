@@ -1,8 +1,8 @@
 export class UserError extends Error {
-	public readonly context: unknown;
+	public readonly identifer: string;
 	public constructor(options: UserError.Options, message: string) {
 		super(message);
-		this.context = options.context ?? null;
+		this.identifer = options.identifer;
 	}
 
 	public get name(): string {
@@ -12,6 +12,6 @@ export class UserError extends Error {
 
 export namespace UserError {
 	export interface Options {
-		context?: unknown;
+		identifer: string;
 	}
 }

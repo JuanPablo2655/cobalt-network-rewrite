@@ -42,6 +42,7 @@ abstract class MessageEvent extends Event {
 				});
 			}
 		}
+		// TODO(Isidro): refactor
 		if (!message.author.bot) {
 			if (!this.cobalt.disableXp) {
 				if (!this.cobalt.exp.cooldowns.has(message.author.id)) {
@@ -160,11 +161,11 @@ abstract class MessageEvent extends Event {
 						totalCommandsUsed: (bot?.totalCommandsUsed ?? 0) + 1,
 					});
 					this.cobalt.metrics.commandInc(command.name);
-					return void command.run(message, args, updateCooldown);
+					await command.run(message, args, updateCooldown);
 				} catch (err) {
 					const error = err as Error;
 					logger.error(error, error.message);
-					message.reply({ content: 'there was an error running this command.' });
+					message.reply({ content: error.message, components: [] });
 				}
 			}
 		}
