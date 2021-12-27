@@ -24,7 +24,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		});
 		if (!isDirector) throw new UserError({ identifer: Identifiers.StaffError }, 'Not a director');
 		const amount = Number(args[0]);
-		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Missing integer');
+		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing integer');
 		if (isNaN(amount)) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		if (bot.bank < amount)
 			throw new UserError(

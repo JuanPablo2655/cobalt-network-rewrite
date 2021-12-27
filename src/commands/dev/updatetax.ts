@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatNumber } from '#utils/util';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class UpdateTaxCommand extends GenericCommand {
 	constructor() {
@@ -15,12 +16,14 @@ abstract class UpdateTaxCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
-		if (!bot) return message.channel.send({ content: 'An error has occured' });
+		if (!bot) throw new Error('Missing bot user');
 		const tax = Number(args[0]);
-		if (!args[0]) return message.reply({ content: 'I need to update the tax rate, please input a number.' });
-		if (isNaN(tax)) return message.reply({ content: 'Please I need a valid number' });
-		if (tax < 1.5) return message.reply({ content: 'Tax must be greater than 1.5%' });
-		if (tax > 60) return message.reply({ content: "Can't tax users more than 60%" });
+		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing number');
+		if (isNaN(tax)) throw new UserError({ identifer: Identifiers.ArgumentNumberError }, 'Invalid number');
+		if (tax < 1.5)
+			throw new UserError({ identifer: Identifiers.ArgumentNumberTooSmall }, 'Tax must be greater than 1.5%');
+		if (tax > 60)
+			throw new UserError({ identifer: Identifiers.ArgumentNumberTooLarge }, "Tax can't be greater than 60%");
 		await addCD();
 		await this.cobalt.db.updateBot(this.cobalt.user?.id, { tax });
 		message.channel.send({ content: `The global tax rate is now **${formatNumber(tax)}%**` });

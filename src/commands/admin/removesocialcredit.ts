@@ -29,7 +29,7 @@ abstract class removeSocialCredit extends GenericCommand {
 		if (newAmount < 0)
 			throw new UserError(
 				{ identifer: Identifiers.ArgumentIntegerTooSmall },
-				'The min social credit someone can have is 0!',
+				'The min social credit someone can have is 0',
 			);
 		this.cobalt.db.updateUser(member.id, { socialCredit: newAmount });
 		message.channel.send({ content: `${member.user.username} social credit score is now ${formatNumber(newAmount)}!` });

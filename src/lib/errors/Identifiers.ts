@@ -1,4 +1,7 @@
 export const enum Identifiers {
+	ArgsMissing = 'argsMissing',
+	ArgsUnavailable = 'argsUnavailable',
+
 	ArgumentBooleanError = 'booleanError',
 	ArgumentChannelError = 'channelError',
 	ArgumentDateError = 'dateError',
