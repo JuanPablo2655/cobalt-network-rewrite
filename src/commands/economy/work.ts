@@ -3,6 +3,7 @@ import { jobs } from '#lib/data';
 import { GenericCommand } from '#lib/structures/commands';
 import { addMulti, calcMulti, formatNumber } from '#utils/util';
 import { minutes } from '#utils/common';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class WorkCommand extends GenericCommand {
 	constructor() {
@@ -16,12 +17,13 @@ abstract class WorkCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		const user = await this.cobalt.db.getUser(message.author.id);
-		if (user?.job === null) return message.reply({ content: 'You need a job to work.' });
+		if (!user) throw new Error('Missing user database entry');
+		if (user.job === null)
+			throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'You need a job to work.');
 		await addCD();
-		const job = jobs.find(j => j.id === user?.job);
-		// TODO(Isidro): return an error
-		if (!job) return;
-		const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
+		const job = jobs.find(j => j.id === user.job);
+		if (!job) throw new Error('Invalid job id');
+		const workEntry = job.entries[Math.floor(Math.random() * job.entries.length)];
 		const money = Math.floor(job.minAmount + Math.random() * 250);
 		const multi = await calcMulti(message.author, this.cobalt);
 		const moneyEarned = addMulti(money, multi);

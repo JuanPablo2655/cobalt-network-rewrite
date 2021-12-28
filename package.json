@@ -7,6 +7,7 @@
     "#lib/*": "./dist/lib/*.js",
     "#lib/typings": "./dist/lib/typings/index.js",
     "#lib/data": "./dist/lib/data/index.js",
+    "#lib/errors": "./dist/lib/errors/index.js",
     "#lib/structures": "./dist/lib/structures/index.js",
     "#lib/structures/commands": "./dist/lib/structures/commands/index.js",
     "#lib/structures/events": "./dist/lib/structures/events/index.js",

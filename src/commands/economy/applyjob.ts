@@ -28,16 +28,18 @@ abstract class ApplyJobCommand extends GenericCommand {
 			);
 		const job = jobs.find(j => j.id === args[0].toLowerCase());
 		if (!job) return message.reply({ content: 'Please pick a valid job with a valid job id to apply for.' });
-		if (user?.job === null) {
-			await this.cobalt.econ.updateJob(message.author.id, job.id);
-			return message.reply({
-				content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
-					job.minAmount,
-				)}**`,
-			});
-		} else {
-			return message.reply({ content: `You have a job already. If you want to switch you have to quit your job` });
-		}
+		if (user?.job !== null)
+			throw new UserError(
+				{ identifer: Identifiers.PreconditionDataExists },
+				'You have a job already. If you want to switch, you have to quit your job',
+			);
+
+		await this.cobalt.econ.updateJob(message.author.id, job.id);
+		return message.reply({
+			content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
+				job.minAmount,
+			)}**`,
+		});
 	}
 }
 

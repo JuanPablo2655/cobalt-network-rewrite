@@ -13,6 +13,7 @@ abstract class ListJobsCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
+		// TODO(Isidro): refactor to use Array.prototype.map()
 		let joblists: string[] = new Array();
 		jobs.forEach(job => {
 			joblists.push(`\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);

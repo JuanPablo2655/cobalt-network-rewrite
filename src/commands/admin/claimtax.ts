@@ -22,7 +22,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		bot.directors?.forEach(director => {
 			if (director === message.author.id) return (isDirector = true);
 		});
-		if (!isDirector) throw new UserError({ identifer: Identifiers.StaffError }, 'Not a director');
+		if (!isDirector) throw new UserError({ identifer: Identifiers.PreconditionUserPermissions }, 'Not a director');
 		const amount = Number(args[0]);
 		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing integer');
 		if (isNaN(amount)) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Invalid integer');

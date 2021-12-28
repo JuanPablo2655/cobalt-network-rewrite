@@ -2,6 +2,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember, formatMoney } from '#utils/util';
 import { Default } from '#lib/typings';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class BalanceCommand extends GenericCommand {
 	constructor() {
@@ -17,8 +18,9 @@ abstract class BalanceCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
-		const user = member?.user;
-		const profile = await this.cobalt.db.getUser(user?.id);
+		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
+		const user = member.user;
+		const profile = await this.cobalt.db.getUser(user.id);
 		const bankPercent = ((profile?.bank ?? Default.Bank) / (profile?.bankSpace ?? Default.BankSpace)) * 100;
 		const balanceEmbed = new MessageEmbed()
 			.setTitle(`${user?.username}'s balance`)
