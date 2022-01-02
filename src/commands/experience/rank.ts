@@ -2,6 +2,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember, formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class RankCommand extends GenericCommand {
 	constructor() {
@@ -15,8 +16,9 @@ abstract class RankCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
-		const user = member?.user;
-		const profile = await this.cobalt.db.getUser(user?.id);
+		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
+		const user = member.user;
+		const profile = await this.cobalt.db.getUser(user.id);
 		await addCD();
 		let xpPercent = ((profile?.xp ?? Default.Xp) / this.cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
 		const rankEmbed = new MessageEmbed()

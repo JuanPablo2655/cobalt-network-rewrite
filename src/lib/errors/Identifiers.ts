@@ -39,6 +39,7 @@ export const enum Identifiers {
 	ArgumentUserError = 'userError',
 
 	CommandDisabled = 'commandDisabled',
+	CategoryDisabled = 'categoryDisabled',
 
 	PreconditionCooldown = 'preconditionCooldown',
 	PreconditionDMOnly = 'preconditionDmOnly',

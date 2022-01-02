@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class BlacklistedWordsCommand extends GenericCommand {
 	constructor() {
@@ -19,13 +20,17 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 		const [option, item] = args;
 		const guildId = message.guild?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply({ content: 'An error occurred.' });
-		const blacklistWords = guild?.blacklistedWords;
+		if (!guild) throw new Error('Missing guild database entry');
+		const blacklistWords = guild.blacklistedWords;
 
 		switch (option) {
 			case 'add': {
 				if (blacklistWords?.includes(item))
-					return message.channel.send({ content: 'word already exists in the list.' });
+					throw new UserError(
+						{ identifer: Identifiers.PreconditionDataExists },
+						`\`${item}\` already exists in the list`,
+					);
+				// TODO(Isidro): refactor
 				if (blacklistWords === null || !blacklistWords) {
 					await this.cobalt.db.updateGuild(guildId, {
 						blacklistedWords: [item],
@@ -38,21 +43,20 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 				return message.channel.send({ content: `${item} was added to the list of blacklisted words` });
 			}
 			case 'remove': {
-				if (blacklistWords !== null) {
-					if (!blacklistWords?.includes(item))
-						return message.channel.send({ content: 'Word does not exist in the list' });
-					const words = blacklistWords?.filter(w => w.toLowerCase() !== item.toLowerCase());
-					await this.cobalt.db.updateGuild(guildId, { blacklistedWords: words });
-					return message.channel.send({ content: `${item} was removed from the list of blacklisted words` });
-				}
-				return message.channel.send({ content: 'There are no blacklisted words yet.' });
+				if (blacklistWords === null)
+					throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'There are no blacklisted words yet');
+				if (!blacklistWords?.includes(item))
+					throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Word does not exist in the list');
+				const words = blacklistWords?.filter(w => w.toLowerCase() !== item.toLowerCase());
+				await this.cobalt.db.updateGuild(guildId, { blacklistedWords: words });
+				return message.channel.send({ content: `${item} was removed from the list of blacklisted words` });
 			}
 			case 'list': {
 				const words = blacklistWords !== null && blacklistWords?.map(w => `\`${w}\``).join(', ');
 				return message.channel.send({ content: words || 'There are no blacklisted words yet.' });
 			}
 			default: {
-				return message.reply({ content: 'option does not exist.' });
+				throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Invalid arg type');
 			}
 		}
 	}
