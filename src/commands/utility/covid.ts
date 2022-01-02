@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import { GenericCommand } from '#lib/structures/commands';
 import { CovidAll, covidCountry, covidState } from '#lib/typings';
 import { formatNumber } from '#utils/util';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class CovidCommand extends GenericCommand {
 	constructor() {
@@ -33,7 +34,11 @@ abstract class CovidCommand extends GenericCommand {
 			return message.channel.send({ embeds: [covidEmbed] });
 		}
 		if (parameter === 'country') {
-			if (!path[0]) return message.reply({ content: 'I need a correct country name. Ex: USA or United States.' });
+			if (!path[0])
+				throw new UserError(
+					{ identifer: Identifiers.ArgsMissing },
+					'I need a correct country name. Ex: USA or United States.',
+				);
 			const country = await fetch(`https://disease.sh/v3/covid-19/countries/${path.join('%20')}?strict=false`);
 			const res = (await country.json()) as covidCountry;
 			const covidEmbed = new MessageEmbed()
@@ -51,11 +56,12 @@ abstract class CovidCommand extends GenericCommand {
 			return message.channel.send({ embeds: [covidEmbed] });
 		}
 		if (parameter === 'state') {
-			if (!path[0]) return message.reply({ content: 'I need a correct state name. Ex. New York.' });
+			if (!path[0])
+				throw new UserError({ identifer: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
 			const state = await fetch(`https://disease.sh/v3/covid-19/states/${path.join('%20')}`);
 			const res = (await state.json()) as covidState;
 			if (res.message === "State not found or doesn't have any cases")
-				return message.reply({ content: 'I need a correct state name. Ex. New York.' });
+				throw new UserError({ identifer: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
 			const covidEmbed = new MessageEmbed()
 				.setTitle(`COVID-19 World Data`)
 				.setDescription(

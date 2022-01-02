@@ -2,6 +2,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember, formatNumber } from '#utils/util';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class GetVcTimeCommand extends GenericCommand {
 	constructor() {
@@ -18,7 +19,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		const [option] = args;
 		// TODO(Isidro): return an error
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true, index: 1 });
-		if (!member) return message.reply({ content: 'Member not found!' });
+		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		const memberData = await this.cobalt.db.getMember(member.id, message.guild?.id);
 		const user = await this.cobalt.db.getUser(member.id);
 		await addCD();
@@ -62,7 +63,10 @@ abstract class GetVcTimeCommand extends GenericCommand {
 				return message.channel.send({ embeds: [vcEmbed] });
 			}
 			default: {
-				return message.reply({ content: `Please supply either \`local\` or \`global\` as the paramater please!` });
+				throw new UserError(
+					{ identifer: Identifiers.ArgsMissing },
+					`Please supply either \`local\` or \`global\` as the paramater please!`,
+				);
 			}
 		}
 	}
