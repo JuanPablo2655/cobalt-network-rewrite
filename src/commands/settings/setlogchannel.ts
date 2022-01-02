@@ -1,6 +1,7 @@
 import { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findChannel } from '#utils/util';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class SetLogChannelCommand extends GenericCommand {
 	constructor() {
@@ -15,11 +16,10 @@ abstract class SetLogChannelCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const channel = await findChannel(message, args[0]);
-		if (!channel)
-			return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });
+		if (!channel) throw new UserError({ identifer: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
+		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			logChannel: {
