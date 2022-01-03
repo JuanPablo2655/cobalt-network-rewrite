@@ -165,7 +165,12 @@ abstract class MessageEvent extends Event {
 				} catch (err) {
 					const error = err as Error;
 					logger.error(error, error.message);
-					message.reply({ content: error.message, components: [] });
+					try {
+						message.reply({ content: error.message, components: [] });
+					} catch (err) {
+						const error = err as Error;
+						logger.error(error, error.message);
+					}
 				}
 			}
 		}
