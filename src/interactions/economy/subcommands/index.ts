@@ -5,13 +5,16 @@ import { CobaltClient } from '#lib/cobaltClient';
 import { addMulti, calcMulti, formatMoney, formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
 import { days, months } from '#utils/common';
+import { Identifiers, UserError } from '#lib/errors';
 
 export async function work(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = await cobalt.db.getUser(interaction.user.id);
-	if (user?.job === null) return interaction.reply({ content: 'You need a job to work.' });
-	const job = jobs.find(j => j.id === user?.job);
+	if (!user) throw new Error('Missing user database entry');
+	if (user.job === null)
+		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'You need a job to work.');
+	const job = jobs.find(j => j.id === user.job);
 	// TODO(Isidro): return an error
-	if (!job) return;
+	if (!job) throw new Error('Invalid job id');
 	const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
 	const money = Math.floor(job.minAmount + Math.random() * 250);
 	const multi = await calcMulti(interaction.user, cobalt);
@@ -28,13 +31,14 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 	const member = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	const author = await cobalt.db.getUser(interaction.user.id);
-	if (member.id === interaction.user.id) return interaction.reply({ content: "You can't pay yourself!" });
+	if (!author) throw new Error('Missing author database entry');
+	if (member.id === interaction.user.id)
+		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "You can't pay yourself");
 	if ((author?.wallet ?? Default.Wallet) < amount)
-		return interaction.reply({
-			content: `You don't have enough to pay that much. You currently have **${formatMoney(
-				author?.wallet ?? Default.Wallet,
-			)}**`,
-		});
+		throw new UserError(
+			{ identifer: Identifiers.ArgumentIntegerTooLarge },
+			`You don't have enough to pay that much. You currently have **${formatMoney(author.wallet)}**`,
+		);
 	const tax = Math.round(amount * ((bot?.tax ?? Default.Tax) / 100));
 	const afterTax = amount - tax;
 	await cobalt.econ.removeFromWallet(interaction.user.id, amount);
@@ -68,17 +72,17 @@ export async function balance(cobalt: CobaltClient, interaction: CommandInteract
 export async function daily(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
+	if (!user) throw new Error('Missing user database entry');
 	const date = Date.now();
 	const cooldown = date + days(1);
 	// TODO(Isidro): fix the is doodoo code
-	if (!isNaN(user?.daily!) && user!.daily! > date) {
-		return interaction.reply({
-			content: `You still have **${prettyMilliseconds(
-				user!.daily! - Date.now(),
-			)}** left before you can claim your daily!`,
-		});
+	if (!isNaN(user.daily!) && user.daily! > date) {
+		throw new UserError(
+			{ identifer: Identifiers.PreconditionCooldown },
+			`You still have **${prettyMilliseconds(user.daily! - Date.now())}** left before you can claim your daily!`,
+		);
 	}
-	if (member?.id === interaction.user.id) {
+	if (member.id === interaction.user.id) {
 		const dailyAmount = Math.floor(250 + Math.random() * 150);
 		await cobalt.db.updateUser(interaction.user.id, { daily: cooldown });
 		await cobalt.econ.addToWallet(member.id, dailyAmount);
@@ -98,15 +102,14 @@ export async function daily(cobalt: CobaltClient, interaction: CommandInteractio
 export async function weekly(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
+	if (!user) throw new Error('Missing user database entry');
 	const date = Date.now();
 	const cooldown = date + days(7);
-	if (!isNaN(user!.weekly!) && user!.weekly! > date) {
-		return interaction.reply({
-			content: `You still have **${prettyMilliseconds(
-				user!.weekly! - Date.now(),
-			)}** left before you can claim your weekly!`,
-		});
-	}
+	if (!isNaN(user.weekly!) && user.weekly! > date)
+		throw new UserError(
+			{ identifer: Identifiers.PreconditionCooldown },
+			`You still have **${prettyMilliseconds(user.weekly! - Date.now())}** left before you can claim your weekly!`,
+		);
 	if (member?.id === interaction.user.id) {
 		const weeklyAmount = Math.floor(750 + Math.random() * 250);
 		await cobalt.db.updateUser(interaction.user.id, { weekly: cooldown });
@@ -127,15 +130,14 @@ export async function weekly(cobalt: CobaltClient, interaction: CommandInteracti
 export async function monthly(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
+	if (!user) throw new Error('Missing user database entry');
 	const date = Date.now();
 	const cooldown = date + months(1);
-	if (!isNaN(user!.monthly!) && user!.monthly! > date) {
-		return interaction.reply({
-			content: `You still have **${prettyMilliseconds(
-				user!.monthly! - Date.now(),
-			)}** left before you can claim your monthly!`,
-		});
-	}
+	if (!isNaN(user.monthly!) && user.monthly! > date)
+		throw new UserError(
+			{ identifer: Identifiers.PreconditionCooldown },
+			`You still have **${prettyMilliseconds(user.monthly! - Date.now())}** left before you can claim your monthly!`,
+		);
 	if (member?.id === interaction.user.id) {
 		const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
 		await cobalt.db.updateUser(interaction.user.id, { monthly: cooldown });

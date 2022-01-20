@@ -4,6 +4,7 @@ import { CobaltClient } from '#lib/cobaltClient';
 import { formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
 import { days } from '#utils/common';
+import { Identifiers, UserError } from '#lib/errors';
 
 export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
@@ -24,18 +25,20 @@ export async function rank(cobalt: CobaltClient, interaction: CommandInteraction
 export async function reputation(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const member = interaction.options.getUser('user', true);
 	const author = await cobalt.db.getUser(interaction.user.id);
+	if (!author) throw new Error('Missing author database entry');
 	const user = await cobalt.db.getUser(member.id);
 	if (member.id === interaction.user.id)
-		return interaction.reply({ content: "Can't give youself a reputation point!" });
+		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't give youself a reputation point!");
 	const date = Date.now();
 	const cooldown = date + days(1);
 	// TODO(Isidro): fix this
-	if (!isNaN(author!.repTime!) && author!.repTime! > date) {
-		return interaction.reply({
-			content: `You still have **${prettyMilliseconds(
-				author!.repTime! - Date.now(),
+	if (!isNaN(author.repTime!) && author.repTime! > date) {
+		throw new UserError(
+			{ identifer: Identifiers.PreconditionCooldown },
+			`You still have **${prettyMilliseconds(
+				author.repTime! - Date.now(),
 			)}** left before you can give someone a reputation point!`,
-		});
+		);
 	}
 	await cobalt.db.updateUser(interaction.user.id, { repTime: cooldown });
 	await cobalt.db.updateUser(member.id, { rep: user!.rep + 1 });

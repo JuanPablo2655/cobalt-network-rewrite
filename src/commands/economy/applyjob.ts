@@ -27,7 +27,11 @@ abstract class ApplyJobCommand extends GenericCommand {
 				}listjobs\``,
 			);
 		const job = jobs.find(j => j.id === args[0].toLowerCase());
-		if (!job) return message.reply({ content: 'Please pick a valid job with a valid job id to apply for.' });
+		if (!job)
+			throw new UserError(
+				{ identifer: Identifiers.PreconditionMissingData },
+				'Please pick a valid job with a valid job id to apply for',
+			);
 		if (user?.job !== null)
 			throw new UserError(
 				{ identifer: Identifiers.PreconditionDataExists },

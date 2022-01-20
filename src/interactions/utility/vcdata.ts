@@ -20,6 +20,7 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 		const userData = await this.cobalt.db.getUser(user.id);
 		if (option === 'local') {
 			if (!memberData?.vcHours) return interaction.editReply({ content: "You haven't joined VC in this server!" });
+			// TODO(Isidro): condense reduce and sort into one loop
 			const sum = memberData.vcHours.reduce((a, b) => a + b);
 			const average = sum / memberData.vcHours.length;
 			const sorted = memberData.vcHours.sort((a, b) => b - a);
@@ -38,6 +39,7 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 		}
 		if (option === 'global') {
 			if (!userData?.vcHours) return interaction.editReply({ content: "You haven't joined VC once!" });
+			// TODO(Isidro): condense reduce and sort into one loop
 			const sum = userData.vcHours.reduce((a, b) => a + b);
 			const average = sum / userData.vcHours.length;
 			const sorted = userData.vcHours.sort((a, b) => b - a);
