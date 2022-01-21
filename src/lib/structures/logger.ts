@@ -1,4 +1,4 @@
-import pino from 'pino';
+import pino, { Logger } from 'pino';
 // @ts-expect-error
 import pinoElastic from 'pino-elasticsearch';
 import ecsFormat from '@elastic/ecs-pino-format';
@@ -18,7 +18,7 @@ const streamToElastic = pinoElastic({
 	'es-version': 7,
 });
 
-export const logger = pino(
+export const logger: Logger = pino(
 	{ level: 'trace', ...ecsFormat(), name: process.env.LOGGER_NAME },
 	pinoMultistream.multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
 );
