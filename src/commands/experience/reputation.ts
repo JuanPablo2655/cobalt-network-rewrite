@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember } from '#utils/util';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class ReputationCommand extends GenericCommand {
 	constructor() {
@@ -16,20 +17,22 @@ abstract class ReputationCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await findMember(this.cobalt, message, args);
-		if (!member) return message.reply({ content: 'Please pick a valid member' });
+		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		const author = await this.cobalt.db.getUser(message.author.id);
-		if (!author) return message.reply({ content: 'An error occured' });
+		if (!author) throw new Error('Missing author database entry');
 		const user = await this.cobalt.db.getUser(member.id);
-		if (!user) return message.reply({ content: 'An error occured' });
-		if (member.id === message.author.id) return message.reply({ content: "Can't give youself a reputation point!" });
+		if (!user) throw new Error('Missing user database entry');
+		if (member.id === message.author.id)
+			throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't give youself a reputation point!");
 		const date = Date.now();
 		const cooldown = date + 86400000;
 		if (!isNaN(author.repTime!) && author.repTime! > date) {
-			return message.reply({
-				content: `You still have **${prettyMilliseconds(
+			throw new UserError(
+				{ identifer: Identifiers.PreconditionCooldown },
+				`You still have **${prettyMilliseconds(
 					author.repTime! - Date.now(),
 				)}** left before you can give someone a reputation point!`,
-			});
+			);
 		}
 		await addCD();
 		await this.cobalt.db.updateUser(message.author.id, { repTime: cooldown });

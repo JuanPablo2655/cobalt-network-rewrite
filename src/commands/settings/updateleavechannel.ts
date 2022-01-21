@@ -1,6 +1,7 @@
 import { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findChannel } from '#utils/util';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class UpdateLeaveChannelCommand extends GenericCommand {
 	constructor() {
@@ -19,7 +20,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 		const [option, action, ...leaveMessage] = args;
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
+		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		switch (option) {
 			case 'toggle': {
@@ -37,8 +38,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			}
 			case 'channel': {
 				const channel = await findChannel(message, action);
-				if (!channel)
-					return message.reply({ content: "Didn't find the text channel. Please try again with a valid channel" });
+				if (!channel) throw new UserError({ identifer: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
 				await this.cobalt.db.updateGuild(guildId, {
 					leaveMessage: {
 						message: guild.leaveMessage?.message ?? null,
@@ -50,9 +50,10 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			}
 			case 'message': {
 				if (!action)
-					return message.reply({
-						content: `Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setleavechannel message edit <leave message>\``,
-					});
+					throw new UserError(
+						{ identifer: Identifiers.ArgsMissing },
+						`Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setleavechannel message edit <leave message>\``,
+					);
 				if (action === 'edit') {
 					await this.cobalt.db.updateGuild(guildId, {
 						leaveMessage: {
@@ -78,7 +79,10 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 				break;
 			}
 			default: {
-				return message.reply({ content: 'Please choose between `toggle, channel, or message`' });
+				throw new UserError(
+					{ identifer: Identifiers.ArgsMissing },
+					'Please choose between `toggle, channel, or message`',
+				);
 			}
 		}
 	}

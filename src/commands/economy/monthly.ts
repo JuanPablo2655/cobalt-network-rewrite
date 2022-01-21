@@ -3,6 +3,7 @@ import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { addMulti, findMember, formatMoney } from '#utils/util';
 import { months } from '#utils/common';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class MonthlyCommand extends GenericCommand {
 	constructor() {
@@ -15,18 +16,16 @@ abstract class MonthlyCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
-		if (!member) return message.reply({ content: 'An error occured' });
+		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Member missing');
 		const user = await this.cobalt.db.getUser(member.id);
-		if (!user) return message.reply({ content: 'An error occured' });
+		if (!user) throw new Error('Missing user database entry');
 		const date = Date.now();
 		const cooldown = date + months(1);
-		if (!isNaN(user.monthly!) && user.monthly! > date) {
-			return message.reply({
-				content: `You still have **${prettyMilliseconds(
-					user.monthly! - Date.now(),
-				)}** left before you can claim your monthly!`,
-			});
-		}
+		if (!isNaN(user.monthly!) && user.monthly! > date)
+			throw new UserError(
+				{ identifer: Identifiers.PreconditionCooldown },
+				`You still have **${prettyMilliseconds(user.monthly! - Date.now())}** left before you can claim your monthly!`,
+			);
 		await addCD();
 		if (member?.id === message.author.id) {
 			const monthlyAmount = Math.floor(3500 + Math.random() * 1500);

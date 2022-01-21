@@ -1,11 +1,12 @@
 import { CommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/cobaltClient';
+import { UserError, Identifiers } from '#lib/errors';
 
 export async function channel(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const channel = interaction.options.getChannel('channel', true);
-	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
+	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);
-	if (!guild) return;
+	if (!guild) throw new Error('Missing guild database entry');
 	await cobalt.db.updateGuild(interaction.guild.id, {
 		welcomeMessage: {
 			message: guild.welcomeMessage?.message ?? null,
@@ -18,9 +19,9 @@ export async function channel(cobalt: CobaltClient, interaction: CommandInteract
 
 export async function message(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const message = interaction.options.getString('message', true);
-	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
+	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);
-	if (!guild) return;
+	if (!guild) throw new Error('Missing guild database entry');
 	await cobalt.db.updateGuild(interaction.guild.id, {
 		welcomeMessage: {
 			message: message,
@@ -33,11 +34,11 @@ export async function message(cobalt: CobaltClient, interaction: CommandInteract
 
 export async function toggle(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const option = interaction.options.getBoolean('toggle', true);
-	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
+	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);
-	if (!guild) return;
+	if (!guild) throw new Error('Missing guild database entry');
 	if (guild.welcomeMessage?.enabled === option)
-		return interaction.reply({ content: `Already ${option}`, ephemeral: true });
+		throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `Already ${option}`);
 	await cobalt.db.updateGuild(interaction.guild.id, {
 		welcomeMessage: {
 			message: guild.welcomeMessage?.message ?? null,

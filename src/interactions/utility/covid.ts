@@ -4,6 +4,7 @@ import { InteractionCommand } from '#lib/structures/commands';
 import { CovidAll, covidCountry, covidState } from '#lib/typings';
 import { formatNumber } from '#utils/util';
 import { covidCommand } from './options';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class CovidInteractionCommand extends InteractionCommand {
 	constructor() {
@@ -57,6 +58,8 @@ abstract class CovidInteractionCommand extends InteractionCommand {
 		const name = interaction.options.getString('state', true);
 		const state = await fetch(`https://disease.sh/v3/covid-19/states/${name}`);
 		const res = (await state.json()) as covidState;
+		if (res.message === "State not found or doesn't have any cases")
+			throw new UserError({ identifer: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
 		const covidEmbed = new MessageEmbed()
 			.setTitle(`COVID-19: ${res.state}`)
 			.setDescription(

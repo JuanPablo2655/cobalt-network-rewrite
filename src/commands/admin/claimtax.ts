@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/util';
 import { hours } from '#utils/common';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class ClaimTaxCommand extends GenericCommand {
 	constructor() {
@@ -16,20 +17,22 @@ abstract class ClaimTaxCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
-		if (!bot) return message.channel.send({ content: 'An error has occured' });
+		if (!bot) throw new Error('Missing user bot');
 		let isDirector = false;
 		bot.directors?.forEach(director => {
 			if (director === message.author.id) return (isDirector = true);
 		});
-		if (!isDirector) return message.channel.send({ content: 'not a director!' });
+		if (!isDirector) throw new UserError({ identifer: Identifiers.PreconditionUserPermissions }, 'Not a director');
 		const amount = Number(args[0]);
-		if (!args[0]) return message.reply({ content: 'I need to update the tax rate, please input a number.' });
-		if (isNaN(amount)) return message.reply({ content: 'Please I need a valid number' });
+		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing integer');
+		if (isNaN(amount)) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		if (bot.bank < amount)
-			return message.reply({
-				content: `I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
-			});
-		if (amount > 1000) return message.reply({ content: "Can't claim more than **₡1,000**" });
+			throw new UserError(
+				{ identifer: Identifiers.ArgumentIntegerError },
+				`I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
+			);
+		if (amount > 1000)
+			throw new UserError({ identifer: Identifiers.ArgumentNumberTooLarge }, "Can't claim more than **₡1,000**");
 		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;

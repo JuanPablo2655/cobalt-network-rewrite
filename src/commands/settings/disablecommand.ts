@@ -1,5 +1,6 @@
 import { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class DisableCommandCommand extends GenericCommand {
 	constructor() {
@@ -13,19 +14,25 @@ abstract class DisableCommandCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		// TODO(Isidro): put this into a constant file
 		const saveCommands = ['help', 'enablecommand', 'disablecommand'];
 		const saveCategories = ['dev', 'settings'];
-		if (!args[0]) return message.reply({ content: 'I have to disable a command.' });
-		let arg = args[0].toLowerCase();
+		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing command');
+		const arg = args[0].toLowerCase();
 		const command = this.cobalt.commands.get(arg);
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
-		if (!command) return message.reply({ content: 'Invalid command' });
-		if (saveCommands.includes(command.name)) return message.reply({ content: "Can't disable this command" });
+		if (!guild) throw new Error('Missing guid database entry');
+		if (!command) throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid command');
+		if (saveCommands.includes(command.name))
+			throw new UserError({ identifer: Identifiers.CommandDisabled }, `Can't disable \`${command}\``);
 		if (saveCategories.includes(command?.category))
-			return message.reply({ content: `Can't disable commands in ${command?.category}` });
-		if (guild.disabledCommands?.includes(arg)) return message.reply({ content: 'Already disabled.' });
+			throw new UserError(
+				{ identifer: Identifiers.CategoryDisabled },
+				`Can't disabled command in \`${command.category}\` category`,
+			);
+		if (guild.disabledCommands?.includes(arg))
+			throw new UserError({ identifer: Identifiers.CommandDisabled }, 'Command already disabled');
 		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			disabledCommands: [...(guild.disabledCommands ?? []), command.name],

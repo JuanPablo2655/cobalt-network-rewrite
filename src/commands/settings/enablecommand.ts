@@ -1,5 +1,6 @@
 import { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class EnableCommandCommand extends GenericCommand {
 	constructor() {
@@ -13,14 +14,15 @@ abstract class EnableCommandCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		if (!args[0]) return message.reply({ content: 'I have to enable a command.' });
+		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing arg');
 		let arg = args[0].toLowerCase();
 		const command = this.cobalt.commands.get(arg);
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
-		if (!guild) return message.reply({ content: 'An error has occured. Please report it the developer' });
-		if (!command) return message.reply({ content: 'Invalid command' });
-		if (!guild.disabledCommands?.includes(arg)) return message.reply({ content: 'Already enabled' });
+		if (!guild) throw new Error('Missing guild database entry');
+		if (!command) throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid command');
+		if (!guild.disabledCommands?.includes(arg))
+			throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Commmand already enabled');
 		await addCD();
 		await this.cobalt.db.updateGuild(guildId, {
 			disabledCommands: guild.disabledCommands.filter(c => c !== command.name),

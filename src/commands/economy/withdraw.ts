@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/util';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class WithdrawCommand extends GenericCommand {
 	constructor() {
@@ -15,13 +16,22 @@ abstract class WithdrawCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const profile = await this.cobalt.db.getUser(message.author.id);
-		if (!profile) return message.channel.send({ content: 'Please earn some money first' });
-		if (!args[0]) return message.channel.send({ content: 'How much money' });
+		if (!profile) throw new Error('missing user database entry');
+		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'How much money');
 		let money = Number(args[0]);
-		if (isNaN(money) && args[0] !== 'all') return message.channel.send({ content: 'Please input a valid number' });
-		if (profile.bank - money <= 0) return message.channel.send({ content: "You don't have that much money deposited" });
+		if (isNaN(money) && args[0] !== 'all')
+			throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Invalid integer');
+		if (profile.bank - money <= 0)
+			throw new UserError(
+				{ identifer: Identifiers.ArgumentIntegerTooLarge },
+				"You don't have that much money deposited",
+			);
 		if (args[0] === 'all') money = profile.bank;
-		if (money <= 0) return message.channel.send({ content: "You can't withdraw money you don't have" });
+		if (money <= 0)
+			throw new UserError(
+				{ identifer: Identifiers.ArgumentIntegerTooLarge },
+				"You can't withdraw money you don't have",
+			);
 		await addCD();
 		await this.cobalt.econ.removeFrombank(message.author.id, money);
 		await this.cobalt.econ.addToWallet(message.author.id, money);
