@@ -3,19 +3,39 @@ import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
 import { logger } from '#lib/structures';
 
+/**
+ * Format a number
+ * @param n The number to format
+ */
 export function formatNumber(n: string | number): string | null {
 	const number = Number.parseFloat(String(n)).toLocaleString('en-US');
 	return number !== 'NaN' ? number : null;
 }
 
+/**
+ * Format a number to currency format
+ * @param n The number to format
+ */
 export function formatMoney(n: string | number): string | null {
 	return formatNumber(n) !== null ? `₡ ${formatNumber(n)}` : null;
 }
 
+/**
+ * Capitalize a sentence
+ * @param str The string to capitalize
+ */
 export function toCapitalize(str: string) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+/**
+ * Get the GuildMember from message content
+ * @param client Cobalt client
+ * @param message Message in which to find the member
+ * @param args Arguments provided in the command
+ * @param options Option to include the author an the argument index
+ * @returns Returns GuildMember
+ */
 export async function findMember(
 	client: CobaltClient,
 	message: Partial<DJS.Message>,
@@ -64,6 +84,12 @@ export async function findMember(
 	}
 }
 
+/**
+ * Get the role form message content
+ * @param message The message in which to find the role
+ * @param arg Arguments provided in the command
+ * @returns Returns Role
+ */
 export async function findRole(message: DJS.Message, arg: string): Promise<DJS.Role | null> {
 	if (!(message.guild instanceof DJS.Guild)) return null;
 	return (
@@ -75,6 +101,12 @@ export async function findRole(message: DJS.Message, arg: string): Promise<DJS.R
 	);
 }
 
+/**
+ * Get the channel from message content
+ * @param message The message in which to find the channel
+ * @param arg Arguments provided in the command
+ * @returns Returns TextChannel
+ */
 export async function findChannel(message: DJS.Message, arg: string): Promise<DJS.TextChannel | null> {
 	if (!(message.guild instanceof DJS.Guild)) return null;
 	return (message.mentions.channels.first() ||
@@ -83,10 +115,20 @@ export async function findChannel(message: DJS.Message, arg: string): Promise<DJ
 		message.guild.channels.cache.find(c => (c as DJS.TextChannel).name.startsWith(arg))) as DJS.TextChannel;
 }
 
+/**
+ * Trim a string to a certain length
+ * @param str The string to trim
+ * @param max The max length of the string
+ */
 export function trim(str: string, max: number) {
 	return str.length > max ? `${str.slice(0, max - 3)}...` : str;
 }
 
+/**
+ * Get the difference between the old and new content
+ * @param oldString The old content
+ * @param newString The new content
+ */
 export function getDiff(oldString: string, newString: string): string {
 	const setStyle = (string: string, style: string) => `${style}${string}${style}`;
 	oldString.replace(/\*|~~/g, '');
@@ -105,12 +147,23 @@ export function getDiff(oldString: string, newString: string): string {
 	return getSmallestString(diffs);
 }
 
+/**
+ * Get the image url from a message
+ * @param message The Message instance to get the image url from
+ */
+// TODO(Isidro): refactor to return one image not an array
 export function getImage(message: DJS.Message) {
 	return message.attachments
 		.filter(({ proxyURL }) => /\.(gif|jpe?g|png|webp)$/i.test(proxyURL))
 		.map(({ proxyURL }) => proxyURL);
 }
 
+/**
+ * Calculate a muliplier for a user
+ * @param user The user from to calculate the multiplier
+ * @param client Cobalt client
+ * @returns Returns a whole number ex. 6%
+ */
 export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<number> {
 	let multi: number = 0;
 	const member = client.guilds.cache.get('322505254098698240')?.members.cache.get(user.id);
@@ -130,6 +183,12 @@ export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<n
 	return multi;
 }
 
+/**
+ * Add a multiplier to an amount
+ * @param amount The amount to add the multiplier to
+ * @param multi The multiplier
+ * @returns Amount plus multi
+ */
 export function addMulti(amount: number, multi: number) {
 	return Math.round(amount + amount * (multi / 100));
 }
