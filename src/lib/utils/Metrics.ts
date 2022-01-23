@@ -47,24 +47,42 @@ export default class Metrics {
 		this.app = express();
 	}
 
-	messageInc(guildId?: Snowflake) {
-		if (guildId) return this.messageGuildCounter.labels(guildId).inc;
+	/**
+	 * Increment message count
+	 * @param guildId The guild Id
+	 */
+	messageInc(guildId?: Snowflake): void {
+		if (guildId) return this.messageGuildCounter.labels(guildId).inc();
 		return this.messageCounter.inc();
 	}
 
+	/**
+	 * Increment the event count
+	 * @param event The event
+	 */
 	eventInc(event: keyof ClientEvents): void {
 		return this.eventCounter.labels(event).inc();
 	}
 
+	/**
+	 * Increment time spent in vc
+	 * @param elapsed The time spent in vc
+	 * @param guildId The guild id
+	 */
 	voiceInc(elapsed: number, guildId?: Snowflake): void {
 		if (guildId) return this.VoiceGuildTimeCounter.labels(guildId).inc(elapsed);
 		return this.voiceTimeCounter.inc(elapsed);
 	}
 
+	/**
+	 * Increment the command usage
+	 * @param command The command name
+	 */
 	commandInc(command: string): void {
 		return this.commandsExecuted.labels(command).inc();
 	}
 
+	/** Start the metric server */
 	start() {
 		const ping = () => {
 			this.latency.labels('Websocket').set(this.cobalt.ws.ping);
