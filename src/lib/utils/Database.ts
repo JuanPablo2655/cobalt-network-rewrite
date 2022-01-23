@@ -35,6 +35,10 @@ export default class Database {
 		});
 	}
 
+	/**
+	 * Add a guild entry to the database
+	 * @param guildId The guild Id
+	 */
 	async addGuild(guildId: string | undefined): Promise<IGuild | undefined> {
 		try {
 			const guild: IGuild = new guildModel({ _id: guildId });
@@ -47,6 +51,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Remove a guild entry from the database
+	 * @param guildId The guild Id
+	 */
 	async removeGuild(guildId: string): Promise<void> {
 		try {
 			await guildModel.findOneAndDelete({ _id: guildId });
@@ -57,6 +65,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Get a guild entry from the database
+	 * @param guildId The guild Id
+	 */
 	async getGuild(guildId: string | undefined): Promise<IGuild | undefined> {
 		try {
 			let guild, redis;
@@ -70,6 +82,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Update a guild entry from the database
+	 * @param guildId The guild Id
+	 */
 	async updateGuild(guildId: string | undefined, data: Partial<GuildData>): Promise<void> {
 		try {
 			const guild = await this.getGuild(guildId);
@@ -82,6 +98,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Get the bot entry for the database
+	 * @param botId The bot Id
+	 */
 	async getBot(botId: string | undefined): Promise<IBot | undefined> {
 		try {
 			let bot, redis;
@@ -95,6 +115,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Update the bot entry from the database
+	 * @param botId The bot Id
+	 */
 	async updateBot(botId: string | undefined, data: Partial<BotData>): Promise<void> {
 		try {
 			const bot = await botModel.findOneAndUpdate({ _id: botId }, data, { new: true });
@@ -105,6 +129,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Add a user entry to the database
+	 * @param userId The user Id
+	 */
 	async addUser(userId: string | undefined): Promise<IUser | undefined> {
 		try {
 			const user: IUser = new userModel({ _id: userId });
@@ -117,6 +145,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Remove a user entry from the database
+	 * @param userId The user Id
+	 */
 	async removeUser(userId: string): Promise<void> {
 		try {
 			await userModel.findOneAndDelete({ _id: userId });
@@ -127,6 +159,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Get a user entry from the database
+	 * @param userId The user Id
+	 */
 	async getUser(userId: string | undefined): Promise<IUser | undefined> {
 		try {
 			let user, redis;
@@ -140,6 +176,10 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Update a user entry from the database
+	 * @param userId The user Id
+	 */
 	async updateUser(userId: string | undefined, data: Partial<UserData>): Promise<void> {
 		try {
 			const user = await this.getUser(userId);
@@ -152,6 +192,11 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Add a guild member entry to the database
+	 * @param memberId The member Id
+	 * @param guildId The guild Id
+	 */
 	async addMember(memberId: string | undefined, guildId: string | undefined): Promise<IMember | undefined> {
 		try {
 			const member: IMember = new memberModel({ memberId, guildId });
@@ -164,6 +209,11 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Remove a guild member entry from the database
+	 * @param memberId The member Id
+	 * @param guildId The guild Id
+	 */
 	async removeMember(memberId: string | undefined, guildId: string | undefined): Promise<void> {
 		try {
 			await memberModel.findOneAndDelete({ memberId, guildId });
@@ -174,6 +224,11 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Get a guild member entry from the database
+	 * @param memberId The member Id
+	 * @param guildId The guild Id
+	 */
 	async getMember(memberId: string | undefined, guildId: string | undefined): Promise<IMember | undefined> {
 		try {
 			let member, redis;
@@ -189,6 +244,11 @@ export default class Database {
 		}
 	}
 
+	/**
+	 * Update a guild member entry from the database
+	 * @param memberId The member Id
+	 * @param guildId The guild Id
+	 */
 	async updateMember(
 		memberId: string | undefined,
 		guildId: string | undefined,
