@@ -11,6 +11,11 @@ export default class Experience {
 		this.cooldowns = new Set();
 	}
 
+	/**
+	 * Add xp to the user
+	 * @param userId The user Id
+	 * @param amount Amount of xp to add
+	 */
 	async addXp(userId: string, amount: number) {
 		try {
 			if (isNaN(amount)) throw new TypeError('Xp must be a number.');
@@ -27,6 +32,12 @@ export default class Experience {
 		}
 	}
 
+	/**
+	 * Remove xp from the user
+	 * @param userId The user Id
+	 * @param amount Amount of xp to remove
+	 * @param levelUp If levelUp is true then don't remove from totalXp
+	 */
 	async removeXp(userId: string, amount: number, levelUp: boolean) {
 		try {
 			if (isNaN(amount)) throw new TypeError('Xp must be a number.');
@@ -45,6 +56,11 @@ export default class Experience {
 		}
 	}
 
+	/**
+	 * Add levels the user
+	 * @param userId The user Id
+	 * @param amount Amount of levels to add
+	 */
 	async addLevel(userId: string, amount: number) {
 		try {
 			if (isNaN(amount)) throw new TypeError('Level must be a number.');
@@ -58,6 +74,11 @@ export default class Experience {
 		}
 	}
 
+	/**
+	 * Remove levels from the user
+	 * @param userId The user Id
+	 * @param amount Amount of levels to remove
+	 */
 	async removeLevel(userId: string, amount: number) {
 		try {
 			if (isNaN(amount)) throw new TypeError('Level must be a number.');
@@ -71,10 +92,19 @@ export default class Experience {
 		}
 	}
 
+	/**
+	 * Check how much xp the user needs to level up
+	 * @param level The amount of levels the user has
+	 */
 	nextLevel(level: number) {
 		return 5 * Math.pow(level, 2) + 50 * level + 100;
 	}
 
+	/**
+	 * Manage the users xp
+	 * @param message The message
+	 * @returns If the use has leveled up or not
+	 */
 	async manageXp(message: Message) {
 		try {
 			const user = await this.cobalt.db.getUser(message.author.id);
