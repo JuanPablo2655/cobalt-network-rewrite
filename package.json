@@ -55,7 +55,7 @@
     "pino-multi-stream": "^6.0.0",
     "pretty-ms": "^7.0.1",
     "prom-client": "^14.0.1",
-    "utf-8-validate": "^5.0.7",
+    "utf-8-validate": "^5.0.8",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
