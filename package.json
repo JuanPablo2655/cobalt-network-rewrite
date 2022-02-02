@@ -47,7 +47,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "glob": "^7.1.7",
-    "ioredis": "^4.28.2",
+    "ioredis": "^4.28.3",
     "mongoose": "^6.1.7",
     "node-fetch": "2.6.6",
     "pino": "^7.6.4",
