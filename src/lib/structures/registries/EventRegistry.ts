@@ -13,7 +13,7 @@ const registerEvent: Function = (cobalt: CobaltClient) => {
 				const event: Event = new File();
 				event.cobalt = cobalt;
 				cobalt.events.set(event.name, event);
-				cobalt[event.type ? 'once' : 'on'](event.name, (...args: any[]) => event.run(...args));
+				cobalt[event.once ? 'once' : 'on'](event.name, (...args: any[]) => event.run(...args));
 				logger.info({ event: { name: event.name } }, `Registering event: ${event.name}`);
 			}
 		}

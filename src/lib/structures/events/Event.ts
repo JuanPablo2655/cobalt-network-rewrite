@@ -8,11 +8,10 @@ export abstract class Event {
 	 */
 	public name: keyof ClientEvents;
 
-	// TODO(Isidro): rename type to once
 	/**
 	 * option to make it run once
 	 */
-	public type: boolean;
+	public once: boolean;
 
 	public abstract cobalt: CobaltClient;
 
@@ -22,7 +21,7 @@ export abstract class Event {
 	 */
 	constructor(options: EventOptions) {
 		this.name = options.name;
-		this.type = options.once ?? false;
+		this.once = options.once ?? false;
 	}
 
 	/**
