@@ -1,4 +1,4 @@
-import { Client, Collection, Intents, Snowflake } from 'discord.js';
+import { Client, Collection, Snowflake } from 'discord.js';
 import Redis from 'ioredis';
 import * as dotenv from 'dotenv';
 import { CommandRegistry, EventRegistry, InteractionRegistry, logger } from './structures';
@@ -8,67 +8,43 @@ import Experience from './utils/Experience';
 import Economy from './utils/Economy';
 import Metrics from './utils/Metrics';
 import { GenericCommandOptions, InteractionCommandOptions } from './typings/CommandOptions';
+import { CLIENT_OPTIONS } from '#root/config';
 dotenv.config();
 
 export class CobaltClient extends Client {
+	public dev = process.env.NODE_ENV !== 'production';
 	public commands = new Collection<string, GenericCommandOptions>();
 	public cooldowns = new Collection<string, Collection<string, number>>();
 	public events = new Collection<string, EventOptions>();
 	public interactions = new Collection<string, InteractionCommandOptions>();
 	public voiceTime = new Map<Snowflake, number>();
-	public devMode: boolean;
-	public testEvents: boolean;
-	public disableXp: boolean;
-	public db: Database;
-	public exp: Experience;
-	public econ: Economy;
-	public redis: Redis.Redis;
-	public metrics: Metrics;
+	public testEvents = process.env.TESTEVENTS === 'true';
+	public disableXp = process.env.DISABLEXP === 'true';
+	public db = new Database(this, process.env.MONGOURL || 'mongodb://localhost:27017/cobalt');
+	public exp = new Experience(this);
+	public econ = new Economy(this);
+	public redis = new Redis(process.env.REDIS ?? '6379');
+	public metrics = new Metrics(this);
 
 	constructor() {
-		super({
-			intents: [
-				Intents.FLAGS.GUILDS,
-				Intents.FLAGS.GUILD_MEMBERS,
-				Intents.FLAGS.GUILD_BANS,
-				Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-				Intents.FLAGS.GUILD_INTEGRATIONS,
-				Intents.FLAGS.GUILD_WEBHOOKS,
-				Intents.FLAGS.GUILD_VOICE_STATES,
-				Intents.FLAGS.GUILD_MESSAGES,
-				Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-				Intents.FLAGS.DIRECT_MESSAGES,
-				Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-			],
-			partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'USER', 'GUILD_MEMBER'],
-			allowedMentions: { repliedUser: false },
-		});
-
-		this.redis = new Redis(process.env.REDIS || '6379');
-		this.devMode = process.env.DEVMODE === 'true' ? true : false;
-		this.testEvents = process.env.TESTEVENTS === 'true' ? true : false;
-		this.disableXp = process.env.DISABLEXP === 'true' ? true : false;
-		this.voiceTime = new Map();
-		this.db = new Database(this, process.env.MONGOURL || 'mongodb://localhost:27017/cobalt');
-		this.exp = new Experience(this);
-		this.econ = new Economy(this);
-		this.metrics = new Metrics(this);
+		super(CLIENT_OPTIONS);
 	}
 
-	public start() {
+	public async login(token?: string) {
 		CommandRegistry(this);
 		EventRegistry(this);
 		InteractionRegistry(this);
-		super.login(process.env.TOKEN);
+		const loginRespopnse = await super.login(token);
 		this.metrics.start();
+		return loginRespopnse;
 	}
 
-	public async close() {
+	public async destory() {
 		await this.redis.flushall();
 		this.metrics.server.close();
 		this.db.mongoose.close(false, () => {
 			logger.info('Mongoose connection successfully closed');
 		});
-		this.destroy();
+		return super.destroy();
 	}
 }
