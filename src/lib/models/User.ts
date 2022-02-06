@@ -3,29 +3,124 @@ import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
 
 export interface UserData {
+	/**
+	 * The user Id
+	 */
 	_id: Snowflake;
+
+	/**
+	 * The guilds the user is found in
+	 */
 	guilds?: string[] | null;
+
+	/**
+	 * The users job
+	 */
 	job?: string | null;
+
+	/**
+	 * The total social credit the user has
+	 */
 	socialCredit: number;
+
+	/**
+	 * The money the user has in their pockets
+	 */
 	wallet: number;
+
+	/**
+	 * The money the user has in their bank
+	 */
 	bank: number;
+
+	/**
+	 * How much space the user has in their bank account
+	 */
 	bankSpace: number;
+
+	/**
+	 * Total net worth
+	 */
 	netWorth: number;
+
+	/**
+	 * Bounty the user has
+	 */
 	bounty: number;
+
+	/**
+	 * Daily cooldown
+	 */
 	daily?: number | null;
+
+	/**
+	 * Weekly cooldown
+	 */
 	weekly?: number | null;
+
+	/**
+	 * Monthly cooldown
+	 */
 	monthly?: number | null;
+
+	/**
+	 * Reputation cooldown
+	 */
 	repTime?: number | null;
+
+	/**
+	 * A collection of time spent in vc in all guilds
+	 */
 	vcHours?: number[] | null;
+
+	/**
+	 * Items in the users inventory
+	 */
 	inventory: object;
+
+	/**
+	 * Active items
+	 */
 	activeItems?: string[] | null;
+
+	/**
+	 * XP the user currently has
+	 */
 	xp: number;
+
+	/**
+	 * The amount of levels the user has
+	 */
 	lvl: number;
+
+	/**
+	 * How much reputation the user has
+	 */
 	rep: number;
+
+	/**
+	 * Total XP gained
+	 */
 	totalXp: number;
+
+	/**
+	 * Games lost
+	 */
 	lost: number;
+
+	/**
+	 * Games won
+	 */
 	won: number;
+
+	/**
+	 * Total amount of times the user has died
+	 */
 	deaths: number;
+
+	/**
+	 * Total of commands the user has ran
+	 */
 	totalCommandsUsed: number;
 }
 

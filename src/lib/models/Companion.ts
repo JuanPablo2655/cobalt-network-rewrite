@@ -5,14 +5,49 @@ import { ClassOptions } from '../data/classes';
 import { RaceOptions } from '../data/races';
 
 export interface CompanionData {
+	/**
+	 * Owner's userId
+	 */
 	_id: Snowflake;
+
+	/**
+	 * Name the companion has
+	 */
 	name?: string | null;
+
+	/**
+	 * The companion's race
+	 */
 	race?: RaceOptions | null;
+
+	/**
+	 * The companion's gender
+	 */
 	gender?: string | null;
+
+	/**
+	 * The companion's class
+	 */
 	class?: ClassOptions | null;
+
+	/**
+	 * The level the companion has
+	 */
 	level: number;
+
+	/**
+	 * The amount of XP the companion has
+	 */
 	xp: number;
+
+	/**
+	 * The amount of health the companion has
+	 */
 	health: number;
+
+	/**
+	 * The amount of magicka the companion has
+	 */
 	magicka: number;
 }
 

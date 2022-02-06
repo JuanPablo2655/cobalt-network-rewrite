@@ -3,10 +3,29 @@ import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
 
 export interface BotData {
+	/**
+	 * Bot userId
+	 */
 	_id: Snowflake;
+
+	/**
+	 * The userId's of the directors
+	 */
 	directors?: Snowflake[] | null;
+
+	/**
+	 * Global tax rate
+	 */
 	tax: number;
+
+	/**
+	 * Where all the tax money is collected
+	 */
 	bank: number;
+
+	/**
+	 * Totoal commands executed by the users
+	 */
 	totalCommandsUsed: number;
 }
 

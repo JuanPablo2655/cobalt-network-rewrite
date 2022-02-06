@@ -2,45 +2,139 @@ import { Snowflake } from 'discord.js';
 import { Document, model, Schema } from 'mongoose';
 
 export interface GuildData {
+	/**
+	 * Guild Id
+	 */
 	_id: Snowflake;
+
+	/**
+	 * Guild prefix
+	 */
 	prefix: string;
+
+	/**
+	 * If the bot is verified or not
+	 */
 	verified: boolean;
+
+	/**
+	 * Words blacklisted from the guild
+	 */
 	blacklistedWords?: string[] | null;
+
+	/**
+	 * Commands disabled from the guild
+	 */
 	disabledCommands?: string[] | null;
+
+	/**
+	 * Categories disabled from the guild
+	 */
 	disabledCategories?: string[] | undefined | null;
+
+	/**
+	 * The mute role Id
+	 */
 	mutedRoleId?: string | null;
+
+	/**
+	 * The {@link LevelMessage} options
+	 */
 	levelMessage?: LevelMessage | null;
+
+	/**
+	 * The {@link WelcomeMessage} options
+	 */
 	welcomeMessage?: WelcomeMessage | null;
+
+	/**
+	 * The {@link LeaveMessage} options
+	 */
 	leaveMessage?: LeaveMessage | null;
+
+	/**
+	 * The {@link BanMessage} options
+	 */
 	banMessage?: BanMessage | null;
+
+	/**
+	 * The {@link LogChannel} options
+	 */
 	logChannel?: LogChannel | null;
 }
 
 export interface LevelMessage {
+	/**
+	 * The level up message
+	 */
 	message: string;
+
+	/**
+	 * Whether if the level up message is sent or not
+	 */
 	enabled: boolean;
 }
 
 export interface WelcomeMessage {
+	/**
+	 * The welcome message
+	 */
 	message: string | null;
+
+	/**
+	 * The channel Id
+	 */
 	channelId: Snowflake | null;
+
+	/**
+	 * Whether if the welcome message is sent or not
+	 */
 	enabled: boolean;
 }
 
 export interface LeaveMessage {
+	/**
+	 * The leave message
+	 */
 	message: string | null;
+
+	/**
+	 * The channel Id
+	 */
 	channelId: Snowflake | null;
+
+	/**
+	 * Whether if the leave message is sent or not
+	 */
 	enabled: boolean;
 }
 
 export interface BanMessage {
+	/**
+	 * The ban message
+	 */
 	message: string;
+
+	/**
+	 * Whether if the ban message is sent or not
+	 */
 	enabled: boolean;
 }
 
 export interface LogChannel {
+	/**
+	 * The channel Id
+	 */
 	channelId: Snowflake | null;
+
+	/**
+	 * Whether if the bot logs or not
+	 */
 	enabled: boolean;
+
+	/**
+	 * Events that are ignored
+	 */
 	disabledEvents: string[] | null;
 }
 

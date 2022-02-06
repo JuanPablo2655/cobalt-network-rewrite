@@ -10,6 +10,11 @@ export default class Currency {
 		this.cobalt = cobalt;
 	}
 
+	/**
+	 * Add money to a users wallet
+	 * @param userId The user Id
+	 * @param money Money to add
+	 */
 	async addToWallet(userId: string, money: number) {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
@@ -26,6 +31,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Remove money from a users wallet
+	 * @param userId The user Id
+	 * @param money Money to remove
+	 */
 	async removeFromWallet(userId: string, money: number) {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
@@ -42,6 +52,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Transfer money to user bank account
+	 * @param userId The user Id
+	 * @param money Money to add in bank account
+	 */
 	async addToBank(userId: string, money: number) {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
@@ -58,6 +73,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Withdraw money from user bank account
+	 * @param userId The user Id
+	 * @param money Money to remove from bank account
+	 */
 	async removeFrombank(userId: string, money: number) {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
@@ -74,6 +94,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Add bank space to bank account
+	 * @param userId The user Id
+	 * @param space Space to add in bank account
+	 */
 	async addBankSpace(userId: string, space: number) {
 		try {
 			if (isNaN(space)) throw new TypeError('Money must be a number.');
@@ -87,6 +112,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Remove bank space from bank account
+	 * @param userId The user Id
+	 * @param space Space to remove from bank account
+	 */
 	async removeBankSpace(userId: string, space: number) {
 		try {
 			if (isNaN(space)) throw new TypeError('Money must be a number.');
@@ -100,6 +130,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Add a bounty to a user
+	 * @param userId The user Id
+	 * @param amount Amount of bounty to add
+	 */
 	async addBounty(userId: string, amount: number) {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
@@ -113,6 +148,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Remove bounty from a user
+	 * @param userId The user Id
+	 * @param amount Amount of bounty to remove
+	 */
 	async removeBounty(userId: string, amount: number) {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
@@ -126,6 +166,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Update the users job occupation
+	 * @param userId The user Id
+	 * @param job the job Id
+	 */
 	async updateJob(userId: string, job: string | null) {
 		try {
 			if (!job && job !== null) throw new TypeError('Must supply a job id');
@@ -138,6 +183,10 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Kill a user
+	 * @param userId The user Id
+	 */
 	async killUser(userId: string) {
 		try {
 			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
@@ -156,6 +205,10 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Add bank space to user bank account based on their muiltiplyer
+	 * @param message The message
+	 */
 	async manageBankSpace(message: Message) {
 		try {
 			const multi = await calcMulti(message.author, this.cobalt);
@@ -168,6 +221,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Add money to bots bank account
+	 * @param botId The bot Id
+	 * @param amount Amount to add
+	 */
 	async addBotBank(botId: string, amount: number) {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
@@ -183,6 +241,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Remove money from the bots bank account
+	 * @param botId The bot Id
+	 * @param amount Amount to remove
+	 */
 	async removebotBank(botId: string, amount: number) {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
@@ -198,6 +261,11 @@ export default class Currency {
 		}
 	}
 
+	/**
+	 * Update the tax rate globally
+	 * @param botId The bot Id
+	 * @param tax The updated tax
+	 */
 	async updateTax(botId: string, tax: number) {
 		try {
 			if (isNaN(tax)) throw new TypeError('Money must be a number.');
