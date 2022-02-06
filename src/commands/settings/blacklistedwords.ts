@@ -30,16 +30,9 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 						{ identifer: Identifiers.PreconditionDataExists },
 						`\`${item}\` already exists in the list`,
 					);
-				// TODO(Isidro): refactor
-				if (blacklistWords === null || !blacklistWords) {
-					await this.cobalt.db.updateGuild(guildId, {
-						blacklistedWords: [item],
-					});
-				} else {
-					await this.cobalt.db.updateGuild(guildId, {
-						blacklistedWords: [...(guild.blacklistedWords ?? []), item],
-					});
-				}
+				await this.cobalt.db.updateGuild(guildId, {
+					blacklistedWords: [...(guild.blacklistedWords ?? []), item],
+				});
 				return message.channel.send({ content: `${item} was added to the list of blacklisted words` });
 			}
 			case 'remove': {
