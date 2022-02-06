@@ -5,7 +5,7 @@ import { Identifiers, UserError } from '#lib/errors';
 
 export async function reboot(cobalt: CobaltClient, interaction: CommandInteraction) {
 	await interaction.reply({ content: 'Shutting down.' });
-	cobalt.close();
+	await cobalt.destory();
 }
 
 export async function pay(cobalt: CobaltClient, interaction: CommandInteraction) {
