@@ -30,12 +30,12 @@ abstract class MessageDeleteEvent extends Event {
 			.setTimestamp()
 			.addField('Text Channel', `${message.channel}`);
 		if (message.content == '') {
-			logEmbed.setImage(getImage(message)[0]);
+			logEmbed.setImage(getImage(message)!);
 		} else if (message.attachments.size === 0) {
 			logEmbed.setDescription(`${message.content}`);
 		} else {
 			logEmbed.setDescription(`${message.content}`);
-			logEmbed.setImage(getImage(message)[0]);
+			logEmbed.setImage(getImage(message)!);
 		}
 		return void logChannel.send({ embeds: [logEmbed] });
 	}
