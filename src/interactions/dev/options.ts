@@ -1,25 +1,27 @@
+import { ApplicationCommandOptionType } from 'discord-api-types/v9';
+
 export const devCommand = {
 	name: 'dev',
 	description: 'dev only commands',
 	options: [
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'reboot',
 			description: 'Reboot the bot. Only works if using pm2 or anything else simillar.',
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'pay',
 			description: 'Pay someone tax money.',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user.',
 					required: true,
 				},
 				{
-					type: 4,
+					type: ApplicationCommandOptionType.Integer,
 					name: 'amount',
 					description: 'Amount of tax money.',
 					required: true,
@@ -27,22 +29,22 @@ export const devCommand = {
 			],
 		},
 		{
-			type: 2,
+			type: ApplicationCommandOptionType.SubcommandGroup,
 			name: 'update',
 			description: 'Update bot settings.',
 			options: [
 				{
-					type: 1,
+					type: ApplicationCommandOptionType.Subcommand,
 					name: 'directors',
 					description: 'Update the directors.',
 				},
 				{
-					type: 1,
+					type: ApplicationCommandOptionType.Subcommand,
 					name: 'tax',
 					description: 'Update the tax rate for all the users who use the bot.',
 					options: [
 						{
-							type: 10,
+							type: ApplicationCommandOptionType.Number,
 							name: 'tax',
 							description: 'Tax rate.',
 							required: true,

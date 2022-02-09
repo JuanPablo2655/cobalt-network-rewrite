@@ -1,19 +1,21 @@
+import { ApplicationCommandOptionType } from 'discord-api-types/v9';
+
 export const economyCommand = {
 	name: 'economy',
 	description: 'Economy commands.',
 	options: [
 		{
-			type: 2,
+			type: ApplicationCommandOptionType.SubcommandGroup,
 			name: 'bank',
 			description: 'Manage your bank account',
 			options: [
 				{
-					type: 1,
+					type: ApplicationCommandOptionType.Subcommand,
 					name: 'deposit',
 					description: 'Deposit money in you bank account.',
 					options: [
 						{
-							type: 4,
+							type: ApplicationCommandOptionType.Integer,
 							name: 'amount',
 							description: 'Amount of money.',
 							required: true,
@@ -26,7 +28,7 @@ export const economyCommand = {
 					description: 'Withdraw money from your bank account.',
 					options: [
 						{
-							type: 4,
+							type: ApplicationCommandOptionType.Integer,
 							name: 'amount',
 							description: 'Amount of money.',
 							required: true,
@@ -36,17 +38,17 @@ export const economyCommand = {
 			],
 		},
 		{
-			type: 2,
+			type: ApplicationCommandOptionType.SubcommandGroup,
 			name: 'job',
 			description: 'Manage your job.',
 			options: [
 				{
-					type: 1,
+					type: ApplicationCommandOptionType.Subcommand,
 					name: 'apply',
 					description: 'Apply to a job.',
 					options: [
 						{
-							type: 3,
+							type: ApplicationCommandOptionType.String,
 							name: 'job',
 							description: 'The job Id.',
 							required: true,
@@ -54,35 +56,35 @@ export const economyCommand = {
 					],
 				},
 				{
-					type: 1,
+					type: ApplicationCommandOptionType.Subcommand,
 					name: 'quit',
 					description: 'Quit your job.',
 				},
 				{
-					type: 1,
+					type: ApplicationCommandOptionType.Subcommand,
 					name: 'list',
 					description: 'Get a list of jobs you can apply for.',
 				},
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'work',
 			description: 'Work in your job.',
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'pay',
 			description: 'Pay someone some of your money with a tax cut.',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: "The user you're going to pay.",
 					required: true,
 				},
 				{
-					type: 4,
+					type: ApplicationCommandOptionType.Integer,
 					name: 'amount',
 					description: "The amount of money you're going to pay.",
 					required: true,
@@ -90,48 +92,48 @@ export const economyCommand = {
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'balance',
 			description: "Get you or someone else's balance.",
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The balance of the user.',
 				},
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'daily',
 			description: 'Claim your daily reward.',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user to reward your daily.',
 				},
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'weekly',
 			description: 'Claim your weekly reward.',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user to reward your weekly.',
 				},
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'monthly',
 			description: 'Claim your monthly reward.',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user to reward your monthly.',
 				},
