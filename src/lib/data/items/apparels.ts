@@ -1,6 +1,6 @@
 import { Item, ItemData, Market } from './items';
 
-declare enum ApparelType {
+declare const enum ApparelType {
 	Head = 0,
 	Breast = 1,
 	Gauntlets = 2,

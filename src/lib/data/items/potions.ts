@@ -1,12 +1,12 @@
 import { ItemData, Item, Market } from './items';
 
-declare enum PotionStatType {
+declare const enum PotionStatType {
 	Heal = 0,
 	Magicka = 1,
 	All = 2,
 }
 
-declare enum PotionEffectType {
+declare const enum PotionEffectType {
 	Once = 0,
 	Lasting = 1,
 	Buff = 2,
