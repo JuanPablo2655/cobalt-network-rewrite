@@ -18,7 +18,14 @@ const streamToElastic = pinoElastic({
 	'es-version': 7,
 });
 
-export const logger: Logger = pino(
-	{ level: 'trace', ...ecsFormat(), name: process.env.LOGGER_NAME },
-	pinoMultistream.multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
-);
+let logger: Logger;
+if (process.env.NODE_ENV !== 'production') {
+	logger = pino({ level: 'trace' });
+} else {
+	logger = pino(
+		{ ...ecsFormat(), name: process.env.LOGGER_NAME },
+		pinoMultistream.multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
+	);
+}
+
+export { logger };

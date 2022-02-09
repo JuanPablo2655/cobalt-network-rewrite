@@ -22,9 +22,10 @@
     "test:prettier": "prettier --check .",
     "clean": "rm -rf dist",
     "build": "tsc -b src",
-    "start": "node --enable-source-maps dist/cobalt.js",
+    "start": "NODE_ENV=production node --enable-source-maps dist/cobalt.js",
+    "start:dev": "node --enable-source-maps dist/cobalt.js | pino-pretty -i pid,hostname -t yyyy-mm-dd HH:MM:ss",
     "deploy:commands": "node --enable-source-maps dist/deploy.js",
-    "dev": "yarn build && yarn start",
+    "dev": "yarn build && yarn start:dev",
     "prettier": "prettier --write ."
   },
   "repository": {
