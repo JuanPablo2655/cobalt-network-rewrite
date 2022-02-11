@@ -1,6 +1,6 @@
 import { sync } from 'glob';
 import { resolve } from 'path';
-import { CobaltClient } from '#lib/cobaltClient';
+import { CobaltClient } from '#lib/CobaltClient';
 import { InteractionCommand } from '#lib/structures/commands';
 import { logger } from '../logger';
 

@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { jobs } from '#lib/data';
-import { CobaltClient } from '#lib/cobaltClient';
+import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/util';
 import { Identifiers, UserError } from '#lib/errors';
 

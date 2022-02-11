@@ -1,4 +1,4 @@
-import { CobaltClient } from '#lib/cobaltClient';
+import { CobaltClient } from '#lib/CobaltClient';
 import { logger } from '#lib/structures';
 
 const cobalt: CobaltClient = new CobaltClient();
