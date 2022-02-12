@@ -19,7 +19,7 @@ abstract class GuildCreateEvent extends Event {
 			.setTitle(`New Guild Created`)
 			.setThumbnail(guild.iconURL({ format: 'png', dynamic: true }) ?? '')
 			.setDescription(`Guild Name: **${guild.name}**\nGuild ID: **${guild.id}**\nmember: **${guild.memberCount}**`)
-			.setFooter(`Now I'm in ${this.cobalt.guilds.cache.size} guilds`)
+			.setFooter({ text: `Now I'm in ${this.cobalt.guilds.cache.size} guilds` })
 			.setTimestamp();
 		cobaltHook.send({ embeds: [guildEmbed] });
 	}

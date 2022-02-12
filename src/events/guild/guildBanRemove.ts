@@ -26,11 +26,11 @@ abstract class GuildBanRemoveEvent extends Event {
 		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = ban.user.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
-			.setAuthor(ban.user.username, avatar)
+			.setAuthor({ name: ban.user.username, iconURL: avatar })
 			.setTitle('Member Unbanned')
 			.setColor('#118511')
 			.setDescription(`**Reason:** ${ban.reason || audit?.reason || 'No reason provided'}`)
-			.setFooter(`User ID: ${ban.user.id}`)
+			.setFooter({ text: `User ID: ${ban.user.id}` })
 			.setTimestamp();
 		return void logChannel.send({ embeds: [logEmbed] });
 	}

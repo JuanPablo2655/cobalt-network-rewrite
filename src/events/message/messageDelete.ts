@@ -23,10 +23,10 @@ abstract class MessageDeleteEvent extends Event {
 		const logChannel = this.cobalt.guilds.cache.get(message.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
-			.setAuthor(message.author.username, avatar)
+			.setAuthor({ name: message.author.username, iconURL: avatar })
 			.setTitle('Message Deleted')
 			.setColor('#8f0a0a')
-			.setFooter(`Message ID: ${message.id}`)
+			.setFooter({ text: `Message ID: ${message.id}` })
 			.setTimestamp()
 			.addField('Text Channel', `${message.channel}`);
 		if (message.content == '') {

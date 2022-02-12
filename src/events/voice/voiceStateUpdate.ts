@@ -29,8 +29,8 @@ abstract class VoiceStateUpdate extends Event {
 		const logChannel = newState.guild.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = newState.member.user.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
-			.setAuthor(newState.member.user.username, avatar)
-			.setFooter(`User ID: ${newState.member.id}`)
+			.setAuthor({ name: newState.member.user.username, iconURL: avatar })
+			.setFooter({ text: `User ID: ${newState.member.id}` })
 			.setTimestamp();
 		if (!oldState.channel && newState.channel) {
 			if (newState.member.user.bot) return;

@@ -25,8 +25,8 @@ abstract class GuildMemberUpdateEvent extends Event {
 			?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = newMember.user.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
-			.setAuthor(newMember.user.username, avatar)
-			.setFooter(`User ID: ${newMember.user.id}`)
+			.setAuthor({ name: newMember.user.username, iconURL: avatar })
+			.setFooter({ text: `User ID: ${newMember.user.id}` })
 			.setTimestamp();
 		if (oldMember.roles.cache.size < newMember.roles.cache.size) {
 			const addedRoles: Role[] = [];
