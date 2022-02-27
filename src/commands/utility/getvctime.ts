@@ -17,7 +17,6 @@ abstract class GetVcTimeCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [option] = args;
-		// TODO(Isidro): return an error
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true, index: 1 });
 		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		const memberData = await this.cobalt.db.getMember(member.id, message.guild?.id);

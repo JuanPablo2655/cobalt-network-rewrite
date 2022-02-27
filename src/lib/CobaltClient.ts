@@ -30,7 +30,7 @@ export class CobaltClient extends Client {
 		super(CLIENT_OPTIONS);
 	}
 
-	public async login(token?: string) {
+	public async login(token = config.token) {
 		CommandRegistry(this);
 		EventRegistry(this);
 		InteractionRegistry(this);

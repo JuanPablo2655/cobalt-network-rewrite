@@ -1,4 +1,4 @@
-import { addMulti, formatMoney, formatNumber, getDiff, toCapitalize, trim } from '#utils/util';
+import { addMulti, formatMoney, formatNumber, getDiff, removeDuplicates, toCapitalize, trim } from '#utils/util';
 
 describe('Cobalt', () => {
 	describe('util', () => {
@@ -77,6 +77,12 @@ describe('Cobalt', () => {
 		describe('addMulti', () => {
 			test('GIVEN 100 AND 10 THEN return 110', () => {
 				expect(addMulti(100, 10)).toEqual(110);
+			});
+		});
+
+		describe('removeDuplicates', () => {
+			test('GIVEN [1,1,2,3,3,4,5] THEN return [1,2,3,4,5]', () => {
+				expect(removeDuplicates([1, 1, 2, 3, 3, 4, 5])).toEqual([1, 2, 3, 4, 5]);
 			});
 		});
 	});
