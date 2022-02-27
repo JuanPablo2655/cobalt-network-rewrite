@@ -1,5 +1,6 @@
 import { Guild, MessageEmbed, WebhookClient } from 'discord.js';
 import { Event } from '#lib/structures/events';
+import { config } from '#root/config';
 
 abstract class GuildCreateEvent extends Event {
 	constructor() {
@@ -14,7 +15,7 @@ abstract class GuildCreateEvent extends Event {
 		if (!guild) return;
 		if (!guild.available) return;
 		await this.cobalt.db.addGuild(guild.id);
-		const cobaltHook = new WebhookClient({ url: process.env.GUILDURL! });
+		const cobaltHook = new WebhookClient({ url: config.webhooks.guild! });
 		const guildEmbed = new MessageEmbed()
 			.setTitle(`New Guild Created`)
 			.setThumbnail(guild.iconURL({ format: 'png', dynamic: true }) ?? '')

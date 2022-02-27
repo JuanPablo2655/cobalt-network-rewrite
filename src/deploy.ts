@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import { REST } from '@discordjs/rest';
 import {
 	ApplicationCommandPermissionType,
@@ -17,15 +15,16 @@ import {
 	vcdataCommand,
 	socialCreditCommand,
 } from '#root/interactions';
+import { config } from './config';
 
-const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
+const rest = new REST({ version: '9' }).setToken(config.token!);
 
 (async () => {
 	try {
 		console.log('Start refreshing interaction (/) commands.');
 
 		const commands = (await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENT_ID as Snowflake, '823300821994569748' as Snowflake),
+			Routes.applicationGuildCommands(config.clientId as Snowflake, '823300821994569748' as Snowflake),
 			{
 				body: [
 					devCommand,
@@ -41,7 +40,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN!);
 		)) as RESTGetAPIApplicationGuildCommandsResult;
 
 		await rest.put(
-			Routes.guildApplicationCommandsPermissions(process.env.CLIENT_ID as Snowflake, '823300821994569748' as Snowflake),
+			Routes.guildApplicationCommandsPermissions(config.clientId as Snowflake, '823300821994569748' as Snowflake),
 			{
 				body: commands.map(cmd => ({
 					id: cmd.id,

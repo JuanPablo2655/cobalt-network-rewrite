@@ -3,17 +3,15 @@ import pino, { Logger } from 'pino';
 import pinoElastic from 'pino-elasticsearch';
 import ecsFormat from '@elastic/ecs-pino-format';
 import pinoMultistream from 'pino-multi-stream';
-
-import * as dotenv from 'dotenv';
-dotenv.config();
+import { config } from '#root/config';
 
 const streamToElastic = pinoElastic({
-	index: process.env.ELASTIC_INDEX ?? 'index',
+	index: config.elastic.index,
 	consistency: 'one',
-	node: process.env.ELASTIC_URL ?? 'http://localhost:9200',
+	node: config.elastic.url ?? 'http://localhost:9200',
 	auth: {
-		username: process.env.ELASTIC_USERNAME,
-		password: process.env.ELASTIC_PASSWORD,
+		username: config.elastic.username,
+		password: config.elastic.password,
 	},
 	'es-version': 7,
 });
@@ -23,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 	logger = pino({ level: 'trace' });
 } else {
 	logger = pino(
-		{ ...ecsFormat(), name: process.env.LOGGER_NAME },
+		{ ...ecsFormat(), name: config.elastic.loggerName },
 		pinoMultistream.multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
 	);
 }

@@ -1,6 +1,7 @@
 import { CommandInteraction, GuildMember, Interaction, PermissionString, TextChannel } from 'discord.js';
 import { Event } from '#lib/structures/events';
 import { logger } from '#lib/structures';
+import { config } from '#root/config';
 
 abstract class InteractionEvent extends Event {
 	constructor() {
@@ -80,8 +81,7 @@ abstract class InteractionEvent extends Event {
 	}
 
 	isDev(inteaction: CommandInteraction) {
-		const owners = process.env.OWNERS?.split(',');
-		return owners?.includes(inteaction.user.id);
+		return config.owners?.includes(inteaction.user.id);
 	}
 }
 

@@ -1,6 +1,10 @@
 import { type ClientOptions, Intents, Options } from 'discord.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export const config = {
+	/** Bot client Id found in Discord Devlopment Portal */
+	clientId: process.env.CLIENT_ID,
 	/** Bot token */
 	token: process.env.TOKEN,
 	/** Owners ids  */
@@ -8,7 +12,7 @@ export const config = {
 	/** Default message command prefix */
 	prefix: process.env.PREFIX ?? 'cn!',
 	/** MongoDB URI */
-	mongoURL: process.env.MONGOURL ?? 'mongodb://localhost:27017',
+	mongoURL: process.env.MONGOURL ?? 'mongodb://localhost:27017/cobalt',
 	/** Redis URI */
 	redis: process.env.REDIS ?? 'redis://localhost:6379',
 	/** Either test events or not */

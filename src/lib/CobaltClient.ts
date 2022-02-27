@@ -8,7 +8,7 @@ import Experience from './utils/Experience';
 import Economy from './utils/Economy';
 import Metrics from './utils/Metrics';
 import { GenericCommandOptions, InteractionCommandOptions } from './typings/CommandOptions';
-import { CLIENT_OPTIONS } from '#root/config';
+import { CLIENT_OPTIONS, config } from '#root/config';
 dotenv.config();
 
 export class CobaltClient extends Client {
@@ -18,12 +18,12 @@ export class CobaltClient extends Client {
 	public events = new Collection<string, EventOptions>();
 	public interactions = new Collection<string, InteractionCommandOptions>();
 	public voiceTime = new Map<Snowflake, number>();
-	public testEvents = process.env.TESTEVENTS === 'true';
-	public disableXp = process.env.DISABLEXP === 'true';
-	public db = new Database(this, process.env.MONGOURL || 'mongodb://localhost:27017/cobalt');
+	public testEvents = config.testEvents;
+	public disableXp = config.disableXp;
+	public db = new Database(this, config.mongoURL);
 	public exp = new Experience(this);
 	public econ = new Economy(this);
-	public redis = new Redis(process.env.REDIS ?? '6379');
+	public redis = new Redis(config.redis);
 	public metrics = new Metrics(this);
 
 	constructor() {

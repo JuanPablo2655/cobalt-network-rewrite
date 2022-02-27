@@ -1,5 +1,6 @@
 import { MessageEmbed, WebhookClient } from 'discord.js';
 import { Event } from '#lib/structures/events';
+import { config } from '#root/config';
 
 abstract class ShardErrorEvent extends Event {
 	constructor() {
@@ -11,7 +12,7 @@ abstract class ShardErrorEvent extends Event {
 	async run(error: Error, shardID: number) {
 		this.cobalt.metrics.eventInc(this.name);
 		if (!this.cobalt.testEvents) return;
-		const cobaltHook = new WebhookClient({ url: process.env.SHARDURL! });
+		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
 		const shardEmbed = new MessageEmbed()
 			.setTitle(`Shard Error`)
 			.setDescription(`Shard \`${shardID}\` has encountered a connection error:\n\n\`\`\`\n${error}\n\`\`\``)
