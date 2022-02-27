@@ -3,8 +3,13 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const config = {
-	/** Bot client Id found in Discord Devlopment Portal */
-	clientId: process.env.CLIENT_ID,
+	/** Client information */
+	client: {
+		/** Bot client Id found in Discord Devlopment Portal */
+		id: process.env.CLIENT_ID,
+		/** Bot client secret found in Discord Devlopment Portal */
+		secret: process.env.CLIENT_SECRET,
+	},
 	/** Bot token */
 	token: process.env.TOKEN,
 	/** Owners ids  */
@@ -19,16 +24,14 @@ export const config = {
 	testEvents: process.env.TESTEVENTS === 'true' ?? false,
 	/** Disable XP in devlopment */
 	disableXp: process.env.DISABLEXP === 'true' ?? false,
-	/** Idk what this is for yet */
-	port: process.env.PORT,
-	/** Webhooks URL */
+	/** Webhook URLs */
 	webhooks: {
 		/** Shard webhook URL */
 		shard: process.env.SHARDURL,
 		/** Guild join/leave webhook URL */
 		guild: process.env.GUILDURL,
 	},
-	/** Elastic Information */
+	/** Elastic information */
 	elastic: {
 		/** Elastic index id */
 		index: process.env.ELASTIC_INDEX ?? 'index',

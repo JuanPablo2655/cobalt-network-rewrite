@@ -24,7 +24,7 @@ const rest = new REST({ version: '9' }).setToken(config.token!);
 		console.log('Start refreshing interaction (/) commands.');
 
 		const commands = (await rest.put(
-			Routes.applicationGuildCommands(config.clientId as Snowflake, '823300821994569748' as Snowflake),
+			Routes.applicationGuildCommands(config.client.id as Snowflake, '823300821994569748' as Snowflake),
 			{
 				body: [
 					devCommand,
@@ -40,7 +40,7 @@ const rest = new REST({ version: '9' }).setToken(config.token!);
 		)) as RESTGetAPIApplicationGuildCommandsResult;
 
 		await rest.put(
-			Routes.guildApplicationCommandsPermissions(config.clientId as Snowflake, '823300821994569748' as Snowflake),
+			Routes.guildApplicationCommandsPermissions(config.client.id as Snowflake, '823300821994569748' as Snowflake),
 			{
 				body: commands.map(cmd => ({
 					id: cmd.id,
