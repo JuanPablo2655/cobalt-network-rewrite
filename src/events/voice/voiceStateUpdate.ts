@@ -42,7 +42,7 @@ abstract class VoiceStateUpdate extends Event {
 		if (oldState.channel && !newState.channel) {
 			if (oldState.member.user.bot) return;
 			const end = Date.now();
-			let startTime = await this.cobalt.redis.get(`voice-${newState.member.id}`);
+			const startTime = await this.cobalt.redis.get(`voice-${newState.member.id}`);
 			if (startTime) {
 				const elapsed = end - Number(startTime);
 				this.cobalt.metrics.voiceInc(elapsed);

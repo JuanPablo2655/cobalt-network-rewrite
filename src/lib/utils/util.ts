@@ -56,14 +56,13 @@ export async function findMember(
 	if (!(message.guild instanceof DJS.Guild)) return null;
 
 	try {
-		let member: DJS.GuildMember | null;
 		const arg = args[options?.index ?? 0]?.replace?.(/[<@!>]/gi, '') || args[options?.index ?? 0];
 		const mention =
 			message.mentions?.users.first()?.id !== client.user?.id
 				? message.mentions?.users.first()
 				: message.mentions?.users.first(1)[1];
 
-		member =
+		const member: DJS.GuildMember | null =
 			message.guild.members.cache.find(m => m.user.id === mention?.id) ||
 			message.guild.members.cache.get(arg as DJS.Snowflake) ||
 			message.guild.members.cache.find(m => m.user.id === args[options?.index ?? 0]) ||
@@ -219,7 +218,7 @@ export function getImage(message: DJS.Message) {
  * @returns Returns a whole number ex. 6%
  */
 export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<number> {
-	let multi: number = 0;
+	let multi = 0;
 	const member = client.guilds.cache.get('322505254098698240')?.members.cache.get(user.id);
 	const roles = client.guilds.cache.get('322505254098698240')?.roles.cache;
 	const director = roles?.get('355885679076442112');

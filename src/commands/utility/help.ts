@@ -33,7 +33,7 @@ abstract class HelpCommand extends GenericCommand {
 			return message.reply({ embeds: [helpEmbed] });
 		} else if (categories.includes(args[0])) {
 			const helpEmbed = new MessageEmbed().setColor('RANDOM');
-			const commandNames: Array<string> = new Array();
+			const commandNames: Array<string> = new Array<string>();
 			const commands = this.cobalt.commands.filter(c => c.category === args[0]);
 			for (const command of commands) {
 				if (!commandNames.includes(command[1].name)) {

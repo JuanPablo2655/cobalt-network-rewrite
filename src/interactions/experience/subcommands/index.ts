@@ -9,7 +9,7 @@ import { Identifiers, UserError } from '#lib/errors';
 export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await cobalt.db.getUser(user.id);
-	let xpPercent = ((profile?.xp ?? Default.Xp) / cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
+	const xpPercent = ((profile?.xp ?? Default.Xp) / cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
 	const rankEmbed = new MessageEmbed()
 		.setTitle(`${user?.username}'s Rank`)
 		.setDescription(

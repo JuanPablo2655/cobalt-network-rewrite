@@ -20,7 +20,7 @@ abstract class RankCommand extends GenericCommand {
 		const user = member.user;
 		const profile = await this.cobalt.db.getUser(user.id);
 		await addCD();
-		let xpPercent = ((profile?.xp ?? Default.Xp) / this.cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
+		const xpPercent = ((profile?.xp ?? Default.Xp) / this.cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
 		const rankEmbed = new MessageEmbed()
 			.setTitle(`${user?.username}'s Rank`)
 			.setDescription(

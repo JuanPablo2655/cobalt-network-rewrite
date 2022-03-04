@@ -28,5 +28,6 @@ export abstract class Event {
 	 * Executes the event's logic
 	 * @param args The event parameters
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public abstract run(...args: any[]): void | Promise<void>;
 }

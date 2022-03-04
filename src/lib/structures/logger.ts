@@ -1,5 +1,6 @@
+import process from 'node:process';
 import pino, { Logger } from 'pino';
-// @ts-expect-error
+// @ts-expect-error: no type defintions
 import pinoElastic from 'pino-elasticsearch';
 import ecsFormat from '@elastic/ecs-pino-format';
 import pinoMultistream from 'pino-multi-stream';

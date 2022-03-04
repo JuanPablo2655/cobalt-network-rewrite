@@ -15,7 +15,7 @@ abstract class EnableCommandCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing arg');
-		let arg = args[0].toLowerCase();
+		const arg = args[0].toLowerCase();
 		const command = this.cobalt.commands.get(arg);
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);

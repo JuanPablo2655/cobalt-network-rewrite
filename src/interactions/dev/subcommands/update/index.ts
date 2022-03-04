@@ -7,13 +7,13 @@ export async function directors(cobalt: CobaltClient, interaction: CommandIntera
 	await interaction.deferReply();
 	const role = interaction.guild?.roles.cache.get('355885679076442112');
 	if (!role) throw new UserError({ identifer: Identifiers.ArgumentUserError }, 'Not in the correct server');
-	let directors: Snowflake[] = new Array();
-	let directorUsernames: string[] = new Array();
+	const directors: Snowflake[] = new Array<Snowflake>();
+	const directorUsernames: string[] = new Array<string>();
 	role?.members.forEach(member => {
 		directors.push(member.user.id);
 	});
 	directors.forEach(userId => {
-		let username = cobalt.users.cache.get(userId)!.username;
+		const username = cobalt.users.cache.get(userId)!.username;
 		directorUsernames.push(username);
 	});
 	await cobalt.db.updateBot(cobalt.user?.id, { directors });

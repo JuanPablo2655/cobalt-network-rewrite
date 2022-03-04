@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers';
 import { Guild, Message, TextChannel, Permissions } from 'discord.js';
 import { Event } from '#lib/structures/events';
 import { formatNumber } from '#utils/util';
@@ -26,7 +27,7 @@ abstract class MessageEvent extends Event {
 		if (message.author.bot) return;
 		if (!message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && !message.author.bot) {
 			let hasBadWord = false;
-			let badWords: string[] = [];
+			const badWords: string[] = [];
 			guild?.blacklistedWords?.forEach(word => {
 				message.content.split(' ').forEach(messageWord => {
 					if (word.toLowerCase() === messageWord.toLowerCase()) {
@@ -101,7 +102,7 @@ abstract class MessageEvent extends Event {
 				if (message.channel instanceof TextChannel) {
 					const userPermissions = command.userPermissions;
 					const clientPermissions = command.clientPermissions;
-					const missingPermissions = new Array();
+					const missingPermissions = [];
 					if (userPermissions?.length) {
 						for (let i = 0; i < userPermissions.length; i++) {
 							const hasPermissions = message.member?.permissions.has(userPermissions[i]);
@@ -122,7 +123,7 @@ abstract class MessageEvent extends Event {
 						}
 						if (missingPermissions.length)
 							message.reply({
-								content: `I\'m missing these required permissions: ${missingPermissions
+								content: `I'm missing these required permissions: ${missingPermissions
 									.map(p => `\`${p}\``)
 									.join(', ')}`,
 								allowedMentions: { repliedUser: true },

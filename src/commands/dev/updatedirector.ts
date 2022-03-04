@@ -18,14 +18,14 @@ abstract class UpdateDirectorCommand extends GenericCommand {
 		const role = await findRole(message, '355885679076442112');
 		if (!role) throw new UserError({ identifer: Identifiers.ArgumentUserError }, 'Not in the correct server');
 		await addCD();
-		let directors: Snowflake[] = new Array();
-		let directorUsernames: string[] = new Array();
+		const directors: Snowflake[] = [];
+		const directorUsernames: string[] = [];
 		role?.members.forEach(user => {
 			directors.push(user.user.id);
 		});
 
 		directors.forEach(userId => {
-			let username = this.cobalt.users.cache.get(userId)!.username;
+			const username = this.cobalt.users.cache.get(userId)!.username;
 			directorUsernames.push(username);
 		});
 

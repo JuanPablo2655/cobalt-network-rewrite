@@ -50,7 +50,7 @@ abstract class InteractionEvent extends Event {
 						}
 						if (missingPermissions.length)
 							return interaction.reply({
-								content: `I\'m missing these required permissions: ${missingPermissions
+								content: `I'm missing these required permissions: ${missingPermissions
 									.map(p => `\`${p}\``)
 									.join(', ')}`,
 								ephemeral: true,

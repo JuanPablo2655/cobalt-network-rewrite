@@ -40,7 +40,7 @@ abstract class EconomyInteractionCommand extends InteractionCommand {
 				await monthly(this.cobalt, interaction);
 				break;
 			}
-			default:
+			default: {
 				const group = interaction.options.getSubcommandGroup(true);
 				switch (group) {
 					case 'bank': {
@@ -83,6 +83,7 @@ abstract class EconomyInteractionCommand extends InteractionCommand {
 						break;
 				}
 				break;
+			}
 		}
 	}
 }

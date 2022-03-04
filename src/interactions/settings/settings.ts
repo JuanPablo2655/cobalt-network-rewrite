@@ -26,7 +26,7 @@ abstract class settingsInteractionCommand extends InteractionCommand {
 			case 'event': {
 				return interaction.reply({ content: 'event' });
 			}
-			default:
+			default: {
 				const group = interaction.options.getSubcommandGroup(true);
 				switch (group) {
 					case 'blacklistword': {
@@ -109,6 +109,7 @@ abstract class settingsInteractionCommand extends InteractionCommand {
 						break;
 				}
 				break;
+			}
 		}
 	}
 }

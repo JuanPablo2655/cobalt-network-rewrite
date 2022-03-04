@@ -19,9 +19,10 @@ declare enum EnchantType {
 }
 
 export class ItemData {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[subtype: string]: any;
 	join(data: ItemData): ItemData {
-		for (let prop in data) {
+		for (const prop in data) {
 			this[prop] = data[prop];
 		}
 		return this;

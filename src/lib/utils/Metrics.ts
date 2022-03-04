@@ -1,3 +1,4 @@
+import { setInterval } from 'node:timers';
 import { logger } from '#lib/structures';
 import { ClientEvents, Snowflake } from 'discord.js';
 import express, { Express } from 'express';

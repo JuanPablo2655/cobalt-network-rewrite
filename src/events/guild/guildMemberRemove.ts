@@ -23,7 +23,7 @@ abstract class GuildMemberRemoveEvent extends Event {
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ format: 'png', dynamic: true });
 		if (user && member.roles.cache.size !== 0) {
-			let roleList: Snowflake[] = member.roles.cache.map(r => r.id);
+			const roleList: Snowflake[] = member.roles.cache.map(r => r.id);
 			await this.cobalt.db.updateMember(member.user.id, member.guild.id, {
 				roles: roleList,
 			});
