@@ -4,6 +4,7 @@ import { formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
+import { config } from '#root/config';
 
 abstract class MessageEvent extends Event {
 	constructor() {
@@ -88,7 +89,7 @@ abstract class MessageEvent extends Event {
 					});
 				if (guild?.disabledCategories?.includes(command.category)) return;
 				if (guild?.disabledCommands?.includes(command.name)) return;
-				if (command.devOnly && !process.env.OWNERS?.split(',').includes(message.author.id)) {
+				if (command.devOnly && !config.owners?.includes(message.author.id)) {
 					return;
 				} else if (command.ownerOnly && (message.guild as Guild).ownerId !== message.author.id) {
 					return void message.reply({ content: 'This comamnd can only be used by the owner of the guild.' });

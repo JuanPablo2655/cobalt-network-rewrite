@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { jobs } from '#lib/data';
-import { CobaltClient } from '#lib/cobaltClient';
+import { CobaltClient } from '#lib/CobaltClient';
 import { addMulti, calcMulti, formatMoney, formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
 import { days, months } from '#utils/common';
@@ -13,7 +13,6 @@ export async function work(cobalt: CobaltClient, interaction: CommandInteraction
 	if (user.job === null)
 		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'You need a job to work.');
 	const job = jobs.find(j => j.id === user.job);
-	// TODO(Isidro): return an error
 	if (!job) throw new Error('Invalid job id');
 	const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
 	const money = Math.floor(job.minAmount + Math.random() * 250);

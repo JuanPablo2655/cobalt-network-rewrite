@@ -1,14 +1,16 @@
+import { ApplicationCommandOptionType } from 'discord-api-types/v9';
+
 export const covidCommand = {
 	name: 'covid',
 	description: 'Get the lastest Covid-19 data.',
 	options: [
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'country',
 			description: 'Get covid-19 data from a country.',
 			options: [
 				{
-					type: 3,
+					type: ApplicationCommandOptionType.String,
 					name: 'country',
 					description: 'The country.',
 					required: true,
@@ -16,12 +18,12 @@ export const covidCommand = {
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'state',
 			description: 'Get covid-19 data from a state.',
 			options: [
 				{
-					type: 3,
+					type: ApplicationCommandOptionType.String,
 					name: 'state',
 					description: 'The state.',
 					required: true,
@@ -29,7 +31,7 @@ export const covidCommand = {
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'global',
 			description: 'Get covid-19 data globally.',
 		},
@@ -49,7 +51,7 @@ export const vcdataCommand = {
 	description: "Get your's or someone else's vc data locally or globally.",
 	options: [
 		{
-			type: 3,
+			type: ApplicationCommandOptionType.String,
 			name: 'option',
 			description: 'local or global',
 			choices: [
@@ -65,7 +67,7 @@ export const vcdataCommand = {
 			required: true,
 		},
 		{
-			type: 6,
+			type: ApplicationCommandOptionType.User,
 			name: 'user',
 			description: 'The user to get the data from.',
 		},
@@ -78,30 +80,30 @@ export const socialCreditCommand = {
 	description: 'Social credit system',
 	options: [
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'check',
 			description: 'Check your or someone elses social credit',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user.',
 				},
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'add',
 			description: 'add social credit to a user',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user.',
 					required: true,
 				},
 				{
-					type: 4,
+					type: ApplicationCommandOptionType.Integer,
 					name: 'amount',
 					description: 'The amount of points to add.',
 					required: true,
@@ -109,18 +111,18 @@ export const socialCreditCommand = {
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'remove',
 			description: 'The amount of points to remove',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user.',
 					required: true,
 				},
 				{
-					type: 4,
+					type: ApplicationCommandOptionType.Integer,
 					name: 'amount',
 					description: 'The amount to remove.',
 					required: true,

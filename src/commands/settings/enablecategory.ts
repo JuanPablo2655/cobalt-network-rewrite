@@ -1,6 +1,7 @@
 import { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
+import { removeDuplicates } from '#utils/util';
 
 abstract class EnableCategoryCommand extends GenericCommand {
 	constructor() {
@@ -16,7 +17,7 @@ abstract class EnableCategoryCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing arg');
 		let arg = args[0].toLowerCase();
-		const categories = this.removeDuplicates(this.cobalt.commands.map(c => c.category));
+		const categories = removeDuplicates(this.cobalt.commands.map(c => c.category as string));
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await this.cobalt.db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
@@ -29,10 +30,6 @@ abstract class EnableCategoryCommand extends GenericCommand {
 			disabledCategories: guild.disabledCategories.filter(c => c !== arg),
 		});
 		return message.channel.send({ content: `Enabled \`${arg}\`` });
-	}
-
-	removeDuplicates(array: Array<string>) {
-		return [...new Set(array)];
 	}
 }
 

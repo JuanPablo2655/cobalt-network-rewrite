@@ -2,7 +2,7 @@ import botModel, { BotData, IBot } from '../models/Bot';
 import guildModel, { GuildData, IGuild } from '../models/Guild';
 import userModel, { UserData, IUser } from '../models/User';
 import memberModel, { MemberData, IMember } from '../models/Member';
-import { CobaltClient } from '../cobaltClient';
+import { CobaltClient } from '../CobaltClient';
 import mongoose, { Connection } from 'mongoose';
 import { logger } from '#lib/structures';
 

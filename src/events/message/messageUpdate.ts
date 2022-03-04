@@ -26,12 +26,14 @@ abstract class MessageUpdateEvent extends Event {
 			?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = newMessage.author.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
-			.setAuthor(newMessage.author.username, avatar)
+			.setAuthor({ name: newMessage.author.username, iconURL: avatar })
 			.setTitle('Message Update')
-			.setColor('#2f7db1');
+			.setColor('#2f7db1')
+			.setFooter({ text: `Message ID: ${newMessage.id}` })
+			.setTimestamp();
 		if (oldMessage.content !== newMessage.content) {
 			if (newMessage.content == '') {
-				logEmbed.setImage(getImage(newMessage)[0]);
+				logEmbed.setImage(getImage(newMessage)!);
 			} else if (newMessage.attachments.size === 0) {
 				logEmbed.setDescription(
 					`[Jump to Message](https://discordapp.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${
@@ -44,9 +46,8 @@ abstract class MessageUpdateEvent extends Event {
 						newMessage.id
 					})\n${getDiff(oldMessage.content, newMessage.content)}`,
 				);
-				logEmbed.setImage(getImage(newMessage)[0]);
+				logEmbed.setImage(getImage(newMessage)!);
 			}
-			logEmbed.setFooter(`Message ID: ${newMessage.id}`).setTimestamp();
 			return void logChannel.send({ embeds: [logEmbed] });
 		}
 	}

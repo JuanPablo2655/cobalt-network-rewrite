@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
-import { toCapitalize } from '#utils/util';
+import { removeDuplicates, toCapitalize } from '#utils/util';
 
 abstract class HelpCommand extends GenericCommand {
 	constructor() {
@@ -15,10 +15,11 @@ abstract class HelpCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		// TODO(Isidro): refactor help command
 		await addCD();
 		const guild = await this.cobalt.db.getGuild(message.guild?.id);
 		const command = this.cobalt.commands.get(args[0]);
-		const categories = this.removeDuplicates(this.cobalt.commands.map(c => c.category));
+		const categories = removeDuplicates(this.cobalt.commands.map(c => c.category as string));
 		if (command) {
 			const usage = command.usage ? `${command.name} ${command.usage}` : `${command.name}`;
 			const helpEmbed = new MessageEmbed().setColor('RANDOM');
@@ -51,10 +52,6 @@ abstract class HelpCommand extends GenericCommand {
 			}
 			return message.reply({ embeds: [helpEmbed] });
 		}
-	}
-
-	removeDuplicates(array: Array<string>) {
-		return [...new Set(array)];
 	}
 }
 

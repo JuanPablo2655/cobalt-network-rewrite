@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { CobaltClient } from '#lib/cobaltClient';
+import { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
 
 export async function channel(cobalt: CobaltClient, interaction: CommandInteraction) {

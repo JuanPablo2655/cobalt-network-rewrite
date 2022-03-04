@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { jobs } from '#lib/data';
-import { CobaltClient } from '#lib/cobaltClient';
+import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/util';
 import { Identifiers, UserError } from '#lib/errors';
 
@@ -37,11 +37,7 @@ export async function quit(cobalt: CobaltClient, interaction: CommandInteraction
 }
 
 export async function list(_cobalt: CobaltClient, interaction: CommandInteraction) {
-	// TODO(Isidro): refactor to use Array.prototype.map()
-	let joblists: string[] = new Array();
-	jobs.forEach(job => {
-		joblists.push(`\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
-	});
+	const joblists = jobs.map(job => `\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
 	const jobEmbed = new MessageEmbed().setTitle(`Job Listing`).setDescription(`${joblists.join('\n')}`);
 	interaction.reply({ embeds: [jobEmbed] });
 }

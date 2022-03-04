@@ -1,7 +1,18 @@
-import { CobaltClient } from '../cobaltClient';
+import { CobaltClient } from '../CobaltClient';
 import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
 import { logger } from '#lib/structures';
+
+/**
+ * Image extensions:
+ * - bmp
+ * - jpg
+ * - jpeg
+ * - png
+ * - gif
+ * - webp
+ */
+export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
 
 /**
  * Format a number
@@ -147,15 +158,58 @@ export function getDiff(oldString: string, newString: string): string {
 	return getSmallestString(diffs);
 }
 
+export interface ImageAttachment {
+	url: string;
+	proxyURL: string;
+	height: number;
+	width: number;
+}
+
+/**
+ * Get a image attachment from a message
+ * @param message The Message instance to get the image url from
+ */
+export function getAttachment(message: DJS.Message): ImageAttachment | null {
+	if (message.attachments.size) {
+		const attachment = message.attachments.find(att => IMAGE_EXTENSION.test(att.url));
+		if (attachment) {
+			return {
+				url: attachment.url,
+				proxyURL: attachment.proxyURL,
+				height: attachment.height!,
+				width: attachment.width!,
+			};
+		}
+	}
+	for (const embed of message.embeds) {
+		if (embed.type === 'image') {
+			return {
+				url: embed.thumbnail!.url,
+				proxyURL: embed.thumbnail!.proxyURL!,
+				height: embed.thumbnail!.height!,
+				width: embed.thumbnail!.width!,
+			};
+		}
+		if (embed.image) {
+			return {
+				url: embed.image.url,
+				proxyURL: embed.image.proxyURL!,
+				height: embed.image.height!,
+				width: embed.image.width!,
+			};
+		}
+	}
+
+	return null;
+}
+
 /**
  * Get the image url from a message
  * @param message The Message instance to get the image url from
  */
-// TODO(Isidro): refactor to return one image not an array
 export function getImage(message: DJS.Message) {
-	return message.attachments
-		.filter(({ proxyURL }) => /\.(gif|jpe?g|png|webp)$/i.test(proxyURL))
-		.map(({ proxyURL }) => proxyURL);
+	const attachment = getAttachment(message);
+	return attachment ? attachment.proxyURL || attachment.url : null;
 }
 
 /**
@@ -191,4 +245,13 @@ export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<n
  */
 export function addMulti(amount: number, multi: number) {
 	return Math.round(amount + amount * (multi / 100));
+}
+
+/**
+ * Remove all the duplicates from an array
+ * @param array The array that contains the duplicates
+ * @returns A new array with no duplicates
+ */
+export function removeDuplicates<T>(array: Array<T>) {
+	return [...new Set(array)];
 }

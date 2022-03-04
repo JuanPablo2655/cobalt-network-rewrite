@@ -41,13 +41,13 @@ abstract class GuildMemberRemoveEvent extends Event {
 
 		const joined = Math.floor((Date.now() - member.guild.joinedTimestamp) / 100);
 		const logEmbed = new MessageEmbed()
-			.setAuthor(member.user.username, avatar)
+			.setAuthor({ name: member.user.username, iconURL: avatar })
 			.setTitle(`Member Left`)
 			.setColor('#8f0a0a')
 			.setDescription(
 				`Joined **<t:${joined}:R>** on **<t:${joined}:D>**\nGuild Member Count: **${member.guild.memberCount}**`,
 			)
-			.setFooter(`User ID: ${member.user.id}`)
+			.setFooter({ text: `User ID: ${member.user.id}` })
 			.setTimestamp();
 		return void logChannel.send({ embeds: [logEmbed] });
 	}

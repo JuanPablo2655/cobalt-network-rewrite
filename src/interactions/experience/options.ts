@@ -1,26 +1,28 @@
+import { ApplicationCommandOptionType } from 'discord-api-types/v9';
+
 export const experienceCommand = {
 	name: 'experience',
 	description: 'Experience commands.',
 	options: [
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'rank',
 			description: 'Get your or someone elses rank in the server.',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user.',
 				},
 			],
 		},
 		{
-			type: 1,
+			type: ApplicationCommandOptionType.Subcommand,
 			name: 'reputation',
 			description: 'Give someone a reputation point.',
 			options: [
 				{
-					type: 6,
+					type: ApplicationCommandOptionType.User,
 					name: 'user',
 					description: 'The user.',
 					required: true,
