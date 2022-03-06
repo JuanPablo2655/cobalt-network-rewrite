@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';

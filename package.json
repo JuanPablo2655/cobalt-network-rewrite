@@ -27,7 +27,7 @@
     "deploy:commands": "node --enable-source-maps dist/deploy.js",
     "dev": "yarn build && yarn start:dev",
     "prettier": "prettier --write .",
-    "lint": "eslint src/**/*"
+    "lint": "eslint --fix --ext ts src tests"
   },
   "repository": {
     "type": "git",

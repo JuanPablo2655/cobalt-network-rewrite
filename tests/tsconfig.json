@@ -5,7 +5,8 @@
 		"paths": {
 			"#utils/*": ["../src/lib/utils/*"],
 			"#lib/*": ["../src/lib/*"],
-			"#root/*": ["../src/*"]
+			"#root/*": ["../src/*"],
+			"#mocks/*": ["./mocks/*"]
 		}
 	},
 	"include": [".", "../src/**/*"],

@@ -9,6 +9,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'^#utils/(.*)$': '<rootDir>/src/lib/utils/$1',
 		'^#lib/(.*)$': '<rootDir>/src/lib/$1',
 		'^#root/(.*)$': '<rootDir>/src/$1',
+		'^#mocks/(.*)$': '<rootDir>/tests/mocks/$1',
 	},
 	setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
 	testEnvironment: 'node',

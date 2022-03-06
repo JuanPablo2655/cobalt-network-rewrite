@@ -18,7 +18,9 @@ module.exports = {
 		'no-compare-neg-zero': 'error',
 		'no-template-curly-in-string': 'error',
 		'no-unsafe-negation': 'error',
+		'no-unsed-vars': 'off',
 		'@typescript-eslint/no-unused-vars': 'error',
+		'no-var-requires': 'off',
 		'@typescript-eslint/no-var-requires': 'warn',
 		yoda: 'error',
 		'no-restricted-globals': [
