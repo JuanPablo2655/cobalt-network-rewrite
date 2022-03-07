@@ -17,6 +17,7 @@ import {
 } from '#root/interactions';
 import { config } from './config';
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const rest = new REST({ version: '9' }).setToken(config.token!);
 
 (async () => {

@@ -25,7 +25,7 @@ abstract class GuildMemberAddEvent extends Event {
 		if (user?.roles?.length !== 0) {
 			user?.roles?.forEach(r => {
 				if (!member.guild.me) return;
-				let role = member.guild.roles.cache.get(r);
+				const role = member.guild.roles.cache.get(r);
 				if (!role) return;
 				if (member.guild.me.roles.highest.comparePositionTo(role) < 0) return;
 				member.roles.add(role.id);

@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { type ClientOptions, Intents, Options } from 'discord.js';
 import * as dotenv from 'dotenv';
 dotenv.config();

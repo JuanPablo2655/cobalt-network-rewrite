@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { Client, Collection, Snowflake } from 'discord.js';
 import Redis from 'ioredis';
 import * as dotenv from 'dotenv';

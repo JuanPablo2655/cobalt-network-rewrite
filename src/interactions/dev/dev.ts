@@ -30,7 +30,7 @@ abstract class PingInteractionCommand extends InteractionCommand {
 				await pay(this.cobalt, interaction);
 				break;
 			}
-			default:
+			default: {
 				const group = interaction.options.getSubcommandGroup(true);
 				switch (group) {
 					case 'update': {
@@ -53,6 +53,7 @@ abstract class PingInteractionCommand extends InteractionCommand {
 						break;
 				}
 				break;
+			}
 		}
 	}
 }

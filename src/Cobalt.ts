@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { CobaltClient } from '#lib/CobaltClient';
 import { logger } from '#lib/structures';
 

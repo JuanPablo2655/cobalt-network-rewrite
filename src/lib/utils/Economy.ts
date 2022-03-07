@@ -230,7 +230,7 @@ export default class Currency {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			let bot = await this.cobalt.db.getBot(botId);
+			const bot = await this.cobalt.db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 
@@ -250,7 +250,7 @@ export default class Currency {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			let bot = await this.cobalt.db.getBot(botId);
+			const bot = await this.cobalt.db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 
@@ -270,7 +270,7 @@ export default class Currency {
 		try {
 			if (isNaN(tax)) throw new TypeError('Money must be a number.');
 			if (tax <= 0) throw new TypeError('Must be more than zero.');
-			let bot = await this.cobalt.db.getBot(botId);
+			const bot = await this.cobalt.db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 

@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 

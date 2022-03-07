@@ -4,7 +4,7 @@ import { CobaltClient } from '#lib/CobaltClient';
 import { GenericCommand } from '#lib/structures/commands';
 import { logger } from '..';
 
-const registerCommand: Function = (cobalt: CobaltClient) => {
+const registerCommand = (cobalt: CobaltClient) => {
 	const commandFiles = sync(resolve(__dirname + '/../../../commands/**/*'));
 	commandFiles.forEach(file => {
 		if (/\.js$/iu.test(file)) {
