@@ -1,8 +1,8 @@
 import { MessageEmbed, WebhookClient } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
 
-abstract class ShardReadyEvent extends Event {
+abstract class ShardReadyListener extends Listener {
 	constructor() {
 		super({
 			name: 'shardReady',
@@ -27,4 +27,4 @@ abstract class ShardReadyEvent extends Event {
 	}
 }
 
-export default ShardReadyEvent;
+export default ShardReadyListener;

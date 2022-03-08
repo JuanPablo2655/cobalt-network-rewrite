@@ -1,9 +1,9 @@
 import { CommandInteraction, GuildMember, Interaction, PermissionString, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
 import { config } from '#root/config';
 
-abstract class InteractionEvent extends Event {
+abstract class InteractionListener extends Listener {
 	constructor() {
 		super({
 			name: 'interactionCreate',
@@ -85,4 +85,4 @@ abstract class InteractionEvent extends Event {
 	}
 }
 
-export default InteractionEvent;
+export default InteractionListener;

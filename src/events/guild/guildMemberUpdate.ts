@@ -1,7 +1,7 @@
 import { GuildMember, MessageEmbed, Role, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 
-abstract class GuildMemberUpdateEvent extends Event {
+abstract class GuildMemberUpdateListener extends Listener {
 	constructor() {
 		super({
 			name: 'guildMemberUpdate',
@@ -78,4 +78,4 @@ abstract class GuildMemberUpdateEvent extends Event {
 	}
 }
 
-export default GuildMemberUpdateEvent;
+export default GuildMemberUpdateListener;

@@ -1,10 +1,10 @@
 import { ClientEvents } from 'discord.js';
-import { EventOptions } from '../../typings/Options';
+import { ListenerOptions } from '../../typings/Options';
 import { CobaltClient } from '../../CobaltClient';
 
-export abstract class Event {
+export abstract class Listener {
 	/**
-	 * name for the event
+	 * name for the listener
 	 */
 	public name: keyof ClientEvents;
 
@@ -16,17 +16,17 @@ export abstract class Event {
 	public abstract cobalt: CobaltClient;
 
 	/**
-	 * Constructs an Event
-	 * @param options Optional event settings other than name
+	 * Constructs an listener
+	 * @param options Optional listener settings other than name
 	 */
-	constructor(options: EventOptions) {
+	constructor(options: ListenerOptions) {
 		this.name = options.name;
 		this.once = options.once ?? false;
 	}
 
 	/**
-	 * Executes the event's logic
-	 * @param args The event parameters
+	 * Executes the listener's logic
+	 * @param args The listener parameters
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public abstract run(...args: any[]): void | Promise<void>;

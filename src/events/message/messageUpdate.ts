@@ -1,8 +1,8 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { getDiff, getImage } from '#utils/util';
 
-abstract class MessageUpdateEvent extends Event {
+abstract class MessageUpdateListener extends Listener {
 	constructor() {
 		super({
 			name: 'messageUpdate',
@@ -53,4 +53,4 @@ abstract class MessageUpdateEvent extends Event {
 	}
 }
 
-export default MessageUpdateEvent;
+export default MessageUpdateListener;

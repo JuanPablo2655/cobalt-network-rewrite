@@ -1,8 +1,8 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { getImage } from '#utils/util';
 
-abstract class MessageDeleteEvent extends Event {
+abstract class MessageDeleteListener extends Listener {
 	constructor() {
 		super({
 			name: 'messageDelete',
@@ -41,4 +41,4 @@ abstract class MessageDeleteEvent extends Event {
 	}
 }
 
-export default MessageDeleteEvent;
+export default MessageDeleteListener;

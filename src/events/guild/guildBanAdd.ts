@@ -1,7 +1,7 @@
 import { GuildBan, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 
-abstract class GuildBanAddEvent extends Event {
+abstract class GuildBanAddListener extends Listener {
 	constructor() {
 		super({
 			name: 'guildBanAdd',
@@ -36,4 +36,4 @@ abstract class GuildBanAddEvent extends Event {
 	}
 }
 
-export default GuildBanAddEvent;
+export default GuildBanAddListener;

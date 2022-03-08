@@ -1,7 +1,7 @@
 import commandRegistry from '../CommandRegistry';
-import eventRegistry from '../EventRegistry';
+import listenerRegistery from '../ListenerRegistry';
 import interactionRegistry from '../InteractionRegistry';
 
 export const CommandRegistry = commandRegistry;
-export const EventRegistry = eventRegistry;
+export const ListenerRegistry = listenerRegistery;
 export const InteractionRegistry = interactionRegistry;

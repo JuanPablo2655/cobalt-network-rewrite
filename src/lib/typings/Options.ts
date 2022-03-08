@@ -1,8 +1,8 @@
 import { ClientEvents } from 'discord.js';
 
-export interface EventOptions {
+export interface ListenerOptions {
 	/**
-	 * name for the event
+	 * name for the Listener
 	 */
 	name: keyof ClientEvents;
 

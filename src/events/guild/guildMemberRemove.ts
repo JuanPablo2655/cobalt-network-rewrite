@@ -1,7 +1,7 @@
 import { GuildMember, MessageEmbed, Snowflake, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 
-abstract class GuildMemberRemoveEvent extends Event {
+abstract class GuildMemberRemoveListener extends Listener {
 	constructor() {
 		super({
 			name: 'guildMemberRemove',
@@ -53,4 +53,4 @@ abstract class GuildMemberRemoveEvent extends Event {
 	}
 }
 
-export default GuildMemberRemoveEvent;
+export default GuildMemberRemoveListener;

@@ -1,7 +1,7 @@
 import { logger } from '#lib/structures';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 
-abstract class ReadyEvent extends Event {
+abstract class ReadyListener extends Listener {
 	constructor() {
 		super({
 			name: 'ready',
@@ -14,4 +14,4 @@ abstract class ReadyEvent extends Event {
 	}
 }
 
-export default ReadyEvent;
+export default ReadyListener;

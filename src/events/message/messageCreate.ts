@@ -1,13 +1,13 @@
 import { setTimeout } from 'node:timers';
 import { Guild, Message, TextChannel, Permissions } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { config } from '#root/config';
 
-abstract class MessageEvent extends Event {
+abstract class MessageListener extends Listener {
 	constructor() {
 		super({
 			name: 'messageCreate',
@@ -179,4 +179,4 @@ abstract class MessageEvent extends Event {
 	}
 }
 
-export default MessageEvent;
+export default MessageListener;

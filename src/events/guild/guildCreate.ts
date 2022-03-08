@@ -1,8 +1,8 @@
 import { Guild, MessageEmbed, WebhookClient } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
 
-abstract class GuildCreateEvent extends Event {
+abstract class GuildCreateListener extends Listener {
 	constructor() {
 		super({
 			name: 'guildCreate',
@@ -26,4 +26,4 @@ abstract class GuildCreateEvent extends Event {
 	}
 }
 
-export default GuildCreateEvent;
+export default GuildCreateListener;

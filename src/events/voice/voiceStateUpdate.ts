@@ -1,10 +1,10 @@
 import { MessageEmbed, TextChannel, VoiceState } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { formatMoney } from '#utils/util';
 import { logger } from '#lib/structures';
 
-abstract class VoiceStateUpdate extends Event {
+abstract class VoiceStateUpdateListener extends Listener {
 	constructor() {
 		super({
 			name: 'voiceStateUpdate',
@@ -85,4 +85,4 @@ abstract class VoiceStateUpdate extends Event {
 	}
 }
 
-export default VoiceStateUpdate;
+export default VoiceStateUpdateListener;
