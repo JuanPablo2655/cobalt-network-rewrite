@@ -10,8 +10,7 @@ abstract class ShardResumeListener extends Listener {
 	}
 
 	async run(id: number, replayedEvents: number) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
 		const shardEmbed = new MessageEmbed()
 			.setTitle(`Shard Resume`)

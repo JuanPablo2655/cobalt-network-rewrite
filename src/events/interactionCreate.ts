@@ -11,7 +11,6 @@ abstract class InteractionListener extends Listener {
 	}
 
 	async run(interaction: Interaction) {
-		this.cobalt.metrics.eventInc(this.name);
 		if (!interaction.isCommand()) return;
 		if (!interaction.inCachedGuild()) return;
 

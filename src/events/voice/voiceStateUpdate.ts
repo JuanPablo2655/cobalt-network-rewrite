@@ -12,8 +12,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 	}
 
 	async run(oldState: VoiceState, newState: VoiceState) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (newState.member?.partial) await newState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;

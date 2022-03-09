@@ -20,7 +20,7 @@
   color: '276bd1'
 - name: 'duplicate'
   color: 'cfd3d7'
-- name: 'events'
+- name: 'listeners'
   color: '80c042'
 - name: 'feature request'
   color: 'fcf95a'

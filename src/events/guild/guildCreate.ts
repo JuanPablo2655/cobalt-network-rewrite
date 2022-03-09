@@ -10,8 +10,7 @@ abstract class GuildCreateListener extends Listener {
 	}
 
 	async run(guild: Guild) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (!guild) return;
 		if (!guild.available) return;
 		await this.cobalt.db.addGuild(guild.id);

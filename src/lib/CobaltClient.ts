@@ -19,7 +19,7 @@ export class CobaltClient extends Client {
 	public events = new Collection<string, ListenerOptions>();
 	public interactions = new Collection<string, InteractionCommandOptions>();
 	public voiceTime = new Map<Snowflake, number>();
-	public testEvents = config.testEvents;
+	public testListeners = config.testListeners;
 	public disableXp = config.disableXp;
 	public db = new Database(this, config.mongoURL);
 	public exp = new Experience(this);
@@ -29,6 +29,7 @@ export class CobaltClient extends Client {
 
 	constructor() {
 		super(CLIENT_OPTIONS);
+		this.on('raw', packet => this.metrics.eventInc(packet.t));
 	}
 
 	public async login(token = config.token) {

@@ -9,7 +9,6 @@ abstract class ReadyListener extends Listener {
 	}
 
 	async run() {
-		this.cobalt.metrics.eventInc(this.name);
 		logger.info('Online!');
 	}
 }

@@ -16,7 +16,6 @@ abstract class MessageListener extends Listener {
 
 	async run(message: Message) {
 		this.cobalt.metrics.messageInc();
-		this.cobalt.metrics.eventInc(this.name);
 		if (message.guild instanceof Guild) this.cobalt.metrics.messageInc(message.guild.id);
 		const guild = await this.cobalt.db.getGuild(message?.guild?.id);
 

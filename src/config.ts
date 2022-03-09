@@ -21,8 +21,8 @@ export const config = {
 	mongoURL: process.env.MONGOURL ?? 'mongodb://localhost:27017/cobalt',
 	/** Redis URI */
 	redis: process.env.REDIS ?? 'redis://localhost:6379',
-	/** Either test events or not */
-	testEvents: process.env.TESTEVENTS === 'true' ?? false,
+	/** Either test listeners or not */
+	testListeners: process.env.TESTLISTENERS === 'true' ?? false,
 	/** Disable XP in devlopment */
 	disableXp: process.env.DISABLEXP === 'true' ?? false,
 	/** Webhook URLs */

@@ -10,8 +10,7 @@ abstract class MessageUpdateListener extends Listener {
 	}
 
 	async run(oldMessage: Message, newMessage: Message) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (!oldMessage.author) return;
 		if (oldMessage === newMessage || newMessage.author.bot) return;
 		if (!newMessage.guild) return;

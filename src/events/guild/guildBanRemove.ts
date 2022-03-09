@@ -9,8 +9,7 @@ abstract class GuildBanRemoveListener extends Listener {
 	}
 
 	async run(ban: GuildBan) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (ban.user.partial) await ban.user.fetch();
 		if (!ban.guild) return;
 		if (!ban.guild.available) return;

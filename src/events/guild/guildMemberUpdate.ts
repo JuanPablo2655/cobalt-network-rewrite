@@ -9,8 +9,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 	}
 
 	async run(oldMember: GuildMember, newMember: GuildMember) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (oldMember.partial) await oldMember.fetch();
 		if (newMember.partial) await newMember.fetch();
 		if (!oldMember.guild) return;

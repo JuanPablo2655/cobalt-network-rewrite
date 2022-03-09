@@ -10,8 +10,7 @@ abstract class MessageDeleteListener extends Listener {
 	}
 
 	async run(message: Message) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (!message.author) return;
 		if (!message.guild) return;
 		if (!message.guild.available) return;
