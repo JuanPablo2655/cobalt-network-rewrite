@@ -1,16 +1,15 @@
 import { GuildBan, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 
-abstract class GuildBanAddEvent extends Event {
+abstract class GuildBanRemoveListener extends Listener {
 	constructor() {
 		super({
-			name: 'guildBanAdd',
+			name: 'guildBanRemove',
 		});
 	}
 
 	async run(ban: GuildBan) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (ban.user.partial) await ban.user.fetch();
 		if (!ban.guild) return;
 		if (!ban.guild.available) return;
@@ -27,8 +26,8 @@ abstract class GuildBanAddEvent extends Event {
 		const avatar = ban.user.displayAvatarURL({ format: 'png', dynamic: true });
 		const logEmbed = new MessageEmbed()
 			.setAuthor({ name: ban.user.username, iconURL: avatar })
-			.setTitle('Member Banned')
-			.setColor('#8f0a0a')
+			.setTitle('Member Unbanned')
+			.setColor('#118511')
 			.setDescription(`**Reason:** ${ban.reason || audit?.reason || 'No reason provided'}`)
 			.setFooter({ text: `User ID: ${ban.user.id}` })
 			.setTimestamp();
@@ -36,4 +35,4 @@ abstract class GuildBanAddEvent extends Event {
 	}
 }
 
-export default GuildBanAddEvent;
+export default GuildBanRemoveListener;

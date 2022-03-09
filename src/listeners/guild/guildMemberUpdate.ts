@@ -1,7 +1,7 @@
 import { GuildMember, MessageEmbed, Role, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 
-abstract class GuildMemberUpdateEvent extends Event {
+abstract class GuildMemberUpdateListener extends Listener {
 	constructor() {
 		super({
 			name: 'guildMemberUpdate',
@@ -9,8 +9,7 @@ abstract class GuildMemberUpdateEvent extends Event {
 	}
 
 	async run(oldMember: GuildMember, newMember: GuildMember) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (oldMember.partial) await oldMember.fetch();
 		if (newMember.partial) await newMember.fetch();
 		if (!oldMember.guild) return;
@@ -78,4 +77,4 @@ abstract class GuildMemberUpdateEvent extends Event {
 	}
 }
 
-export default GuildMemberUpdateEvent;
+export default GuildMemberUpdateListener;

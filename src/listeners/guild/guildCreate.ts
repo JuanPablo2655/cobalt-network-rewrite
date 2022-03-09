@@ -1,23 +1,22 @@
 import { Guild, MessageEmbed, WebhookClient } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
 
-abstract class GuildDeleteEvent extends Event {
+abstract class GuildCreateListener extends Listener {
 	constructor() {
 		super({
-			name: 'guildDelete',
+			name: 'guildCreate',
 		});
 	}
 
 	async run(guild: Guild) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (!guild) return;
 		if (!guild.available) return;
-		await this.cobalt.db.removeGuild(guild.id);
+		await this.cobalt.db.addGuild(guild.id);
 		const cobaltHook = new WebhookClient({ url: config.webhooks.guild! });
 		const guildEmbed = new MessageEmbed()
-			.setTitle(`Guild Deleted`)
+			.setTitle(`New Guild Created`)
 			.setThumbnail(guild.iconURL({ format: 'png', dynamic: true }) ?? '')
 			.setDescription(`Guild Name: **${guild.name}**\nGuild ID: **${guild.id}**\nmember: **${guild.memberCount}**`)
 			.setFooter({ text: `Now I'm in ${this.cobalt.guilds.cache.size} guilds` })
@@ -26,4 +25,4 @@ abstract class GuildDeleteEvent extends Event {
 	}
 }
 
-export default GuildDeleteEvent;
+export default GuildCreateListener;

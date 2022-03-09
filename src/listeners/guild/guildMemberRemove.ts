@@ -1,7 +1,7 @@
 import { GuildMember, MessageEmbed, Snowflake, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 
-abstract class GuildMemberRemoveEvent extends Event {
+abstract class GuildMemberRemoveListener extends Listener {
 	constructor() {
 		super({
 			name: 'guildMemberRemove',
@@ -9,8 +9,7 @@ abstract class GuildMemberRemoveEvent extends Event {
 	}
 
 	async run(member: GuildMember) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;
@@ -53,4 +52,4 @@ abstract class GuildMemberRemoveEvent extends Event {
 	}
 }
 
-export default GuildMemberRemoveEvent;
+export default GuildMemberRemoveListener;

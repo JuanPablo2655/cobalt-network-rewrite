@@ -1,8 +1,8 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { getImage } from '#utils/util';
 
-abstract class MessageDeleteEvent extends Event {
+abstract class MessageDeleteListener extends Listener {
 	constructor() {
 		super({
 			name: 'messageDelete',
@@ -10,8 +10,7 @@ abstract class MessageDeleteEvent extends Event {
 	}
 
 	async run(message: Message) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (!message.author) return;
 		if (!message.guild) return;
 		if (!message.guild.available) return;
@@ -41,4 +40,4 @@ abstract class MessageDeleteEvent extends Event {
 	}
 }
 
-export default MessageDeleteEvent;
+export default MessageDeleteListener;

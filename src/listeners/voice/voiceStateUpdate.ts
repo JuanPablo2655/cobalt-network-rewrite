@@ -1,10 +1,10 @@
 import { MessageEmbed, TextChannel, VoiceState } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { formatMoney } from '#utils/util';
 import { logger } from '#lib/structures';
 
-abstract class VoiceStateUpdate extends Event {
+abstract class VoiceStateUpdateListener extends Listener {
 	constructor() {
 		super({
 			name: 'voiceStateUpdate',
@@ -12,8 +12,7 @@ abstract class VoiceStateUpdate extends Event {
 	}
 
 	async run(oldState: VoiceState, newState: VoiceState) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (newState.member?.partial) await newState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;
@@ -85,4 +84,4 @@ abstract class VoiceStateUpdate extends Event {
 	}
 }
 
-export default VoiceStateUpdate;
+export default VoiceStateUpdateListener;

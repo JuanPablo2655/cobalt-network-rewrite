@@ -4,6 +4,7 @@ import { ClientEvents, Snowflake } from 'discord.js';
 import express, { Express } from 'express';
 import { Counter, Gauge, collectDefaultMetrics, register } from 'prom-client';
 import { CobaltClient } from '../CobaltClient';
+import { seconds } from './common';
 
 export default class Metrics {
 	private messageCounter: Counter<string>;
@@ -88,7 +89,7 @@ export default class Metrics {
 		const ping = () => {
 			this.latency.labels('Websocket').set(this.cobalt.ws.ping);
 		};
-		setInterval(ping, 15 * 1000); // 15s
+		setInterval(ping, seconds(15));
 
 		this.app.get('/metrics', async (_, res) => {
 			try {

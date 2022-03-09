@@ -2,8 +2,8 @@ import process from 'node:process';
 import { Client, Collection, Snowflake } from 'discord.js';
 import Redis from 'ioredis';
 import * as dotenv from 'dotenv';
-import { CommandRegistry, EventRegistry, InteractionRegistry, logger } from './structures';
-import { EventOptions } from './typings/Options';
+import { CommandRegistry, ListenerRegistry, InteractionRegistry, logger } from './structures';
+import { ListenerOptions } from './typings/Options';
 import Database from './utils/Database';
 import Experience from './utils/Experience';
 import Economy from './utils/Economy';
@@ -16,10 +16,10 @@ export class CobaltClient extends Client {
 	public dev = process.env.NODE_ENV !== 'production';
 	public commands = new Collection<string, GenericCommandOptions>();
 	public cooldowns = new Collection<string, Collection<string, number>>();
-	public events = new Collection<string, EventOptions>();
+	public events = new Collection<string, ListenerOptions>();
 	public interactions = new Collection<string, InteractionCommandOptions>();
 	public voiceTime = new Map<Snowflake, number>();
-	public testEvents = config.testEvents;
+	public testListeners = config.testListeners;
 	public disableXp = config.disableXp;
 	public db = new Database(this, config.mongoURL);
 	public exp = new Experience(this);
@@ -29,11 +29,12 @@ export class CobaltClient extends Client {
 
 	constructor() {
 		super(CLIENT_OPTIONS);
+		this.on('raw', packet => this.metrics.eventInc(packet.t));
 	}
 
 	public async login(token = config.token) {
 		CommandRegistry(this);
-		EventRegistry(this);
+		ListenerRegistry(this);
 		InteractionRegistry(this);
 		const loginRespopnse = await super.login(token);
 		this.metrics.start();

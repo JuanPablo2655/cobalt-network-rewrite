@@ -1,8 +1,8 @@
 import { MessageEmbed, WebhookClient } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
 
-abstract class ShardResumeEvent extends Event {
+abstract class ShardResumeListener extends Listener {
 	constructor() {
 		super({
 			name: 'shardResume',
@@ -10,8 +10,7 @@ abstract class ShardResumeEvent extends Event {
 	}
 
 	async run(id: number, replayedEvents: number) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
 		const shardEmbed = new MessageEmbed()
 			.setTitle(`Shard Resume`)
@@ -21,4 +20,4 @@ abstract class ShardResumeEvent extends Event {
 	}
 }
 
-export default ShardResumeEvent;
+export default ShardResumeListener;

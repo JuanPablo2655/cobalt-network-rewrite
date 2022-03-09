@@ -1,8 +1,8 @@
 import { CloseEvent, MessageEmbed, WebhookClient } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
 
-abstract class ShardDisconnectEvent extends Event {
+abstract class ShardDisconnectListener extends Listener {
 	constructor() {
 		super({
 			name: 'shardDisconnect',
@@ -10,8 +10,7 @@ abstract class ShardDisconnectEvent extends Event {
 	}
 
 	async run(event: CloseEvent, id: number) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
 		const shardEmbed = new MessageEmbed()
 			.setTitle(`Shard Disconnect`)
@@ -21,4 +20,4 @@ abstract class ShardDisconnectEvent extends Event {
 	}
 }
 
-export default ShardDisconnectEvent;
+export default ShardDisconnectListener;

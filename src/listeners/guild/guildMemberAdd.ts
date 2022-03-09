@@ -1,7 +1,7 @@
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from '#lib/structures/events';
+import { Listener } from '#lib/structures/listeners';
 
-abstract class GuildMemberAddEvent extends Event {
+abstract class GuildMemberAddListener extends Listener {
 	constructor() {
 		super({
 			name: 'guildMemberAdd',
@@ -9,8 +9,7 @@ abstract class GuildMemberAddEvent extends Event {
 	}
 
 	async run(member: GuildMember) {
-		this.cobalt.metrics.eventInc(this.name);
-		if (!this.cobalt.testEvents) return;
+		if (!this.cobalt.testListeners) return;
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;
@@ -59,4 +58,4 @@ abstract class GuildMemberAddEvent extends Event {
 	}
 }
 
-export default GuildMemberAddEvent;
+export default GuildMemberAddListener;

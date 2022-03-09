@@ -1,4 +1,4 @@
 export * from './commands';
-export * from './events';
+export * from './listeners';
 export * from './registries/export/RegistryIndex';
 export * from './logger';
