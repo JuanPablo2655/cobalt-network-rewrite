@@ -14,7 +14,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 	setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
 	testEnvironment: 'node',
 	collectCoverage: true,
-	collectCoverageFrom: ['<rootDir>/src/utils/util.ts', '<rootDir>/src/data/**/*.ts'],
+	collectCoverageFrom: ['<rootDir>/src/lib/utils/util.ts', '<rootDir>/src/lib/data/**/*.ts'],
 	coverageDirectory: 'coverage',
 	coverageThreshold: {
 		global: {
