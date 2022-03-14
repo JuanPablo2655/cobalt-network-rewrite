@@ -1,5 +1,10 @@
 name: Testing
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
 jobs:
   typescript:
     name: Typescript
@@ -46,8 +51,8 @@ jobs:
         run: yarn --immutable
       - name: Run Eslint
         run: yarn lint --fix=false
-  codecov:
-    name: CodeCov
+  Testing:
+    name: Unit Testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -60,9 +65,29 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
       - name: Run Test
-        run: yarn test
+        run: yarn test --coverage
+      - name: Store code coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage/
+  codecov:
+    name: CodeCov
+    needs: [Testing]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Download Coverage report
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+          path: coverage/
       - name: Upload Coverage
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          directory: coverage/
           fail_ci_if_error: true
