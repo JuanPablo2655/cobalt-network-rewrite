@@ -50,7 +50,7 @@
     "express": "^4.17.3",
     "glob": "^7.1.7",
     "ioredis": "^4.28.5",
-    "mongoose": "^6.2.4",
+    "mongoose": "^6.2.5",
     "node-fetch": "2.6.7",
     "pino": "^7.8.0",
     "pino-elasticsearch": "^6.2.0",
