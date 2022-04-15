@@ -134,7 +134,7 @@ abstract class MessageListener extends Listener {
 						const now = Date.now();
 						const timestamp = await this.cobalt.redis.get(`${command.name}:${message.author.id}`);
 						if (!timestamp)
-							await this.cobalt.redis.set(`${command.name}:${message.author.id}`, now, 'ex', command.cooldown);
+							await this.cobalt.redis.set(`${command.name}:${message.author.id}`, now, 'EX', command.cooldown);
 					}
 				};
 				const isInCooldown = async (): Promise<boolean> => {
