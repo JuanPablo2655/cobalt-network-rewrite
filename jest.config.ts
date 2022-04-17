@@ -22,6 +22,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 		'!<rootDir>/src/lib/utils/Experience.ts',
 		'!<rootDir>/src/lib/utils/Metrics.ts',
 		'!<rootDir>/src/lib/utils/constants.ts',
+		'!<rootDir>/src/lib/utils/functions/permissions.ts',
 	],
 	coverageDirectory: 'coverage',
 	coverageThreshold: {

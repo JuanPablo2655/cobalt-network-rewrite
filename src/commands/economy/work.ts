@@ -1,9 +1,10 @@
 import { Message } from 'discord.js';
 import { jobs } from '#lib/data';
 import { GenericCommand } from '#lib/structures/commands';
-import { addMulti, calcMulti, formatNumber } from '#utils/util';
+import { addMulti, calcMulti } from '#utils/util';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
+import { formatNumber } from '#utils/functions';
 
 abstract class WorkCommand extends GenericCommand {
 	constructor() {

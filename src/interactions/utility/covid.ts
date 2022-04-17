@@ -2,7 +2,7 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import { InteractionCommand } from '#lib/structures/commands';
 import { CovidAll, covidCountry, covidState } from '#lib/typings';
-import { formatNumber } from '#utils/util';
+import { formatNumber } from '#utils/functions';
 import { covidCommand } from './options';
 import { Identifiers, UserError } from '#lib/errors';
 

@@ -1,8 +1,9 @@
 import { Message, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
-import { findMember, formatNumber } from '#utils/util';
+import { findMember } from '#utils/util';
 import { Identifiers, UserError } from '#lib/errors';
+import { formatNumber } from '#utils/functions';
 
 abstract class GetVcTimeCommand extends GenericCommand {
 	constructor() {

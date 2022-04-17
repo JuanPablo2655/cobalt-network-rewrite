@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
-import { formatNumber } from '#utils/util';
+import { formatNumber } from '#utils/functions';
 import { Default } from '#lib/typings';
 import { Identifiers, UserError } from '#lib/errors';
 

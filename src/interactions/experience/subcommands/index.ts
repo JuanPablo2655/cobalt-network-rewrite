@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { CobaltClient } from '#lib/CobaltClient';
-import { formatNumber } from '#utils/util';
+import { formatNumber } from '#utils/functions';
 import { Default } from '#lib/typings';
 import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
