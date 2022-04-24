@@ -1,7 +1,7 @@
 import { MessageEmbed, TextChannel, VoiceState } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { Listener } from '#lib/structures/listeners';
-import { formatMoney } from '#utils/util';
+import { formatMoney } from '#utils/functions';
 import { logger } from '#lib/structures';
 
 abstract class VoiceStateUpdateListener extends Listener {

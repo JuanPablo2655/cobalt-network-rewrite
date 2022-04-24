@@ -1,7 +1,8 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { findMember, formatMoney } from '#utils/util';
+import { findMember } from '#utils/util';
 import { Identifiers, UserError } from '#lib/errors';
+import { formatMoney } from '#utils/functions';
 
 abstract class PayComamnd extends GenericCommand {
 	constructor() {
