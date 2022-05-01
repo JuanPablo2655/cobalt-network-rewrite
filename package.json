@@ -71,7 +71,7 @@
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
     "cloc": "^2.9.0",
-    "discord-api-types": "^0.26.1",
+    "discord-api-types": "^0.32.0",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
