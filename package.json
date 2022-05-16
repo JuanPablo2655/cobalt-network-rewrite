@@ -28,7 +28,8 @@
     "deploy:commands": "node --enable-source-maps dist/deploy.js",
     "dev": "yarn build && yarn start:dev",
     "prettier": "prettier --write .",
-    "lint": "eslint --fix --ext ts src tests"
+    "lint": "eslint --fix --ext ts src tests",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -76,6 +77,7 @@
     "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.1",
     "jest": "^27.5.1",
     "pino-pretty": "^7.6.1",
     "prettier": "^2.6.2",
