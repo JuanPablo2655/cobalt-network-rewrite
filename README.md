@@ -16,7 +16,13 @@ Go to the project directory
   cd cobalt-network-rewrite
 ```
 
-Create your .env file in the root folder (see .env.example)
+Create your .env file in the root project folder (see .env.example)
+
+Make sure Yarn 1 is installed in your computer and run the setup script
+
+```bash
+  yarn prepare
+```
 
 Make sure Docker and Docker Compose is installed in your computer and then start the container
 
