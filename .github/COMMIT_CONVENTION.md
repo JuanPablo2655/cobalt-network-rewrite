@@ -58,7 +58,7 @@ If the commit reverts a previous commit, it should begin with `revert:`, followe
 
 ### Type
 
-A prefix must be suppiled for a commit to be correct i.e. `feat`, `fix` and etc
+**ONE** prefix must be suppiled for a commit to be correct i.e. `feat`, `fix` and etc.
 
 ### Scope
 
