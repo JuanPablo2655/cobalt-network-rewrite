@@ -1,9 +1,10 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { findMember, formatNumber } from '#utils/util';
+import { findMember } from '#utils/util';
 import { Default } from '#lib/typings';
 import { seconds } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
+import { formatNumber } from '#utils/functions';
 
 abstract class removeSocialCredit extends GenericCommand {
 	constructor() {

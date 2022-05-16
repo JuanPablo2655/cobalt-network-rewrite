@@ -2,10 +2,11 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { jobs } from '#lib/data';
 import { CobaltClient } from '#lib/CobaltClient';
-import { addMulti, calcMulti, formatMoney, formatNumber } from '#utils/util';
+import { addMulti, calcMulti } from '#utils/util';
 import { Default } from '#lib/typings';
 import { days, months } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
+import { formatMoney, formatNumber } from '#utils/functions';
 
 export async function work(cobalt: CobaltClient, interaction: CommandInteraction) {
 	const user = await cobalt.db.getUser(interaction.user.id);

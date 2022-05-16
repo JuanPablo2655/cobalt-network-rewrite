@@ -1,11 +1,10 @@
 import { setTimeout } from 'node:timers';
 import { Guild, Message, TextChannel, Permissions } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
-import { formatNumber } from '#utils/util';
 import { Default } from '#lib/typings';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
-import { config } from '#root/config';
+import { formatNumber, isOwner } from '#utils/functions';
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -89,7 +88,7 @@ abstract class MessageListener extends Listener {
 					});
 				if (guild?.disabledCategories?.includes(command.category)) return;
 				if (guild?.disabledCommands?.includes(command.name)) return;
-				if (command.devOnly && !config.owners?.includes(message.author.id)) {
+				if (command.devOnly && !isOwner(message.member!)) {
 					return;
 				} else if (command.ownerOnly && (message.guild as Guild).ownerId !== message.author.id) {
 					return void message.reply({ content: 'This comamnd can only be used by the owner of the guild.' });

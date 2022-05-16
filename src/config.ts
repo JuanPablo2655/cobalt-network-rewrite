@@ -3,6 +3,8 @@ import { type ClientOptions, Intents, Options } from 'discord.js';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+export const OWNERS = process.env.OWNERS?.split(',') ?? ['288703114473635841'];
+
 export const config = {
 	/** Client information */
 	client: {
@@ -13,8 +15,6 @@ export const config = {
 	},
 	/** Bot token */
 	token: process.env.TOKEN,
-	/** Owners ids  */
-	owners: process.env.OWNERS?.split(',') ?? ['288703114473635841'],
 	/** Default message command prefix */
 	prefix: process.env.PREFIX ?? 'cn!',
 	/** MongoDB URI */

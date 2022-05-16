@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
-import { formatMoney } from '#utils/util';
+import { formatMoney } from '#utils/functions';
 import { Default } from '#lib/typings';
 import { Identifiers, UserError } from '#lib/errors';
 

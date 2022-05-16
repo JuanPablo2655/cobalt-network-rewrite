@@ -1,7 +1,7 @@
 import { CommandInteraction, GuildMember, Interaction, PermissionString, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
-import { config } from '#root/config';
+import { isOwner } from '#utils/functions';
 
 abstract class InteractionListener extends Listener {
 	constructor() {
@@ -80,7 +80,7 @@ abstract class InteractionListener extends Listener {
 	}
 
 	isDev(inteaction: CommandInteraction) {
-		return config.owners?.includes(inteaction.user.id);
+		return isOwner(inteaction.member as GuildMember);
 	}
 }
 
