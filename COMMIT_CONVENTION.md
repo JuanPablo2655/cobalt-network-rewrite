@@ -12,11 +12,9 @@ Messages must be matched by the following regex:
 
 #### Examples
 
-
 ```
 feat(GenericCommand): add 'tag' method
 ```
-
 
 ```
 fix(Guild): handle events correctly
@@ -24,13 +22,11 @@ fix(Guild): handle events correctly
 close #28
 ```
 
-
 ```
 perf(core): improve patching by removing 'bar' option
 
 BREAKING CHANGE: The 'bar' option has been removed.
 ```
-
 
 ```
 revert: feat(Managers): add Managers
