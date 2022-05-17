@@ -14,7 +14,7 @@ To get ready to work on the codebase, please do the following:
 2. Run `yarn --immutable`
 3. Run `yarn prepare` to setup the git hooks
 4. Code your heart out!
-5. Run `yarn lint` to run ESLint and ensure any code changes are valid
+5. Run `yarn lint` to run ESLint and `yarn test` to run Jest to ensure any code changes are valid
 6. [Submit a pull request](https://github.com/JuanPablo2655/cobalt-network-rewrite/compare) (Make sure you follow the [conventional commit format](https://github.com/JuanPablo2655/cobalt-network-rewrite/blob/master/.github/COMMIT_CONVENTION.md))
 
 <!--
