@@ -2,6 +2,10 @@
 
 A full rewrite of the previous codebase in TypeScript.
 
+## Contributing
+
+See [the contribution guide](https://github.com/JuanPablo2655/cobalt-network-rewrite/blob/master/CONTRIBUTING.md) if you'd like to submit a PR.
+
 ## Run Locally
 
 Clone the project
