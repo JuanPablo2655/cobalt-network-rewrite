@@ -11,7 +11,7 @@ abstract class DisableCategoryCommand extends GenericCommand {
 			description: 'Disable a category in your server',
 			category: 'settings',
 			aliases: ['dcat'],
-			userPermissions: ['ADMINISTRATOR'],
+			userPermissions: ['Administrator'],
 		});
 	}
 

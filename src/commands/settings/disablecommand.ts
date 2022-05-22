@@ -10,7 +10,7 @@ abstract class DisableCommandCommand extends GenericCommand {
 			description: 'Disable a command in your server.',
 			category: 'settings',
 			aliases: ['dc'],
-			userPermissions: ['ADMINISTRATOR'],
+			userPermissions: ['Administrator'],
 		});
 	}
 

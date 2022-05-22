@@ -11,7 +11,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 			usage: '<list|add|remove> [word]',
 			aliases: ['filterword', 'filterwords', 'blw'],
 			guildOnly: true,
-			userPermissions: ['MANAGE_GUILD'],
+			userPermissions: ['ManageGuild'],
 		});
 	}
 

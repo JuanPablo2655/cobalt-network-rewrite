@@ -10,7 +10,7 @@ abstract class EnableCategoryCommand extends GenericCommand {
 			description: 'Enable a category in your server.',
 			category: 'settings',
 			aliases: ['ecat'],
-			userPermissions: ['ADMINISTRATOR'],
+			userPermissions: ['Administrator'],
 		});
 	}
 

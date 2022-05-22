@@ -8,7 +8,7 @@ abstract class PrefixCommand extends GenericCommand {
 			description: 'Change the prefix for the server.',
 			category: 'settings',
 			guildOnly: true,
-			userPermissions: ['MANAGE_GUILD'],
+			userPermissions: ['ManageGuild'],
 		});
 	}
 
