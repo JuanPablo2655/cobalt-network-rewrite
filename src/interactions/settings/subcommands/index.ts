@@ -1,8 +1,8 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
 
-export async function category(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function category(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const saveCategories = ['dev', 'settings'];
 	const categories = removeDuplicates(cobalt.commands.map(c => c.category));
 	const category = interaction.options.getString('category', true).toLowerCase();
@@ -28,7 +28,7 @@ export async function category(cobalt: CobaltClient, interaction: CommandInterac
 	}
 }
 
-export async function command(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function command(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const saveCommands = ['help', 'enablecommand', 'disablecommand'];
 	const saveCategories = ['dev', 'settings'];
 	const commandName = interaction.options.getString('name', true).toLowerCase();
@@ -59,7 +59,7 @@ export async function command(cobalt: CobaltClient, interaction: CommandInteract
 	}
 }
 
-// export async function event(cobalt: CobaltClient, interaction: CommandInteraction) {} // TODO
+// export async function event(cobalt: CobaltClient, interaction: ChatInputCommandInteraction) {} // TODO
 
 function removeDuplicates(array: Array<string>) {
 	return [...new Set(array)];

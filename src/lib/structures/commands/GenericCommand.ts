@@ -60,8 +60,8 @@ export abstract class GenericCommand extends BaseCommand {
 		this.guildOnly = options.guildOnly ?? false;
 		this.nsfwOnly = options.nsfwOnly ?? false;
 		this.cooldown = options.cooldown ?? seconds(1);
-		this.userPermissions = options.userPermissions ?? ['SEND_MESSAGES'];
-		this.clientPermissions = options.clientPermissions ?? ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'];
+		this.userPermissions = options.userPermissions ?? ['SendMessages'];
+		this.clientPermissions = options.clientPermissions ?? ['SendMessages', 'ReadMessageHistory', 'EmbedLinks'];
 	}
 
 	/**

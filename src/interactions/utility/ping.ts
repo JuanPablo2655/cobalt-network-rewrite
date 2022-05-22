@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
 import { pingCommand } from './options';
 
@@ -10,7 +10,7 @@ abstract class PingInteractionCommand extends InteractionCommand {
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		return interaction.reply({ content: `My ping is ${Math.round(this.cobalt.ws.ping)}ms` });
 	}
 }

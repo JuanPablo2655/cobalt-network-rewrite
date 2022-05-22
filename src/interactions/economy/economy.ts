@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
 import { economyCommand } from './options';
 import { balance, daily, monthly, pay, weekly, work } from './subcommands';
@@ -13,7 +13,7 @@ abstract class EconomyInteractionCommand extends InteractionCommand {
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		const command = interaction.options.getSubcommand(true);
 		switch (command) {
 			case 'work': {

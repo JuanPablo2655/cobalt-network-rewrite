@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember } from '#utils/util';
@@ -30,7 +30,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 				const sum = memberData.vcHours.reduce((a, b) => a + b);
 				const average = sum / memberData.vcHours.length;
 				const sorted = memberData.vcHours.sort((a, b) => b - a);
-				const vcEmbed = new MessageEmbed()
+				const vcEmbed = new EmbedBuilder()
 					.setTitle(`${member?.user.username}'s VC Data`)
 					.setDescription(
 						`**Total Time:** ${prettyMilliseconds(sum)}\n**Average Time:** ${prettyMilliseconds(
@@ -49,7 +49,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 				const sum = user.vcHours.reduce((a, b) => a + b);
 				const average = sum / user.vcHours.length;
 				const sorted = user.vcHours.sort((a, b) => b - a);
-				const vcEmbed = new MessageEmbed()
+				const vcEmbed = new EmbedBuilder()
 					.setTitle(`${member?.user.username}'s Global VC Data`)
 					.setDescription(
 						`**Total Time:** ${prettyMilliseconds(sum)}\n**Average Time:** ${prettyMilliseconds(

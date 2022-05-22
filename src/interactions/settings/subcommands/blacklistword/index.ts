@@ -1,8 +1,8 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
 
-export async function add(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function add(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const word = interaction.options.getString('word', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);
@@ -21,7 +21,7 @@ export async function add(cobalt: CobaltClient, interaction: CommandInteraction)
 	return interaction.reply({ content: `${word} was added to the list of blacklisted words` });
 }
 
-export async function remove(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function remove(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const word = interaction.options.getString('word', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);
@@ -35,7 +35,7 @@ export async function remove(cobalt: CobaltClient, interaction: CommandInteracti
 	return interaction.reply({ content: `${word} was removed from the list of blacklisted words` });
 }
 
-export async function list(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function list(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);

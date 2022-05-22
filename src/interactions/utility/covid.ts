@@ -1,4 +1,4 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 import { InteractionCommand } from '#lib/structures/commands';
 import { CovidAll, covidCountry, covidState } from '#lib/typings';
@@ -14,7 +14,7 @@ abstract class CovidInteractionCommand extends InteractionCommand {
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		const command = interaction.options.getSubcommand(true);
 		switch (command) {
 			case 'country': {
@@ -33,12 +33,12 @@ abstract class CovidInteractionCommand extends InteractionCommand {
 				break;
 		}
 	}
-	async country(interaction: CommandInteraction) {
+	async country(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
 		const name = interaction.options.getString('country', true);
 		const country = await fetch(`https://disease.sh/v3/covid-19/countries/${name}?strict=false`);
 		const res = (await country.json()) as covidCountry;
-		const covidEmbed = new MessageEmbed()
+		const covidEmbed = new EmbedBuilder()
 			.setTitle(`COVID-19: ${res.country}`)
 			.setDescription(
 				`Total Cases: **${formatNumber(res.cases)} (+ ${formatNumber(
@@ -53,14 +53,14 @@ abstract class CovidInteractionCommand extends InteractionCommand {
 		return interaction.editReply({ embeds: [covidEmbed] });
 	}
 
-	async state(interaction: CommandInteraction) {
+	async state(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
 		const name = interaction.options.getString('state', true);
 		const state = await fetch(`https://disease.sh/v3/covid-19/states/${name}`);
 		const res = (await state.json()) as covidState;
 		if (res.message === "State not found or doesn't have any cases")
 			throw new UserError({ identifer: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
-		const covidEmbed = new MessageEmbed()
+		const covidEmbed = new EmbedBuilder()
 			.setTitle(`COVID-19: ${res.state}`)
 			.setDescription(
 				`Total Cases: **${formatNumber(res.cases)} (+ ${formatNumber(
@@ -73,11 +73,11 @@ abstract class CovidInteractionCommand extends InteractionCommand {
 		return interaction.editReply({ embeds: [covidEmbed] });
 	}
 
-	async global(interaction: CommandInteraction) {
+	async global(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
 		const all = await fetch(`https://disease.sh/v3/covid-19/all`);
 		const res = (await all.json()) as CovidAll;
-		const covidEmbed = new MessageEmbed()
+		const covidEmbed = new EmbedBuilder()
 			.setTitle(`COVID-19 World Data`)
 			.setDescription(
 				`Total Cases: **${formatNumber(res.cases)} (+ ${formatNumber(

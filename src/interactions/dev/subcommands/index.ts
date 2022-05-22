@@ -1,14 +1,14 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 
-export async function reboot(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.reply({ content: 'Shutting down.' });
 	await cobalt.destory();
 }
 
-export async function pay(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);

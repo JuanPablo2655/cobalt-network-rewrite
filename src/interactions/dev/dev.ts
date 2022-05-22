@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ApplicationCommandPermissionType, ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
 import { devCommand } from './options';
 import { pay, reboot } from './subcommands';
@@ -12,14 +12,14 @@ abstract class PingInteractionCommand extends InteractionCommand {
 			permissions: [
 				{
 					id: '288703114473635841',
-					type: 'USER',
+					type: ApplicationCommandPermissionType.User,
 					permission: true,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		const command = interaction.options.getSubcommand(true);
 		switch (command) {
 			case 'reboot': {

@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { removeDuplicates, toCapitalize } from '#utils/util';
@@ -22,17 +22,17 @@ abstract class HelpCommand extends GenericCommand {
 		const categories = removeDuplicates(this.cobalt.commands.map(c => c.category as string));
 		if (command) {
 			const usage = command.usage ? `${command.name} ${command.usage}` : `${command.name}`;
-			const helpEmbed = new MessageEmbed().setColor('RANDOM');
-			helpEmbed
-				.setTitle(`${command.name} Info`)
-				.addField('Description:', `${command.description}`)
-				.addField('Usage:', `\`${guild?.prefix}${usage}\``)
-				.addField('Aliases:', `${command.aliases?.length ? command.aliases.join(', ') : 'None'}`)
-				.addField('Cooldown:', `${prettyMilliseconds((command.cooldown || 1) * 1000)}`)
-				.addField('Perms Needed:', `${command.clientPermissions?.map(p => `\`${p}\``).join(', ')}`);
+			const helpEmbed = new EmbedBuilder().setColor('Random');
+			helpEmbed.setTitle(`${command.name} Info`).addFields([
+				{ name: 'Description:', value: `${command.description}` },
+				{ name: 'Usage:', value: `${guild?.prefix}${usage}` },
+				{ name: 'Aliases:', value: `${command.aliases?.length ? command.aliases.join(', ') : 'None'}` },
+				{ name: 'Cooldown:', value: `${prettyMilliseconds((command.cooldown || 1) * 1000)}` },
+				{ name: 'Perms Needed:', value: `${command.clientPermissions?.map(p => `\`${p}\``).join(', ')}` },
+			]);
 			return message.reply({ embeds: [helpEmbed] });
 		} else if (categories.includes(args[0])) {
-			const helpEmbed = new MessageEmbed().setColor('RANDOM');
+			const helpEmbed = new EmbedBuilder().setColor('Random');
 			const commandNames: Array<string> = new Array<string>();
 			const commands = this.cobalt.commands.filter(c => c.category === args[0]);
 			for (const command of commands) {
@@ -44,11 +44,13 @@ abstract class HelpCommand extends GenericCommand {
 			helpEmbed.setDescription(`${commandNames.map(c => `\`${c}\``).join(', ')}`);
 			return message.reply({ embeds: [helpEmbed] });
 		} else {
-			const helpEmbed = new MessageEmbed().setColor('RANDOM');
+			const helpEmbed = new EmbedBuilder().setColor('Random');
 			helpEmbed.setDescription(`${this.cobalt.user?.username} Command List`);
 			for (const category of categories) {
 				if (category === 'dev') continue;
-				helpEmbed.addField(`${toCapitalize(category)}`, `\`${guild?.prefix}help ${category}\``, true);
+				helpEmbed.addFields([
+					{ name: `${toCapitalize(category)}`, value: `\`${guild?.prefix}help ${category}\``, inline: true },
+				]);
 			}
 			return message.reply({ embeds: [helpEmbed] });
 		}

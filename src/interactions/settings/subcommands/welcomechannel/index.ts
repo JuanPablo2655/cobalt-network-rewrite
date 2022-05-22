@@ -1,8 +1,8 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { UserError, Identifiers } from '#lib/errors';
 
-export async function channel(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function channel(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const channel = interaction.options.getChannel('channel', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);
@@ -17,7 +17,7 @@ export async function channel(cobalt: CobaltClient, interaction: CommandInteract
 	return interaction.reply({ content: `Successfully changed the log channel to ${channel}` });
 }
 
-export async function message(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function message(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const message = interaction.options.getString('message', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);
@@ -32,7 +32,7 @@ export async function message(cobalt: CobaltClient, interaction: CommandInteract
 	return interaction.reply({ content: `Successfully changed the welcome message to:\n\`${message}\`` });
 }
 
-export async function toggle(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function toggle(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const option = interaction.options.getBoolean('toggle', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await cobalt.db.getGuild(interaction.guild.id);

@@ -1,4 +1,4 @@
-import { GuildMember, MessageEmbed, Snowflake, TextChannel } from 'discord.js';
+import { GuildMember, EmbedBuilder, Snowflake, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 
 abstract class GuildMemberRemoveListener extends Listener {
@@ -20,7 +20,7 @@ abstract class GuildMemberRemoveListener extends Listener {
 		const logChannelId = guild?.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
-		const avatar = member.user.displayAvatarURL({ format: 'png', dynamic: true });
+		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
 		if (user && member.roles.cache.size !== 0) {
 			const roleList: Snowflake[] = member.roles.cache.map(r => r.id);
 			await this.cobalt.db.updateMember(member.user.id, member.guild.id, {
@@ -39,7 +39,7 @@ abstract class GuildMemberRemoveListener extends Listener {
 		}
 
 		const joined = Math.floor((Date.now() - member.guild.joinedTimestamp) / 100);
-		const logEmbed = new MessageEmbed()
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: member.user.username, iconURL: avatar })
 			.setTitle(`Member Left`)
 			.setColor('#8f0a0a')

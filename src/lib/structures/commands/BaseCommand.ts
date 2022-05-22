@@ -1,4 +1,4 @@
-import { PermissionString } from 'discord.js';
+import { PermissionsString } from 'discord.js';
 import { BaseCommandOptions, Categories } from '../../typings/CommandOptions';
 import { CobaltClient } from '../../CobaltClient';
 
@@ -21,12 +21,12 @@ export abstract class BaseCommand {
 	/**
 	 * The permissions the user needs to run the command
 	 */
-	public userPermissions: PermissionString[];
+	public userPermissions: PermissionsString[];
 
 	/**
 	 * The permission the client needs to properly run
 	 */
-	public clientPermissions: PermissionString[];
+	public clientPermissions: PermissionsString[];
 
 	public abstract cobalt: CobaltClient;
 

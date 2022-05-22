@@ -1,5 +1,5 @@
 import { setTimeout } from 'node:timers';
-import { Guild, Message, TextChannel, Permissions } from 'discord.js';
+import { Guild, Message, TextChannel, PermissionsBitField } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { Default } from '#lib/typings';
 import { minutes, seconds } from '#utils/common';
@@ -23,7 +23,7 @@ abstract class MessageListener extends Listener {
 		const prefixArr = message.content.match(prefixReg);
 		const prefix = prefixArr?.[0];
 		if (message.author.bot) return;
-		if (!message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && !message.author.bot) {
+		if (!message.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) && !message.author.bot) {
 			let hasBadWord = false;
 			const badWords: string[] = [];
 			guild?.blacklistedWords?.forEach(word => {
@@ -116,7 +116,7 @@ abstract class MessageListener extends Listener {
 					}
 					if (clientPermissions?.length) {
 						for (let i = 0; i < clientPermissions.length; i++) {
-							const hasPermission = message.guild?.me?.permissions.has(clientPermissions[i]);
+							const hasPermission = message.guild?.members.me?.permissions.has(clientPermissions[i]);
 							if (!hasPermission) missingPermissions.push(clientPermissions[i]);
 						}
 						if (missingPermissions.length)
