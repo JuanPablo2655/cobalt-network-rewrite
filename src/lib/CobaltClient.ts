@@ -33,12 +33,12 @@ export class CobaltClient extends Client {
 	}
 
 	public async login(token = config.token) {
-		CommandRegistry(this);
-		ListenerRegistry(this);
-		InteractionRegistry(this);
-		const loginRespopnse = await super.login(token);
+		await CommandRegistry(this);
+		await ListenerRegistry(this);
+		await InteractionRegistry(this);
+		const loginResponse = await super.login(token);
 		this.metrics.start();
-		return loginRespopnse;
+		return loginResponse;
 	}
 
 	public async destory() {

@@ -2,6 +2,7 @@ import { CobaltClient } from '../CobaltClient';
 import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
 import { logger } from '#lib/structures';
+import { resolve } from 'node:path';
 
 /**
  * Image extensions:
@@ -228,4 +229,11 @@ export function addMulti(amount: number, multi: number) {
  */
 export function removeDuplicates<T>(array: Array<T>) {
 	return [...new Set(array)];
+}
+
+export async function resloveFile<T>(file: string) {
+	const reslovedPath = resolve(file);
+	const File = await (await import(reslovedPath)).default;
+	if (!File?.constructor) return null;
+	return new File() as T;
 }
