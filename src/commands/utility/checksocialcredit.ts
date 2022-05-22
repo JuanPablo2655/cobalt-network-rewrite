@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember } from '#utils/util';
 import { Default } from '#lib/typings';
@@ -20,7 +20,7 @@ abstract class checkSocialCredit extends GenericCommand {
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		addCD();
 		const user = await this.cobalt.db.getUser(member?.id);
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle(`${member?.user.username}'s social credit`)
 			.setDescription(
 				`**Score:** ${formatNumber(

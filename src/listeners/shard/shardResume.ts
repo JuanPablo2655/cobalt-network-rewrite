@@ -1,4 +1,4 @@
-import { MessageEmbed, WebhookClient } from 'discord.js';
+import { EmbedBuilder, WebhookClient } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
 
@@ -12,7 +12,7 @@ abstract class ShardResumeListener extends Listener {
 	async run(id: number, replayedEvents: number) {
 		if (!this.cobalt.testListeners) return;
 		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
-		const shardEmbed = new MessageEmbed()
+		const shardEmbed = new EmbedBuilder()
 			.setTitle(`Shard Resume`)
 			.setDescription(`Shard \`${id}\` resumed: \`${replayedEvents}\``)
 			.setTimestamp();

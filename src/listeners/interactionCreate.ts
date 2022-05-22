@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, Interaction, PermissionString, TextChannel } from 'discord.js';
+import { ChatInputCommandInteraction, GuildMember, Interaction, PermissionsString, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
 import { isOwner } from '#utils/functions';
@@ -10,8 +10,8 @@ abstract class InteractionListener extends Listener {
 		});
 	}
 
-	async run(interaction: Interaction) {
-		if (!interaction.isCommand()) return;
+	async run(interaction: Interaction<'cached'>) {
+		if (!interaction.isChatInputCommand()) return;
 		if (!interaction.inCachedGuild()) return;
 
 		const command = this.cobalt.interactions.get(interaction.commandName);
@@ -26,7 +26,7 @@ abstract class InteractionListener extends Listener {
 				if (interaction.channel instanceof TextChannel) {
 					const userPermissions = command.userPermissions;
 					const clientPermissions = command.clientPermissions;
-					const missingPermissions = new Array<PermissionString>();
+					const missingPermissions = new Array<PermissionsString>();
 					if (userPermissions?.length) {
 						for (let i = 0; i < userPermissions.length; i++) {
 							const hasPermissions = interaction.channel
@@ -35,25 +35,27 @@ abstract class InteractionListener extends Listener {
 							if (!hasPermissions) missingPermissions.push(userPermissions[i]);
 						}
 						if (missingPermissions.length)
-							return interaction.reply({
+							interaction.reply({
 								content: `Your missing these required permissions: ${missingPermissions
 									.map(p => `\`${p}\``)
 									.join(', ')}`,
 								ephemeral: true,
 							});
+						return;
 					}
 					if (clientPermissions?.length) {
 						for (let i = 0; i < clientPermissions.length; i++) {
-							const hasPermission = interaction.guild?.me?.permissions.has(clientPermissions[i]);
+							const hasPermission = interaction.guild?.members.me?.permissions.has(clientPermissions[i]);
 							if (!hasPermission) missingPermissions.push(clientPermissions[i]);
 						}
 						if (missingPermissions.length)
-							return interaction.reply({
+							interaction.reply({
 								content: `I'm missing these required permissions: ${missingPermissions
 									.map(p => `\`${p}\``)
 									.join(', ')}`,
 								ephemeral: true,
 							});
+						return;
 					}
 				}
 			}
@@ -79,7 +81,7 @@ abstract class InteractionListener extends Listener {
 		}
 	}
 
-	isDev(inteaction: CommandInteraction) {
+	isDev(inteaction: ChatInputCommandInteraction<'cached'>) {
 		return isOwner(inteaction.member as GuildMember);
 	}
 }

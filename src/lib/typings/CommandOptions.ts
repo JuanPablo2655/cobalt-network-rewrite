@@ -1,4 +1,4 @@
-import { ApplicationCommandPermissionData, Interaction, Message, PermissionString } from 'discord.js';
+import { ApplicationCommandPermissionData, ChatInputCommandInteraction, Message, PermissionsString } from 'discord.js';
 
 export type Categories = 'dev' | 'economy' | 'experience' | 'settings' | 'utility' | 'admin';
 
@@ -26,13 +26,13 @@ export interface BaseCommandOptions {
 	 * The permissions the user needs to run the command
 	 * @default []
 	 */
-	userPermissions?: PermissionString[];
+	userPermissions?: PermissionsString[];
 
 	/**
 	 * The permission the client needs to properly run
 	 * @default []
 	 */
-	clientPermissions?: PermissionString[];
+	clientPermissions?: PermissionsString[];
 }
 
 /**
@@ -49,7 +49,7 @@ export interface InteractionCommandOptions extends BaseCommandOptions {
 	 * Executes the interaction command's logic
 	 * @param interactions The interaction that triggered the command
 	 */
-	run: (interactions: Interaction) => unknown | Promise<unknown>;
+	run: (interactions: ChatInputCommandInteraction<'cached'>) => unknown | Promise<unknown>;
 }
 
 export type InteractionCommandType = Omit<InteractionCommandOptions, 'run'>;

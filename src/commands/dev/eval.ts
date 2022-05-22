@@ -71,7 +71,7 @@ abstract class EvalCommand extends GenericCommand {
 			});
 			if (msg.deletable) await msg.delete();
 		} catch {
-			if (!msg.deleted) await msg.reactions.resolve('🔨' as unknown as MessageReaction)?.users.remove();
+			return;
 		}
 	}
 }

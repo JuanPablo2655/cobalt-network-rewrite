@@ -1,10 +1,10 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { jobs } from '#lib/data';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 
-export async function apply(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function apply(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = await cobalt.db.getUser(interaction.user.id);
 	const jobId = interaction.options.getString('job', true);
 	const job = jobs.find(j => j.id === jobId.toLowerCase());
@@ -26,7 +26,7 @@ export async function apply(cobalt: CobaltClient, interaction: CommandInteractio
 	});
 }
 
-export async function quit(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function quit(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = await cobalt.db.getUser(interaction.user.id);
 	if (user?.job === null)
 		throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);
@@ -36,8 +36,8 @@ export async function quit(cobalt: CobaltClient, interaction: CommandInteraction
 	});
 }
 
-export async function list(_cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function list(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const joblists = jobs.map(job => `\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
-	const jobEmbed = new MessageEmbed().setTitle(`Job Listing`).setDescription(`${joblists.join('\n')}`);
+	const jobEmbed = new EmbedBuilder().setTitle(`Job Listing`).setDescription(`${joblists.join('\n')}`);
 	interaction.reply({ embeds: [jobEmbed] });
 }

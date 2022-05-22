@@ -1,4 +1,4 @@
-import { MessageEmbed, WebhookClient } from 'discord.js';
+import { EmbedBuilder, WebhookClient } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
 
@@ -12,7 +12,7 @@ abstract class ShardReadyListener extends Listener {
 	async run(id: number, unavailableGuilds: Set<string>) {
 		if (!this.cobalt.testListeners) return;
 		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
-		const shardEmbed = new MessageEmbed().setTitle(`Shard Ready`).setTimestamp();
+		const shardEmbed = new EmbedBuilder().setTitle(`Shard Ready`).setTimestamp();
 		if (!unavailableGuilds) {
 			shardEmbed.setDescription(`Shard \`${id}\` is connected!`);
 		} else {

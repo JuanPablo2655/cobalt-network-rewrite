@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { type ClientOptions, Intents, Options } from 'discord.js';
+import { type ClientOptions, GatewayIntentBits, Options, Partials } from 'discord.js';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -49,18 +49,18 @@ export const config = {
 
 export const CLIENT_OPTIONS: ClientOptions = {
 	intents: [
-		Intents.FLAGS.GUILDS,
-		Intents.FLAGS.GUILD_MEMBERS,
-		Intents.FLAGS.GUILD_BANS,
-		Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-		Intents.FLAGS.GUILD_VOICE_STATES,
-		Intents.FLAGS.GUILD_MESSAGES,
-		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-		Intents.FLAGS.DIRECT_MESSAGES,
-		Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildBans,
+		GatewayIntentBits.GuildEmojisAndStickers,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.DirectMessageReactions,
 	],
-	partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'USER', 'GUILD_MEMBER'],
+	partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User, Partials.GuildMember],
 	allowedMentions: { repliedUser: false },
 	makeCache: Options.cacheEverything(),
-	sweepers: { ...Options.defaultSweeperSettings },
+	sweepers: { ...Options.DefaultSweeperSettings },
 };

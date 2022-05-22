@@ -1,4 +1,4 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
@@ -6,11 +6,11 @@ import { Default } from '#lib/typings';
 import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 
-export async function rank(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function rank(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await cobalt.db.getUser(user.id);
 	const xpPercent = ((profile?.xp ?? Default.Xp) / cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
-	const rankEmbed = new MessageEmbed()
+	const rankEmbed = new EmbedBuilder()
 		.setTitle(`${user?.username}'s Rank`)
 		.setDescription(
 			`**Level**: ${formatNumber(profile?.lvl ?? Default.Level)}\n**Experience**: ${formatNumber(
@@ -22,7 +22,7 @@ export async function rank(cobalt: CobaltClient, interaction: CommandInteraction
 	return interaction.reply({ embeds: [rankEmbed] });
 }
 
-export async function reputation(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function reputation(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user', true);
 	const author = await cobalt.db.getUser(interaction.user.id);
 	if (!author) throw new Error('Missing author database entry');

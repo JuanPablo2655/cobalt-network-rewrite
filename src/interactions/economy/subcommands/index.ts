@@ -1,4 +1,4 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { jobs } from '#lib/data';
 import { CobaltClient } from '#lib/CobaltClient';
@@ -8,7 +8,7 @@ import { days, months } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatMoney, formatNumber } from '#utils/functions';
 
-export async function work(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function work(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = await cobalt.db.getUser(interaction.user.id);
 	if (!user) throw new Error('Missing user database entry');
 	if (user.job === null)
@@ -26,7 +26,7 @@ export async function work(cobalt: CobaltClient, interaction: CommandInteraction
 	return interaction.reply({ content: cleanEntry });
 }
 
-export async function pay(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const bot = await cobalt.db.getBot(interaction.client.user?.id);
 	const member = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
@@ -51,11 +51,11 @@ export async function pay(cobalt: CobaltClient, interaction: CommandInteraction)
 	});
 }
 
-export async function balance(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function balance(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await cobalt.db.getUser(user.id);
 	const bankPercent = ((profile?.bank ?? Default.Bank) / (profile?.bankSpace ?? Default.BankSpace)) * 100;
-	const balanceEmbed = new MessageEmbed()
+	const balanceEmbed = new EmbedBuilder()
 		.setTitle(`${user.username}'s balance`)
 		.setDescription(
 			`**Wallet**: ${formatMoney(profile?.wallet ?? Default.Wallet)}\n**Bank**: ${formatMoney(
@@ -69,7 +69,7 @@ export async function balance(cobalt: CobaltClient, interaction: CommandInteract
 	interaction.reply({ embeds: [balanceEmbed] });
 }
 
-export async function daily(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function daily(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
 	if (!user) throw new Error('Missing user database entry');
@@ -99,7 +99,7 @@ export async function daily(cobalt: CobaltClient, interaction: CommandInteractio
 	});
 }
 
-export async function weekly(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function weekly(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
 	if (!user) throw new Error('Missing user database entry');
@@ -127,7 +127,7 @@ export async function weekly(cobalt: CobaltClient, interaction: CommandInteracti
 	});
 }
 
-export async function monthly(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function monthly(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await cobalt.db.getUser(member.id);
 	if (!user) throw new Error('Missing user database entry');

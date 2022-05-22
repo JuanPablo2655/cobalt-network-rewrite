@@ -4,7 +4,7 @@ import {
 	RESTGetAPIApplicationGuildCommandsResult,
 	Routes,
 	Snowflake,
-} from 'discord-api-types/v9';
+} from 'discord-api-types/v10';
 import {
 	covidCommand,
 	devCommand,
@@ -18,7 +18,7 @@ import {
 import { config } from './config';
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const rest = new REST({ version: '9' }).setToken(config.token!);
+const rest = new REST({ version: '10' }).setToken(config.token!);
 
 (async () => {
 	try {

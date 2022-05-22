@@ -1,14 +1,14 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
 import { Default } from '#lib/typings';
 import { Identifiers, UserError } from '#lib/errors';
 
-export async function check(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function check(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const userData = await cobalt.db.getUser(user.id);
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(`${user.username}'s social credit`)
 		.setDescription(
 			`**Score:** ${formatNumber(
@@ -18,7 +18,7 @@ export async function check(cobalt: CobaltClient, interaction: CommandInteractio
 	return interaction.editReply({ embeds: [embed] });
 }
 
-export async function add(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function add(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
@@ -35,7 +35,7 @@ export async function add(cobalt: CobaltClient, interaction: CommandInteraction)
 	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount) ?? '0'}!` });
 }
 
-export async function remove(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function remove(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);

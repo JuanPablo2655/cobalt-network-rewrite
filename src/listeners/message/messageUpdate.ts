@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Message, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { getDiff, getImage } from '#utils/util';
 
@@ -23,8 +23,8 @@ abstract class MessageUpdateListener extends Listener {
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMessage.guild.id)
 			?.channels.cache.get(logChannelId) as TextChannel;
-		const avatar = newMessage.author.displayAvatarURL({ format: 'png', dynamic: true });
-		const logEmbed = new MessageEmbed()
+		const avatar = newMessage.author.displayAvatarURL({ extension: 'png', forceStatic: false });
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: newMessage.author.username, iconURL: avatar })
 			.setTitle('Message Update')
 			.setColor('#2f7db1')

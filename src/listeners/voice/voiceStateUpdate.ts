@@ -1,4 +1,4 @@
-import { MessageEmbed, TextChannel, VoiceState } from 'discord.js';
+import { EmbedBuilder, TextChannel, VoiceState } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { Listener } from '#lib/structures/listeners';
 import { formatMoney } from '#utils/functions';
@@ -26,8 +26,8 @@ abstract class VoiceStateUpdateListener extends Listener {
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = newState.guild.channels.cache.get(logChannelId) as TextChannel;
-		const avatar = newState.member.user.displayAvatarURL({ format: 'png', dynamic: true });
-		const logEmbed = new MessageEmbed()
+		const avatar = newState.member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: newState.member.user.username, iconURL: avatar })
 			.setFooter({ text: `User ID: ${newState.member.id}` })
 			.setTimestamp();

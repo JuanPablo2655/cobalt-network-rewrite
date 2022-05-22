@@ -1,4 +1,4 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { InteractionCommand } from '#lib/structures/commands';
 import { formatNumber } from '#utils/functions';
@@ -12,7 +12,7 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
 		const option = interaction.options.get('option')?.value;
 		const user = interaction.options.getUser('user') ?? interaction.user;
@@ -24,7 +24,7 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 			const sum = memberData.vcHours.reduce((a, b) => a + b);
 			const average = sum / memberData.vcHours.length;
 			const sorted = memberData.vcHours.sort((a, b) => b - a);
-			const vcEmbed = new MessageEmbed()
+			const vcEmbed = new EmbedBuilder()
 				.setTitle(`${user.username}'s VC Data`)
 				.setDescription(
 					`**Total Time:** ${prettyMilliseconds(sum)}\n**Average Time:** ${prettyMilliseconds(
@@ -43,7 +43,7 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 			const sum = userData.vcHours.reduce((a, b) => a + b);
 			const average = sum / userData.vcHours.length;
 			const sorted = userData.vcHours.sort((a, b) => b - a);
-			const vcEmbed = new MessageEmbed()
+			const vcEmbed = new EmbedBuilder()
 				.setTitle(`${user.username}'s Global VC Data`)
 				.setDescription(
 					`**Total Time:** ${prettyMilliseconds(sum)}\n**Average Time:** ${prettyMilliseconds(

@@ -9,7 +9,7 @@ abstract class EnableCommandCommand extends GenericCommand {
 			description: 'Enable a command in your server.',
 			category: 'settings',
 			aliases: ['ec'],
-			userPermissions: ['ADMINISTRATOR'],
+			userPermissions: ['Administrator'],
 		});
 	}
 

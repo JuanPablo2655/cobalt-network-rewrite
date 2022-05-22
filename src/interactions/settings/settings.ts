@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
 import { settingCommand } from './options';
 import { add, list, remove } from './subcommands/blacklistword';
@@ -14,7 +14,7 @@ abstract class settingsInteractionCommand extends InteractionCommand {
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		const command = interaction.options.getSubcommand(true);
 		switch (command) {
 			case 'category': {

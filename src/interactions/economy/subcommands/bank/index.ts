@@ -1,10 +1,10 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Default } from '#lib/typings';
 import { Identifiers, UserError } from '#lib/errors';
 
-export async function deposit(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function deposit(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const profile = await cobalt.db.getUser(interaction.user.id);
 	const amount = interaction.options.getInteger('amount', true);
 	if ((profile?.wallet ?? Default.Wallet) - amount <= 0)
@@ -22,7 +22,7 @@ export async function deposit(cobalt: CobaltClient, interaction: CommandInteract
 	});
 }
 
-export async function withdraw(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function withdraw(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const profile = await cobalt.db.getUser(interaction.user.id);
 	const amount = interaction.options.getInteger('amount', true);
 	if ((profile?.bank ?? Default.Bank) - amount <= 0)

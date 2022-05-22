@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { findMember } from '#utils/util';
 import { Default } from '#lib/typings';
@@ -22,7 +22,7 @@ abstract class RankCommand extends GenericCommand {
 		const profile = await this.cobalt.db.getUser(user.id);
 		await addCD();
 		const xpPercent = ((profile?.xp ?? Default.Xp) / this.cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
-		const rankEmbed = new MessageEmbed()
+		const rankEmbed = new EmbedBuilder()
 			.setTitle(`${user?.username}'s Rank`)
 			.setDescription(
 				`**Level**: ${formatNumber(profile?.lvl ?? Default.Level)}\n**Experience**: ${formatNumber(

@@ -1,4 +1,4 @@
-import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
+import { GuildMember, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 
 abstract class GuildMemberAddListener extends Listener {
@@ -20,13 +20,13 @@ abstract class GuildMemberAddListener extends Listener {
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
-		const avatar = member.user.displayAvatarURL({ format: 'png', dynamic: true });
+		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
 		if (user?.roles?.length !== 0) {
 			user?.roles?.forEach(r => {
-				if (!member.guild.me) return;
+				if (!member.guild.members.me) return;
 				const role = member.guild.roles.cache.get(r);
 				if (!role) return;
-				if (member.guild.me.roles.highest.comparePositionTo(role) < 0) return;
+				if (member.guild.members.me.roles.highest.comparePositionTo(role) < 0) return;
 				member.roles.add(role.id);
 			});
 			return void member.user.send({
@@ -45,7 +45,7 @@ abstract class GuildMemberAddListener extends Listener {
 		}
 
 		const created = Math.floor(member.user.createdTimestamp / 100);
-		const logEmbed = new MessageEmbed()
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: member.user.username, iconURL: avatar })
 			.setTitle(`New Member Joined`)
 			.setColor('#118511')

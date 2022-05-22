@@ -1,4 +1,4 @@
-import { GuildBan, MessageEmbed, TextChannel } from 'discord.js';
+import { GuildBan, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 
 abstract class GuildBanAddListener extends Listener {
@@ -17,14 +17,14 @@ abstract class GuildBanAddListener extends Listener {
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		let audit;
-		if (ban.guild.me?.permissions.has('VIEW_AUDIT_LOG')) {
+		if (ban.guild.members.me?.permissions.has('ViewAuditLog')) {
 			audit = (await ban.guild.fetchAuditLogs()).entries.first();
 		}
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
-		const avatar = ban.user.displayAvatarURL({ format: 'png', dynamic: true });
-		const logEmbed = new MessageEmbed()
+		const avatar = ban.user.displayAvatarURL({ extension: 'png', forceStatic: false });
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: ban.user.username, iconURL: avatar })
 			.setTitle('Member Banned')
 			.setColor('#8f0a0a')

@@ -12,7 +12,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			usage: '<toggle|channel|message> <[<true>|<enable>]|channel ID|[<edit>|<default>]> <null|null|leave message>',
 			aliases: ['leavechannel'],
 			guildOnly: true,
-			userPermissions: ['MANAGE_GUILD'],
+			userPermissions: ['ManageGuild'],
 		});
 	}
 

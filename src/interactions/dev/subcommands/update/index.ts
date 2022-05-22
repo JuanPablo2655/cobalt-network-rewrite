@@ -1,9 +1,9 @@
-import { CommandInteraction, Snowflake } from 'discord.js';
+import { ChatInputCommandInteraction, Snowflake } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#lib/utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 
-export async function directors(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function directors(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const role = interaction.guild?.roles.cache.get('355885679076442112');
 	if (!role) throw new UserError({ identifer: Identifiers.ArgumentUserError }, 'Not in the correct server');
@@ -20,7 +20,7 @@ export async function directors(cobalt: CobaltClient, interaction: CommandIntera
 	return interaction.editReply({ content: `Updated directors with ${directorUsernames.join(', ')}` });
 }
 
-export async function tax(cobalt: CobaltClient, interaction: CommandInteraction) {
+export async function tax(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const bot = await cobalt.db.getBot(cobalt.user?.id);
 	if (!bot) throw new Error('Missing bot user');

@@ -1,4 +1,4 @@
-import { GuildMember, MessageEmbed, Role, TextChannel } from 'discord.js';
+import { GuildMember, EmbedBuilder, Role, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 
 abstract class GuildMemberUpdateListener extends Listener {
@@ -22,8 +22,8 @@ abstract class GuildMemberUpdateListener extends Listener {
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMember.guild.id)
 			?.channels.cache.get(logChannelId) as TextChannel;
-		const avatar = newMember.user.displayAvatarURL({ format: 'png', dynamic: true });
-		const logEmbed = new MessageEmbed()
+		const avatar = newMember.user.displayAvatarURL({ extension: 'png', forceStatic: false });
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: newMember.user.username, iconURL: avatar })
 			.setFooter({ text: `User ID: ${newMember.user.id}` })
 			.setTimestamp();

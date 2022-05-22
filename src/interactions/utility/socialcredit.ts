@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
 import { socialCreditCommand } from './options';
 import { add, check, remove } from './subcommands';
@@ -11,7 +11,7 @@ abstract class SocialCreditInteractionCommand extends InteractionCommand {
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		const command = interaction.options.getSubcommand(true);
 		switch (command) {
 			case 'check': {
