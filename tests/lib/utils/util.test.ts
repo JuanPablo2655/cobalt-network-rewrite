@@ -1,5 +1,7 @@
-import { addMulti, getDiff, removeDuplicates, toCapitalize, trim } from '#utils/util';
+import { Listener } from '#lib/structures';
+import { addMulti, getDiff, removeDuplicates, resloveFile, toCapitalize, trim } from '#utils/util';
 
+// TODO(*): Write a more thorough test suite
 describe('Cobalt', () => {
 	describe('util', () => {
 		describe('toCapitalize', () => {
@@ -55,6 +57,12 @@ describe('Cobalt', () => {
 		describe('removeDuplicates', () => {
 			test('GIVEN [1,1,2,3,3,4,5] THEN return [1,2,3,4,5]', () => {
 				expect(removeDuplicates([1, 1, 2, 3, 3, 4, 5])).toEqual([1, 2, 3, 4, 5]);
+			});
+		});
+
+		describe('resloveFile', () => {
+			test("GIVEN '../../mocks/MockStructure.ts' THEN return instanceOf Listener", async () => {
+				expect(await resloveFile<Listener>(__dirname + '/../../mocks/MockStructure.ts')).toBeInstanceOf(Listener);
 			});
 		});
 	});
