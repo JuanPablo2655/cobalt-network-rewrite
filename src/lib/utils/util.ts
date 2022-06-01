@@ -232,8 +232,8 @@ export function removeDuplicates<T>(array: Array<T>) {
 }
 
 export async function resolveFile<T>(file: string) {
-	const reslovedPath = resolve(file);
-	const File = await (await import(reslovedPath)).default;
+	const resolvedPath = resolve(file);
+	const File = await (await import(resolvedPath)).default;
 	if (!File?.constructor) return null;
 	return new File() as T;
 }
