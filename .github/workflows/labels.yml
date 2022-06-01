@@ -16,6 +16,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Run Label
-        uses: crazy-max/ghaction-github-labeler@v3
+        uses: crazy-max/ghaction-github-labeler@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
