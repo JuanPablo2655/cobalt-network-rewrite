@@ -1,5 +1,5 @@
 import { Listener } from '#lib/structures';
-import { addMulti, getDiff, removeDuplicates, resloveFile, toCapitalize, trim } from '#utils/util';
+import { addMulti, getDiff, removeDuplicates, resolveFile, toCapitalize, trim } from '#utils/util';
 
 // TODO(*): Write a more thorough test suite
 describe('Cobalt', () => {
@@ -60,9 +60,9 @@ describe('Cobalt', () => {
 			});
 		});
 
-		describe('resloveFile', () => {
+		describe('resolveFile', () => {
 			test("GIVEN '../../mocks/MockStructure.ts' THEN return instanceOf Listener", async () => {
-				expect(await resloveFile<Listener>(__dirname + '/../../mocks/MockStructure.ts')).toBeInstanceOf(Listener);
+				expect(await resolveFile<Listener>(__dirname + '/../../mocks/MockStructure.ts')).toBeInstanceOf(Listener);
 			});
 		});
 	});

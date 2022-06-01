@@ -3,12 +3,12 @@ import { resolve } from 'path';
 import { CobaltClient } from '#lib/CobaltClient';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '../logger';
-import { resloveFile } from '#utils/util';
+import { resolveFile } from '#utils/util';
 
 export async function ListenerRegistry(cobalt: CobaltClient) {
 	const files = sync(resolve(__dirname + '/../../../listeners/**/*.js'));
 	for (const file of files) {
-		const listener = await resloveFile<Listener>(file);
+		const listener = await resolveFile<Listener>(file);
 		if (!listener) continue;
 		listener.cobalt = cobalt;
 		cobalt.events.set(listener.name, listener);
