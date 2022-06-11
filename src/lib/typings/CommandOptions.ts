@@ -1,4 +1,4 @@
-import { ApplicationCommandPermissionData, ChatInputCommandInteraction, Message, PermissionsString } from 'discord.js';
+import { ApplicationCommandPermissions, ChatInputCommandInteraction, Message, PermissionsString } from 'discord.js';
 
 export type Categories = 'dev' | 'economy' | 'experience' | 'settings' | 'utility' | 'admin';
 
@@ -43,7 +43,7 @@ export interface InteractionCommandOptions extends BaseCommandOptions {
 	 * The interaction permission
 	 * @default []
 	 */
-	permissions?: ApplicationCommandPermissionData[];
+	permissions?: ApplicationCommandPermissions[];
 
 	/**
 	 * Executes the interaction command's logic

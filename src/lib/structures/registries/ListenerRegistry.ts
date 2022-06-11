@@ -7,7 +7,7 @@ import { resolveFile, validateFile } from '#utils/util';
 export async function ListenerRegistry(cobalt: CobaltClient) {
 	try {
 		const files = sync('./dist/listeners/**/*.js');
-		Promise.all(files.map(async file => loadListener(file, cobalt)));
+		await Promise.all(files.map(async file => loadListener(file, cobalt)));
 	} catch (err) {
 		const error = err as Error;
 		logger.error(error, error.message);

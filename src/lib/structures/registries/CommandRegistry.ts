@@ -7,7 +7,7 @@ import { resolveFile, validateFile } from '#utils/util';
 export async function CommandRegistry(cobalt: CobaltClient) {
 	try {
 		const files = sync('./dist/commands/**/*.js');
-		Promise.all(files.map(async file => loadCommand(file, cobalt)));
+		await Promise.all(files.map(async file => loadCommand(file, cobalt)));
 	} catch (err) {
 		const error = err as Error;
 		logger.error(error, error.message);
