@@ -1,8 +1,9 @@
 import { CobaltClient } from '../CobaltClient';
 import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
-import { logger } from '#lib/structures';
+import { GenericCommand, InteractionCommand, Listener, logger } from '#lib/structures';
 import { resolve } from 'node:path';
+import process from 'node:process';
 
 /**
  * Image extensions:
@@ -231,9 +232,16 @@ export function removeDuplicates<T>(array: Array<T>) {
 	return [...new Set(array)];
 }
 
+export type Structures = Listener | GenericCommand | InteractionCommand;
+
 export async function resolveFile<T>(file: string) {
-	const resolvedPath = resolve(file);
+	const resolvedPath = resolve(process.cwd(), file);
 	const File = await (await import(resolvedPath)).default;
-	if (!File?.constructor) return null;
+	if (typeof File != 'function') return null;
 	return new File() as T;
+}
+
+export function validateFile(file: string, item: Structures) {
+	if (!item.name) throw new Error(`Missing name ${file}`);
+	if (!item.run) throw new Error(`Missing run function ${file}`);
 }
