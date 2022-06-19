@@ -11,6 +11,7 @@ abstract class InteractionListener extends Listener {
 	}
 
 	async run(interaction: Interaction<'cached'>) {
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!interaction.isChatInputCommand()) return;
 		if (!interaction.inCachedGuild()) return;
 
@@ -61,6 +62,7 @@ abstract class InteractionListener extends Listener {
 			}
 			try {
 				await command.run(interaction);
+				logger.info(`Interaction triggered by ${interaction.user.tag}`);
 			} catch (err) {
 				const error = err as Error;
 				logger.error(error, error.message);

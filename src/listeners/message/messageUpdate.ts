@@ -1,6 +1,7 @@
 import { Message, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { getDiff, getImage } from '#utils/util';
+import { logger } from '#lib/structures';
 
 abstract class MessageUpdateListener extends Listener {
 	constructor() {
@@ -11,6 +12,7 @@ abstract class MessageUpdateListener extends Listener {
 
 	async run(oldMessage: Message, newMessage: Message) {
 		if (!this.cobalt.testListeners) return;
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!oldMessage.author) return;
 		if (oldMessage === newMessage || newMessage.author.bot) return;
 		if (!newMessage.guild) return;

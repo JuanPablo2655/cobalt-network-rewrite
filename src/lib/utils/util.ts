@@ -4,6 +4,7 @@ import { diffWordsWithSpace, diffLines, Change } from 'diff';
 import { GenericCommand, InteractionCommand, Listener, logger } from '#lib/structures';
 import { resolve } from 'node:path';
 import process from 'node:process';
+import { isClass } from '@sapphire/utilities';
 
 /**
  * Image extensions:
@@ -237,7 +238,7 @@ export type Structures = Listener | GenericCommand | InteractionCommand;
 export async function resolveFile<T>(file: string) {
 	const resolvedPath = resolve(process.cwd(), file);
 	const File = await (await import(resolvedPath)).default;
-	if (typeof File != 'function') return null;
+	if (!isClass(File)) return null;
 	return new File() as T;
 }
 

@@ -1,5 +1,5 @@
 import { ClientEvents } from 'discord.js';
-import { ListenerOptions } from '../../typings/Options';
+import { ListenerType } from '../../typings/Options';
 import { CobaltClient } from '../../CobaltClient';
 
 export abstract class Listener {
@@ -19,7 +19,7 @@ export abstract class Listener {
 	 * Constructs an listener
 	 * @param options Optional listener settings other than name
 	 */
-	constructor(options: ListenerOptions) {
+	constructor(options: ListenerType) {
 		this.name = options.name;
 		this.once = options.once ?? false;
 	}

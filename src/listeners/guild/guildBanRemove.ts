@@ -1,5 +1,6 @@
 import { GuildBan, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
+import { logger } from '#lib/structures';
 
 abstract class GuildBanRemoveListener extends Listener {
 	constructor() {
@@ -10,6 +11,7 @@ abstract class GuildBanRemoveListener extends Listener {
 
 	async run(ban: GuildBan) {
 		if (!this.cobalt.testListeners) return;
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (ban.user.partial) await ban.user.fetch();
 		if (!ban.guild) return;
 		if (!ban.guild.available) return;

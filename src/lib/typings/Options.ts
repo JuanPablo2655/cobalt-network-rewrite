@@ -11,4 +11,12 @@ export interface ListenerOptions {
 	 * @default false
 	 */
 	once?: boolean;
+
+	/**
+	 * Executes the listener's logic
+	 * @param args The listener parameters
+	 */
+	run: (...args: any[]) => void | Promise<void>;
 }
+
+export type ListenerType = Omit<ListenerOptions, 'run'>;

@@ -20,6 +20,6 @@ async function loadListener(file: string, cobalt: CobaltClient) {
 	validateFile(file, listener);
 	listener.cobalt = cobalt;
 	cobalt.events.set(listener.name, listener);
-	cobalt[listener.once ? 'once' : 'on'](listener.name, (...args: any[]) => listener.run(...args));
+	cobalt[listener.once ? 'once' : 'on'](listener.name, async (...args: unknown[]) => listener.run(...args));
 	logger.info({ listener: { name: listener.name } }, `Registering listener: ${listener.name}`);
 }

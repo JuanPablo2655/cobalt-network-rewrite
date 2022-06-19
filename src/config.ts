@@ -18,7 +18,7 @@ export const config = {
 	/** Default message command prefix */
 	prefix: process.env.PREFIX ?? 'cn!',
 	/** MongoDB URI */
-	mongoURL: process.env.MONGOURL ?? 'mongodb://localhost:27017/cobalt',
+	mongoURL: process.env.MONGO_URL ?? 'mongodb://localhost:27017/cobalt',
 	/** Redis URI */
 	redis: process.env.REDIS ?? 'redis://localhost:6379',
 	/** Either test listeners or not */
