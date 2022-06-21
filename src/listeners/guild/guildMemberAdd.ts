@@ -1,5 +1,6 @@
 import { GuildMember, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
+import { logger } from '#lib/structures';
 
 abstract class GuildMemberAddListener extends Listener {
 	constructor() {
@@ -10,6 +11,7 @@ abstract class GuildMemberAddListener extends Listener {
 
 	async run(member: GuildMember) {
 		if (!this.cobalt.testListeners) return;
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;

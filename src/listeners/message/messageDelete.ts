@@ -1,6 +1,7 @@
 import { Message, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { getImage } from '#utils/util';
+import { logger } from '#lib/structures';
 
 abstract class MessageDeleteListener extends Listener {
 	constructor() {
@@ -10,6 +11,7 @@ abstract class MessageDeleteListener extends Listener {
 	}
 
 	async run(message: Message) {
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!this.cobalt.testListeners) return;
 		if (!message.author) return;
 		if (!message.guild) return;

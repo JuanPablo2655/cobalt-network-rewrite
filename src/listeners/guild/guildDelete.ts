@@ -1,6 +1,7 @@
 import { Guild, EmbedBuilder, WebhookClient } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
+import { logger } from '#lib/structures';
 
 abstract class GuildDeleteListener extends Listener {
 	constructor() {
@@ -11,6 +12,7 @@ abstract class GuildDeleteListener extends Listener {
 
 	async run(guild: Guild) {
 		if (!this.cobalt.testListeners) return;
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!guild) return;
 		if (!guild.available) return;
 		await this.cobalt.db.removeGuild(guild.id);

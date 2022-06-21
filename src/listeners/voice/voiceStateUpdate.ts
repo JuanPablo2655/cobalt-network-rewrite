@@ -13,6 +13,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 
 	async run(oldState: VoiceState, newState: VoiceState) {
 		if (!this.cobalt.testListeners) return;
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (newState.member?.partial) await newState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;

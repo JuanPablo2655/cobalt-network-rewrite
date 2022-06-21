@@ -14,6 +14,7 @@ abstract class MessageListener extends Listener {
 	}
 
 	async run(message: Message) {
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		this.cobalt.metrics.messageInc();
 		if (message.guild instanceof Guild) this.cobalt.metrics.messageInc(message.guild.id);
 		const guild = await this.cobalt.db.getGuild(message?.guild?.id);
@@ -162,6 +163,7 @@ abstract class MessageListener extends Listener {
 					});
 					this.cobalt.metrics.commandInc(command.name);
 					await command.run(message, args, updateCooldown);
+					logger.info(`Command triggered by ${message.author.tag}`);
 				} catch (err) {
 					const error = err as Error;
 					logger.error(error, error.message);

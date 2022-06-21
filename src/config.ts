@@ -18,19 +18,19 @@ export const config = {
 	/** Default message command prefix */
 	prefix: process.env.PREFIX ?? 'cn!',
 	/** MongoDB URI */
-	mongoURL: process.env.MONGOURL ?? 'mongodb://localhost:27017/cobalt',
+	mongoURL: process.env.MONGO_URL ?? 'mongodb://localhost:27017/cobalt',
 	/** Redis URI */
 	redis: process.env.REDIS ?? 'redis://localhost:6379',
 	/** Either test listeners or not */
-	testListeners: process.env.TESTLISTENERS === 'true' ?? false,
+	testListeners: process.env.TEST_LISTENERS === 'true' ?? false,
 	/** Disable XP in devlopment */
-	disableXp: process.env.DISABLEXP === 'true' ?? false,
+	disableXp: process.env.DISABLE_XP === 'true' ?? false,
 	/** Webhook URLs */
 	webhooks: {
 		/** Shard webhook URL */
-		shard: process.env.SHARDURL,
+		shard: process.env.SHARD_URL,
 		/** Guild join/leave webhook URL */
-		guild: process.env.GUILDURL,
+		guild: process.env.GUILD_URL,
 	},
 	/** Elastic information */
 	elastic: {
@@ -53,11 +53,13 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildBans,
 		GatewayIntentBits.GuildEmojisAndStickers,
+		GatewayIntentBits.GuildWebhooks,
 		GatewayIntentBits.GuildVoiceStates,
-		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.GuildMessageReactions,
 		GatewayIntentBits.DirectMessages,
 		GatewayIntentBits.DirectMessageReactions,
+		GatewayIntentBits.MessageContent,
 	],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User, Partials.GuildMember],
 	allowedMentions: { repliedUser: false },

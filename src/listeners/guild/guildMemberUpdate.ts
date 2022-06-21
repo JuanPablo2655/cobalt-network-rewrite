@@ -1,5 +1,6 @@
 import { GuildMember, EmbedBuilder, Role, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
+import { logger } from '#lib/structures';
 
 abstract class GuildMemberUpdateListener extends Listener {
 	constructor() {
@@ -10,6 +11,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 
 	async run(oldMember: GuildMember, newMember: GuildMember) {
 		if (!this.cobalt.testListeners) return;
+		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (oldMember.partial) await oldMember.fetch();
 		if (newMember.partial) await newMember.fetch();
 		if (!oldMember.guild) return;

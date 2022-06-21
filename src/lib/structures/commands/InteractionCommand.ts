@@ -1,4 +1,4 @@
-import { ApplicationCommandPermissionData, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationCommandPermissions, ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommandType } from '../../typings/CommandOptions';
 import { BaseCommand } from './BaseCommand';
 
@@ -6,7 +6,7 @@ export abstract class InteractionCommand extends BaseCommand {
 	/**
 	 * The interaction permission
 	 */
-	public permissions: ApplicationCommandPermissionData[];
+	public permissions: ApplicationCommandPermissions[];
 
 	constructor(options: InteractionCommandType) {
 		super(options);

@@ -1,22 +1,24 @@
 import { sync } from 'glob';
-import { resolve } from 'path';
 import { CobaltClient } from '#lib/CobaltClient';
 import { InteractionCommand } from '#lib/structures/commands';
 import { logger } from '../logger';
+import { resolveFile, validateFile } from '#utils/util';
 
-const registerInteraction = (cobalt: CobaltClient) => {
-	const interactionFiles = sync(resolve(__dirname + '/../../../interactions/**/*'));
-	interactionFiles.forEach(async file => {
-		if (/\.js$/iu.test(file)) {
-			const File = require(file).default;
-			if (File && File.prototype instanceof InteractionCommand) {
-				const interaction: InteractionCommand = new File();
-				interaction.cobalt = cobalt;
-				cobalt.interactions.set(interaction.name, interaction);
-				logger.info({ interaction: { name: interaction.name } }, `Registering interaction: ${interaction.name}`);
-			}
-		}
-	});
-};
+export async function InteractionRegistry(cobalt: CobaltClient) {
+	try {
+		const files = sync('./dist/interactions/**/*.js');
+		await Promise.all(files.map(async file => loadInteraction(file, cobalt)));
+	} catch (err) {
+		const error = err as Error;
+		logger.error(error, error.message);
+	}
+}
 
-export default registerInteraction;
+async function loadInteraction(file: string, cobalt: CobaltClient) {
+	const interaction = await resolveFile<InteractionCommand>(file);
+	if (!interaction) return;
+	validateFile(file, interaction);
+	interaction.cobalt = cobalt;
+	cobalt.interactions.set(interaction.name, interaction);
+	logger.info({ interaction: { name: interaction.name } }, `Registering interaction: ${interaction.name}`);
+}
