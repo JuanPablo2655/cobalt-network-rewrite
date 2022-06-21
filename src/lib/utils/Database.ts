@@ -198,6 +198,8 @@ export default class Database {
 	 * @param guildId The guild Id
 	 */
 	async addMember(memberId: string | undefined, guildId: string | undefined): Promise<IMember | undefined> {
+		if (!memberId) throw new TypeError('Missing member Id');
+		if (!guildId) throw new TypeError('Missing Guild Id');
 		try {
 			const member: IMember = new memberModel({ memberId, guildId });
 			await member.save();
