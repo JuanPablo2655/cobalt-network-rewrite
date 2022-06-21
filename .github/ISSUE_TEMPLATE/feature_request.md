@@ -1,9 +1,9 @@
 ---
 
 name: Feature request
-about: Request a feature for Cobalt Network
+about: Request a feature for the bot
 title: ''
-labels: 'type: enhancement'
+labels: 'feature request'
 assignees: ''
 ---
 <!-- Use Discord for questions: -->
