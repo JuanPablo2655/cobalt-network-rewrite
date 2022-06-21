@@ -1,4 +1,4 @@
-name: "PR Automation"
+name: PR Automation
 on:
   pull_request_target:
     types: [opened, ready_for_review]
@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Automatically assign reviewers
-        use: kentaro-m/auto-assign-action@v1.2.1
+        uses: kentaro-m/auto-assign-action@v1.2.1
