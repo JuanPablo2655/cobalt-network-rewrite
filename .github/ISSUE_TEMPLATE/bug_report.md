@@ -1,9 +1,9 @@
 ---
 
 name: Bug report
-about: Report incorrect or unexpected behavior of Cobalt Network
+about: Report incorrect or unexpected behavior of the program
 title: ''
-labels: 'type: bug'
+labels: 'bug'
 assignees: ''
 ---
 
