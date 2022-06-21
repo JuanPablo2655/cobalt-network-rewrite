@@ -3,8 +3,8 @@ on:
   pull_request_target:
 jobs:
   triage:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Automatically assign reviewers
-      if: github.event.action == 'opened'
-      use: kentaro-m/auto-assign-action@v1.2.1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Automatically assign reviewers
+        if: github.event.action == 'opened'
+        use: kentaro-m/auto-assign-action@v1.2.1
