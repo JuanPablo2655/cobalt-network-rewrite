@@ -17,11 +17,12 @@ export default class Currency {
 	 */
 	async addToWallet(userId: string, money: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, {
+			await db.updateUser(userId, {
 				wallet: (user?.wallet ?? Default.Wallet) + money,
 				netWorth: (user?.netWorth ?? 0) + money,
 			});
@@ -38,11 +39,12 @@ export default class Currency {
 	 */
 	async removeFromWallet(userId: string, money: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, {
+			await db.updateUser(userId, {
 				wallet: (user?.wallet ?? Default.Wallet) - money,
 				netWorth: (user?.netWorth ?? 0) - money,
 			});
@@ -59,11 +61,12 @@ export default class Currency {
 	 */
 	async addToBank(userId: string, money: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, {
+			await db.updateUser(userId, {
 				bank: (user?.bank ?? Default.Bank) + money,
 				netWorth: (user?.netWorth ?? 0) + money,
 			});
@@ -80,11 +83,12 @@ export default class Currency {
 	 */
 	async removeFrombank(userId: string, money: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, {
+			await db.updateUser(userId, {
 				bank: (user?.bank ?? Default.Bank) - money,
 				netWorth: (user?.netWorth ?? 0) - money,
 			});
@@ -101,11 +105,12 @@ export default class Currency {
 	 */
 	async addBankSpace(userId: string, space: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(space)) throw new TypeError('Money must be a number.');
 			if (space <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) + space });
+			await db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) + space });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -119,11 +124,12 @@ export default class Currency {
 	 */
 	async removeBankSpace(userId: string, space: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(space)) throw new TypeError('Money must be a number.');
 			if (space <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) - space });
+			await db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) - space });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -137,11 +143,12 @@ export default class Currency {
 	 */
 	async addBounty(userId: string, amount: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, { bounty: (user?.bounty ?? 0) + amount });
+			await db.updateUser(userId, { bounty: (user?.bounty ?? 0) + amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -155,11 +162,12 @@ export default class Currency {
 	 */
 	async removeBounty(userId: string, amount: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, { bounty: (user?.bounty ?? 0) - amount });
+			await db.updateUser(userId, { bounty: (user?.bounty ?? 0) - amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -173,10 +181,11 @@ export default class Currency {
 	 */
 	async updateJob(userId: string, job: string | null) {
 		try {
+			const { db } = this.cobalt.container;
 			if (!job && job !== null) throw new TypeError('Must supply a job id');
-			(await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			(await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, { job });
+			await db.updateUser(userId, { job });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -189,9 +198,10 @@ export default class Currency {
 	 */
 	async killUser(userId: string) {
 		try {
-			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
+			const { db } = this.cobalt.container;
+			const user = (await db.getUser(userId)) ?? (await db.addUser(userId));
 
-			await this.cobalt.container.db.updateUser(userId, {
+			await db.updateUser(userId, {
 				wallet: 0,
 				bank: 0,
 				bankSpace: 1000,
@@ -228,13 +238,14 @@ export default class Currency {
 	 */
 	async addBotBank(botId: string, amount: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const bot = await this.cobalt.container.db.getBot(botId);
+			const bot = await db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 
-			await this.cobalt.container.db.updateBot(botId, { bank: bot.bank + amount });
+			await db.updateBot(botId, { bank: bot.bank + amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -248,13 +259,14 @@ export default class Currency {
 	 */
 	async removebotBank(botId: string, amount: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const bot = await this.cobalt.container.db.getBot(botId);
+			const bot = await db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 
-			await this.cobalt.container.db.updateBot(botId, { bank: bot.bank - amount });
+			await db.updateBot(botId, { bank: bot.bank - amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -268,13 +280,14 @@ export default class Currency {
 	 */
 	async updateTax(botId: string, tax: number) {
 		try {
+			const { db } = this.cobalt.container;
 			if (isNaN(tax)) throw new TypeError('Money must be a number.');
 			if (tax <= 0) throw new TypeError('Must be more than zero.');
-			const bot = await this.cobalt.container.db.getBot(botId);
+			const bot = await db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 
-			await this.cobalt.container.db.updateBot(botId, { tax });
+			await db.updateBot(botId, { tax });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);

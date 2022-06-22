@@ -71,12 +71,11 @@ export default class Database {
 	 */
 	async getGuild(guildId: string | undefined): Promise<IGuild | undefined> {
 		try {
-			let guild, redis;
-			guild = redis = await this.cobalt.container.redis
-				.get(`guild:${guildId}`)
-				.then(res => (res ? JSON.parse(res) : undefined));
+			const { redis } = this.cobalt.container;
+			let guild, _redis;
+			guild = _redis = await redis.get(`guild:${guildId}`).then(res => (res ? JSON.parse(res) : undefined));
 			guild ??= (await guildModel.findOne({ _id: guildId })) ?? (await this.addGuild(guildId));
-			if (!redis) await this.cobalt.container.redis.set(`guild:${guildId}`, JSON.stringify(guild));
+			if (!_redis) await redis.set(`guild:${guildId}`, JSON.stringify(guild));
 			return guild;
 		} catch (err) {
 			const error = err as Error;
@@ -106,12 +105,11 @@ export default class Database {
 	 */
 	async getBot(botId: string | undefined): Promise<IBot | undefined> {
 		try {
-			let bot, redis;
-			bot = redis = await this.cobalt.container.redis
-				.get(`bot:${botId}`)
-				.then(res => (res ? JSON.parse(res) : undefined));
+			const { redis } = this.cobalt.container;
+			let bot, _redis;
+			bot = _redis = await redis.get(`bot:${botId}`).then(res => (res ? JSON.parse(res) : undefined));
 			bot ??= (await botModel.findOne({ _id: botId })) ?? (await botModel.create({ _id: botId }));
-			if (!redis) await this.cobalt.container.redis.set(`bot:${botId}`, JSON.stringify(bot));
+			if (!_redis) await redis.set(`bot:${botId}`, JSON.stringify(bot));
 			return bot;
 		} catch (err) {
 			const error = err as Error;
@@ -169,12 +167,11 @@ export default class Database {
 	 */
 	async getUser(userId: string | undefined): Promise<IUser | undefined> {
 		try {
-			let user, redis;
-			user = redis = await this.cobalt.container.redis
-				.get(`user:${userId}`)
-				.then(res => (res ? JSON.parse(res) : undefined));
+			const { redis } = this.cobalt.container;
+			let user, _redis;
+			user = _redis = await redis.get(`user:${userId}`).then(res => (res ? JSON.parse(res) : undefined));
 			user ??= (await userModel.findOne({ _id: userId })) ?? (await this.addUser(userId));
-			if (!redis) await this.cobalt.container.redis.set(`user:${userId}`, JSON.stringify(user));
+			if (!_redis) await redis.set(`user:${userId}`, JSON.stringify(user));
 			return user;
 		} catch (err) {
 			const error = err as Error;
@@ -239,12 +236,13 @@ export default class Database {
 	 */
 	async getMember(memberId: string | undefined, guildId: string | undefined): Promise<IMember | undefined> {
 		try {
-			let member, redis;
-			member = redis = await this.cobalt.container.redis
+			const { redis } = this.cobalt.container;
+			let member, _redis;
+			member = _redis = await redis
 				.get(`member:${memberId}:${guildId}`)
 				.then(res => (res ? JSON.parse(res) : undefined));
 			member ??= (await memberModel.findOne({ memberId, guildId })) ?? (await this.addMember(memberId, guildId));
-			if (!redis) await this.cobalt.container.redis.set(`member:${memberId}:${guildId}`, JSON.stringify(member));
+			if (!_redis) await redis.set(`member:${memberId}:${guildId}`, JSON.stringify(member));
 			return member;
 		} catch (err) {
 			const error = err as Error;
