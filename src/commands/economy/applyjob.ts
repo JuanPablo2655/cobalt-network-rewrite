@@ -17,8 +17,8 @@ abstract class ApplyJobCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const guild = await this.cobalt.db.getGuild(message.guild?.id);
-		const user = await this.cobalt.db.getUser(message.author.id);
+		const guild = await this.cobalt.container.db.getGuild(message.guild?.id);
+		const user = await this.cobalt.container.db.getUser(message.author.id);
 		if (!args[0])
 			throw new UserError(
 				{ identifer: Identifiers.ArgsMissing },
@@ -38,7 +38,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 				'You have a job already. If you want to switch, you have to quit your job',
 			);
 
-		await this.cobalt.econ.updateJob(message.author.id, job.id);
+		await this.cobalt.container.econ.updateJob(message.author.id, job.id);
 		return message.reply({
 			content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
 				job.minAmount,

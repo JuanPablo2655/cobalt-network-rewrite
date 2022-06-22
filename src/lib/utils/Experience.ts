@@ -20,9 +20,9 @@ export default class Experience {
 		try {
 			if (isNaN(amount)) throw new TypeError('Xp must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, {
+			await this.cobalt.container.db.updateUser(userId, {
 				xp: (user?.xp ?? Default.Xp) + amount,
 				totalXp: (user?.totalXp ?? 0) + amount,
 			});
@@ -42,11 +42,11 @@ export default class Experience {
 		try {
 			if (isNaN(amount)) throw new TypeError('Xp must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			if (levelUp) await this.cobalt.db.updateUser(userId, { xp: (user?.xp ?? Default.Xp) - amount });
+			if (levelUp) await this.cobalt.container.db.updateUser(userId, { xp: (user?.xp ?? Default.Xp) - amount });
 			else
-				await this.cobalt.db.updateUser(userId, {
+				await this.cobalt.container.db.updateUser(userId, {
 					xp: (user?.xp ?? Default.Xp) - amount,
 					totalXp: (user?.totalXp ?? 0) - amount,
 				});
@@ -65,9 +65,9 @@ export default class Experience {
 		try {
 			if (isNaN(amount)) throw new TypeError('Level must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { lvl: (user?.lvl ?? Default.Level) + amount });
+			await this.cobalt.container.db.updateUser(userId, { lvl: (user?.lvl ?? Default.Level) + amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -83,9 +83,9 @@ export default class Experience {
 		try {
 			if (isNaN(amount)) throw new TypeError('Level must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { lvl: (user?.lvl ?? Default.Level) - amount });
+			await this.cobalt.container.db.updateUser(userId, { lvl: (user?.lvl ?? Default.Level) - amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -107,7 +107,7 @@ export default class Experience {
 	 */
 	async manageXp(message: Message) {
 		try {
-			const user = await this.cobalt.db.getUser(message.author.id);
+			const user = await this.cobalt.container.db.getUser(message.author.id);
 			const xpToAdd = Math.round(Math.random() * 11 + 15);
 			const nextLevel = this.nextLevel(user?.lvl ?? Default.Xp);
 			const newXp = (user?.xp ?? Default.Xp) + xpToAdd;

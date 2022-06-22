@@ -15,14 +15,14 @@ abstract class PayComamnd extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
+		const bot = await this.cobalt.container.db.getBot(this.cobalt.user?.id);
 		if (!bot) throw new Error('Missing bot database entry');
 		const member = await findMember(this.cobalt, message, args);
 		if (!member)
 			throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Please pick a valid member');
-		const author = await this.cobalt.db.getUser(message.author.id);
+		const author = await this.cobalt.container.db.getUser(message.author.id);
 		if (!author) throw new Error('Missing author database entry');
-		const user = await this.cobalt.db.getUser(member.id);
+		const user = await this.cobalt.container.db.getUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		if (member.id === message.author.id)
 			throw new UserError({ identifer: Identifiers.ArgumentUserError }, "You can't pay yourself");
@@ -40,9 +40,9 @@ abstract class PayComamnd extends GenericCommand {
 		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;
-		await this.cobalt.econ.removeFromWallet(message.author.id, amount);
-		await this.cobalt.econ.addToWallet(member.id, afterTax);
-		await this.cobalt.db.updateBot(this.cobalt.user?.id, { bank: bot.bank + tax });
+		await this.cobalt.container.econ.removeFromWallet(message.author.id, amount);
+		await this.cobalt.container.econ.addToWallet(member.id, afterTax);
+		await this.cobalt.container.db.updateBot(this.cobalt.user?.id, { bank: bot.bank + tax });
 		return message.channel.send({
 			content: `>>> Transaction to **${member.user.username}**:\nSubtotal: **${formatMoney(
 				amount,

@@ -16,12 +16,12 @@ abstract class ToggleLogChannelCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const option: boolean = args[0].toLowerCase() === 'true' || args[0].toLowerCase() === 'enable';
 		const guildId = (message.guild as Guild)?.id;
-		const guild = await this.cobalt.db.getGuild(guildId);
+		const guild = await this.cobalt.container.db.getGuild(guildId);
 		if (!guild) throw new Error('Missing database entry');
 		await addCD();
 		if (guild.logChannel?.enabled === option)
 			throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `Already ${option}`);
-		await this.cobalt.db.updateGuild(guildId, {
+		await this.cobalt.container.db.updateGuild(guildId, {
 			logChannel: {
 				enabled: option,
 				disabledEvents: guild.logChannel?.disabledEvents ?? [],

@@ -14,35 +14,37 @@ dotenv.config();
 
 export class CobaltClient extends Client {
 	public dev = process.env.NODE_ENV !== 'production';
-	public commands = new Collection<string, GenericCommandOptions>();
-	public cooldowns = new Collection<string, Collection<string, number>>();
-	public events = new Collection<string, ListenerOptions>();
-	public interactions = new Collection<string, InteractionCommandOptions>();
-	public voiceTime = new Map<Snowflake, number>();
+	public container = {
+		commands: new Collection<string, GenericCommandOptions>(),
+		cooldowns: new Collection<string, Collection<string, number>>(),
+		listeners: new Collection<string, ListenerOptions>(),
+		interactions: new Collection<string, InteractionCommandOptions>(),
+		voiceTime: new Map<Snowflake, number>(),
+		db: new Database(this, config.mongoURL),
+		exp: new Experience(this),
+		econ: new Economy(this),
+		redis: new Redis(config.redis),
+		metrics: new Metrics(this),
+	};
 	public testListeners = config.testListeners;
 	public disableXp = config.disableXp;
-	public db = new Database(this, config.mongoURL);
-	public exp = new Experience(this);
-	public econ = new Economy(this);
-	public redis = new Redis(config.redis);
-	public metrics = new Metrics(this);
 
 	constructor() {
 		super(CLIENT_OPTIONS);
-		this.on('raw', packet => this.metrics.eventInc(packet.t));
+		this.on('raw', packet => this.container.metrics.eventInc(packet.t));
 	}
 
 	public async login(token = config.token) {
 		await Promise.all([CommandRegistry(this), ListenerRegistry(this), InteractionRegistry(this)]);
 		const loginResponse = await super.login(token);
-		this.metrics.start();
+		this.container.metrics.start();
 		return loginResponse;
 	}
 
 	public async destory() {
-		await this.redis.flushall();
-		this.metrics.server.close();
-		this.db.mongoose.close(false, () => {
+		await this.container.redis.flushall();
+		this.container.metrics.server.close();
+		this.container.db.mongoose.close(false, () => {
 			logger.info('Mongoose connection successfully closed');
 		});
 		return super.destroy();

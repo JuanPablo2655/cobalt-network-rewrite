@@ -15,7 +15,7 @@ abstract class VerifyCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
+		const bot = await this.cobalt.container.db.getBot(this.cobalt.user?.id);
 		if (!bot) throw new Error('Missing bot database entry');
 		let isDirector = false;
 		bot.directors?.forEach(director => {
@@ -24,9 +24,9 @@ abstract class VerifyCommand extends GenericCommand {
 		if (!isDirector)
 			throw new UserError({ identifer: Identifiers.PreconditionUserPermissionsNoPermissions }, 'Not a director');
 		const guildId = (message.guild as Guild)?.id;
-		const guild = this.cobalt.db.getGuild(guildId);
+		const guild = this.cobalt.container.db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
-		await this.cobalt.db.updateGuild(guildId, { verified: true });
+		await this.cobalt.container.db.updateGuild(guildId, { verified: true });
 		return message.channel.send({ content: 'The server is now verified!' });
 	}
 }

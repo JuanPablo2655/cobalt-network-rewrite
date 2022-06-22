@@ -8,14 +8,14 @@ import { Identifiers, UserError } from '#lib/errors';
 
 export async function rank(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
-	const profile = await cobalt.db.getUser(user.id);
-	const xpPercent = ((profile?.xp ?? Default.Xp) / cobalt.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
+	const profile = await cobalt.container.db.getUser(user.id);
+	const xpPercent = ((profile?.xp ?? Default.Xp) / cobalt.container.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
 	const rankEmbed = new EmbedBuilder()
 		.setTitle(`${user?.username}'s Rank`)
 		.setDescription(
 			`**Level**: ${formatNumber(profile?.lvl ?? Default.Level)}\n**Experience**: ${formatNumber(
 				profile?.xp ?? Default.Xp,
-			)} / ${formatNumber(cobalt.exp.nextLevel(profile?.lvl ?? Default.Level))} \`${xpPercent
+			)} / ${formatNumber(cobalt.container.exp.nextLevel(profile?.lvl ?? Default.Level))} \`${xpPercent
 				.toString()
 				.substring(0, 4)}%\``,
 		);
@@ -24,9 +24,9 @@ export async function rank(cobalt: CobaltClient, interaction: ChatInputCommandIn
 
 export async function reputation(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user', true);
-	const author = await cobalt.db.getUser(interaction.user.id);
+	const author = await cobalt.container.db.getUser(interaction.user.id);
 	if (!author) throw new Error('Missing author database entry');
-	const user = await cobalt.db.getUser(member.id);
+	const user = await cobalt.container.db.getUser(member.id);
 	if (member.id === interaction.user.id)
 		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't give youself a reputation point!");
 	const date = Date.now();
@@ -40,7 +40,7 @@ export async function reputation(cobalt: CobaltClient, interaction: ChatInputCom
 			)}** left before you can give someone a reputation point!`,
 		);
 	}
-	await cobalt.db.updateUser(interaction.user.id, { repTime: cooldown });
-	await cobalt.db.updateUser(member.id, { rep: user!.rep + 1 });
+	await cobalt.container.db.updateUser(interaction.user.id, { repTime: cooldown });
+	await cobalt.container.db.updateUser(member.id, { rep: user!.rep + 1 });
 	return interaction.reply({ content: `You gave **${member.username}** a reputation point!` });
 }

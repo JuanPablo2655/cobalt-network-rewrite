@@ -15,7 +15,7 @@ abstract class GuildBanRemoveListener extends Listener {
 		if (ban.user.partial) await ban.user.fetch();
 		if (!ban.guild) return;
 		if (!ban.guild.available) return;
-		const guild = await this.cobalt.db.getGuild(ban.guild.id);
+		const guild = await this.cobalt.container.db.getGuild(ban.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		let audit;

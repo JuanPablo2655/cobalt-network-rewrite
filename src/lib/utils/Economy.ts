@@ -19,9 +19,9 @@ export default class Currency {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, {
+			await this.cobalt.container.db.updateUser(userId, {
 				wallet: (user?.wallet ?? Default.Wallet) + money,
 				netWorth: (user?.netWorth ?? 0) + money,
 			});
@@ -40,9 +40,9 @@ export default class Currency {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, {
+			await this.cobalt.container.db.updateUser(userId, {
 				wallet: (user?.wallet ?? Default.Wallet) - money,
 				netWorth: (user?.netWorth ?? 0) - money,
 			});
@@ -61,9 +61,9 @@ export default class Currency {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, {
+			await this.cobalt.container.db.updateUser(userId, {
 				bank: (user?.bank ?? Default.Bank) + money,
 				netWorth: (user?.netWorth ?? 0) + money,
 			});
@@ -82,9 +82,9 @@ export default class Currency {
 		try {
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
 			if (money <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, {
+			await this.cobalt.container.db.updateUser(userId, {
 				bank: (user?.bank ?? Default.Bank) - money,
 				netWorth: (user?.netWorth ?? 0) - money,
 			});
@@ -103,9 +103,9 @@ export default class Currency {
 		try {
 			if (isNaN(space)) throw new TypeError('Money must be a number.');
 			if (space <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) + space });
+			await this.cobalt.container.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) + space });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -121,9 +121,9 @@ export default class Currency {
 		try {
 			if (isNaN(space)) throw new TypeError('Money must be a number.');
 			if (space <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) - space });
+			await this.cobalt.container.db.updateUser(userId, { bankSpace: (user?.bankSpace ?? Default.BankSpace) - space });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -139,9 +139,9 @@ export default class Currency {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { bounty: (user?.bounty ?? 0) + amount });
+			await this.cobalt.container.db.updateUser(userId, { bounty: (user?.bounty ?? 0) + amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -157,9 +157,9 @@ export default class Currency {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { bounty: (user?.bounty ?? 0) - amount });
+			await this.cobalt.container.db.updateUser(userId, { bounty: (user?.bounty ?? 0) - amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -174,9 +174,9 @@ export default class Currency {
 	async updateJob(userId: string, job: string | null) {
 		try {
 			if (!job && job !== null) throw new TypeError('Must supply a job id');
-			(await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			(await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, { job });
+			await this.cobalt.container.db.updateUser(userId, { job });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -189,9 +189,9 @@ export default class Currency {
 	 */
 	async killUser(userId: string) {
 		try {
-			const user = (await this.cobalt.db.getUser(userId)) ?? (await this.cobalt.db.addUser(userId));
+			const user = (await this.cobalt.container.db.getUser(userId)) ?? (await this.cobalt.container.db.addUser(userId));
 
-			await this.cobalt.db.updateUser(userId, {
+			await this.cobalt.container.db.updateUser(userId, {
 				wallet: 0,
 				bank: 0,
 				bankSpace: 1000,
@@ -230,11 +230,11 @@ export default class Currency {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const bot = await this.cobalt.db.getBot(botId);
+			const bot = await this.cobalt.container.db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 
-			await this.cobalt.db.updateBot(botId, { bank: bot.bank + amount });
+			await this.cobalt.container.db.updateBot(botId, { bank: bot.bank + amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -250,11 +250,11 @@ export default class Currency {
 		try {
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');
 			if (amount <= 0) throw new TypeError('Must be more than zero.');
-			const bot = await this.cobalt.db.getBot(botId);
+			const bot = await this.cobalt.container.db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 
-			await this.cobalt.db.updateBot(botId, { bank: bot.bank - amount });
+			await this.cobalt.container.db.updateBot(botId, { bank: bot.bank - amount });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);
@@ -270,11 +270,11 @@ export default class Currency {
 		try {
 			if (isNaN(tax)) throw new TypeError('Money must be a number.');
 			if (tax <= 0) throw new TypeError('Must be more than zero.');
-			const bot = await this.cobalt.db.getBot(botId);
+			const bot = await this.cobalt.container.db.getBot(botId);
 
 			if (!bot) throw new Error('Bot not found');
 
-			await this.cobalt.db.updateBot(botId, { tax });
+			await this.cobalt.container.db.updateBot(botId, { tax });
 		} catch (err) {
 			const error = err as Error;
 			logger.error(error, error.message);

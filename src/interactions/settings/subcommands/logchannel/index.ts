@@ -5,9 +5,9 @@ import { Identifiers, UserError } from '#lib/errors';
 export async function channel(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const channel = interaction.options.getChannel('channel', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await cobalt.db.getGuild(interaction.guild.id);
+	const guild = await cobalt.container.db.getGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
-	await cobalt.db.updateGuild(interaction.guild.id, {
+	await cobalt.container.db.updateGuild(interaction.guild.id, {
 		logChannel: {
 			enabled: guild.logChannel?.enabled ?? true,
 			disabledEvents: guild.logChannel?.disabledEvents ?? [],
@@ -20,11 +20,11 @@ export async function channel(cobalt: CobaltClient, interaction: ChatInputComman
 export async function toggle(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const option = interaction.options.getBoolean('boolean', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await cobalt.db.getGuild(interaction.guild.id);
+	const guild = await cobalt.container.db.getGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
 	if (guild.logChannel?.enabled === option)
 		throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `Already ${option}`);
-	await cobalt.db.updateGuild(interaction.guild.id, {
+	await cobalt.container.db.updateGuild(interaction.guild.id, {
 		logChannel: {
 			enabled: option,
 			disabledEvents: guild.logChannel?.disabledEvents ?? [],

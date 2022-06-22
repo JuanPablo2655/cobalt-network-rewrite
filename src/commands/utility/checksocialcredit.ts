@@ -19,7 +19,7 @@ abstract class checkSocialCredit extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		addCD();
-		const user = await this.cobalt.db.getUser(member?.id);
+		const user = await this.cobalt.container.db.getUser(member?.id);
 		const embed = new EmbedBuilder()
 			.setTitle(`${member?.user.username}'s social credit`)
 			.setDescription(

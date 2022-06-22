@@ -16,7 +16,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
+		const bot = await this.cobalt.container.db.getBot(this.cobalt.user?.id);
 		if (!bot) throw new Error('Missing user bot');
 		let isDirector = false;
 		bot.directors?.forEach(director => {
@@ -36,9 +36,9 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;
-		await this.cobalt.db.updateBot(this.cobalt.user?.id, { bank: bot.bank - amount });
-		await this.cobalt.econ.addToWallet('232670598872956929', tax);
-		await this.cobalt.econ.addToWallet(message.author.id, afterTax);
+		await this.cobalt.container.db.updateBot(this.cobalt.user?.id, { bank: bot.bank - amount });
+		await this.cobalt.container.econ.addToWallet('232670598872956929', tax);
+		await this.cobalt.container.econ.addToWallet(message.author.id, afterTax);
 		return message.channel.send({
 			content: `You have claimed **${formatMoney(afterTax)}** after paying Axalis **${formatMoney(tax)}** as tax.`,
 		});

@@ -17,9 +17,9 @@ abstract class HelpCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		// TODO(Isidro): refactor help command
 		await addCD();
-		const guild = await this.cobalt.db.getGuild(message.guild?.id);
-		const command = this.cobalt.commands.get(args[0]);
-		const categories = removeDuplicates(this.cobalt.commands.map(c => c.category as string));
+		const guild = await this.cobalt.container.db.getGuild(message.guild?.id);
+		const command = this.cobalt.container.commands.get(args[0]);
+		const categories = removeDuplicates(this.cobalt.container.commands.map(c => c.category as string));
 		if (command) {
 			const usage = command.usage ? `${command.name} ${command.usage}` : `${command.name}`;
 			const helpEmbed = new EmbedBuilder().setColor('Random');
@@ -34,7 +34,7 @@ abstract class HelpCommand extends GenericCommand {
 		} else if (categories.includes(args[0])) {
 			const helpEmbed = new EmbedBuilder().setColor('Random');
 			const commandNames: Array<string> = new Array<string>();
-			const commands = this.cobalt.commands.filter(c => c.category === args[0]);
+			const commands = this.cobalt.container.commands.filter(c => c.category === args[0]);
 			for (const command of commands) {
 				if (!commandNames.includes(command[1].name)) {
 					commandNames.push(command[1].name);

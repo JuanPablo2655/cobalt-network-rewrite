@@ -5,9 +5,9 @@ import { Identifiers, UserError } from '#lib/errors';
 export async function channel(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const channel = interaction.options.getChannel('channel', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await cobalt.db.getGuild(interaction.guild.id);
+	const guild = await cobalt.container.db.getGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
-	await cobalt.db.updateGuild(interaction.guild.id, {
+	await cobalt.container.db.updateGuild(interaction.guild.id, {
 		leaveMessage: {
 			message: guild.leaveMessage?.message ?? null,
 			channelId: channel.id,
@@ -20,9 +20,9 @@ export async function channel(cobalt: CobaltClient, interaction: ChatInputComman
 export async function message(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const message = interaction.options.getString('message', true);
 	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await cobalt.db.getGuild(interaction.guild.id);
+	const guild = await cobalt.container.db.getGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
-	await cobalt.db.updateGuild(interaction.guild.id, {
+	await cobalt.container.db.updateGuild(interaction.guild.id, {
 		leaveMessage: {
 			message: message,
 			channelId: guild.leaveMessage?.channelId ?? null,
@@ -35,11 +35,11 @@ export async function message(cobalt: CobaltClient, interaction: ChatInputComman
 export async function toggle(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const option = interaction.options.getBoolean('toggle', true);
 	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
-	const guild = await cobalt.db.getGuild(interaction.guild.id);
+	const guild = await cobalt.container.db.getGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
 	if (guild.leaveMessage?.enabled === option)
 		throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `Already ${option}`);
-	await cobalt.db.updateGuild(interaction.guild.id, {
+	await cobalt.container.db.updateGuild(interaction.guild.id, {
 		leaveMessage: {
 			message: guild.leaveMessage?.message ?? null,
 			channelId: guild.leaveMessage?.channelId ?? null,

@@ -29,7 +29,7 @@ abstract class UpdateDirectorCommand extends GenericCommand {
 			directorUsernames.push(username);
 		});
 
-		await this.cobalt.db.updateBot(this.cobalt.user?.id, { directors });
+		await this.cobalt.container.db.updateBot(this.cobalt.user?.id, { directors });
 		return message.channel.send({ content: `Updated directors with ${directorUsernames.join(', ')}` });
 	}
 }

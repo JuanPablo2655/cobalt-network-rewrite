@@ -21,7 +21,7 @@ abstract class BalanceCommand extends GenericCommand {
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
-		const profile = await this.cobalt.db.getUser(user.id);
+		const profile = await this.cobalt.container.db.getUser(user.id);
 		const bankPercent = ((profile?.bank ?? Default.Bank) / (profile?.bankSpace ?? Default.BankSpace)) * 100;
 		const balanceEmbed = new EmbedBuilder()
 			.setTitle(`${user?.username}'s balance`)

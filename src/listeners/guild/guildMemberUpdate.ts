@@ -16,7 +16,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 		if (newMember.partial) await newMember.fetch();
 		if (!oldMember.guild) return;
 		if (!oldMember.guild.available) return;
-		const guild = await this.cobalt.db.getGuild(newMember.guild.id);
+		const guild = await this.cobalt.container.db.getGuild(newMember.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild?.logChannel.channelId;
@@ -61,7 +61,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 			return void logChannel.send({ embeds: [logEmbed] });
 		}
 		if (!oldMember.premiumSince && newMember.premiumSince) {
-			await this.cobalt.econ.addToWallet(newMember.user.id, 5000);
+			await this.cobalt.container.econ.addToWallet(newMember.user.id, 5000);
 			newMember.user.send({
 				content: `You have boosted **${newMember.guild.name}**, **₡5000** has been added to your wallet!`,
 			});

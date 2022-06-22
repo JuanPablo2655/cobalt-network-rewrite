@@ -17,7 +17,7 @@ abstract class WorkCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		const user = await this.cobalt.db.getUser(message.author.id);
+		const user = await this.cobalt.container.db.getUser(message.author.id);
 		if (!user) throw new Error('Missing user database entry');
 		if (user.job === null)
 			throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'You need a job to work.');
@@ -28,7 +28,7 @@ abstract class WorkCommand extends GenericCommand {
 		const money = Math.floor(job.minAmount + Math.random() * 250);
 		const multi = await calcMulti(message.author, this.cobalt);
 		const moneyEarned = addMulti(money, multi);
-		await this.cobalt.econ.addToWallet(message.author.id, moneyEarned);
+		await this.cobalt.container.econ.addToWallet(message.author.id, moneyEarned);
 		const cleanEntry = workEntry
 			?.replace(/{user.username}/g, message.author.username)
 			.replace(/{money}/g, formatNumber(moneyEarned) ?? '0');

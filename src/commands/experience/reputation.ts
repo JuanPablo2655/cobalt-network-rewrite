@@ -18,9 +18,9 @@ abstract class ReputationCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await findMember(this.cobalt, message, args);
 		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
-		const author = await this.cobalt.db.getUser(message.author.id);
+		const author = await this.cobalt.container.db.getUser(message.author.id);
 		if (!author) throw new Error('Missing author database entry');
-		const user = await this.cobalt.db.getUser(member.id);
+		const user = await this.cobalt.container.db.getUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		if (member.id === message.author.id)
 			throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't give youself a reputation point!");
@@ -35,8 +35,8 @@ abstract class ReputationCommand extends GenericCommand {
 			);
 		}
 		await addCD();
-		await this.cobalt.db.updateUser(message.author.id, { repTime: cooldown });
-		await this.cobalt.db.updateUser(member.id, { rep: user.rep + 1 });
+		await this.cobalt.container.db.updateUser(message.author.id, { repTime: cooldown });
+		await this.cobalt.container.db.updateUser(member.id, { rep: user.rep + 1 });
 		return message.channel.send({ content: `You gave **${member.user.username}** a reputation point!` });
 	}
 }

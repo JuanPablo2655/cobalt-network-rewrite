@@ -15,9 +15,9 @@ abstract class InteractionListener extends Listener {
 		if (!interaction.isChatInputCommand()) return;
 		if (!interaction.inCachedGuild()) return;
 
-		const command = this.cobalt.interactions.get(interaction.commandName);
+		const command = this.cobalt.container.interactions.get(interaction.commandName);
 		if (command) {
-			const guild = await this.cobalt.db.getGuild(interaction.guild.id);
+			const guild = await this.cobalt.container.db.getGuild(interaction.guild.id);
 			if (guild) {
 				if (guild?.disabledCategories?.includes(command.category)) return;
 				if (guild?.disabledCommands?.includes(command.name)) return;
