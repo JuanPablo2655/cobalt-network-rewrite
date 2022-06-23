@@ -15,8 +15,9 @@ abstract class GuildMemberRemoveListener extends Listener {
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;
-		const user = await this.cobalt.db.getMember(member.user.id, member.guild.id);
-		const guild = await this.cobalt.db.getGuild(member.guild.id);
+		const { db } = this.cobalt.container;
+		const user = await db.getMember(member.user.id, member.guild.id);
+		const guild = await db.getGuild(member.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild?.logChannel.channelId;
@@ -25,7 +26,7 @@ abstract class GuildMemberRemoveListener extends Listener {
 		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
 		if (user && member.roles.cache.size !== 0) {
 			const roleList: Snowflake[] = member.roles.cache.map(r => r.id);
-			await this.cobalt.db.updateMember(member.user.id, member.guild.id, {
+			await db.updateMember(member.user.id, member.guild.id, {
 				roles: roleList,
 			});
 		}

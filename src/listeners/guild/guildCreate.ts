@@ -15,7 +15,7 @@ abstract class GuildCreateListener extends Listener {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!guild) return;
 		if (!guild.available) return;
-		await this.cobalt.db.addGuild(guild.id);
+		await this.cobalt.container.db.addGuild(guild.id);
 		const cobaltHook = new WebhookClient({ url: config.webhooks.guild! });
 		const guildEmbed = new EmbedBuilder()
 			.setTitle(`New Guild Created`)

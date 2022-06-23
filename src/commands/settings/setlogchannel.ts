@@ -15,13 +15,14 @@ abstract class SetLogChannelCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		const { db } = this.cobalt.container;
 		const channel = await findChannel(message, args[0]);
 		if (!channel) throw new UserError({ identifer: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
 		const guildId = (message.guild as Guild)?.id;
-		const guild = await this.cobalt.db.getGuild(guildId);
+		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
-		await this.cobalt.db.updateGuild(guildId, {
+		await db.updateGuild(guildId, {
 			logChannel: {
 				enabled: guild.logChannel?.enabled ?? true,
 				disabledEvents: guild.logChannel?.disabledEvents ?? null,

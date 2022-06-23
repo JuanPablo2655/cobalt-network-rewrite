@@ -10,9 +10,10 @@ export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommand
 
 export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
+	const { db, econ } = cobalt.container;
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
-	const bot = await cobalt.db.getBot(cobalt.user?.id);
+	const bot = await db.getBot(cobalt.user?.id);
 	if (!bot) throw new Error('Missing bot user');
 	let isDirector = false;
 	bot.directors?.forEach(director => {
@@ -24,8 +25,8 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 			{ identifer: Identifiers.ArgumentIntegerError },
 			`I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
 		);
-	await cobalt.db.updateBot(cobalt.user?.id, { bank: bot.bank - amount });
-	await cobalt.econ.addToWallet(user.id, amount);
+	await db.updateBot(cobalt.user?.id, { bank: bot.bank - amount });
+	await econ.addToWallet(user.id, amount);
 	return interaction.editReply({
 		content: `You paid **${user.username}** **${formatMoney(amount)}** tax money.`,
 	});

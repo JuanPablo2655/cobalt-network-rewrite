@@ -14,10 +14,10 @@ abstract class InteractionListener extends Listener {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!interaction.isChatInputCommand()) return;
 		if (!interaction.inCachedGuild()) return;
-
-		const command = this.cobalt.interactions.get(interaction.commandName);
+		const { db, interactions } = this.cobalt.container;
+		const command = interactions.get(interaction.commandName);
 		if (command) {
-			const guild = await this.cobalt.db.getGuild(interaction.guild.id);
+			const guild = await db.getGuild(interaction.guild.id);
 			if (guild) {
 				if (guild?.disabledCategories?.includes(command.category)) return;
 				if (guild?.disabledCommands?.includes(command.name)) return;

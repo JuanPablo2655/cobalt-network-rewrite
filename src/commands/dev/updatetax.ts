@@ -15,7 +15,8 @@ abstract class UpdateTaxCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const bot = await this.cobalt.db.getBot(this.cobalt.user?.id);
+		const { db } = this.cobalt.container;
+		const bot = await db.getBot(this.cobalt.user?.id);
 		if (!bot) throw new Error('Missing bot user');
 		const tax = Number(args[0]);
 		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing number');
@@ -25,7 +26,7 @@ abstract class UpdateTaxCommand extends GenericCommand {
 		if (tax > 60)
 			throw new UserError({ identifer: Identifiers.ArgumentNumberTooLarge }, "Tax can't be greater than 60%");
 		await addCD();
-		await this.cobalt.db.updateBot(this.cobalt.user?.id, { tax });
+		await db.updateBot(this.cobalt.user?.id, { tax });
 		message.channel.send({ content: `The global tax rate is now **${formatNumber(tax)}%**` });
 	}
 }

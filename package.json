@@ -58,7 +58,7 @@
     "pino": "^8.0.0",
     "pino-elasticsearch": "^6.2.0",
     "pino-multi-stream": "^6.0.0",
-    "pretty-ms": "^8.0.0",
+    "pretty-ms": "7.0.1",
     "prom-client": "^14.0.1",
     "utf-8-validate": "^5.0.9",
     "zlib-sync": "^0.1.7"

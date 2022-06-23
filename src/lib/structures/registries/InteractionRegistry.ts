@@ -19,6 +19,6 @@ async function loadInteraction(file: string, cobalt: CobaltClient) {
 	if (!interaction) return;
 	validateFile(file, interaction);
 	interaction.cobalt = cobalt;
-	cobalt.interactions.set(interaction.name, interaction);
+	cobalt.container.interactions.set(interaction.name, interaction);
 	logger.info({ interaction: { name: interaction.name } }, `Registering interaction: ${interaction.name}`);
 }

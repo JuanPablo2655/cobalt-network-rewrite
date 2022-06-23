@@ -17,7 +17,7 @@ abstract class DisableEventsCommand extends GenericCommand {
 		// TODO(Isidro): finish the command
 		const event = args[0].toLowerCase();
 		const guildId = (message.guild as Guild)?.id;
-		const guild = await this.cobalt.db.getGuild(guildId);
+		const guild = await this.cobalt.container.db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		if (guild.logChannel?.disabledEvents?.includes(event))

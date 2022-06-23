@@ -19,7 +19,7 @@ async function loadCommand(file: string, cobalt: CobaltClient) {
 	if (!command) return;
 	validateFile(file, command);
 	command.cobalt = cobalt;
-	cobalt.commands.set(command.name, command);
-	command.aliases.forEach(alias => cobalt.commands.set(alias, command));
+	cobalt.container.commands.set(command.name, command);
+	command.aliases.forEach(alias => cobalt.container.commands.set(alias, command));
 	logger.info({ command: { name: command.name } }, `Registering command: ${command.name}`);
 }

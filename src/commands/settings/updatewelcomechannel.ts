@@ -16,15 +16,16 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		const { db } = this.cobalt.container;
 		const [option, action, ...welcomeMessage] = args;
 		const guildId = (message.guild as Guild)?.id;
-		const guild = await this.cobalt.db.getGuild(guildId);
+		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		switch (option) {
 			case 'toggle': {
 				const choice: boolean = action.toLowerCase() === 'true' || action.toLowerCase() === 'enable';
-				await this.cobalt.db.updateGuild(guildId, {
+				await db.updateGuild(guildId, {
 					welcomeMessage: {
 						message: guild.welcomeMessage?.message ?? null,
 						channelId: guild.welcomeMessage?.channelId ?? null,
@@ -38,7 +39,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 			case 'channel': {
 				const channel = await findChannel(message, action);
 				if (!channel) throw new UserError({ identifer: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
-				await this.cobalt.db.updateGuild(guildId, {
+				await db.updateGuild(guildId, {
 					welcomeMessage: {
 						message: guild.welcomeMessage?.message ?? null,
 						channelId: channel.id,
@@ -54,7 +55,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 						`Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setwelcomechannel message edit <welcome message>\``,
 					);
 				if (action === 'edit') {
-					await this.cobalt.db.updateGuild(guildId, {
+					await db.updateGuild(guildId, {
 						welcomeMessage: {
 							message: welcomeMessage.join(' '),
 							channelId: guild.welcomeMessage?.channelId ?? null,
@@ -66,7 +67,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 					});
 				}
 				if (action === 'default') {
-					await this.cobalt.db.updateGuild(guildId, {
+					await db.updateGuild(guildId, {
 						welcomeMessage: {
 							message: 'Welcome, {user.tag} to {guild.name}!',
 							channelId: guild.welcomeMessage?.channelId ?? null,
