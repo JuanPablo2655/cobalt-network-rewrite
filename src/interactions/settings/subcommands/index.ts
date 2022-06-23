@@ -3,11 +3,12 @@ import { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
 
 export async function category(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+	const { db, commands } = cobalt.container;
 	const saveCategories = ['dev', 'settings'];
-	const categories = removeDuplicates(cobalt.container.commands.map(c => c.category));
+	const categories = removeDuplicates(commands.map(c => c.category));
 	const category = interaction.options.getString('category', true).toLowerCase();
 	const option = interaction.options.getBoolean('toggle', true);
-	const guild = await cobalt.container.db.getGuild(interaction.guildId!);
+	const guild = await db.getGuild(interaction.guildId!);
 	if (!guild) throw new Error('Missing guild database entry');
 	if (!categories.includes(category))
 		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid category');
@@ -18,23 +19,24 @@ export async function category(cobalt: CobaltClient, interaction: ChatInputComma
 	if (!guild.disabledCategories?.includes(category) && option === false)
 		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Category already enabled');
 	if (option === true) {
-		await cobalt.container.db.updateGuild(interaction.guildId!, {
+		await db.updateGuild(interaction.guildId!, {
 			disabledCategories: [...(guild.disabledCategories ?? []), category],
 		});
 	} else {
-		await cobalt.container.db.updateGuild(interaction.guildId!, {
+		await db.updateGuild(interaction.guildId!, {
 			disabledCategories: guild.disabledCategories?.filter(c => c !== category),
 		});
 	}
 }
 
 export async function command(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+	const { db, commands } = cobalt.container;
 	const saveCommands = ['help', 'enablecommand', 'disablecommand'];
 	const saveCategories = ['dev', 'settings'];
 	const commandName = interaction.options.getString('name', true).toLowerCase();
-	const command = cobalt.container.commands.get(commandName);
+	const command = commands.get(commandName);
 	const option = interaction.options.getBoolean('toggle', true);
-	const guild = await cobalt.container.db.getGuild(interaction.guildId!);
+	const guild = await db.getGuild(interaction.guildId!);
 	if (!guild) throw new Error('Missing guid database entry');
 	if (!command) throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid command');
 	if (saveCommands.includes(command.name))
@@ -49,11 +51,11 @@ export async function command(cobalt: CobaltClient, interaction: ChatInputComman
 	if (!guild.disabledCommands?.includes(command.name) && option === false)
 		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Commmand already enabled');
 	if (option === true) {
-		await cobalt.container.db.updateGuild(interaction.guildId!, {
+		await db.updateGuild(interaction.guildId!, {
 			disabledCommands: [...(guild.disabledCommands ?? []), command.name],
 		});
 	} else {
-		await cobalt.container.db.updateGuild(interaction.guildId!, {
+		await db.updateGuild(interaction.guildId!, {
 			disabledCommands: guild.disabledCommands?.filter(c => c !== command.name),
 		});
 	}

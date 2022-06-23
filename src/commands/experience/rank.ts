@@ -16,19 +16,19 @@ abstract class RankCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		const { db, exp } = this.cobalt.container;
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
-		const profile = await this.cobalt.container.db.getUser(user.id);
+		const profile = await db.getUser(user.id);
 		await addCD();
-		const xpPercent =
-			((profile?.xp ?? Default.Xp) / this.cobalt.container.exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
+		const xpPercent = ((profile?.xp ?? Default.Xp) / exp.nextLevel(profile?.lvl ?? Default.Level)) * 100;
 		const rankEmbed = new EmbedBuilder()
 			.setTitle(`${user?.username}'s Rank`)
 			.setDescription(
 				`**Level**: ${formatNumber(profile?.lvl ?? Default.Level)}\n**Experience**: ${formatNumber(
 					profile?.xp ?? Default.Xp,
-				)} / ${formatNumber(this.cobalt.container.exp.nextLevel(profile?.lvl ?? Default.Level))} \`${xpPercent
+				)} / ${formatNumber(exp.nextLevel(profile?.lvl ?? Default.Level))} \`${xpPercent
 					.toString()
 					.substring(0, 4)}%\``,
 			);

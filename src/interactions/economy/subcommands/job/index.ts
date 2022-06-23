@@ -5,7 +5,8 @@ import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 
 export async function apply(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const user = await cobalt.container.db.getUser(interaction.user.id);
+	const { db, econ } = cobalt.container;
+	const user = await db.getUser(interaction.user.id);
 	const jobId = interaction.options.getString('job', true);
 	const job = jobs.find(j => j.id === jobId.toLowerCase());
 	if (!job)
@@ -18,7 +19,7 @@ export async function apply(cobalt: CobaltClient, interaction: ChatInputCommandI
 			{ identifer: Identifiers.PreconditionDataExists },
 			'You have a job already. If you want to switch, you have to quit your job',
 		);
-	await cobalt.container.econ.updateJob(interaction.user.id, job.id);
+	await econ.updateJob(interaction.user.id, job.id);
 	return interaction.reply({
 		content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
 			job.minAmount,
@@ -27,10 +28,11 @@ export async function apply(cobalt: CobaltClient, interaction: ChatInputCommandI
 }
 
 export async function quit(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const user = await cobalt.container.db.getUser(interaction.user.id);
+	const { db, econ } = cobalt.container;
+	const user = await db.getUser(interaction.user.id);
 	if (user?.job === null)
 		throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);
-	await cobalt.container.econ.updateJob(interaction.user.id, null);
+	await econ.updateJob(interaction.user.id, null);
 	return interaction.reply({
 		content: `You have successfully quit from your current job. You need to apply to a new job if you want to work.`,
 	});

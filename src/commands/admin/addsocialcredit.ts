@@ -18,6 +18,7 @@ abstract class addSocialCredit extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		const { db } = this.cobalt.container;
 		const member = await findMember(this.cobalt, message, args);
 		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberError }, 'Invalid member');
 		if (member.id == message.author.id)
@@ -25,14 +26,14 @@ abstract class addSocialCredit extends GenericCommand {
 		const amount = Number(args[1]);
 		if (isNaN(amount)) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		addCD();
-		const userData = await this.cobalt.container.db.getUser(member.id);
+		const userData = await db.getUser(member.id);
 		const newAmount = (userData?.socialCredit ?? Default.SocialCredit) + amount;
 		if (newAmount > 2000)
 			throw new UserError(
 				{ identifer: Identifiers.ArgumentIntegerTooLarge },
 				'The max social credit score someone can have is 2,000',
 			);
-		this.cobalt.container.db.updateUser(member.id, { socialCredit: newAmount });
+		db.updateUser(member.id, { socialCredit: newAmount });
 		message.channel.send({ content: `${member.user.username} social credit score is now ${formatNumber(newAmount)}!` });
 	}
 }

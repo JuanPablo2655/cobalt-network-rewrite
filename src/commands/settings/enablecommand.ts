@@ -14,17 +14,18 @@ abstract class EnableCommandCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		const { db, commands } = this.cobalt.container;
 		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing arg');
 		const arg = args[0].toLowerCase();
-		const command = this.cobalt.container.commands.get(arg);
+		const command = commands.get(arg);
 		const guildId = (message.guild as Guild)?.id;
-		const guild = await this.cobalt.container.db.getGuild(guildId);
+		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		if (!command) throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid command');
 		if (!guild.disabledCommands?.includes(arg))
 			throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Commmand already enabled');
 		await addCD();
-		await this.cobalt.container.db.updateGuild(guildId, {
+		await db.updateGuild(guildId, {
 			disabledCommands: guild.disabledCommands.filter(c => c !== command.name),
 		});
 		return message.channel.send({ content: `Enabled \`${command.name}\`` });

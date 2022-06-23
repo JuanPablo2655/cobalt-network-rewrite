@@ -20,34 +20,36 @@ export async function check(cobalt: CobaltClient, interaction: ChatInputCommandI
 
 export async function add(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
+	const { db } = cobalt.container;
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	if (user.id == interaction.user.id)
 		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "can't give yourself social credit");
-	const userData = await cobalt.container.db.getUser(user.id);
+	const userData = await db.getUser(user.id);
 	const newAmount = (userData?.socialCredit ?? Default.SocialCredit) + amount;
 	if (newAmount > 2000)
 		throw new UserError(
 			{ identifer: Identifiers.ArgumentIntegerTooLarge },
 			'The max social credit score someone can have is 2,000',
 		);
-	cobalt.container.db.updateUser(user.id, { socialCredit: newAmount });
+	db.updateUser(user.id, { socialCredit: newAmount });
 	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount) ?? '0'}!` });
 }
 
 export async function remove(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
+	const { db } = cobalt.container;
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	if (user.id == interaction.user.id)
 		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't remove social credit from yourself");
-	const userData = await cobalt.container.db.getUser(user.id);
+	const userData = await db.getUser(user.id);
 	const newAmount = (userData?.socialCredit ?? Default.SocialCredit) + amount;
 	if (newAmount < 0)
 		throw new UserError(
 			{ identifer: Identifiers.ArgumentIntegerTooSmall },
 			'The min social credit someone can have is 0',
 		);
-	cobalt.container.db.updateUser(user.id, { socialCredit: newAmount });
+	db.updateUser(user.id, { socialCredit: newAmount });
 	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount) ?? '0'}!` });
 }

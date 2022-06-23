@@ -16,7 +16,8 @@ abstract class DepositCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const profile = await this.cobalt.container.db.getUser(message.author.id);
+		const { db, econ } = this.cobalt.container;
+		const profile = await db.getUser(message.author.id);
 		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'How much money?');
 		let money = Number(args[0]);
 		if (isNaN(money) && args[0] !== 'max')
@@ -34,8 +35,8 @@ abstract class DepositCommand extends GenericCommand {
 		if (money < 0)
 			throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, "You can't deposit negative money");
 		await addCD();
-		await this.cobalt.container.econ.removeFromWallet(message.author.id, money);
-		await this.cobalt.container.econ.addToBank(message.author.id, money);
+		await econ.removeFromWallet(message.author.id, money);
+		await econ.addToBank(message.author.id, money);
 		return message.channel.send({
 			content: `You deposited **${formatMoney(money)}**. Your bank balance is now **${formatMoney(
 				(profile?.bank ?? Default.Bank) + money,

@@ -15,9 +15,10 @@ abstract class MessageListener extends Listener {
 
 	async run(message: Message) {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
-		this.cobalt.container.metrics.messageInc();
-		if (message.guild instanceof Guild) this.cobalt.container.metrics.messageInc(message.guild.id);
-		const guild = await this.cobalt.container.db.getGuild(message?.guild?.id);
+		const { db, metrics, exp, redis, econ, commands } = this.cobalt.container;
+		metrics.messageInc();
+		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
+		const guild = await db.getGuild(message?.guild?.id);
 
 		const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		const prefixReg = new RegExp(`^(<@!?${this.cobalt?.user?.id}>|${escapeRegex(guild?.prefix)})\\s*`);
@@ -46,14 +47,14 @@ abstract class MessageListener extends Listener {
 		// TODO(Isidro): refactor
 		if (!message.author.bot) {
 			if (!this.cobalt.disableXp) {
-				if (!this.cobalt.container.exp.cooldowns.has(message.author.id)) {
-					this.cobalt.container.exp.cooldowns.add(message.author.id);
+				if (!exp.cooldowns.has(message.author.id)) {
+					exp.cooldowns.add(message.author.id);
 					setTimeout(() => {
-						this.cobalt.container.exp.cooldowns.delete(message.author.id);
+						exp.cooldowns.delete(message.author.id);
 					}, minutes(1));
-					const exp = await this.cobalt.container.exp.manageXp(message);
-					const profile = await this.cobalt.container.db.getUser(message.author.id);
-					if (exp) {
+					const _exp = await exp.manageXp(message);
+					const profile = await db.getUser(message.author.id);
+					if (_exp) {
 						if (guild?.levelMessage?.enabled) {
 							const cleanMessage = guild.levelMessage.message
 								.replace(/{user.username}/g, `**${message.author.username}**`)
@@ -64,12 +65,12 @@ abstract class MessageListener extends Listener {
 					}
 				}
 			}
-			if (!this.cobalt.container.exp.cooldowns.has(message.author.id)) {
-				this.cobalt.container.exp.cooldowns.add(message.author.id);
+			if (!exp.cooldowns.has(message.author.id)) {
+				exp.cooldowns.add(message.author.id);
 				setTimeout(() => {
-					this.cobalt.container.exp.cooldowns.delete(message.author.id);
+					exp.cooldowns.delete(message.author.id);
 				}, minutes(1));
-				await this.cobalt.container.econ.manageBankSpace(message);
+				await econ.manageBankSpace(message);
 			}
 		}
 		if (!prefix) return;
@@ -81,7 +82,7 @@ abstract class MessageListener extends Listener {
 		if (message.mentions.members?.has(this.cobalt.user!.id) && !commandName)
 			message.channel.send({ content: `My prefix is \`${guild?.prefix}\`` });
 		if (commandName) {
-			const command = this.cobalt.container.commands.get(commandName);
+			const command = commands.get(commandName);
 			if (command) {
 				if (!guild?.verified && command.name !== 'verify')
 					message.channel.send({
@@ -132,21 +133,15 @@ abstract class MessageListener extends Listener {
 				const updateCooldown = async () => {
 					if (command.cooldown) {
 						const now = Date.now();
-						const timestamp = await this.cobalt.container.redis.get(`${command.name}:${message.author.id}`);
-						if (!timestamp)
-							await this.cobalt.container.redis.set(
-								`${command.name}:${message.author.id}`,
-								now,
-								'EX',
-								command.cooldown,
-							);
+						const timestamp = await redis.get(`${command.name}:${message.author.id}`);
+						if (!timestamp) await redis.set(`${command.name}:${message.author.id}`, now, 'EX', command.cooldown);
 					}
 				};
 				const isInCooldown = async (): Promise<boolean> => {
 					if (command.cooldown) {
 						const now = Date.now();
 						const cooldownAmount = command.cooldown;
-						const timestamp = await this.cobalt.container.redis.get(`${command.name}:${message.author.id}`);
+						const timestamp = await redis.get(`${command.name}:${message.author.id}`);
 						if (timestamp) {
 							const expirationTime = Number(timestamp) + cooldownAmount;
 							if (now < expirationTime) {
@@ -162,11 +157,11 @@ abstract class MessageListener extends Listener {
 				};
 				try {
 					if (await isInCooldown()) return;
-					const bot = await this.cobalt.container.db.getBot(this.cobalt.user?.id);
-					await this.cobalt.container.db.updateBot(this.cobalt.user?.id, {
+					const bot = await db.getBot(this.cobalt.user?.id);
+					await db.updateBot(this.cobalt.user?.id, {
 						totalCommandsUsed: (bot?.totalCommandsUsed ?? 0) + 1,
 					});
-					this.cobalt.container.metrics.commandInc(command.name);
+					metrics.commandInc(command.name);
 					await command.run(message, args, updateCooldown);
 					logger.info(`Command triggered by ${message.author.tag}`);
 				} catch (err) {

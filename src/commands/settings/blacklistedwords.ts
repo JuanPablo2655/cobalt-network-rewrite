@@ -17,9 +17,10 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
+		const { db } = this.cobalt.container;
 		const [option, item] = args;
 		const guildId = message.guild?.id;
-		const guild = await this.cobalt.container.db.getGuild(guildId);
+		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		const blacklistWords = guild.blacklistedWords;
 
@@ -30,7 +31,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 						{ identifer: Identifiers.PreconditionDataExists },
 						`\`${item}\` already exists in the list`,
 					);
-				await this.cobalt.container.db.updateGuild(guildId, {
+				await db.updateGuild(guildId, {
 					blacklistedWords: [...(guild.blacklistedWords ?? []), item],
 				});
 				return message.channel.send({ content: `${item} was added to the list of blacklisted words` });
@@ -41,7 +42,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 				if (!blacklistWords?.includes(item))
 					throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Word does not exist in the list');
 				const words = blacklistWords?.filter(w => w.toLowerCase() !== item.toLowerCase());
-				await this.cobalt.container.db.updateGuild(guildId, { blacklistedWords: words });
+				await db.updateGuild(guildId, { blacklistedWords: words });
 				return message.channel.send({ content: `${item} was removed from the list of blacklisted words` });
 			}
 			case 'list': {

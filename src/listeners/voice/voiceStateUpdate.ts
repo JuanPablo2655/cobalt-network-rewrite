@@ -13,17 +13,18 @@ abstract class VoiceStateUpdateListener extends Listener {
 
 	async run(oldState: VoiceState, newState: VoiceState) {
 		if (!this.cobalt.testListeners) return;
+		const { db, econ, redis, metrics } = this.cobalt.container;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (newState.member?.partial) await newState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;
 		if (!oldState.guild.available || !newState.guild.available) return;
-		const guild = await this.cobalt.container.db.getGuild(newState.guild.id);
+		const guild = await db.getGuild(newState.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		if (!oldState.member || !newState.member) return;
-		const user = await this.cobalt.container.db.getUser(newState.member.id);
-		const member = await this.cobalt.container.db.getMember(newState.member.id, newState.guild.id);
+		const user = await db.getUser(newState.member.id);
+		const member = await db.getMember(newState.member.id, newState.guild.id);
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = newState.guild.channels.cache.get(logChannelId) as TextChannel;
@@ -35,23 +36,23 @@ abstract class VoiceStateUpdateListener extends Listener {
 		if (!oldState.channel && newState.channel) {
 			if (newState.member.user.bot) return;
 			const start = Date.now();
-			await this.cobalt.container.redis.set(`voice-${newState.member.id}`, start);
+			await redis.set(`voice-${newState.member.id}`, start);
 			logEmbed.setTitle(`Member Joined VC`).setDescription(`**VC Channel:** ${newState.channel}`);
 			return void logChannel.send({ embeds: [logEmbed] });
 		}
 		if (oldState.channel && !newState.channel) {
 			if (oldState.member.user.bot) return;
 			const end = Date.now();
-			const startTime = await this.cobalt.container.redis.get(`voice-${newState.member.id}`);
+			const startTime = await redis.get(`voice-${newState.member.id}`);
 			if (startTime) {
 				const elapsed = end - Number(startTime);
-				this.cobalt.container.metrics.voiceInc(elapsed);
-				this.cobalt.container.metrics.voiceInc(elapsed, oldState.guild.id);
+				metrics.voiceInc(elapsed);
+				metrics.voiceInc(elapsed, oldState.guild.id);
 				const time = elapsed / 60000;
 				const addMoney = Math.round(time * 9) + 1;
-				await this.cobalt.container.econ.addToWallet(oldState.member.id, addMoney);
-				await this.cobalt.container.db.updateUser(oldState.member.id, { vcHours: [...(user?.vcHours ?? []), elapsed] });
-				await this.cobalt.container.db.updateMember(oldState.member.id, oldState.guild.id, {
+				await econ.addToWallet(oldState.member.id, addMoney);
+				await db.updateUser(oldState.member.id, { vcHours: [...(user?.vcHours ?? []), elapsed] });
+				await db.updateMember(oldState.member.id, oldState.guild.id, {
 					vcHours: [...(member?.vcHours ?? []), elapsed],
 				});
 				oldState.member
@@ -69,7 +70,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 					.setDescription(
 						`**VC Channel:** ${oldState.channel}\n**Time Elapsed:** ${prettyMilliseconds(elapsed, { verbose: true })}`,
 					);
-				await this.cobalt.container.redis.del(`voice-${newState.member.id}`);
+				await redis.del(`voice-${newState.member.id}`);
 			} else {
 				logEmbed.setTitle(`Member Left VC`).setDescription(`**VC Channel:** ${oldState.channel}`);
 			}

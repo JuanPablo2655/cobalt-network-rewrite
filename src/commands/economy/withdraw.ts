@@ -15,7 +15,8 @@ abstract class WithdrawCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const profile = await this.cobalt.container.db.getUser(message.author.id);
+		const { db, econ } = this.cobalt.container;
+		const profile = await db.getUser(message.author.id);
 		if (!profile) throw new Error('missing user database entry');
 		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'How much money');
 		let money = Number(args[0]);
@@ -33,8 +34,8 @@ abstract class WithdrawCommand extends GenericCommand {
 				"You can't withdraw money you don't have",
 			);
 		await addCD();
-		await this.cobalt.container.econ.removeFrombank(message.author.id, money);
-		await this.cobalt.container.econ.addToWallet(message.author.id, money);
+		await econ.removeFrombank(message.author.id, money);
+		await econ.addToWallet(message.author.id, money);
 		return message.channel.send({
 			content: `You withdrew **${formatMoney(money)}**. Your bank balance is now **${formatMoney(
 				profile.bank - money,

@@ -16,9 +16,10 @@ abstract class DailyCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		const { db, econ } = this.cobalt.container;
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true });
 		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
-		const user = await this.cobalt.container.db.getUser(member.id);
+		const user = await db.getUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		const date = Date.now();
 		const cooldown = date + days(1);
@@ -30,16 +31,16 @@ abstract class DailyCommand extends GenericCommand {
 		await addCD();
 		if (member.id === message.author.id) {
 			const dailyAmount = Math.floor(250 + Math.random() * 150);
-			await this.cobalt.container.db.updateUser(message.author.id, { daily: cooldown });
-			await this.cobalt.container.econ.addToWallet(member.id, dailyAmount);
+			await db.updateUser(message.author.id, { daily: cooldown });
+			await econ.addToWallet(member.id, dailyAmount);
 			return message.channel.send({
 				content: `You have received your daily **${formatMoney(dailyAmount)}**.`,
 			});
 		}
 		const dailyAmount = Math.floor(250 + Math.random() * 150);
 		const moneyEarned = addMulti(dailyAmount, 10);
-		await this.cobalt.container.db.updateUser(message.author.id, { daily: cooldown });
-		await this.cobalt.container.econ.addToWallet(member.id, moneyEarned);
+		await db.updateUser(message.author.id, { daily: cooldown });
+		await econ.addToWallet(member.id, moneyEarned);
 		return message.channel.send({
 			content: `You gave your daily of **${formatMoney(moneyEarned)}** to **${member.user.username}**.`,
 		});

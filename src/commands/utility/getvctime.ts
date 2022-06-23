@@ -17,11 +17,12 @@ abstract class GetVcTimeCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		const { db } = this.cobalt.container;
 		const [option] = args;
 		const member = await findMember(this.cobalt, message, args, { allowAuthor: true, index: 1 });
 		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
-		const memberData = await this.cobalt.container.db.getMember(member.id, message.guild?.id);
-		const user = await this.cobalt.container.db.getUser(member.id);
+		const memberData = await db.getMember(member.id, message.guild?.id);
+		const user = await db.getUser(member.id);
 		await addCD();
 		switch (option?.toLowerCase() ?? '') {
 			case 'local': {

@@ -15,8 +15,9 @@ abstract class GuildMemberAddListener extends Listener {
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;
-		const user = await this.cobalt.container.db.getMember(member.user.id, member.guild.id);
-		const guild = await this.cobalt.container.db.getGuild(member.guild.id);
+		const { db } = this.cobalt.container;
+		const user = await db.getMember(member.user.id, member.guild.id);
+		const guild = await db.getGuild(member.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
