@@ -1,9 +1,28 @@
-FROM node:16
+FROM node:16 as base
+
 WORKDIR /cobalt
-COPY package.json ./
+
+ENV HUSKY=0
+
 COPY yarn.lock ./
-RUN yarn install
-COPY . .
-RUN npx tsc
+COPY package.json ./
+
+RUN sed -i 's/"prepare": "husky install"/"prepare": ""/' ./package.json
+
+FROM base as builder
+
+COPY tsconfig.base.json ./tsconfig.base.json
+COPY src/ src/
+
+RUN yarn install --immutable
+RUN yarn run build
+
+FROM builder as runner
+
+ENV NODE_OPTIONS="--enable-source-maps"
+
+COPY .env ./.env
+
 EXPOSE 3030
-CMD ["yarn", "start"]
+
+CMD ["yarn", "run", "start"]
