@@ -22,7 +22,7 @@ Go to the project directory
 
 Create your .env file in the root folder (see .env.example)
 
-Make sure Docker and Docker Compose is installed in your computer and then start the container
+Make sure [Docker](https://docs.docker.com/engine/install/) and Docker Compose is installed in your computer and then start the container
 
 ```bash
   docker-compose up --build
