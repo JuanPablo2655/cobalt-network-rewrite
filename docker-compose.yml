@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   bot:
     build: .
@@ -58,7 +58,29 @@ services:
       - '9123:9123'
     restart: unless-stopped
 
+  elasticsearch:
+    image: elasticsearch:8.2.3
+    ports:
+      - '9200:9200'
+    environment:
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+      discovery.type: single-node
+    volumes:
+      - elastic-storage:/usr/share/elasticsearch/data
+    restart: unless-stopped
+
+  kibana:
+    image: kibana:8.2.3
+    depends_on:
+      - elasticsearch
+    ports:
+      - '5601:5601'
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    restart: unless-stopped
+
 volumes:
   prometheus-storage:
   grafana-storage:
   mongo-storage:
+  elastic-storage:
