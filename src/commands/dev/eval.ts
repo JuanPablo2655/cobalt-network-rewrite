@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 import { Formatters, Message, MessageReaction, User } from 'discord.js';
-import { inspect, promisify } from 'util';
+import { inspect, promisify } from 'node:util';
 import { GenericCommand } from '#lib/structures/commands';
 
 abstract class EvalCommand extends GenericCommand {

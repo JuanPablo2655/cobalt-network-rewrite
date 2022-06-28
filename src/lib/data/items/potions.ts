@@ -1,4 +1,4 @@
-import { ItemData, Item, Market } from './items';
+import { ItemData, Item, Market } from './items.js';
 
 declare const enum PotionStatType {
 	Heal = 0,

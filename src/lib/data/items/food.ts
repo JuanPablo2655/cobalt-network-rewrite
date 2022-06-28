@@ -1,4 +1,4 @@
-import { Item, ItemData, Market } from './items';
+import { Item, ItemData, Market } from './items.js';
 
 export class Food extends ItemData {
 	food: {

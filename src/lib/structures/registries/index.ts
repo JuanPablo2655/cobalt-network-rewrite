@@ -1,3 +1,3 @@
-export * from './CommandRegistry';
-export * from './InteractionRegistry';
-export * from './ListenerRegistry';
+export * from './CommandRegistry.js';
+export * from './InteractionRegistry.js';
+export * from './ListenerRegistry.js';

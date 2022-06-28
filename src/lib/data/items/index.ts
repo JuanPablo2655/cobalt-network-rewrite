@@ -1,10 +1,10 @@
-import apparels from './apparels';
-import food from './food';
-import { Item } from './items';
-import materials from './materials';
-import misc from './misc';
-import potions from './potions';
-import weapons from './weapons';
+import apparels from './apparels.js';
+import food from './food.js';
+import { Item } from './items.js';
+import materials from './materials.js';
+import misc from './misc.js';
+import potions from './potions.js';
+import weapons from './weapons.js';
 
-export * from './types';
+export * from './types.js';
 export const Items: Item[] = apparels.concat(food, materials, misc, potions, weapons);

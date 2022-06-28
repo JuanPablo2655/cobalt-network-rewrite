@@ -1,8 +1,8 @@
 import { logger } from '#lib/structures';
 import { Default } from '#lib/typings';
 import { Message } from 'discord.js';
-import { CobaltClient } from '../CobaltClient';
-import { addMulti, calcMulti } from './util';
+import { CobaltClient } from '../CobaltClient.js';
+import { addMulti, calcMulti } from '#utils/util';
 
 export default class Currency {
 	cobalt: CobaltClient;

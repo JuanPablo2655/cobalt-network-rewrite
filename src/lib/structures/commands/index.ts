@@ -1,3 +1,3 @@
-export * from './BaseCommand';
-export * from './GenericCommand';
-export * from './InteractionCommand';
+export * from './BaseCommand.js';
+export * from './GenericCommand.js';
+export * from './InteractionCommand.js';

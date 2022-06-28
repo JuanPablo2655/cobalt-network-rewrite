@@ -1,10 +1,10 @@
-import { Apparel } from './apparels';
-import { Food } from './food';
-import { Enchant, ItemData, Market } from './items';
-import { Material } from './materials';
-import { Misc } from './misc';
-import { Potion } from './potions';
-import { Weapon } from './weapons';
+import { Apparel } from './apparels.js';
+import { Food } from './food.js';
+import { Enchant, ItemData, Market } from './items.js';
+import { Material } from './materials.js';
+import { Misc } from './misc.js';
+import { Potion } from './potions.js';
+import { Weapon } from './weapons.js';
 
 export function isApparel(obj: ItemData): obj is Apparel {
 	return obj?.apparel !== undefined;

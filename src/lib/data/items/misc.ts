@@ -1,4 +1,4 @@
-import { Item, ItemData, Market } from './items';
+import { Item, ItemData, Market } from './items.js';
 
 declare const enum MiscType {
 	Book = 0,

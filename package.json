@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "./dist/Cobalt.js",
+  "type": "module",
   "imports": {
     "#lib/*": "./dist/lib/*.js",
     "#lib/typings": "./dist/lib/typings/index.js",
@@ -52,6 +53,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.18.1",
     "glob": "^8.0.1",
+    "globby": "^13.1.2",
     "ioredis": "^5.0.6",
     "mongoose": "^6.4.0",
     "node-fetch": "2.6.7",

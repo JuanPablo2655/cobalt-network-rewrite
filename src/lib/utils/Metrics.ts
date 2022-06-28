@@ -3,8 +3,8 @@ import { logger } from '#lib/structures';
 import { ClientEvents, Snowflake } from 'discord.js';
 import express, { Express } from 'express';
 import { Counter, Gauge, collectDefaultMetrics, register } from 'prom-client';
-import { CobaltClient } from '../CobaltClient';
-import { seconds } from './common';
+import { CobaltClient } from '../CobaltClient.js';
+import { seconds } from '#utils/common';
 
 export default class Metrics {
 	private messageCounter: Counter<string>;

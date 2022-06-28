@@ -1,2 +1,2 @@
-export * from './numbers';
-export * from './permissions';
+export * from './numbers.js';
+export * from './permissions.js';

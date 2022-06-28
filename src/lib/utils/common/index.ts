@@ -1,1 +1,1 @@
-export * from './times';
+export * from './times.js';

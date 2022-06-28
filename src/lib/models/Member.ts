@@ -1,5 +1,5 @@
 import { Snowflake } from 'discord.js';
-import { Document, model, ObjectId, Schema } from 'mongoose';
+import mongoose, { Document, ObjectId } from 'mongoose';
 
 export interface MemberData {
 	/**
@@ -40,7 +40,7 @@ export interface MemberData {
 
 export type IMember = Document & MemberData;
 
-const memberSchema = new Schema<IMember>({
+const memberSchema = new mongoose.Schema<IMember>({
 	memberId: { type: String, required: true },
 	guildId: { type: String, required: true },
 	vcHours: { type: [Number], default: null },
@@ -49,4 +49,4 @@ const memberSchema = new Schema<IMember>({
 	warns: { type: Array, default: [] },
 });
 
-export default model('Member', memberSchema);
+export default mongoose.model('Member', memberSchema);

@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import { InteractionCommand } from '#lib/structures/commands';
 import { CovidAll, covidCountry, covidState } from '#lib/typings';
 import { formatNumber } from '#utils/functions';
-import { covidCommand } from './options';
+import { covidCommand } from './options.js';
 import { Identifiers, UserError } from '#lib/errors';
 
 abstract class CovidInteractionCommand extends InteractionCommand {

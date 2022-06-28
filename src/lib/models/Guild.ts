@@ -1,5 +1,5 @@
 import { Snowflake } from 'discord.js';
-import { Document, model, Schema } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export interface GuildData {
 	/**
@@ -140,7 +140,7 @@ export interface LogChannel {
 
 export type IGuild = Document & GuildData;
 
-const guildSchema = new Schema<IGuild>({
+const guildSchema = new mongoose.Schema<IGuild>({
 	_id: { type: String, required: true },
 	prefix: { type: String, default: 'cn!' },
 	verified: { type: Boolean, default: false },
@@ -170,4 +170,4 @@ const guildSchema = new Schema<IGuild>({
 	},
 });
 
-export default model('Guild', guildSchema);
+export default mongoose.model('Guild', guildSchema);

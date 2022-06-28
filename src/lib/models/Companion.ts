@@ -1,8 +1,7 @@
 import { Default } from '#lib/typings';
 import { Snowflake } from 'discord.js';
-import { Document, model, Schema } from 'mongoose';
-import { ClassOptions } from '../data/classes';
-import { RaceOptions } from '../data/races';
+import mongoose, { Document } from 'mongoose';
+import { ClassOptions, RaceOptions } from '#lib/data';
 
 export interface CompanionData {
 	/**
@@ -53,7 +52,7 @@ export interface CompanionData {
 
 export type ICompanion = Document & CompanionData;
 
-const companionSchema = new Schema<ICompanion>({
+const companionSchema = new mongoose.Schema<ICompanion>({
 	_id: { type: String, required: true },
 	name: { type: String, default: null },
 	race: { type: String, default: null },
@@ -63,4 +62,4 @@ const companionSchema = new Schema<ICompanion>({
 	xp: { type: Number, default: Default.Xp },
 });
 
-export default model('Companion', companionSchema);
+export default mongoose.model('Companion', companionSchema);

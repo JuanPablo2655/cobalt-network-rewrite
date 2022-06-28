@@ -1,6 +1,5 @@
-import type { Config } from '@jest/types';
-
-export default async (): Promise<Config.InitialOptions> => ({
+/** @type {import('@jest/types').Config.InitialOptions} */
+const config = {
 	coverageProvider: 'v8',
 	displayName: 'unit test',
 	preset: 'ts-jest',
@@ -34,7 +33,10 @@ export default async (): Promise<Config.InitialOptions> => ({
 	},
 	globals: {
 		'ts-jest': {
+			useESM: true,
 			tsconfig: '<rootDir>/tests/tsconfig.json',
 		},
 	},
-});
+};
+
+export default config;
