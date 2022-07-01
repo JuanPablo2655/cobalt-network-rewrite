@@ -62,7 +62,7 @@ describe('Cobalt', () => {
 
 		describe('resolveFile', () => {
 			test("GIVEN '../../mocks/MockStructure.ts' THEN return instanceOf Listener", async () => {
-				expect(await resolveFile<Listener>(__dirname + '/../../mocks/MockStructure.ts')).toBeInstanceOf(Listener);
+				expect(await resolveFile<Listener>('/../../mocks/MockStructure.ts')).toBeInstanceOf(Listener);
 			});
 		});
 	});
