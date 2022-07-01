@@ -16,7 +16,7 @@ export default defineConfig({
 		coverage: {
 			enabled: true,
 			reporter: ['text', 'lcov', 'clover'],
-			include: ['./src/lib/utils/**/*.ts', './src/lib/data/**/*.ts'],
+			include: ['src/lib/utils/**/*.ts', 'src/lib/data/**/*.ts'],
 			exclude: [
 				resolve('tests'),
 				resolve('src/lib/utils/Database.ts'),
