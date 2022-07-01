@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { Items, isFood, isWeapon } from '#lib/data';
 
 describe('Items', () => {

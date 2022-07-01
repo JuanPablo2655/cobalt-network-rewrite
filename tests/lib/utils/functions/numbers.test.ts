@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { formatMoney, formatNumber } from '#utils/functions';
 
 describe('functions', () => {

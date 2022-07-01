@@ -1,8 +1,15 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vitest/config';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default defineConfig({
+	resolve: {
+		alias: [
+			{ find: '#utils', replacement: `${resolve('src/lib/utils')}` },
+			{ find: '#lib', replacement: `${resolve('src/lib')}` },
+			{ find: '#root', replacement: `${resolve('src')}` },
+			{ find: '#mocks', replacement: `${resolve('test/mocks')}` },
+		],
+	},
 	esbuild: { format: 'esm' },
 	test: {
 		globals: true,
@@ -21,5 +28,4 @@ export default defineConfig({
 			],
 		},
 	},
-	plugins: [nodeResolve()],
 });

@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { jobs } from '#lib/data';
 
 describe('Jobs', () => {
