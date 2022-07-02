@@ -15,7 +15,7 @@ import {
 	vcdataCommand,
 	socialCreditCommand,
 } from '#root/interactions';
-import { config } from './config';
+import { config } from './config.js';
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const rest = new REST({ version: '10' }).setToken(config.token!);

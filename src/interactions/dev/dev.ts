@@ -1,8 +1,8 @@
 import { ApplicationCommandPermissionType, ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
-import { devCommand } from './options';
-import { pay, reboot } from './subcommands';
-import { directors, tax } from './subcommands/update';
+import { devCommand } from './options.js';
+import { pay, reboot } from './subcommands/index.js';
+import { directors, tax } from './subcommands/update/index.js';
 
 abstract class PingInteractionCommand extends InteractionCommand {
 	constructor() {

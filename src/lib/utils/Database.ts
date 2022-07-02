@@ -1,8 +1,8 @@
-import botModel, { BotData, IBot } from '../models/Bot';
-import guildModel, { GuildData, IGuild } from '../models/Guild';
-import userModel, { UserData, IUser } from '../models/User';
-import memberModel, { MemberData, IMember } from '../models/Member';
-import { CobaltClient } from '../CobaltClient';
+import botModel, { BotData, IBot } from '../models/Bot.js';
+import guildModel, { GuildData, IGuild } from '../models/Guild.js';
+import userModel, { UserData, IUser } from '../models/User.js';
+import memberModel, { MemberData, IMember } from '../models/Member.js';
+import { CobaltClient } from '../CobaltClient.js';
 import mongoose, { Connection } from 'mongoose';
 import { logger } from '#lib/structures';
 

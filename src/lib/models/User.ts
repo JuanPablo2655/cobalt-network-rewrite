@@ -1,6 +1,6 @@
 import { Default } from '#lib/typings';
 import { Snowflake } from 'discord.js';
-import { Document, model, Schema } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export interface UserData {
 	/**
@@ -126,7 +126,7 @@ export interface UserData {
 
 export type IUser = Document & UserData;
 
-const userSchema = new Schema<IUser>({
+const userSchema = new mongoose.Schema<IUser>({
 	_id: { type: String, required: true },
 	guilds: { type: Array, default: [] },
 	job: { type: String, default: null },
@@ -153,4 +153,4 @@ const userSchema = new Schema<IUser>({
 	totalCommandsUsed: { type: Number, default: Default.Default },
 });
 
-export default model('User', userSchema);
+export default mongoose.model('User', userSchema);

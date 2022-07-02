@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
-import { experienceCommand } from './options';
-import { rank, reputation } from './subcommands';
+import { experienceCommand } from './options.js';
+import { rank, reputation } from './subcommands/index.js';
 
 abstract class ExperienceInteractionCommand extends InteractionCommand {
 	constructor() {

@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
-import { pingCommand } from './options';
+import { pingCommand } from './options.js';
 
 abstract class PingInteractionCommand extends InteractionCommand {
 	constructor() {

@@ -1,7 +1,7 @@
-import { sync } from 'glob';
+import { globbySync as sync } from 'globby';
 import { CobaltClient } from '#lib/CobaltClient';
 import { InteractionCommand } from '#lib/structures/commands';
-import { logger } from '../logger';
+import { logger } from '#lib/structures';
 import { resolveFile, validateFile } from '#utils/util';
 
 export async function InteractionRegistry(cobalt: CobaltClient) {

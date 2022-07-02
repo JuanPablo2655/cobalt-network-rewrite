@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
-import { socialCreditCommand } from './options';
-import { add, check, remove } from './subcommands';
+import { socialCreditCommand } from './options.js';
+import { add, check, remove } from './subcommands/index.js';
 
 abstract class SocialCreditInteractionCommand extends InteractionCommand {
 	constructor() {

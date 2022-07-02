@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { days, hours, minutes, months, seconds, years } from '#utils/common';
 
 describe('Time functions', () => {

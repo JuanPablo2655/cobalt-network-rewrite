@@ -1,10 +1,10 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
-import { settingCommand } from './options';
-import { add, list, remove } from './subcommands/blacklistword';
-import * as leavechannel from './subcommands/leavechannel';
-import * as logchannel from './subcommands/logchannel';
-import * as welcomechannel from './subcommands/welcomechannel';
+import { settingCommand } from './options.js';
+import { add, list, remove } from './subcommands/blacklistword/index.js';
+import * as leavechannel from './subcommands/leavechannel/index.js';
+import * as logchannel from './subcommands/logchannel/index.js';
+import * as welcomechannel from './subcommands/welcomechannel/index.js';
 
 abstract class settingsInteractionCommand extends InteractionCommand {
 	constructor() {

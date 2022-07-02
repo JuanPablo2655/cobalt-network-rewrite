@@ -1,7 +1,7 @@
 import { logger } from '#lib/structures';
 import { Default } from '#lib/typings';
 import { Message, Snowflake } from 'discord.js';
-import { CobaltClient } from '../CobaltClient';
+import { CobaltClient } from '../CobaltClient.js';
 
 export default class Experience {
 	cobalt: CobaltClient;

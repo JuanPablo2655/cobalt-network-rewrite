@@ -1,7 +1,7 @@
-import { sync } from 'glob';
+import { globbySync as sync } from 'globby';
 import { CobaltClient } from '#lib/CobaltClient';
 import { Listener } from '#lib/structures/listeners';
-import { logger } from '../logger';
+import { logger } from '#lib/structures';
 import { resolveFile, validateFile } from '#utils/util';
 
 export async function ListenerRegistry(cobalt: CobaltClient) {

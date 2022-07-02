@@ -1,9 +1,9 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
-import { economyCommand } from './options';
-import { balance, daily, monthly, pay, weekly, work } from './subcommands';
-import { deposit, withdraw } from './subcommands/bank';
-import { apply, list, quit } from './subcommands/job';
+import { economyCommand } from './options.js';
+import { balance, daily, monthly, pay, weekly, work } from './subcommands/index.js';
+import { deposit, withdraw } from './subcommands/bank/index.js';
+import { apply, list, quit } from './subcommands/job/index.js';
 
 abstract class EconomyInteractionCommand extends InteractionCommand {
 	constructor() {

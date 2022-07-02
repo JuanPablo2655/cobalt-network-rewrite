@@ -1,3 +1,0 @@
-afterAll(() => {
-	return;
-});

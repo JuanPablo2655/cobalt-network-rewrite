@@ -1,12 +1,12 @@
-import { ItemData, Item, Market } from './items';
+import { ItemData, Item, Market } from './items.js';
 
-declare const enum PotionStatType {
+enum PotionStatType {
 	Heal = 0,
 	Magicka = 1,
 	All = 2,
 }
 
-declare const enum PotionEffectType {
+enum PotionEffectType {
 	Once = 0,
 	Lasting = 1,
 	Buff = 2,

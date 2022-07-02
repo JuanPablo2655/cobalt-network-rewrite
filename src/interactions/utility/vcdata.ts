@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { InteractionCommand } from '#lib/structures/commands';
 import { formatNumber } from '#utils/functions';
-import { vcdataCommand } from './options';
+import { vcdataCommand } from './options.js';
 
 abstract class VcDataInteractionCommand extends InteractionCommand {
 	constructor() {

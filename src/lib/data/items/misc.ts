@@ -1,6 +1,6 @@
-import { Item, ItemData, Market } from './items';
+import { Item, ItemData, Market } from './items.js';
 
-declare const enum MiscType {
+enum MiscType {
 	Book = 0,
 	Soul = 1,
 	Pelt = 2,

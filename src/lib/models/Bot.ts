@@ -1,6 +1,6 @@
 import { Default } from '#lib/typings';
 import { Snowflake } from 'discord.js';
-import { Document, model, Schema } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export interface BotData {
 	/**
@@ -31,7 +31,7 @@ export interface BotData {
 
 export type IBot = Document & BotData;
 
-const botSchema = new Schema<IBot>({
+const botSchema = new mongoose.Schema<IBot>({
 	_id: { type: String, required: true },
 	directors: { type: Array, default: [] },
 	tax: { type: Number, default: Default.Tax },
@@ -39,4 +39,4 @@ const botSchema = new Schema<IBot>({
 	totalCommandsUsed: { type: Number, default: 0 },
 });
 
-export default model('Bot', botSchema);
+export default mongoose.model('Bot', botSchema);
