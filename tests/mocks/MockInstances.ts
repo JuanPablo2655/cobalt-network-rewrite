@@ -1,14 +1,14 @@
 import { CobaltClient } from '#lib/CobaltClient';
 import {
-	APIChannel,
-	APIGuild,
-	APIGuildMember,
-	APIRole,
-	APIUser,
 	ChannelType,
 	GuildFeature,
 	GuildNSFWLevel,
-} from 'discord-api-types/v9';
+	type APIChannel,
+	type APIGuild,
+	type APIGuildMember,
+	type APIRole,
+	type APIUser,
+} from 'discord-api-types/v10';
 import { Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
 
 export const client = new CobaltClient();
@@ -20,6 +20,7 @@ export const userData: APIUser = {
 };
 
 export function createUser(data: Partial<APIUser> = {}) {
+	// @ts-expect-error: Private constructor
 	return new User(client, { ...userData, ...data });
 }
 
@@ -34,6 +35,7 @@ export const guildMemberData: APIGuildMember = {
 };
 
 export function createGuildMember(data: Partial<APIGuildMember> = {}, g: Guild = guild) {
+	// @ts-expect-error: Private constructor
 	return new GuildMember(client, { ...guildMemberData, ...data, user: { ...guildMemberData.user, ...data.user! } }, g);
 }
 
@@ -49,6 +51,7 @@ export const roleData: APIRole = {
 };
 
 export function createRole(data: Partial<APIRole> = {}, g: Guild = guild) {
+	// @ts-expect-error: Private constructor
 	const role = new Role(client, { ...roleData, ...data }, g);
 	g.roles.cache.set(role.id, role);
 	return role;
@@ -75,6 +78,7 @@ export const guildData: APIGuild = {
 		GuildFeature.InviteSplash,
 		GuildFeature.Community,
 	],
+	hub_type: null,
 	max_members: 100000,
 	max_presences: null,
 	max_video_channel_users: 25,
@@ -82,6 +86,7 @@ export const guildData: APIGuild = {
 	nsfw_level: GuildNSFWLevel.Default,
 	owner_id: '232670598872956929',
 	preferred_locale: 'en-US',
+	premium_progress_bar_enabled: false,
 	premium_subscription_count: 3,
 	premium_tier: 1,
 	public_updates_channel_id: '700806874294911067',
@@ -99,6 +104,7 @@ export const guildData: APIGuild = {
 };
 
 export function createGuild(data: Partial<APIGuild> = {}) {
+	// @ts-expect-error: Private constructor
 	const g = new Guild(client, { ...guildData, ...data });
 	client.guilds.cache.set(g.id, g);
 	return g;
@@ -121,6 +127,7 @@ export const textChannelData: APIChannel = {
 };
 
 export function createTextChannel(data: Partial<APIChannel> = {}, g: Guild = guild) {
+	// @ts-expect-error: Private constructor
 	const c = new TextChannel(guild, { ...textChannelData, ...data });
 	g.channels.cache.set(c.id, c);
 	g.client.channels.cache.set(c.id, c);

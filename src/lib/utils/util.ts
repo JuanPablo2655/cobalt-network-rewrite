@@ -229,7 +229,7 @@ export function addMulti(amount: number, multi: number) {
  * @param array The array that contains the duplicates
  * @returns A new array with no duplicates
  */
-export function removeDuplicates<T>(array: Array<T>) {
+export function removeDuplicates<T>(array: T[]) {
 	return [...new Set(array)];
 }
 
