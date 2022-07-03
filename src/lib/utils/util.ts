@@ -1,7 +1,7 @@
 import { CobaltClient } from '../CobaltClient.js';
 import * as DJS from 'discord.js';
 import { diffWordsWithSpace, diffLines, Change } from 'diff';
-import { GenericCommand, InteractionCommand, Listener, logger } from '#lib/structures';
+import { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
 import { resolve } from 'node:path';
 import process from 'node:process';
 import { isClass } from '@sapphire/utilities';
@@ -23,92 +23,6 @@ export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
  */
 export function toCapitalize(str: string) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-/**
- * Get the GuildMember from message content
- * @param client Cobalt client
- * @param message Message in which to find the member
- * @param args Arguments provided in the command
- * @param options Option to include the author an the argument index
- * @returns Returns GuildMember
- */
-export async function findMember(
-	client: CobaltClient,
-	message: Partial<DJS.Message>,
-	args: string[],
-	options?: { allowAuthor?: boolean; index?: number },
-): Promise<DJS.GuildMember | null> {
-	if (!(message.guild instanceof DJS.Guild)) return null;
-
-	try {
-		const arg = args[options?.index ?? 0]?.replace?.(/[<@!>]/gi, '') || args[options?.index ?? 0];
-		const mention =
-			message.mentions?.users.first()?.id !== client.user?.id
-				? message.mentions?.users.first()
-				: message.mentions?.users.first(1)[1];
-
-		const member: DJS.GuildMember | null =
-			message.guild.members.cache.find(m => m.user.id === mention?.id) ||
-			message.guild.members.cache.get(arg as DJS.Snowflake) ||
-			message.guild.members.cache.find(m => m.user.id === args[options?.index ?? 0]) ||
-			message.guild.members.cache.find(
-				m =>
-					m.user.username === args[options?.index ?? 0] ||
-					m.user.username.toLowerCase().includes(args[options?.index ?? 0]?.toLowerCase()),
-			) ||
-			message.guild.members.cache.find(
-				m =>
-					m.displayName === args[options?.index ?? 0] ||
-					m.displayName.toLowerCase().includes(args[options?.index ?? 0]?.toLowerCase()),
-			) ||
-			(message.guild.members.cache.find(
-				m =>
-					m.user.tag === args[options?.index ?? 0] ||
-					m.user.tag.toLowerCase().includes(args[options?.index ?? 0]?.toLowerCase()),
-			) as DJS.GuildMember) ||
-			(options?.allowAuthor === true ? message.member : null);
-		return member;
-	} catch (err) {
-		// TODO(Isidro): refactor
-		const error = err as Error;
-		if (err instanceof DJS.DiscordAPIError ? err?.message?.includes('DiscordAPIError: Unknown Member') : null) {
-			logger.error(error, error.message);
-			return null;
-		}
-		return null;
-	}
-}
-
-/**
- * Get the role form message content
- * @param message The message in which to find the role
- * @param arg Arguments provided in the command
- * @returns Returns Role
- */
-export async function findRole(message: DJS.Message, arg: string): Promise<DJS.Role | null> {
-	if (!(message.guild instanceof DJS.Guild)) return null;
-	return (
-		message.mentions.roles.first() ||
-		message.guild.roles.cache.get(arg as DJS.Snowflake) ||
-		message.guild.roles.cache.find(r => r.name === arg) ||
-		message.guild.roles.cache.find(r => r.name.startsWith(arg)) ||
-		message.guild.roles.fetch(arg as DJS.Snowflake)
-	);
-}
-
-/**
- * Get the channel from message content
- * @param message The message in which to find the channel
- * @param arg Arguments provided in the command
- * @returns Returns TextChannel
- */
-export async function findChannel(message: DJS.Message, arg: string): Promise<DJS.TextChannel | null> {
-	if (!(message.guild instanceof DJS.Guild)) return null;
-	return (message.mentions.channels.first() ||
-		message.guild.channels.cache.get(arg as DJS.Snowflake) ||
-		message.guild.channels.cache.find(c => (c as DJS.TextChannel).name === arg) ||
-		message.guild.channels.cache.find(c => (c as DJS.TextChannel).name.startsWith(arg))) as DJS.TextChannel;
 }
 
 /**

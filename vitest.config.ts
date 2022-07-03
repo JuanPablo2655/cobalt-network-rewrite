@@ -7,7 +7,7 @@ export default defineConfig({
 			{ find: '#utils', replacement: `${resolve('src/lib/utils')}` },
 			{ find: '#lib', replacement: `${resolve('src/lib')}` },
 			{ find: '#root', replacement: `${resolve('src')}` },
-			{ find: '#mocks', replacement: `${resolve('test/mocks')}` },
+			{ find: '#mocks', replacement: `${resolve('tests/mocks')}` },
 		],
 	},
 	esbuild: { format: 'esm' },

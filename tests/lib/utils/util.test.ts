@@ -1,6 +1,17 @@
 import { describe, test, expect } from 'vitest';
 import { Listener } from '#lib/structures';
-import { addMulti, getDiff, IMAGE_EXTENSION, removeDuplicates, resolveFile, toCapitalize, trim } from '#utils/util';
+import {
+	addMulti,
+	findMember,
+	getDiff,
+	IMAGE_EXTENSION,
+	removeDuplicates,
+	resolveFile,
+	toCapitalize,
+	trim,
+} from '#utils/util';
+import { client } from '#mocks/MockInstances';
+import { Message } from 'discord.js';
 
 // TODO(*): Write a more thorough test suite
 describe('Cobalt', () => {
@@ -44,18 +55,6 @@ describe('Cobalt', () => {
 			test("GIVEN '1244' THEN return '1244'", () => {
 				expect(toCapitalize('1244')).toEqual('1244');
 			});
-		});
-
-		describe('findMember', () => {
-			test.todo('GIVEN client AND Message AND args AND options THEN return User');
-		});
-
-		describe('findRole', () => {
-			test.todo('GIVEN Message AND arg THEN return Role');
-		});
-
-		describe('findChannel', () => {
-			test.todo('GIVEN Message AND arg THEN return TextChannel');
 		});
 
 		describe('trim', () => {

@@ -1,9 +1,9 @@
 import { Message, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
-import { findMember } from '#utils/util';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatNumber } from '#utils/functions';
+import { resolveMember } from '#utils/resolvers';
 
 abstract class GetVcTimeCommand extends GenericCommand {
 	constructor() {
@@ -19,7 +19,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db } = this.cobalt.container;
 		const [option] = args;
-		const member = await findMember(this.cobalt, message, args, { allowAuthor: true, index: 1 });
+		const member = await resolveMember(args[1], message.guild!).catch(() => message.member);
 		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		const memberData = await db.getMember(member.id, message.guild?.id);
 		const user = await db.getUser(member.id);

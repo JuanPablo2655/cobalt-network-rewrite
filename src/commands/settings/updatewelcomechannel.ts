@@ -1,7 +1,7 @@
-import { Guild, Message } from 'discord.js';
+import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { findChannel } from '#utils/util';
 import { Identifiers, UserError } from '#lib/errors';
+import { resolveGuildTextChannel } from '#utils/resolvers';
 
 abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 	constructor() {
@@ -18,7 +18,8 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db } = this.cobalt.container;
 		const [option, action, ...welcomeMessage] = args;
-		const guildId = (message.guild as Guild)?.id;
+		if (!message.guild) throw new UserError({ identifer: 'Missing Guild' }, 'Missing Guild');
+		const guildId = message.guild.id;
 		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
@@ -37,7 +38,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 				});
 			}
 			case 'channel': {
-				const channel = await findChannel(message, action);
+				const channel = await resolveGuildTextChannel(action, message.guild);
 				if (!channel) throw new UserError({ identifer: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
 				await db.updateGuild(guildId, {
 					welcomeMessage: {

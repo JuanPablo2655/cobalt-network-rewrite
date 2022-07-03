@@ -1,7 +1,6 @@
 import { Message } from 'discord.js';
-import { Items } from '#lib/data';
 import { GenericCommand } from '#lib/structures/commands';
-import { trim } from '#utils/util';
+import { resolveMember } from '#utils/functions';
 
 abstract class TestCommand extends GenericCommand {
 	constructor() {
@@ -14,10 +13,8 @@ abstract class TestCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const bruh = Items.filter(i => (i.data[args[0]] !== undefined ? i.data[args[0]] : i)).map(
-			i => `${i.id} - ${i.name}`,
-		);
-		return message.channel.send({ content: trim(bruh.join('\n'), 2000) });
+		const member = await resolveMember(args[0], message.guild!);
+		return message.channel.send({ content: `${member}` });
 	}
 }
 
