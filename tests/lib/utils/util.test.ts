@@ -1,17 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { Listener } from '#lib/structures';
-import {
-	addMulti,
-	findMember,
-	getDiff,
-	IMAGE_EXTENSION,
-	removeDuplicates,
-	resolveFile,
-	toCapitalize,
-	trim,
-} from '#utils/util';
-import { client } from '#mocks/MockInstances';
-import { Message } from 'discord.js';
+import { addMulti, getDiff, IMAGE_EXTENSION, removeDuplicates, resolveFile, toCapitalize, trim } from '#utils/util';
 
 // TODO(*): Write a more thorough test suite
 describe('Cobalt', () => {
