@@ -1,6 +1,6 @@
 import { CobaltClient } from '../CobaltClient.js';
 import * as DJS from 'discord.js';
-import { diffWordsWithSpace, diffLines, Change } from 'diff';
+import { diffWordsWithSpace } from 'diff';
 import { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
 import { resolve } from 'node:path';
 import process from 'node:process';
@@ -40,21 +40,9 @@ export function trim(str: string, max: number) {
  * @param newString The new content
  */
 export function getDiff(oldString: string, newString: string): string {
-	const setStyle = (string: string, style: string) => `${style}${string}${style}`;
-	oldString.replace(/\*|~~/g, '');
-	newString.replace(/\*|~~/g, '');
-	const getSmallestString = (strings: string[]): string => {
-		return strings.reduce((smallestString, currentString) =>
-			currentString.length < smallestString.length ? currentString : smallestString,
-		);
-	};
-	const diffs = [diffWordsWithSpace, diffLines].map((diffFunction): string =>
-		diffFunction(oldString, newString).reduce((diffString: string, part: Change) => {
-			diffString += setStyle(part.value, part.added ? '***' : part.removed ? '~~' : '');
-			return diffString;
-		}, ''),
-	);
-	return getSmallestString(diffs);
+	return diffWordsWithSpace(DJS.escapeMarkdown(oldString), DJS.escapeMarkdown(newString))
+		.map(result => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
+		.join('');
 }
 
 export interface ImageAttachment {

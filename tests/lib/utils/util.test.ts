@@ -57,9 +57,21 @@ describe('Cobalt', () => {
 		});
 
 		describe('getDiff', () => {
-			test("GIVEN 'This is the first string' AND 'This is the second string' THEN return 'This is the ~~first~~***second*** string'", () => {
+			test("Given 'This string doesn't change' AND 'This string doesn't change' THEN return 'This string doesn't change'", () => [
+				expect(getDiff("This string doesn't change", "This string doesn't change")).toEqual(
+					"This string doesn't change",
+				),
+			]);
+
+			test("GIVEN 'This is the first string' AND 'This is the second string' THEN return 'This is the ~~first~~**second** string'", () => {
 				expect(getDiff('This is the first string', 'This is the second string')).toEqual(
-					'This is the ~~first~~***second*** string',
+					'This is the ~~first~~**second** string',
+				);
+			});
+
+			test("GIVEN 'This string fixes the speling' AND 'This string fixes the spelling' THEN return 'This string fixes the ~~speling~~**spelling**'", () => {
+				expect(getDiff('This string fixes the speling', 'This string fixes the spelling')).toEqual(
+					'This string fixes the ~~speling~~**spelling**',
 				);
 			});
 		});
