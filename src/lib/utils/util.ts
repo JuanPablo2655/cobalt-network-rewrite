@@ -69,6 +69,14 @@ export function getAttachment(message: DJS.Message): ImageAttachment | null {
 		}
 	}
 	for (const embed of message.embeds) {
+		if (embed.thumbnail) {
+			return {
+				url: embed.thumbnail.url,
+				proxyURL: embed.thumbnail.proxyURL!,
+				height: embed.thumbnail.height!,
+				width: embed.thumbnail.width!,
+			};
+		}
 		if (embed.image) {
 			return {
 				url: embed.image.url,
