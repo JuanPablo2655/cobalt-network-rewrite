@@ -24,7 +24,6 @@ export default defineConfig({
 				'src/lib/utils/Experience.ts',
 				'src/lib/utils/Metrics.ts',
 				'src/lib/utils/constants.ts',
-				'src/lib/utils/functions/permissions.ts',
 			],
 		},
 	},

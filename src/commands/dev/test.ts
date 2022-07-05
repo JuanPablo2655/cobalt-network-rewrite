@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { resolveMember } from '#utils/resolvers';
+/* import { resolveRole } from '#utils/resolvers'; */
 
 abstract class TestCommand extends GenericCommand {
 	constructor() {
@@ -11,10 +11,10 @@ abstract class TestCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const member = await resolveMember(args[0], message.guild!);
-		return message.channel.send({ content: `${member}` });
+		/* 		const role = await resolveRole(args[0], message.guild!); */
+		return message.channel.send({ content: `${message.guild?.roles.everyone.id}` });
 	}
 }
 

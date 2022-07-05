@@ -105,6 +105,7 @@ export function getImage(message: DJS.Message) {
  * @param client Cobalt client
  * @returns Returns a whole number ex. 6%
  */
+// TODO(Isidro): refactor this to depend on cache or database table or something I don't know yet
 export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<number> {
 	let multi = 0;
 	const member = client.guilds.cache.get('322505254098698240')?.members.cache.get(user.id);

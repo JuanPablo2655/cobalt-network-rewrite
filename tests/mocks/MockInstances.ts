@@ -40,7 +40,7 @@ export function createGuildMember(data: Partial<APIGuildMember> = {}, g: Guild =
 }
 
 export const roleData: APIRole = {
-	id: '254360814063058944',
+	id: '322505254098698240',
 	name: '@​everyone',
 	color: 0,
 	hoist: false,
