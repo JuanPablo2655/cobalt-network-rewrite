@@ -11,11 +11,11 @@ export class Item {
 	}
 }
 
-declare enum EnchantType {
-	fire = 0,
-	frost = 1,
-	health = 2,
-	magicka = 3,
+export enum EnchantType {
+	Fire = 0,
+	Frost = 1,
+	Health = 2,
+	Magicka = 3,
 }
 
 export class ItemData {

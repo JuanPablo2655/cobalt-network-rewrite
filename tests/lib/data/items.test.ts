@@ -1,5 +1,17 @@
 import { describe, test, expect } from 'vitest';
-import { Items, isFood, isWeapon, isApparel, isPotion, isMaterial, isMisc, isMarket } from '#lib/data';
+import {
+	Items,
+	isFood,
+	isWeapon,
+	isApparel,
+	isPotion,
+	isMaterial,
+	isMisc,
+	isMarket,
+	Item,
+	Enchant,
+	EnchantType,
+} from '#lib/data';
 
 describe('Items', () => {
 	test("GIVEN 'redapple' THEN return red Apple Object", () => {
@@ -10,6 +22,20 @@ describe('Items', () => {
 			data: {
 				food: { saturation: 2 },
 				market: { price: 10, sellAmount: 4 },
+			},
+		});
+	});
+
+	test('GIVEN new Item THEN return correct object', () => {
+		expect(new Item('testId', 'test', 'test description', new Enchant(EnchantType.Fire, 10))).toEqual({
+			id: 'testId',
+			name: 'test',
+			description: 'test description',
+			data: {
+				enchant: {
+					type: 0,
+					amount: 10,
+				},
 			},
 		});
 	});

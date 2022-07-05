@@ -7,4 +7,5 @@ import potions from './potions.js';
 import weapons from './weapons.js';
 
 export * from './types.js';
+export * from './items.js';
 export const Items: Item[] = [...apparels, ...food, ...materials, ...misc, ...potions, ...weapons];
