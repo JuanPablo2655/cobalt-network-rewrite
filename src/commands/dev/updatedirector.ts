@@ -1,7 +1,6 @@
 import { Message, Snowflake } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { findRole } from '#utils/util';
-import { Identifiers, UserError } from '#lib/errors';
+import { resolveRole } from '#utils/resolvers';
 
 abstract class UpdateDirectorCommand extends GenericCommand {
 	constructor() {
@@ -15,8 +14,7 @@ abstract class UpdateDirectorCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		const role = await findRole(message, '355885679076442112');
-		if (!role) throw new UserError({ identifer: Identifiers.ArgumentUserError }, 'Not in the correct server');
+		const role = await resolveRole('355885679076442112', message.guild!);
 		await addCD();
 		const directors: Snowflake[] = [];
 		const directorUsernames: string[] = [];

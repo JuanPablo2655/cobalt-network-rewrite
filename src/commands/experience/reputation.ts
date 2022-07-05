@@ -1,8 +1,8 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
-import { findMember } from '#utils/util';
 import { Identifiers, UserError } from '#lib/errors';
+import { resolveMember } from '#utils/resolvers';
 
 abstract class ReputationCommand extends GenericCommand {
 	constructor() {
@@ -17,8 +17,7 @@ abstract class ReputationCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db } = this.cobalt.container;
-		const member = await findMember(this.cobalt, message, args);
-		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
+		const member = await resolveMember(args[0], message.guild!);
 		const author = await db.getUser(message.author.id);
 		if (!author) throw new Error('Missing author database entry');
 		const user = await db.getUser(member.id);

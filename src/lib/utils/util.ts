@@ -1,7 +1,7 @@
 import { CobaltClient } from '../CobaltClient.js';
 import * as DJS from 'discord.js';
-import { diffWordsWithSpace, diffLines, Change } from 'diff';
-import { GenericCommand, InteractionCommand, Listener, logger } from '#lib/structures';
+import { diffWordsWithSpace } from 'diff';
+import { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
 import { resolve } from 'node:path';
 import process from 'node:process';
 import { isClass } from '@sapphire/utilities';
@@ -26,92 +26,6 @@ export function toCapitalize(str: string) {
 }
 
 /**
- * Get the GuildMember from message content
- * @param client Cobalt client
- * @param message Message in which to find the member
- * @param args Arguments provided in the command
- * @param options Option to include the author an the argument index
- * @returns Returns GuildMember
- */
-export async function findMember(
-	client: CobaltClient,
-	message: Partial<DJS.Message>,
-	args: string[],
-	options?: { allowAuthor?: boolean; index?: number },
-): Promise<DJS.GuildMember | null> {
-	if (!(message.guild instanceof DJS.Guild)) return null;
-
-	try {
-		const arg = args[options?.index ?? 0]?.replace?.(/[<@!>]/gi, '') || args[options?.index ?? 0];
-		const mention =
-			message.mentions?.users.first()?.id !== client.user?.id
-				? message.mentions?.users.first()
-				: message.mentions?.users.first(1)[1];
-
-		const member: DJS.GuildMember | null =
-			message.guild.members.cache.find(m => m.user.id === mention?.id) ||
-			message.guild.members.cache.get(arg as DJS.Snowflake) ||
-			message.guild.members.cache.find(m => m.user.id === args[options?.index ?? 0]) ||
-			message.guild.members.cache.find(
-				m =>
-					m.user.username === args[options?.index ?? 0] ||
-					m.user.username.toLowerCase().includes(args[options?.index ?? 0]?.toLowerCase()),
-			) ||
-			message.guild.members.cache.find(
-				m =>
-					m.displayName === args[options?.index ?? 0] ||
-					m.displayName.toLowerCase().includes(args[options?.index ?? 0]?.toLowerCase()),
-			) ||
-			(message.guild.members.cache.find(
-				m =>
-					m.user.tag === args[options?.index ?? 0] ||
-					m.user.tag.toLowerCase().includes(args[options?.index ?? 0]?.toLowerCase()),
-			) as DJS.GuildMember) ||
-			(options?.allowAuthor === true ? message.member : null);
-		return member;
-	} catch (err) {
-		// TODO(Isidro): refactor
-		const error = err as Error;
-		if (err instanceof DJS.DiscordAPIError ? err?.message?.includes('DiscordAPIError: Unknown Member') : null) {
-			logger.error(error, error.message);
-			return null;
-		}
-		return null;
-	}
-}
-
-/**
- * Get the role form message content
- * @param message The message in which to find the role
- * @param arg Arguments provided in the command
- * @returns Returns Role
- */
-export async function findRole(message: DJS.Message, arg: string): Promise<DJS.Role | null> {
-	if (!(message.guild instanceof DJS.Guild)) return null;
-	return (
-		message.mentions.roles.first() ||
-		message.guild.roles.cache.get(arg as DJS.Snowflake) ||
-		message.guild.roles.cache.find(r => r.name === arg) ||
-		message.guild.roles.cache.find(r => r.name.startsWith(arg)) ||
-		message.guild.roles.fetch(arg as DJS.Snowflake)
-	);
-}
-
-/**
- * Get the channel from message content
- * @param message The message in which to find the channel
- * @param arg Arguments provided in the command
- * @returns Returns TextChannel
- */
-export async function findChannel(message: DJS.Message, arg: string): Promise<DJS.TextChannel | null> {
-	if (!(message.guild instanceof DJS.Guild)) return null;
-	return (message.mentions.channels.first() ||
-		message.guild.channels.cache.get(arg as DJS.Snowflake) ||
-		message.guild.channels.cache.find(c => (c as DJS.TextChannel).name === arg) ||
-		message.guild.channels.cache.find(c => (c as DJS.TextChannel).name.startsWith(arg))) as DJS.TextChannel;
-}
-
-/**
  * Trim a string to a certain length
  * @param str The string to trim
  * @param max The max length of the string
@@ -126,21 +40,9 @@ export function trim(str: string, max: number) {
  * @param newString The new content
  */
 export function getDiff(oldString: string, newString: string): string {
-	const setStyle = (string: string, style: string) => `${style}${string}${style}`;
-	oldString.replace(/\*|~~/g, '');
-	newString.replace(/\*|~~/g, '');
-	const getSmallestString = (strings: string[]): string => {
-		return strings.reduce((smallestString, currentString) =>
-			currentString.length < smallestString.length ? currentString : smallestString,
-		);
-	};
-	const diffs = [diffWordsWithSpace, diffLines].map((diffFunction): string =>
-		diffFunction(oldString, newString).reduce((diffString: string, part: Change) => {
-			diffString += setStyle(part.value, part.added ? '***' : part.removed ? '~~' : '');
-			return diffString;
-		}, ''),
-	);
-	return getSmallestString(diffs);
+	return diffWordsWithSpace(DJS.escapeMarkdown(oldString), DJS.escapeMarkdown(newString))
+		.map(result => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
+		.join('');
 }
 
 export interface ImageAttachment {
@@ -167,6 +69,14 @@ export function getAttachment(message: DJS.Message): ImageAttachment | null {
 		}
 	}
 	for (const embed of message.embeds) {
+		if (embed.thumbnail) {
+			return {
+				url: embed.thumbnail.url,
+				proxyURL: embed.thumbnail.proxyURL!,
+				height: embed.thumbnail.height!,
+				width: embed.thumbnail.width!,
+			};
+		}
 		if (embed.image) {
 			return {
 				url: embed.image.url,
@@ -195,6 +105,7 @@ export function getImage(message: DJS.Message) {
  * @param client Cobalt client
  * @returns Returns a whole number ex. 6%
  */
+// TODO(Isidro): refactor this to depend on cache or database table or something I don't know yet
 export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<number> {
 	let multi = 0;
 	const member = client.guilds.cache.get('322505254098698240')?.members.cache.get(user.id);
@@ -229,7 +140,7 @@ export function addMulti(amount: number, multi: number) {
  * @param array The array that contains the duplicates
  * @returns A new array with no duplicates
  */
-export function removeDuplicates<T>(array: Array<T>) {
+export function removeDuplicates<T>(array: T[]) {
 	return [...new Set(array)];
 }
 

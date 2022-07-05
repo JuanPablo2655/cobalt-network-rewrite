@@ -1,8 +1,8 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { findMember } from '#utils/util';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatMoney } from '#utils/functions';
+import { resolveMember } from '#utils/resolvers';
 
 abstract class PayComamnd extends GenericCommand {
 	constructor() {
@@ -18,7 +18,7 @@ abstract class PayComamnd extends GenericCommand {
 		const { db, econ } = this.cobalt.container;
 		const bot = await db.getBot(this.cobalt.user?.id);
 		if (!bot) throw new Error('Missing bot database entry');
-		const member = await findMember(this.cobalt, message, args);
+		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
 		if (!member)
 			throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Please pick a valid member');
 		const author = await db.getUser(message.author.id);

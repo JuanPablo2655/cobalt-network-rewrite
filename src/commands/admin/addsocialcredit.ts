@@ -1,10 +1,10 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { findMember } from '#utils/util';
 import { Default } from '#lib/typings';
 import { seconds } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatNumber } from '#utils/functions';
+import { resolveMember } from '#utils/resolvers';
 
 abstract class addSocialCredit extends GenericCommand {
 	constructor() {
@@ -19,8 +19,7 @@ abstract class addSocialCredit extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db } = this.cobalt.container;
-		const member = await findMember(this.cobalt, message, args);
-		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberError }, 'Invalid member');
+		const member = await resolveMember(args[0], message.guild!);
 		if (member.id == message.author.id)
 			throw new UserError({ identifer: Identifiers.ArgumentUserError }, "can't give yourself social credit");
 		const amount = Number(args[1]);
