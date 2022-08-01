@@ -56,7 +56,7 @@
     "globby": "^13.1.2",
     "ioredis": "^5.0.6",
     "mongoose": "^6.4.0",
-    "node-fetch": "^3.2.6",
+    "node-fetch": "^3.2.10",
     "pino": "^8.0.0",
     "pino-elasticsearch": "^6.2.0",
     "pino-multi-stream": "^6.0.0",
