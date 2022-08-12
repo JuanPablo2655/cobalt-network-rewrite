@@ -17,7 +17,7 @@ abstract class PrefixCommand extends GenericCommand {
 		// aslkd;fj84rfo34fhweporufhw3p49i7h3098f457h3qew9fh3qpg-hg9-03r - valid prefix lol
 		await addCD();
 		const prefix = args[0];
-		if (!prefix) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing arg');
+		if (!prefix) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing arg');
 
 		await this.cobalt.container.db.updateGuild(message.guild?.id, { prefix });
 		return message.channel.send({ content: `Successfully changed the prefix to \`${prefix}\`.` });

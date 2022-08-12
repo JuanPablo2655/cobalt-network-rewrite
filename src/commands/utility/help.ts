@@ -7,7 +7,7 @@ abstract class HelpCommand extends GenericCommand {
 	constructor() {
 		super({
 			name: 'help',
-			description: 'Get the a list of all the commands avaliable.',
+			description: 'Get the a list of all the commands available.',
 			category: 'utility',
 			usage: '[category | command]',
 			aliases: ['h', 'halp'],

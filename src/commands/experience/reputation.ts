@@ -23,12 +23,12 @@ abstract class ReputationCommand extends GenericCommand {
 		const user = await db.getUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		if (member.id === message.author.id)
-			throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't give youself a reputation point!");
+			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't give yourself a reputation point!");
 		const date = Date.now();
 		const cooldown = date + 86400000;
 		if (!isNaN(author.repTime!) && author.repTime! > date) {
 			throw new UserError(
-				{ identifer: Identifiers.PreconditionCooldown },
+				{ identifier: Identifiers.PreconditionCooldown },
 				`You still have **${prettyMilliseconds(
 					author.repTime! - Date.now(),
 				)}** left before you can give someone a reputation point!`,

@@ -19,14 +19,14 @@ abstract class DailyCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db, econ } = this.cobalt.container;
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
-		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
+		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = await db.getUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		const date = Date.now();
 		const cooldown = date + days(1);
 		if (!isNaN(user.daily!) && user.daily! > date)
 			throw new UserError(
-				{ identifer: Identifiers.PreconditionCooldown },
+				{ identifier: Identifiers.PreconditionCooldown },
 				`You still have **${prettyMilliseconds(user.daily! - Date.now())}** left before you can claim your daily!`,
 			);
 		await addCD();

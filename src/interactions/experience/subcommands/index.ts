@@ -28,13 +28,13 @@ export async function reputation(cobalt: CobaltClient, interaction: ChatInputCom
 	if (!author) throw new Error('Missing author database entry');
 	const user = await db.getUser(member.id);
 	if (member.id === interaction.user.id)
-		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't give youself a reputation point!");
+		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't give yourself a reputation point!");
 	const date = Date.now();
 	const cooldown = date + days(1);
 	// TODO(Isidro): fix this
 	if (!isNaN(author.repTime!) && author.repTime! > date) {
 		throw new UserError(
-			{ identifer: Identifiers.PreconditionCooldown },
+			{ identifier: Identifiers.PreconditionCooldown },
 			`You still have **${prettyMilliseconds(
 				author.repTime! - Date.now(),
 			)}** left before you can give someone a reputation point!`,

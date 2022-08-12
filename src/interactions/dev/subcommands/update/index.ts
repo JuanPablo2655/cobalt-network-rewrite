@@ -6,7 +6,7 @@ import { Identifiers, UserError } from '#lib/errors';
 export async function directors(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const role = interaction.guild?.roles.cache.get('355885679076442112');
-	if (!role) throw new UserError({ identifer: Identifiers.ArgumentUserError }, 'Not in the correct server');
+	if (!role) throw new UserError({ identifier: Identifiers.ArgumentUserError }, 'Not in the correct server');
 	const directors: Snowflake[] = new Array<Snowflake>();
 	const directorUsernames: string[] = new Array<string>();
 	role?.members.forEach(member => {
@@ -27,8 +27,9 @@ export async function tax(cobalt: CobaltClient, interaction: ChatInputCommandInt
 	if (!bot) throw new Error('Missing bot user');
 	const tax = interaction.options.getNumber('tax', true);
 	if (tax < 1.5)
-		throw new UserError({ identifer: Identifiers.ArgumentNumberTooSmall }, 'Tax must be greater than 1.5%');
-	if (tax > 60) throw new UserError({ identifer: Identifiers.ArgumentNumberTooLarge }, "Tax can't be greater than 60%");
+		throw new UserError({ identifier: Identifiers.ArgumentNumberTooSmall }, 'Tax must be greater than 1.5%');
+	if (tax > 60)
+		throw new UserError({ identifier: Identifiers.ArgumentNumberTooLarge }, "Tax can't be greater than 60%");
 	await db.updateBot(cobalt.user?.id, { tax });
 	interaction.editReply({ content: `The global tax rate is now **${formatNumber(tax)}%**` });
 }

@@ -5,7 +5,7 @@ import { UserError, Identifiers } from '#lib/errors';
 export async function channel(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { db } = cobalt.container;
 	const channel = interaction.options.getChannel('channel', true);
-	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
+	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await db.getGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
 	await db.updateGuild(interaction.guild.id, {
@@ -21,7 +21,7 @@ export async function channel(cobalt: CobaltClient, interaction: ChatInputComman
 export async function message(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { db } = cobalt.container;
 	const message = interaction.options.getString('message', true);
-	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
+	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await db.getGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
 	await db.updateGuild(interaction.guild.id, {
@@ -37,11 +37,11 @@ export async function message(cobalt: CobaltClient, interaction: ChatInputComman
 export async function toggle(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { db } = cobalt.container;
 	const option = interaction.options.getBoolean('toggle', true);
-	if (!interaction.guild) throw new UserError({ identifer: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
+	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await db.getGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
 	if (guild.welcomeMessage?.enabled === option)
-		throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `Already ${option}`);
+		throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `Already ${option}`);
 	await db.updateGuild(interaction.guild.id, {
 		welcomeMessage: {
 			message: guild.welcomeMessage?.message ?? null,

@@ -21,15 +21,15 @@ abstract class addSocialCredit extends GenericCommand {
 		const { db } = this.cobalt.container;
 		const member = await resolveMember(args[0], message.guild!);
 		if (member.id == message.author.id)
-			throw new UserError({ identifer: Identifiers.ArgumentUserError }, "can't give yourself social credit");
+			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "can't give yourself social credit");
 		const amount = Number(args[1]);
-		if (isNaN(amount)) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Invalid integer');
+		if (isNaN(amount)) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		addCD();
 		const userData = await db.getUser(member.id);
 		const newAmount = (userData?.socialCredit ?? Default.SocialCredit) + amount;
 		if (newAmount > 2000)
 			throw new UserError(
-				{ identifer: Identifiers.ArgumentIntegerTooLarge },
+				{ identifier: Identifiers.ArgumentIntegerTooLarge },
 				'The max social credit score someone can have is 2,000',
 			);
 		db.updateUser(member.id, { socialCredit: newAmount });

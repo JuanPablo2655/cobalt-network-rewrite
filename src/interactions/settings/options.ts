@@ -17,7 +17,7 @@ export const settingCommand = {
 						{
 							type: ApplicationCommandOptionType.Boolean,
 							name: 'boolean',
-							description: 'Toogle the log channel.',
+							description: 'Toggle the log channel.',
 							required: true,
 						},
 					],

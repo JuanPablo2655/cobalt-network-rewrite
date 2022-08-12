@@ -23,7 +23,7 @@ abstract class VerifyCommand extends GenericCommand {
 			if (director === message.author.id) return (isDirector = true);
 		});
 		if (!isDirector)
-			throw new UserError({ identifer: Identifiers.PreconditionUserPermissionsNoPermissions }, 'Not a director');
+			throw new UserError({ identifier: Identifiers.PreconditionUserPermissionsNoPermissions }, 'Not a director');
 		const guildId = (message.guild as Guild)?.id;
 		const guild = db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');

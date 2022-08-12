@@ -8,9 +8,9 @@ export const OWNERS = process.env.OWNERS?.split(',') ?? ['288703114473635841'];
 export const config = {
 	/** Client information */
 	client: {
-		/** Bot client Id found in Discord Devlopment Portal */
+		/** Bot client Id found in Discord Development Portal */
 		id: process.env.CLIENT_ID,
-		/** Bot client secret found in Discord Devlopment Portal */
+		/** Bot client secret found in Discord Development Portal */
 		secret: process.env.CLIENT_SECRET,
 	},
 	/** Bot token */
@@ -23,7 +23,7 @@ export const config = {
 	redis: process.env.REDIS ?? 'redis://localhost:6379',
 	/** Either test listeners or not */
 	testListeners: process.env.TEST_LISTENERS === 'true' ?? false,
-	/** Disable XP in devlopment */
+	/** Disable XP in development */
 	disableXp: process.env.DISABLE_XP === 'true' ?? false,
 	/** Webhook URLs */
 	webhooks: {

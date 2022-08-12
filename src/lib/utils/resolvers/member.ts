@@ -5,7 +5,7 @@ import type { Guild, Snowflake } from 'discord.js';
 export async function resolveMember(parameter: string, guild: Guild) {
 	const member = (await resolveById(parameter, guild)) ?? (await resolveByQuery(parameter, guild));
 	if (member) return member;
-	throw new UserError({ identifer: Identifiers.ArgumentMemberError }, 'Invalid Member');
+	throw new UserError({ identifier: Identifiers.ArgumentMemberError }, 'Invalid Member');
 }
 
 async function resolveById(argument: string, guild: Guild) {

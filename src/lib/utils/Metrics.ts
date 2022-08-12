@@ -42,7 +42,7 @@ export default class Metrics {
 		});
 		this.commandsExecuted = new Counter({
 			name: 'cobalt_commands',
-			help: 'Number of command Cobaltia has successfully excuted',
+			help: 'Number of command Cobaltia has successfully executed',
 			labelNames: ['command'],
 		});
 		this.latency = new Gauge({ name: 'cobalt_latency', help: 'Websocket latency', labelNames: ['type'] });

@@ -7,7 +7,7 @@ export const devCommand = {
 		{
 			type: ApplicationCommandOptionType.Subcommand,
 			name: 'reboot',
-			description: 'Reboot the bot. Only works if using pm2 or anything else simillar.',
+			description: 'Reboot the bot. Only works if using pm2 or anything else similar.',
 		},
 		{
 			type: ApplicationCommandOptionType.Subcommand,

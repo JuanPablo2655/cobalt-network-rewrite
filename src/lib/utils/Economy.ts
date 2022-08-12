@@ -81,7 +81,7 @@ export default class Currency {
 	 * @param userId The user Id
 	 * @param money Money to remove from bank account
 	 */
-	async removeFrombank(userId: string, money: number) {
+	async removeFromBank(userId: string, money: number) {
 		try {
 			const { db } = this.cobalt.container;
 			if (isNaN(money)) throw new TypeError('Money must be a number.');
@@ -216,7 +216,7 @@ export default class Currency {
 	}
 
 	/**
-	 * Add bank space to user bank account based on their muiltiplyer
+	 * Add bank space to user bank account based on their multiplier
 	 * @param message The message
 	 */
 	async manageBankSpace(message: Message) {
@@ -257,7 +257,7 @@ export default class Currency {
 	 * @param botId The bot Id
 	 * @param amount Amount to remove
 	 */
-	async removebotBank(botId: string, amount: number) {
+	async removeBotBank(botId: string, amount: number) {
 		try {
 			const { db } = this.cobalt.container;
 			if (isNaN(amount)) throw new TypeError('Money must be a number.');

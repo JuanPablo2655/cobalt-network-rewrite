@@ -18,7 +18,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db } = this.cobalt.container;
 		const [option, action, ...welcomeMessage] = args;
-		if (!message.guild) throw new UserError({ identifer: 'Missing Guild' }, 'Missing Guild');
+		if (!message.guild) throw new UserError({ identifier: 'Missing Guild' }, 'Missing Guild');
 		const guildId = message.guild.id;
 		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
@@ -39,7 +39,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 			}
 			case 'channel': {
 				const channel = await resolveGuildTextChannel(action, message.guild);
-				if (!channel) throw new UserError({ identifer: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
+				if (!channel) throw new UserError({ identifier: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
 				await db.updateGuild(guildId, {
 					welcomeMessage: {
 						message: guild.welcomeMessage?.message ?? null,
@@ -52,7 +52,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 			case 'message': {
 				if (!action)
 					throw new UserError(
-						{ identifer: Identifiers.ArgsMissing },
+						{ identifier: Identifiers.ArgsMissing },
 						`Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setwelcomechannel message edit <welcome message>\``,
 					);
 				if (action === 'edit') {
@@ -81,7 +81,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 			}
 			default: {
 				throw new UserError(
-					{ identifer: Identifiers.ArgsMissing },
+					{ identifier: Identifiers.ArgsMissing },
 					'Please choose between `toggle, channel, or message`',
 				);
 			}

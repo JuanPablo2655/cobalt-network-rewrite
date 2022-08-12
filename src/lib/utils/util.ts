@@ -100,7 +100,7 @@ export function getImage(message: DJS.Message) {
 }
 
 /**
- * Calculate a muliplier for a user
+ * Calculate a multiplier for a user
  * @param user The user from to calculate the multiplier
  * @param client Cobalt client
  * @returns Returns a whole number ex. 6%

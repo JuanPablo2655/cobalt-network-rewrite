@@ -19,7 +19,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db } = this.cobalt.container;
 		const [option, action, ...leaveMessage] = args;
-		if (!message.guild) throw new UserError({ identifer: 'Missing Guild' }, 'Missing Guild');
+		if (!message.guild) throw new UserError({ identifier: 'Missing Guild' }, 'Missing Guild');
 		const guildId = message.guild.id;
 		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
@@ -52,7 +52,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			case 'message': {
 				if (!action)
 					throw new UserError(
-						{ identifer: Identifiers.ArgsMissing },
+						{ identifier: Identifiers.ArgsMissing },
 						`Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setleavechannel message edit <leave message>\``,
 					);
 				if (action === 'edit') {
@@ -81,7 +81,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			}
 			default: {
 				throw new UserError(
-					{ identifer: Identifiers.ArgsMissing },
+					{ identifier: Identifiers.ArgsMissing },
 					'Please choose between `toggle, channel, or message`',
 				);
 			}

@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import { Formatters, Message, MessageReaction, User } from 'discord.js';
+import { codeBlock, Message, MessageReaction, User } from 'discord.js';
 import { inspect, promisify } from 'node:util';
 import { GenericCommand } from '#lib/structures/commands';
 
@@ -57,7 +57,7 @@ abstract class EvalCommand extends GenericCommand {
 		}
 
 		const msg = await message.channel.send({
-			content: Formatters.codeBlock(args[0]?.toLowerCase() === '-sh' ? 'sh' : 'js', evalued.slice(0, 1950)),
+			content: codeBlock(args[0]?.toLowerCase() === '-sh' ? 'sh' : 'js', evalued.slice(0, 1950)),
 		});
 
 		try {

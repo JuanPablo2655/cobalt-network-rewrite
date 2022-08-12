@@ -24,7 +24,7 @@ export interface BotData {
 	bank: number;
 
 	/**
-	 * Totoal commands executed by the users
+	 * Total commands executed by the users
 	 */
 	totalCommandsUsed: number;
 }

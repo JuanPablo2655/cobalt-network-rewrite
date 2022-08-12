@@ -11,13 +11,13 @@ export async function category(cobalt: CobaltClient, interaction: ChatInputComma
 	const guild = await db.getGuild(interaction.guildId!);
 	if (!guild) throw new Error('Missing guild database entry');
 	if (!categories.includes(category))
-		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid category');
+		throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid category');
 	if (saveCategories.includes(category))
-		throw new UserError({ identifer: Identifiers.CategoryDisabled }, `Can't disabled ${category} category`);
+		throw new UserError({ identifier: Identifiers.CategoryDisabled }, `Can't disabled ${category} category`);
 	if (guild.disabledCategories?.includes(category) && option === true)
-		throw new UserError({ identifer: Identifiers.PreconditionDataExists }, 'Already disabled');
+		throw new UserError({ identifier: Identifiers.PreconditionDataExists }, 'Already disabled');
 	if (!guild.disabledCategories?.includes(category) && option === false)
-		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Category already enabled');
+		throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Category already enabled');
 	if (option === true) {
 		await db.updateGuild(interaction.guildId!, {
 			disabledCategories: [...(guild.disabledCategories ?? []), category],
@@ -38,18 +38,18 @@ export async function command(cobalt: CobaltClient, interaction: ChatInputComman
 	const option = interaction.options.getBoolean('toggle', true);
 	const guild = await db.getGuild(interaction.guildId!);
 	if (!guild) throw new Error('Missing guid database entry');
-	if (!command) throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid command');
+	if (!command) throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid command');
 	if (saveCommands.includes(command.name))
-		throw new UserError({ identifer: Identifiers.CommandDisabled }, `Can't disable \`${command}\``);
+		throw new UserError({ identifier: Identifiers.CommandDisabled }, `Can't disable \`${command}\``);
 	if (saveCategories.includes(command?.category))
 		throw new UserError(
-			{ identifer: Identifiers.CategoryDisabled },
+			{ identifier: Identifiers.CategoryDisabled },
 			`Can't disabled command in \`${command.category}\` category`,
 		);
 	if (guild.disabledCommands?.includes(command.name) && option === true)
-		throw new UserError({ identifer: Identifiers.CommandDisabled }, 'Command already disabled');
+		throw new UserError({ identifier: Identifiers.CommandDisabled }, 'Command already disabled');
 	if (!guild.disabledCommands?.includes(command.name) && option === false)
-		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Commmand already enabled');
+		throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Command already enabled');
 	if (option === true) {
 		await db.updateGuild(interaction.guildId!, {
 			disabledCommands: [...(guild.disabledCommands ?? []), command.name],

@@ -76,7 +76,7 @@ export interface GenericCommandOptions extends BaseCommandOptions {
 	aliases?: string[];
 
 	/**
-	 * Whether the command is enabled gloablly or not
+	 * Whether the command is enabled globally or not
 	 * @default true
 	 */
 	enabled?: boolean;
@@ -110,7 +110,7 @@ export interface GenericCommandOptions extends BaseCommandOptions {
 	/**
 	 * Executes the message command's logic
 	 * @param message The message that triggered the command
-	 * @param args The parsed arugments
+	 * @param args The parsed arguments
 	 * @param addCD Adds cooldown to the user
 	 */
 	run: (message: Message, args: string[], addCD: () => Promise<void>) => unknown | Promise<unknown>;

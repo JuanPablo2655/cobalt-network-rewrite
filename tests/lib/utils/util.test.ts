@@ -19,7 +19,7 @@ import { DeepPartial } from '@sapphire/utilities';
 describe('Cobalt', () => {
 	describe('util', () => {
 		describe('IMAGE_EXTENSION', () => {
-			test('GIVEN valid extentions THEN pass test', () => {
+			test('GIVEN valid extensions THEN pass test', () => {
 				expect(IMAGE_EXTENSION.test('.bmp')).toBe(true);
 				expect(IMAGE_EXTENSION.test('.jpg')).toBe(true);
 				expect(IMAGE_EXTENSION.test('.jpeg')).toBe(true);

@@ -5,7 +5,7 @@ import type { Guild, Role, Snowflake } from 'discord.js';
 export async function resolveRole(parameter: string, guild: Guild) {
 	const role = (await resolveById(parameter, guild)) ?? resolveByQuery(parameter, guild);
 	if (role) return role;
-	throw new UserError({ identifer: Identifiers.ArgumentRoleError }, 'Invalid Role');
+	throw new UserError({ identifier: Identifiers.ArgumentRoleError }, 'Invalid Role');
 }
 
 async function resolveById(argument: string, guild: Guild): Promise<Role | null> {

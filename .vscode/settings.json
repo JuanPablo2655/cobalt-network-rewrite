@@ -1,5 +1,17 @@
 {
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"cSpell.words": ["vcdata"]
+	"cSpell.words": [
+		"Axalis",
+		"Cobaltia",
+		"craftable",
+		"disablecommand",
+		"enablecommand",
+		"esbuild",
+		"evalued",
+		"lcov",
+		"magicka",
+		"Mulit",
+		"vcdata"
+	]
 }

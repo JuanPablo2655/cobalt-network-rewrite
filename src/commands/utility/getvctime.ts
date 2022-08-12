@@ -20,7 +20,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		const { db } = this.cobalt.container;
 		const [option] = args;
 		const member = await resolveMember(args[1], message.guild!).catch(() => message.member);
-		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
+		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		const memberData = await db.getMember(member.id, message.guild?.id);
 		const user = await db.getUser(member.id);
 		await addCD();
@@ -65,8 +65,8 @@ abstract class GetVcTimeCommand extends GenericCommand {
 			}
 			default: {
 				throw new UserError(
-					{ identifer: Identifiers.ArgsMissing },
-					`Please supply either \`local\` or \`global\` as the paramater please!`,
+					{ identifier: Identifiers.ArgsMissing },
+					`Please supply either \`local\` or \`global\` as the parameter please!`,
 				);
 			}
 		}

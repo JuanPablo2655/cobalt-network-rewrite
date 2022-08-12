@@ -5,7 +5,7 @@ import type { Guild, GuildBasedChannel, Snowflake } from 'discord.js';
 export function resolveGuildChannel(parameter: string, guild: Guild) {
 	const channel = resolveById(parameter, guild) ?? resolveByQuery(parameter, guild);
 	if (channel) return channel;
-	throw new UserError({ identifer: Identifiers.ArgumentGuildChannelError }, 'Invalid GuildChannel');
+	throw new UserError({ identifier: Identifiers.ArgumentGuildChannelError }, 'Invalid GuildChannel');
 }
 
 function resolveById(argument: string, guild: Guild) {

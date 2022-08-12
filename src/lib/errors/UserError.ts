@@ -2,7 +2,7 @@ export class UserError extends Error {
 	/**
 	 * An identifier, useful to localize emitted errors
 	 */
-	public readonly identifer: string;
+	public readonly identifier: string;
 
 	/**
 	 * Constructs an UserError
@@ -11,7 +11,7 @@ export class UserError extends Error {
 	 */
 	public constructor(options: UserError.Options, message: string) {
 		super(message);
-		this.identifer = options.identifer;
+		this.identifier = options.identifier;
 	}
 
 	public get name(): string {
@@ -29,6 +29,6 @@ export namespace UserError {
 		/**
 		 * The identifier for this error
 		 */
-		identifer: string;
+		identifier: string;
 	}
 }

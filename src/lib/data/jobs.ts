@@ -121,7 +121,7 @@ export const jobs: JobData[] = [
 		id: 'lawyer',
 		name: 'Lawyer',
 		entries: ['**{user.username}** won a case and got paid **₡{money}**.'],
-		firedEntry: "**{user.username}** didn't attend a tial and got fired.",
+		firedEntry: "**{user.username}** didn't attend a trial and got fired.",
 		minAmount: 450,
 	},
 	{

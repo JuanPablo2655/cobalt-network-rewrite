@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType } from 'discord-api-types/v9';
 
 export const covidCommand = {
 	name: 'covid',
-	description: 'Get the lastest Covid-19 data.',
+	description: 'Get the latest Covid-19 data.',
 	options: [
 		{
 			type: ApplicationCommandOptionType.Subcommand,

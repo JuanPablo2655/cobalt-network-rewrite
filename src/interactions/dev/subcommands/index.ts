@@ -19,10 +19,10 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 	bot.directors?.forEach(director => {
 		if (director === interaction.user.id) return (isDirector = true);
 	});
-	if (!isDirector) throw new UserError({ identifer: Identifiers.PreconditionUserPermissions }, 'Not a director');
+	if (!isDirector) throw new UserError({ identifier: Identifiers.PreconditionUserPermissions }, 'Not a director');
 	if (bot.bank < amount)
 		throw new UserError(
-			{ identifer: Identifiers.ArgumentIntegerError },
+			{ identifier: Identifiers.ArgumentIntegerError },
 			`I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
 		);
 	await db.updateBot(cobalt.user?.id, { bank: bot.bank - amount });

@@ -59,7 +59,7 @@ abstract class CovidInteractionCommand extends InteractionCommand {
 		const state = await fetch(`https://disease.sh/v3/covid-19/states/${name}`);
 		const res = (await state.json()) as covidState;
 		if (res.message === "State not found or doesn't have any cases")
-			throw new UserError({ identifer: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
+			throw new UserError({ identifier: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
 		const covidEmbed = new EmbedBuilder()
 			.setTitle(`COVID-19: ${res.state}`)
 			.setDescription(

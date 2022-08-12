@@ -21,7 +21,7 @@ abstract class DisableEventsCommand extends GenericCommand {
 		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		if (guild.logChannel?.disabledEvents?.includes(event))
-			throw new UserError({ identifer: Identifiers.PreconditionDataExists }, 'Event already disabled');
+			throw new UserError({ identifier: Identifiers.PreconditionDataExists }, 'Event already disabled');
 	}
 }
 

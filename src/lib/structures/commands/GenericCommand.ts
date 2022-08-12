@@ -20,7 +20,7 @@ export abstract class GenericCommand extends BaseCommand {
 	public aliases: string[];
 
 	/**
-	 * Whether the command is enabled gloablly or not
+	 * Whether the command is enabled globally or not
 	 */
 	public enabled: boolean;
 

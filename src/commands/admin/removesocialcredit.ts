@@ -21,15 +21,15 @@ abstract class removeSocialCredit extends GenericCommand {
 		const { db } = this.cobalt.container;
 		const member = await resolveMember(args[0], message.guild!);
 		if (member.id == message.author.id)
-			throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't remove social credit from yourself");
+			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't remove social credit from yourself");
 		const amount = Number(args[1]);
-		if (isNaN(amount)) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Invalid integer');
+		if (isNaN(amount)) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		addCD();
 		const userData = await db.getUser(member.id);
 		const newAmount = (userData?.socialCredit ?? Default.SocialCredit) - amount;
 		if (newAmount < 0)
 			throw new UserError(
-				{ identifer: Identifiers.ArgumentIntegerTooSmall },
+				{ identifier: Identifiers.ArgumentIntegerTooSmall },
 				'The min social credit someone can have is 0',
 			);
 		db.updateUser(member.id, { socialCredit: newAmount });

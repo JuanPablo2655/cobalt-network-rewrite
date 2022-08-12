@@ -13,8 +13,8 @@ abstract class ListJobsCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const joblists = jobs.map(job => `\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
-		const jobEmbed = new EmbedBuilder().setTitle(`Job Listing`).setDescription(`${joblists.join('\n')}`);
+		const jobLists = jobs.map(job => `\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
+		const jobEmbed = new EmbedBuilder().setTitle(`Job Listing`).setDescription(`${jobLists.join('\n')}`);
 		message.channel.send({ embeds: [jobEmbed] });
 	}
 }

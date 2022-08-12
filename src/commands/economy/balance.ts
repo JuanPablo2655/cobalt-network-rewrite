@@ -19,7 +19,7 @@ abstract class BalanceCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
-		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
+		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
 		const profile = await this.cobalt.container.db.getUser(user.id);
 		const bankPercent = ((profile?.bank ?? Default.Bank) / (profile?.bankSpace ?? Default.BankSpace)) * 100;

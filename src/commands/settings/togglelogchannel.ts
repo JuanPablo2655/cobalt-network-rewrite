@@ -21,7 +21,7 @@ abstract class ToggleLogChannelCommand extends GenericCommand {
 		if (!guild) throw new Error('Missing database entry');
 		await addCD();
 		if (guild.logChannel?.enabled === option)
-			throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `Already ${option}`);
+			throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `Already ${option}`);
 		await db.updateGuild(guildId, {
 			logChannel: {
 				enabled: option,

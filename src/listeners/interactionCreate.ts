@@ -70,7 +70,7 @@ abstract class InteractionListener extends Listener {
 					if (!interaction.deferred && !interaction.replied) {
 						logger.warn(
 							{ interaction: { name: interaction.commandName, type: interaction.type }, userId: interaction.user.id },
-							'Command interaction has not been deffered before throwing',
+							'Command interaction has not been deferred before throwing',
 						);
 						await interaction.deferReply();
 					}
@@ -83,8 +83,8 @@ abstract class InteractionListener extends Listener {
 		}
 	}
 
-	isDev(inteaction: ChatInputCommandInteraction<'cached'>) {
-		return isOwner(inteaction.member as GuildMember);
+	isDev(interaction: ChatInputCommandInteraction<'cached'>) {
+		return isOwner(interaction.member as GuildMember);
 	}
 }
 

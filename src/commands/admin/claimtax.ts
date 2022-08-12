@@ -23,17 +23,17 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		bot.directors?.forEach(director => {
 			if (director === message.author.id) return (isDirector = true);
 		});
-		if (!isDirector) throw new UserError({ identifer: Identifiers.PreconditionUserPermissions }, 'Not a director');
+		if (!isDirector) throw new UserError({ identifier: Identifiers.PreconditionUserPermissions }, 'Not a director');
 		const amount = Number(args[0]);
-		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing integer');
-		if (isNaN(amount)) throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'Invalid integer');
+		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing integer');
+		if (isNaN(amount)) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		if (bot.bank < amount)
 			throw new UserError(
-				{ identifer: Identifiers.ArgumentIntegerError },
+				{ identifier: Identifiers.ArgumentIntegerError },
 				`I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
 			);
 		if (amount > 1000)
-			throw new UserError({ identifer: Identifiers.ArgumentNumberTooLarge }, "Can't claim more than **₡1,000**");
+			throw new UserError({ identifier: Identifiers.ArgumentNumberTooLarge }, "Can't claim more than **₡1,000**");
 		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;

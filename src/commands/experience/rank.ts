@@ -18,7 +18,7 @@ abstract class RankCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db, exp } = this.cobalt.container;
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
-		if (!member) throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
+		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
 		const profile = await db.getUser(user.id);
 		await addCD();

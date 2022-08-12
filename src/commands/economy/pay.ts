@@ -4,7 +4,7 @@ import { Identifiers, UserError } from '#lib/errors';
 import { formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
 
-abstract class PayComamnd extends GenericCommand {
+abstract class PayCommand extends GenericCommand {
 	constructor() {
 		super({
 			name: 'pay',
@@ -20,22 +20,22 @@ abstract class PayComamnd extends GenericCommand {
 		if (!bot) throw new Error('Missing bot database entry');
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
 		if (!member)
-			throw new UserError({ identifer: Identifiers.ArgumentMemberMissingGuild }, 'Please pick a valid member');
+			throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Please pick a valid member');
 		const author = await db.getUser(message.author.id);
 		if (!author) throw new Error('Missing author database entry');
 		const user = await db.getUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		if (member.id === message.author.id)
-			throw new UserError({ identifer: Identifiers.ArgumentUserError }, "You can't pay yourself");
+			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "You can't pay yourself");
 		let amount = Number(args[1]);
-		if (!args[1]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'You need to pay the user some money');
+		if (!args[1]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'You need to pay the user some money');
 		if (args[1] === 'all') amount = author.wallet;
 		else amount = Number(args[1]);
 		if (isNaN(amount) && args[1] !== 'all')
-			throw new UserError({ identifer: Identifiers.ArgumentIntegerError }, 'invalid number');
+			throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'invalid number');
 		if (author.wallet < amount)
 			throw new UserError(
-				{ identifer: Identifiers.ArgumentIntegerTooLarge },
+				{ identifier: Identifiers.ArgumentIntegerTooLarge },
 				`You don't have enough to pay that much. You currently have **${formatMoney(author.wallet)}**`,
 			);
 		await addCD();
@@ -52,4 +52,4 @@ abstract class PayComamnd extends GenericCommand {
 	}
 }
 
-export default PayComamnd;
+export default PayCommand;

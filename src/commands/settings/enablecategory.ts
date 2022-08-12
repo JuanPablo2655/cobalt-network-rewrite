@@ -16,16 +16,16 @@ abstract class EnableCategoryCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db, commands } = this.cobalt.container;
-		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing arg');
+		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing arg');
 		const arg = args[0].toLowerCase();
 		const categories = removeDuplicates(commands.map(c => c.category as string));
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		if (!categories.includes(arg))
-			throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid category');
+			throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid category');
 		if (!guild.disabledCategories?.includes(arg))
-			throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Category already enabled');
+			throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Category already enabled');
 		await addCD();
 		await db.updateGuild(guildId, {
 			disabledCategories: guild.disabledCategories.filter(c => c !== arg),

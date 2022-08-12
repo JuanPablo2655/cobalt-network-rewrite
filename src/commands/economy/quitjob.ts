@@ -18,7 +18,7 @@ abstract class QuitJobCommand extends GenericCommand {
 		const { db, econ } = this.cobalt.container;
 		const user = await db.getUser(message.author.id);
 		if (user?.job === null)
-			throw new UserError({ identifer: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);
+			throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);
 		await econ.updateJob(message.author.id, null);
 		return message.channel.send({
 			content: `You have successfully quit from your current job. You need to apply to a new job if you want to work.`,

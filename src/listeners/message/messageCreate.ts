@@ -93,7 +93,7 @@ abstract class MessageListener extends Listener {
 				if (command.devOnly && !isOwner(message.member!)) {
 					return;
 				} else if (command.ownerOnly && (message.guild as Guild).ownerId !== message.author.id) {
-					return void message.reply({ content: 'This comamnd can only be used by the owner of the guild.' });
+					return void message.reply({ content: 'This command can only be used by the owner of the guild.' });
 				} else if (command.guildOnly && !(message.guild instanceof Guild)) {
 					return void message.reply({ content: 'This command can only be used in a guild.' });
 				} else if (command.nsfwOnly && !(message.channel as TextChannel).nsfw) {

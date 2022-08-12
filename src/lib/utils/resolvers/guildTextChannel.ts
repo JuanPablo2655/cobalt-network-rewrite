@@ -7,7 +7,7 @@ import { resolveGuildChannel } from './guildChannel.js';
 export function resolveGuildTextChannel(parameter: string, guild: Guild) {
 	const result = resolveGuildChannel(parameter, guild);
 	if (isTextChannel(result)) return result;
-	throw new UserError({ identifer: Identifiers.ArgumentGuildTextChannelError }, 'Invalid TextChannel');
+	throw new UserError({ identifier: Identifiers.ArgumentGuildTextChannelError }, 'Invalid TextChannel');
 }
 
 function isTextChannel(channel: Channel | Nullish): channel is TextChannel {

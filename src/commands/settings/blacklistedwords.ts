@@ -28,7 +28,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 			case 'add': {
 				if (blacklistWords?.includes(item))
 					throw new UserError(
-						{ identifer: Identifiers.PreconditionDataExists },
+						{ identifier: Identifiers.PreconditionDataExists },
 						`\`${item}\` already exists in the list`,
 					);
 				await db.updateGuild(guildId, {
@@ -38,9 +38,12 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 			}
 			case 'remove': {
 				if (blacklistWords === null)
-					throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'There are no blacklisted words yet');
+					throw new UserError(
+						{ identifier: Identifiers.PreconditionMissingData },
+						'There are no blacklisted words yet',
+					);
 				if (!blacklistWords?.includes(item))
-					throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Word does not exist in the list');
+					throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Word does not exist in the list');
 				const words = blacklistWords?.filter(w => w.toLowerCase() !== item.toLowerCase());
 				await db.updateGuild(guildId, { blacklistedWords: words });
 				return message.channel.send({ content: `${item} was removed from the list of blacklisted words` });
@@ -50,7 +53,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 				return message.channel.send({ content: words || 'There are no blacklisted words yet.' });
 			}
 			default: {
-				throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Invalid arg type');
+				throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Invalid arg type');
 			}
 		}
 	}

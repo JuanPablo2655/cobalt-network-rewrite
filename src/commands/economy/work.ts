@@ -21,7 +21,7 @@ abstract class WorkCommand extends GenericCommand {
 		const user = await db.getUser(message.author.id);
 		if (!user) throw new Error('Missing user database entry');
 		if (user.job === null)
-			throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'You need a job to work.');
+			throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'You need a job to work.');
 		await addCD();
 		const job = jobs.find(j => j.id === user.job);
 		if (!job) throw new Error('Invalid job id');

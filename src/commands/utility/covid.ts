@@ -36,7 +36,7 @@ abstract class CovidCommand extends GenericCommand {
 		if (parameter === 'country') {
 			if (!path[0])
 				throw new UserError(
-					{ identifer: Identifiers.ArgsMissing },
+					{ identifier: Identifiers.ArgsMissing },
 					'I need a correct country name. Ex: USA or United States.',
 				);
 			const country = await fetch(`https://disease.sh/v3/covid-19/countries/${path.join('%20')}?strict=false`);
@@ -57,11 +57,11 @@ abstract class CovidCommand extends GenericCommand {
 		}
 		if (parameter === 'state') {
 			if (!path[0])
-				throw new UserError({ identifer: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
+				throw new UserError({ identifier: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
 			const state = await fetch(`https://disease.sh/v3/covid-19/states/${path.join('%20')}`);
 			const res = (await state.json()) as covidState;
 			if (res.message === "State not found or doesn't have any cases")
-				throw new UserError({ identifer: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
+				throw new UserError({ identifier: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
 			const covidEmbed = new EmbedBuilder()
 				.setTitle(`COVID-19 World Data`)
 				.setDescription(

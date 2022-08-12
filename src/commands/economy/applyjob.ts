@@ -22,7 +22,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 		const user = await db.getUser(message.author.id);
 		if (!args[0])
 			throw new UserError(
-				{ identifer: Identifiers.ArgsMissing },
+				{ identifier: Identifiers.ArgsMissing },
 				`Please provide a job id. You can find a list by running \`${
 					guild?.prefix ?? this.cobalt.user?.username
 				}listjobs\``,
@@ -30,18 +30,18 @@ abstract class ApplyJobCommand extends GenericCommand {
 		const job = jobs.find(j => j.id === args[0].toLowerCase());
 		if (!job)
 			throw new UserError(
-				{ identifer: Identifiers.PreconditionMissingData },
+				{ identifier: Identifiers.PreconditionMissingData },
 				'Please pick a valid job with a valid job id to apply for',
 			);
 		if (user?.job !== null)
 			throw new UserError(
-				{ identifer: Identifiers.PreconditionDataExists },
+				{ identifier: Identifiers.PreconditionDataExists },
 				'You have a job already. If you want to switch, you have to quit your job',
 			);
 
 		await econ.updateJob(message.author.id, job.id);
 		return message.reply({
-			content: `Congraduations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
+			content: `Congratulations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
 				job.minAmount,
 			)}**`,
 		});

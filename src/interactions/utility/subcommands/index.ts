@@ -24,12 +24,12 @@ export async function add(cobalt: CobaltClient, interaction: ChatInputCommandInt
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	if (user.id == interaction.user.id)
-		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "can't give yourself social credit");
+		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "can't give yourself social credit");
 	const userData = await db.getUser(user.id);
 	const newAmount = (userData?.socialCredit ?? Default.SocialCredit) + amount;
 	if (newAmount > 2000)
 		throw new UserError(
-			{ identifer: Identifiers.ArgumentIntegerTooLarge },
+			{ identifier: Identifiers.ArgumentIntegerTooLarge },
 			'The max social credit score someone can have is 2,000',
 		);
 	db.updateUser(user.id, { socialCredit: newAmount });
@@ -42,12 +42,12 @@ export async function remove(cobalt: CobaltClient, interaction: ChatInputCommand
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	if (user.id == interaction.user.id)
-		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "Can't remove social credit from yourself");
+		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't remove social credit from yourself");
 	const userData = await db.getUser(user.id);
 	const newAmount = (userData?.socialCredit ?? Default.SocialCredit) + amount;
 	if (newAmount < 0)
 		throw new UserError(
-			{ identifer: Identifiers.ArgumentIntegerTooSmall },
+			{ identifier: Identifiers.ArgumentIntegerTooSmall },
 			'The min social credit someone can have is 0',
 		);
 	db.updateUser(user.id, { socialCredit: newAmount });

@@ -13,7 +13,7 @@ export async function work(cobalt: CobaltClient, interaction: ChatInputCommandIn
 	const user = await db.getUser(interaction.user.id);
 	if (!user) throw new Error('Missing user database entry');
 	if (user.job === null)
-		throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'You need a job to work.');
+		throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'You need a job to work.');
 	const job = jobs.find(j => j.id === user.job);
 	if (!job) throw new Error('Invalid job id');
 	const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
@@ -35,10 +35,10 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 	const author = await db.getUser(interaction.user.id);
 	if (!author) throw new Error('Missing author database entry');
 	if (member.id === interaction.user.id)
-		throw new UserError({ identifer: Identifiers.ArgumentUserError }, "You can't pay yourself");
+		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "You can't pay yourself");
 	if ((author?.wallet ?? Default.Wallet) < amount)
 		throw new UserError(
-			{ identifer: Identifiers.ArgumentIntegerTooLarge },
+			{ identifier: Identifiers.ArgumentIntegerTooLarge },
 			`You don't have enough to pay that much. You currently have **${formatMoney(author.wallet)}**`,
 		);
 	const tax = Math.round(amount * ((bot?.tax ?? Default.Tax) / 100));
@@ -82,7 +82,7 @@ export async function daily(cobalt: CobaltClient, interaction: ChatInputCommandI
 	// TODO(Isidro): fix the is doodoo code
 	if (!isNaN(user.daily!) && user.daily! > date) {
 		throw new UserError(
-			{ identifer: Identifiers.PreconditionCooldown },
+			{ identifier: Identifiers.PreconditionCooldown },
 			`You still have **${prettyMilliseconds(user.daily! - Date.now())}** left before you can claim your daily!`,
 		);
 	}
@@ -112,7 +112,7 @@ export async function weekly(cobalt: CobaltClient, interaction: ChatInputCommand
 	const cooldown = date + days(7);
 	if (!isNaN(user.weekly!) && user.weekly! > date)
 		throw new UserError(
-			{ identifer: Identifiers.PreconditionCooldown },
+			{ identifier: Identifiers.PreconditionCooldown },
 			`You still have **${prettyMilliseconds(user.weekly! - Date.now())}** left before you can claim your weekly!`,
 		);
 	if (member?.id === interaction.user.id) {
@@ -141,7 +141,7 @@ export async function monthly(cobalt: CobaltClient, interaction: ChatInputComman
 	const cooldown = date + months(1);
 	if (!isNaN(user.monthly!) && user.monthly! > date)
 		throw new UserError(
-			{ identifer: Identifiers.PreconditionCooldown },
+			{ identifier: Identifiers.PreconditionCooldown },
 			`You still have **${prettyMilliseconds(user.monthly! - Date.now())}** left before you can claim your monthly!`,
 		);
 	if (member?.id === interaction.user.id) {

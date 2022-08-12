@@ -16,22 +16,22 @@ abstract class DisableCommandCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { db, commands } = this.cobalt.container;
-		if (!args[0]) throw new UserError({ identifer: Identifiers.ArgsMissing }, 'Missing command');
+		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing command');
 		const arg = args[0].toLowerCase();
 		const command = commands.get(arg);
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await db.getGuild(guildId);
 		if (!guild) throw new Error('Missing guid database entry');
-		if (!command) throw new UserError({ identifer: Identifiers.PreconditionMissingData }, 'Invalid command');
+		if (!command) throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid command');
 		if (SAVE_COMMANDS.includes(command.name))
-			throw new UserError({ identifer: Identifiers.CommandDisabled }, `Can't disable \`${command}\``);
+			throw new UserError({ identifier: Identifiers.CommandDisabled }, `Can't disable \`${command}\``);
 		if (SAVE_CATEGORIES.includes(command?.category))
 			throw new UserError(
-				{ identifer: Identifiers.CategoryDisabled },
+				{ identifier: Identifiers.CategoryDisabled },
 				`Can't disabled command in \`${command.category}\` category`,
 			);
 		if (guild.disabledCommands?.includes(arg))
-			throw new UserError({ identifer: Identifiers.CommandDisabled }, 'Command already disabled');
+			throw new UserError({ identifier: Identifiers.CommandDisabled }, 'Command already disabled');
 		await addCD();
 		await db.updateGuild(guildId, {
 			disabledCommands: [...(guild.disabledCommands ?? []), command.name],
