@@ -41,7 +41,7 @@ export class CobaltClient extends Client {
 		return loginResponse;
 	}
 
-	public async destory() {
+	public async destroy() {
 		await this.container.redis.flushall();
 		this.container.metrics.server.close();
 		this.container.db.mongoose.close(false, () => {

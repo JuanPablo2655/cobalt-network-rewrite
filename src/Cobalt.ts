@@ -17,20 +17,20 @@ async function main() {
 		}
 		await cobalt.login();
 	} catch (err) {
-		await cobalt.destory();
+		await cobalt.destroy();
 		process.exit(1);
 	}
 }
 
 process.on('SIGTERM', async () => {
 	logger.info('SIGTERM signal received (kill).');
-	await cobalt.destory();
+	await cobalt.destroy();
 	process.exit(1);
 });
 
 process.on('SIGINT', async () => {
 	logger.info('SIGINT signal received (terminal).');
-	await cobalt.destory();
+	await cobalt.destroy();
 	process.exit(0);
 });
 

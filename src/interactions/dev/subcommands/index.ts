@@ -5,7 +5,7 @@ import { Identifiers, UserError } from '#lib/errors';
 
 export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.reply({ content: 'Shutting down.' });
-	await cobalt.destory();
+	await cobalt.destroy();
 }
 
 export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
