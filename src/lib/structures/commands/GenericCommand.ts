@@ -67,7 +67,7 @@ export abstract class GenericCommand extends BaseCommand {
 	/**
 	 * Executes the message command's logic
 	 * @param message The message that triggered the command
-	 * @param args The parsed arugments
+	 * @param args The parsed arguments
 	 * @param addCD Adds cooldown to the user
 	 */
 	public abstract run(message: Message, args: string[], addCD: () => Promise<void>): unknown | Promise<unknown>;
