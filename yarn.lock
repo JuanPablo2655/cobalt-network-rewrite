@@ -364,6 +364,11 @@
   resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-3.6.2.tgz#ec238e3e789dd5b04009a5cefecd3a64a4bb985d"
   integrity sha512-Rmwq5QxWxuAYCrtIXo2a9UW1Fa5Pmmfc20QSRRp+rz/CXzel1R3171DjvT7iZTAfuxwUFp2FYG6IaywoSIyjFA==
 
+"@sapphire/utilities@^3.7.0":
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-3.9.0.tgz#c0a30d3e743c0331daf1e96f9031b6ddb9fa36c2"
+  integrity sha512-umKJMiss9Urq3ZTuskuXaZkqnRhypxAsEFzxC249z5QrBuhNeS9pELXhVs8L9f2mcVdsHQw+0mMSJ+NX99tuig==
+
 "@tokenizer/token@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@tokenizer/token/-/token-0.3.0.tgz#fe98a93fe789247e998c75e74e9c7c63217aa276"
