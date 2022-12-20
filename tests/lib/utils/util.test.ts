@@ -91,7 +91,7 @@ describe('Cobalt', () => {
 
 		describe('getImage', () => {
 			test('GIVEN message w/ attachments w/ image w/o proxyURL attachment THEN returns url', async () => {
-				const filePath = resolve(process.cwd(), 'tests/mocks/image.png');
+				const filePath = new URL('tests/mocks/image.png', import.meta.url);
 				// @ts-expect-error: private constructor
 				const fakeAttachment = new Attachment({ url: filePath, filename: 'image.png', height: 128, width: 128 });
 				const fakeMessage: DeepPartial<Message> = {

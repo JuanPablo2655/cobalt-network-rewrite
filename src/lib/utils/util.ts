@@ -2,8 +2,6 @@ import { CobaltClient } from '../CobaltClient.js';
 import * as DJS from 'discord.js';
 import { diffWordsWithSpace } from 'diff';
 import { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
-import { resolve } from 'node:path';
-import process from 'node:process';
 import { isClass } from '@sapphire/utilities';
 
 /**
@@ -147,8 +145,9 @@ export function removeDuplicates<T>(array: T[]) {
 export type Structures = Listener | GenericCommand | InteractionCommand;
 
 export async function resolveFile<T>(file: string) {
-	const resolvedPath = resolve(process.cwd(), file);
-	const File = await (await import(resolvedPath)).default;
+	const rootFolder = new URL('../../../', import.meta.url);
+	const resolvedPath = new URL(file, rootFolder);
+	const File = await (await import(resolvedPath.toString())).default;
 	if (!isClass(File)) return null;
 	return new File() as T;
 }
