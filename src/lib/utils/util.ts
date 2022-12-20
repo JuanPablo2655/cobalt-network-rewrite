@@ -1,47 +1,8 @@
 import { CobaltClient } from '../CobaltClient.js';
 import * as DJS from 'discord.js';
-import { diffWordsWithSpace } from 'diff';
 import { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
 import { isClass } from '@sapphire/utilities';
-
-/**
- * Image extensions:
- * - bmp
- * - jpg
- * - jpeg
- * - png
- * - gif
- * - webp
- */
-export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
-
-/**
- * Capitalize a sentence
- * @param str The string to capitalize
- */
-export function toCapitalize(str: string) {
-	return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-/**
- * Trim a string to a certain length
- * @param str The string to trim
- * @param max The max length of the string
- */
-export function trim(str: string, max: number) {
-	return str.length > max ? `${str.slice(0, max - 3)}...` : str;
-}
-
-/**
- * Get the difference between the old and new content
- * @param oldString The old content
- * @param newString The new content
- */
-export function getDiff(oldString: string, newString: string): string {
-	return diffWordsWithSpace(DJS.escapeMarkdown(oldString), DJS.escapeMarkdown(newString))
-		.map(result => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
-		.join('');
-}
+import { IMAGE_EXTENSION } from './constants.js';
 
 export interface ImageAttachment {
 	url: string;
