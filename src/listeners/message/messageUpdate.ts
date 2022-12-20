@@ -1,7 +1,8 @@
 import { Message, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
-import { getDiff, getImage } from '#utils/util';
+import { getImage } from '#utils/util';
 import { logger } from '#lib/structures';
+import { getDiff } from '#utils/functions';
 
 abstract class MessageUpdateListener extends Listener {
 	constructor() {

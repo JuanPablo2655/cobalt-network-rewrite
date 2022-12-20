@@ -2,11 +2,11 @@ import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { jobs } from '#lib/data';
 import { CobaltClient } from '#lib/CobaltClient';
-import { addMulti, calcMulti } from '#utils/util';
+import { calcMulti } from '#utils/util';
 import { Default } from '#lib/typings';
 import { days, months } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
-import { formatMoney, formatNumber } from '#utils/functions';
+import { addMulti, formatMoney, formatNumber } from '#utils/functions';
 
 export async function work(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { db, econ } = cobalt.container;

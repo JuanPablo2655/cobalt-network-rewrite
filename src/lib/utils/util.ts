@@ -1,47 +1,8 @@
 import { CobaltClient } from '../CobaltClient.js';
 import * as DJS from 'discord.js';
-import { diffWordsWithSpace } from 'diff';
 import { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
 import { isClass } from '@sapphire/utilities';
-
-/**
- * Image extensions:
- * - bmp
- * - jpg
- * - jpeg
- * - png
- * - gif
- * - webp
- */
-export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
-
-/**
- * Capitalize a sentence
- * @param str The string to capitalize
- */
-export function toCapitalize(str: string) {
-	return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-/**
- * Trim a string to a certain length
- * @param str The string to trim
- * @param max The max length of the string
- */
-export function trim(str: string, max: number) {
-	return str.length > max ? `${str.slice(0, max - 3)}...` : str;
-}
-
-/**
- * Get the difference between the old and new content
- * @param oldString The old content
- * @param newString The new content
- */
-export function getDiff(oldString: string, newString: string): string {
-	return diffWordsWithSpace(DJS.escapeMarkdown(oldString), DJS.escapeMarkdown(newString))
-		.map(result => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
-		.join('');
-}
+import { IMAGE_EXTENSION } from './constants.js';
 
 export interface ImageAttachment {
 	url: string;
@@ -121,25 +82,6 @@ export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<n
 	if (member.roles.cache.has(funkyMonkey!.id)) multi += 4; // 4%
 	if (member.roles.cache.has(booster!.id)) multi += 4; // 6%
 	return multi;
-}
-
-/**
- * Add a multiplier to an amount
- * @param amount The amount to add the multiplier to
- * @param multi The multiplier
- * @returns Amount plus multi
- */
-export function addMulti(amount: number, multi: number) {
-	return Math.round(amount + amount * (multi / 100));
-}
-
-/**
- * Remove all the duplicates from an array
- * @param array The array that contains the duplicates
- * @returns A new array with no duplicates
- */
-export function removeDuplicates<T>(array: T[]) {
-	return [...new Set(array)];
 }
 
 export type Structures = Listener | GenericCommand | InteractionCommand;
