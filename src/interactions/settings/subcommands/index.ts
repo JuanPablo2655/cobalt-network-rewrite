@@ -1,11 +1,12 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
+import { removeDuplicates } from '#utils/functions';
 
 export async function category(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { db, commands } = cobalt.container;
 	const saveCategories = ['dev', 'settings'];
-	const categories = removeDuplicates(commands.map(c => c.category));
+	const categories = removeDuplicates(commands.map(c => c.category as string));
 	const category = interaction.options.getString('category', true).toLowerCase();
 	const option = interaction.options.getBoolean('toggle', true);
 	const guild = await db.getGuild(interaction.guildId!);
@@ -62,7 +63,3 @@ export async function command(cobalt: CobaltClient, interaction: ChatInputComman
 }
 
 // export async function event(cobalt: CobaltClient, interaction: ChatInputCommandInteraction) {} // TODO
-
-function removeDuplicates(array: Array<string>) {
-	return [...new Set(array)];
-}

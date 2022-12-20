@@ -1,8 +1,7 @@
 import { Message, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
-import { removeDuplicates } from '#utils/util';
-import { toCapitalize } from '#utils/functions';
+import { removeDuplicates, toCapitalize } from '#utils/functions';
 
 abstract class HelpCommand extends GenericCommand {
 	constructor() {

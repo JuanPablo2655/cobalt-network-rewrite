@@ -2,7 +2,7 @@ import { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { SAVE_CATEGORIES } from '#utils/constants';
-import { removeDuplicates } from '#utils/util';
+import { removeDuplicates } from '#utils/functions';
 
 abstract class DisableCategoryCommand extends GenericCommand {
 	constructor() {

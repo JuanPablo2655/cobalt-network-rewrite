@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { Listener } from '#lib/structures';
-import { addMulti, getImage, removeDuplicates, resolveFile } from '#utils/util';
+import { addMulti, getImage, resolveFile } from '#utils/util';
 import { Attachment, Collection, Message } from 'discord.js';
 import { DeepPartial } from '@sapphire/utilities';
 
@@ -100,20 +100,6 @@ describe('Cobalt', () => {
 		describe('addMulti', () => {
 			test('GIVEN 100 AND 10 THEN return 110', () => {
 				expect(addMulti(100, 10)).toEqual(110);
-			});
-		});
-
-		describe('removeDuplicates', () => {
-			test('GIVEN [1,1,2,3,3,4,5] THEN return [1,2,3,4,5]', () => {
-				expect(removeDuplicates([1, 1, 2, 3, 3, 4, 5])).toEqual([1, 2, 3, 4, 5]);
-			});
-
-			test("GIVEN ['a','a','b','c'] THEN return ['a','b','c']", () => {
-				expect(removeDuplicates(['a', 'a', 'b', 'c'])).toEqual(['a', 'b', 'c']);
-			});
-
-			test("GIVEN ['a', 1, 1, 'a'] THEN return ['a', 1]", () => {
-				expect(removeDuplicates(['a', 1, 1, 'a'])).toEqual(['a', 1]);
 			});
 		});
 

@@ -94,15 +94,6 @@ export function addMulti(amount: number, multi: number) {
 	return Math.round(amount + amount * (multi / 100));
 }
 
-/**
- * Remove all the duplicates from an array
- * @param array The array that contains the duplicates
- * @returns A new array with no duplicates
- */
-export function removeDuplicates<T>(array: T[]) {
-	return [...new Set(array)];
-}
-
 export type Structures = Listener | GenericCommand | InteractionCommand;
 
 export async function resolveFile<T>(file: string) {
