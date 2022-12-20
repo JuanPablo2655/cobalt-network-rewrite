@@ -3,15 +3,20 @@
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"cSpell.words": [
 		"Axalis",
+		"bufferutil",
+		"cloc",
 		"Cobaltia",
+		"commitlint",
 		"craftable",
 		"disablecommand",
 		"enablecommand",
 		"esbuild",
 		"evalued",
+		"globby",
 		"lcov",
 		"magicka",
 		"Mulit",
+		"multistream",
 		"vcdata"
 	]
 }

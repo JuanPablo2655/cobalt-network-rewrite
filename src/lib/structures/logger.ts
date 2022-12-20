@@ -1,9 +1,8 @@
 import process from 'node:process';
-import pino, { Logger } from 'pino';
+import pino, { Logger, multistream } from 'pino';
 // @ts-expect-error: no type definitions
 import pinoElastic from 'pino-elasticsearch';
 import ecsFormat from '@elastic/ecs-pino-format';
-import pinoMultistream from 'pino-multi-stream';
 import { config } from '#root/config';
 
 let logger: Logger;
@@ -22,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 	});
 	logger = pino(
 		{ ...ecsFormat(), name: config.elastic.loggerName },
-		pinoMultistream.multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
+		multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
 	);
 }
 
