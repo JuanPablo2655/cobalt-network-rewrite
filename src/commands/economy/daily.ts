@@ -1,10 +1,9 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
-import { addMulti } from '#utils/util';
 import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
-import { formatMoney } from '#utils/functions';
+import { addMulti, formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
 
 abstract class DailyCommand extends GenericCommand {

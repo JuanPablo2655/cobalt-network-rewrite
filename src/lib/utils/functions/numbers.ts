@@ -14,3 +14,13 @@ export function formatNumber(n: string | number): string | null {
 export function formatMoney(n: string | number): string | null {
 	return formatNumber(n) !== null ? `₡ ${formatNumber(n)}` : null;
 }
+
+/**
+ * Add a multiplier to an amount
+ * @param amount The amount to add the multiplier to
+ * @param multi The multiplier
+ * @returns Amount plus multi
+ */
+export function addMulti(amount: number, multi: number) {
+	return Math.round(amount + amount * (multi / 100));
+}

@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { formatMoney, formatNumber } from '#utils/functions';
+import { addMulti, formatMoney, formatNumber } from '#utils/functions';
 
 describe('functions', () => {
 	describe('numbers', () => {
@@ -28,6 +28,12 @@ describe('functions', () => {
 
 			test('GIVEN invalid format THEN return NULL', () => {
 				expect(formatMoney('lol owned test')).toBeNull();
+			});
+		});
+
+		describe('addMulti', () => {
+			test('GIVEN 100 AND 10 THEN return 110', () => {
+				expect(addMulti(100, 10)).toEqual(110);
 			});
 		});
 	});

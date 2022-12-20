@@ -84,16 +84,6 @@ export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<n
 	return multi;
 }
 
-/**
- * Add a multiplier to an amount
- * @param amount The amount to add the multiplier to
- * @param multi The multiplier
- * @returns Amount plus multi
- */
-export function addMulti(amount: number, multi: number) {
-	return Math.round(amount + amount * (multi / 100));
-}
-
 export type Structures = Listener | GenericCommand | InteractionCommand;
 
 export async function resolveFile<T>(file: string) {

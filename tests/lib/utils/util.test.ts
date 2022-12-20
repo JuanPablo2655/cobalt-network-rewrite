@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { Listener } from '#lib/structures';
-import { addMulti, getImage, resolveFile } from '#utils/util';
+import { getImage, resolveFile } from '#utils/util';
 import { Attachment, Collection, Message } from 'discord.js';
 import { DeepPartial } from '@sapphire/utilities';
 
@@ -94,12 +94,6 @@ describe('Cobalt', () => {
 
 				// @ts-expect-error: We're only passing partial data to not mock an entire message
 				expect(getImage(fakeMessage)).toBeNull();
-			});
-		});
-
-		describe('addMulti', () => {
-			test('GIVEN 100 AND 10 THEN return 110', () => {
-				expect(addMulti(100, 10)).toEqual(110);
 			});
 		});
 
