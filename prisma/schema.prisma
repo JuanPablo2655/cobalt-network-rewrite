@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bot {
+  id        String   @id @map("id") @db.VarChar(18)
+  directors String[] @map("directors") @db.VarChar(32)
+  tax       Float    @default(7.5) @map("tax")
+  bank      Int      @default(0) @map("bank")
+
+  @@map("bots")
+}
+
+model Guild {
+  id                 String          @id @map("id") @db.VarChar(18)
+  prefix             String          @default("cn!") @map("prefix") @db.VarChar(20)
+  blacklistedWords   String[]        @default([]) @map("blacklisted_words") @db.VarChar(256)
+  disabledCommands   String[]        @default([]) @map("disabled_commands") @db.VarChar(256)
+  disabledCategories String[]        @default([]) @map("disabled_categories") @db.VarChar(256)
+  mutedRoleId        String?         @map("muted_role_id") @db.VarChar(18)
+  levelMessage       LevelMessage?
+  welcomeMessage     WelcomeMessage?
+  leaveMessage       LeaveMessage?
+  banMessage         BanMessage?
+  logChannel         LogChannel?
+  guildUser          Member[]
+
+  @@map("guilds")
+}
+
+model LevelMessage {
+  id      String  @id @map("id") @db.VarChar(18)
+  guild   Guild?  @relation(fields: [id], references: [id], onDelete: Cascade)
+  message String  @default("Congratulations {user.tag} you are now level {newLevel}!") @map("message") @db.VarChar(512)
+  enabled Boolean @default(false) @map("enabled")
+
+  @@map("level_messges")
+}
+
+model WelcomeMessage {
+  id        String  @id @map("id") @db.VarChar(18)
+  guild     Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
+  message   String  @default("Welcome, {user.tag} to {guild.name}!") @map("message") @db.VarChar(512)
+  channelId String? @map("channel_id")
+  enabled   Boolean @default(false) @map("enabled")
+
+  @@map("welcome_messages")
+}
+
+model LeaveMessage {
+  id        String  @id @map("id") @db.VarChar(18)
+  guild     Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
+  message   String  @default("Goodbye {user.username}.") @map("message") @db.VarChar(512)
+  channelId String? @map("channel_id") @db.VarChar(18)
+  enabled   Boolean @default(false) @map("enabled")
+
+  @@map("leave_messges")
+}
+
+model BanMessage {
+  id      String  @id @map("id") @db.VarChar(18)
+  guild   Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
+  message String  @default("{user.username} got banned from the server!") @map("message") @db.VarChar(512)
+  enabled Boolean @default(false) @map("enabled")
+
+  @@map("ban_messages")
+}
+
+model LogChannel {
+  id             String   @id @map("id") @db.VarChar(18)
+  guild          Guild    @relation(fields: [id], references: [id], onDelete: Cascade)
+  channelId      String?  @map("channel_id") @db.VarChar(18)
+  enabled        Boolean  @default(false) @map("enabled")
+  disabledEvents String[] @default([]) @map("disabled_events") @db.VarChar(256)
+
+  @@map("log_channel")
+}
+
+model Member {
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String   @map("user_id") @db.VarChar(18)
+  guild   Guild    @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  guildId String   @map("guild_id") @db.VarChar(18)
+  vcHours Int      @default(0) @map("vc_hours")
+  roles   String[] @default([]) @map("roles") @db.VarChar(18)
+  mutes   String[] @default([]) @map("mutes")
+  warns   String[] @default([]) @map("warns")
+
+  @@id([userId, guildId], name: "MemberId", map: "member_id")
+  @@map("members")
+}
+
+model User {
+  id           String   @id @map("id") @db.VarChar(18)
+  guilds       Member[]
+  job          String?  @map("job")
+  socialCredit Int      @default(1000) @map("social_credit")
+  wallet       Int      @default(0) @map("wallet")
+  bank         Int      @default(0) @map("bank")
+  bankSpace    Int      @default(1000) @map("bank_space")
+  netWorth     Int      @default(0) @map("net_worth")
+  bounty       Int      @default(0) @map("bounty")
+  daily        DateTime @default(now()) @map("daily")
+  weekly       DateTime @default(now()) @map("weekly")
+  monthly      DateTime @default(now()) @map("monthly")
+  repTime      DateTime @default(now()) @map("rep_time")
+  vcHours      Int      @default(0) @map("vc_hours")
+  inventory    String[] @default([]) @map("inventory")
+  activeItems  String[] @default([]) @map("active_items")
+  xp           Int      @default(0) @map("xp")
+  lvl          Int      @default(0) @map("lvl")
+  rep          Int      @default(0) @map("rep")
+  totalXp      Int      @default(0) @map("total_xp")
+  lost         Int      @default(0) @map("lost")
+  won          Int      @default(0) @map("won")
+  deaths       Int      @default(0) @map("deaths")
+
+  @@map("users")
+}

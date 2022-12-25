@@ -10,6 +10,7 @@ import Economy from './utils/Economy.js';
 import Metrics from './utils/Metrics.js';
 import { GenericCommandOptions, InteractionCommandOptions } from './typings/CommandOptions.js';
 import { CLIENT_OPTIONS, config } from '#root/config';
+import { PrismaClient } from '@prisma/client';
 dotenv.config();
 
 export class CobaltClient extends Client {
@@ -21,6 +22,7 @@ export class CobaltClient extends Client {
 		interactions: new Collection<string, InteractionCommandOptions>(),
 		voiceTime: new Map<Snowflake, number>(),
 		db: new Database(this, config.mongoURL),
+		prisma: new PrismaClient(),
 		exp: new Experience(this),
 		econ: new Economy(this),
 		redis: new Redis(config.redis),
