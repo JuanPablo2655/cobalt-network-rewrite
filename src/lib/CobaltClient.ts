@@ -1,38 +1,31 @@
 import process from 'node:process';
-import { Client, Collection, Snowflake } from 'discord.js';
+import { Client } from 'discord.js';
 import Redis from 'ioredis';
 import * as dotenv from 'dotenv';
 import { CommandRegistry, ListenerRegistry, InteractionRegistry, logger } from '#lib/structures';
-import { ListenerOptions } from './typings/Options.js';
 import Database from './utils/Database.js';
 import Experience from './utils/Experience.js';
 import Economy from './utils/Economy.js';
 import Metrics from './utils/Metrics.js';
-import { GenericCommandOptions, InteractionCommandOptions } from './typings/CommandOptions.js';
 import { CLIENT_OPTIONS, config } from '#root/config';
 import { PrismaClient } from '@prisma/client';
+import { container } from '../Container.js';
 dotenv.config();
 
 export class CobaltClient extends Client {
 	public dev = process.env.NODE_ENV !== 'production';
-	public container = {
-		commands: new Collection<string, GenericCommandOptions>(),
-		cooldowns: new Collection<string, Collection<string, number>>(),
-		listeners: new Collection<string, ListenerOptions>(),
-		interactions: new Collection<string, InteractionCommandOptions>(),
-		voiceTime: new Map<Snowflake, number>(),
-		db: new Database(this, config.mongoURL),
-		prisma: new PrismaClient(),
-		exp: new Experience(this),
-		econ: new Economy(this),
-		redis: new Redis(config.redis),
-		metrics: new Metrics(this),
-	};
+	public container = container;
 	public testListeners = config.testListeners;
 	public disableXp = config.disableXp;
 
 	constructor() {
 		super(CLIENT_OPTIONS);
+		container.db = new Database(this, config.mongoURL);
+		container.exp = new Experience(this);
+		container.econ = new Economy(this);
+		container.redis = new Redis(config.redis);
+		container.metrics = new Metrics(this);
+		container.prisma = new PrismaClient();
 		this.on('raw', packet => this.container.metrics.eventInc(packet.t));
 	}
 
@@ -50,5 +43,16 @@ export class CobaltClient extends Client {
 			logger.info('Mongoose connection successfully closed');
 		});
 		return super.destroy();
+	}
+}
+
+declare module '../Container.js' {
+	interface Container {
+		db: Database;
+		exp: Experience;
+		econ: Economy;
+		redis: Redis;
+		metrics: Metrics;
+		prisma: PrismaClient;
 	}
 }
