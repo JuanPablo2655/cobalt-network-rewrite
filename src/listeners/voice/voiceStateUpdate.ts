@@ -22,7 +22,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 		if (!oldState.guild.available || !newState.guild.available) return;
 		const guild = await getGuild(newState.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		if (!oldState.member || !newState.member) return;
 		const user = await db.getUser(newState.member.id);
 		const member = await db.getMember(newState.member.id, newState.guild.id);

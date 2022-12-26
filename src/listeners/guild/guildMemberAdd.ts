@@ -20,7 +20,7 @@ abstract class GuildMemberAddListener extends Listener {
 		const user = await db.getMember(member.user.id, member.guild.id);
 		const guild = await getGuild(member.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
@@ -37,7 +37,7 @@ abstract class GuildMemberAddListener extends Listener {
 				content: `Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing, message the staff for the remaining roles.`,
 			});
 		}
-		if (guild.welcomeMessage.channelId) {
+		if (guild.welcomeMessage?.channelId) {
 			const welcomeChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.welcomeMessage.channelId) as TextChannel;

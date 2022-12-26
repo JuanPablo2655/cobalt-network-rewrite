@@ -18,7 +18,7 @@ abstract class GuildBanRemoveListener extends Listener {
 		if (!ban.guild.available) return;
 		const guild = await getGuild(ban.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		let audit;
 		if (ban.guild.members.me?.permissions.has('ViewAuditLog')) {
 			audit = (await ban.guild.fetchAuditLogs()).entries.first();

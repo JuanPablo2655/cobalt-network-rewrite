@@ -20,7 +20,7 @@ abstract class GuildMemberRemoveListener extends Listener {
 		const user = await db.getMember(member.user.id, member.guild.id);
 		const guild = await getGuild(member.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
@@ -31,7 +31,7 @@ abstract class GuildMemberRemoveListener extends Listener {
 				roles: roleList,
 			});
 		}
-		if (guild.leaveMessage.channelId) {
+		if (guild.leaveMessage?.channelId) {
 			const leaveChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.leaveMessage.channelId) as TextChannel;

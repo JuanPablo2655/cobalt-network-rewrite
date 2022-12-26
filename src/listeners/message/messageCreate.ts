@@ -58,7 +58,7 @@ abstract class MessageListener extends Listener {
 					const _exp = await exp.manageXp(message);
 					const profile = await db.getUser(message.author.id);
 					if (_exp) {
-						if (guild.levelMessage.enabled) {
+						if (guild.levelMessage?.enabled) {
 							const cleanMessage = guild.levelMessage.message
 								?.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)

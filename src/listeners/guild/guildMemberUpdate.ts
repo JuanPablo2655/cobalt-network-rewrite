@@ -20,7 +20,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 		const { econ } = this.cobalt.container;
 		const guild = await getGuild(newMember.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel.enabled) return;
+		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache

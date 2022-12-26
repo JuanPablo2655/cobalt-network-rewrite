@@ -63,7 +63,7 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
 			},
 		});
 		const half = await queryGuild(id);
-		return { ...raw, ...half } as IGuild;
+		return { ...raw, ...half };
 	} catch (err) {
 		const error = err as Error;
 		logger.error(error, error.message);
@@ -74,7 +74,7 @@ export async function deleteGuild(id: string) {
 	try {
 		const half = await queryGuild(id);
 		const raw = await prisma.guild.delete({ where: { id } });
-		return { ...raw, ...half } as IGuild;
+		return { ...raw, ...half };
 	} catch (err) {
 		const error = err as Error;
 		logger.error(error, error.message);
@@ -85,7 +85,7 @@ export async function getGuild(id: string) {
 	try {
 		const raw = await prisma.guild.findUniqueOrThrow({ where: { id } });
 		const half = await queryGuild(id);
-		return { ...raw, ...half } as IGuild;
+		return { ...raw, ...half };
 	} catch (err) {
 		const error = err as Error;
 		logger.error(error, error.message);
@@ -140,7 +140,7 @@ export async function updateGuild(id: string, data?: Partial<IGuild>) {
 			},
 		});
 		const half = await queryGuild(id);
-		return { ...raw, ...half } as IGuild;
+		return { ...raw, ...half };
 	} catch (err) {
 		const error = err as Error;
 		logger.error(error, error.message);
