@@ -3,7 +3,7 @@ import { logger } from '#lib/structures';
 import { User } from '@prisma/client';
 const { prisma } = container;
 
-export async function createUser(id: string, data: Partial<Omit<User, 'id'>>) {
+export async function createUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 	try {
 		return await prisma.user.create({
 			data: {
@@ -35,7 +35,7 @@ export async function getUser(id: string) {
 	}
 }
 
-export async function updateUser(id: string, data: Partial<Omit<User, 'id'>>) {
+export async function updateUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 	try {
 		return await prisma.user.update({
 			where: { id },
