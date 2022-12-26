@@ -4,6 +4,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
+import { getGuild } from '#lib/database';
 
 abstract class ApplyJobCommand extends GenericCommand {
 	constructor() {
@@ -18,7 +19,8 @@ abstract class ApplyJobCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		const { db, econ } = this.cobalt.container;
-		const guild = await db.getGuild(message.guild?.id);
+		if (!message.guild) return;
+		const guild = await getGuild(message.guild.id);
 		const user = await db.getUser(message.author.id);
 		if (!args[0])
 			throw new UserError(

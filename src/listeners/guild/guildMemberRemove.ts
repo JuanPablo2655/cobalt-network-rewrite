@@ -1,6 +1,7 @@
 import { GuildMember, EmbedBuilder, Snowflake, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
+import { getGuild } from '#lib/database';
 
 abstract class GuildMemberRemoveListener extends Listener {
 	constructor() {
@@ -17,10 +18,10 @@ abstract class GuildMemberRemoveListener extends Listener {
 		if (!member.guild.available) return;
 		const { db } = this.cobalt.container;
 		const user = await db.getMember(member.user.id, member.guild.id);
-		const guild = await db.getGuild(member.guild.id);
+		const guild = await getGuild(member.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
-		const logChannelId = guild?.logChannel.channelId;
+		if (!guild.logChannel.enabled) return;
+		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
@@ -30,7 +31,7 @@ abstract class GuildMemberRemoveListener extends Listener {
 				roles: roleList,
 			});
 		}
-		if (guild.leaveMessage?.channelId) {
+		if (guild.leaveMessage.channelId) {
 			const leaveChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.leaveMessage.channelId) as TextChannel;

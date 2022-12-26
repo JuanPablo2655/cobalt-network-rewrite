@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { resolveGuildTextChannel } from '#utils/resolvers';
+import { getGuild, updateGuild } from '#lib/database';
 
 abstract class UpdateLeaveChannelCommand extends GenericCommand {
 	constructor() {
@@ -17,20 +18,17 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db } = this.cobalt.container;
 		const [option, action, ...leaveMessage] = args;
-		if (!message.guild) throw new UserError({ identifier: 'Missing Guild' }, 'Missing Guild');
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Missing Guild');
 		const guildId = message.guild.id;
-		const guild = await db.getGuild(guildId);
+		const guild = await getGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		switch (option) {
 			case 'toggle': {
 				const choice: boolean = action.toLowerCase() === 'true' || action.toLowerCase() === 'enable';
-				await db.updateGuild(guildId, {
+				await updateGuild(guildId, {
 					leaveMessage: {
-						message: guild.leaveMessage?.message ?? null,
-						channelId: guild.leaveMessage?.channelId ?? null,
 						enabled: choice,
 					},
 				});
@@ -40,11 +38,9 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			}
 			case 'channel': {
 				const channel = await resolveGuildTextChannel(action, message.guild);
-				await db.updateGuild(guildId, {
+				await updateGuild(guildId, {
 					leaveMessage: {
-						message: guild.leaveMessage?.message ?? null,
 						channelId: channel.id,
-						enabled: guild.leaveMessage?.enabled ?? true,
 					},
 				});
 				return message.channel.send({ content: `Successfully changed the leave channel to ${channel}` });
@@ -56,11 +52,9 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 						`Do you want to edit or set the message to default?\nExample: \`${guild.prefix}setleavechannel message edit <leave message>\``,
 					);
 				if (action === 'edit') {
-					await db.updateGuild(guildId, {
+					await updateGuild(guildId, {
 						leaveMessage: {
 							message: leaveMessage.join(' '),
-							channelId: guild.leaveMessage?.channelId ?? null,
-							enabled: guild.leaveMessage?.enabled ?? true,
 						},
 					});
 					return message.channel.send({
@@ -68,11 +62,9 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 					});
 				}
 				if (action === 'default') {
-					await db.updateGuild(guildId, {
+					await updateGuild(guildId, {
 						leaveMessage: {
 							message: 'Goodbye {user.username}.',
-							channelId: guild.leaveMessage?.channelId ?? null,
-							enabled: guild.leaveMessage?.enabled ?? true,
 						},
 					});
 					return message.channel.send({ content: `Successfully changed the leave message to default` });

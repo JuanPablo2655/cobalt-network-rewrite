@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, GuildMember, Interaction, PermissionsStrin
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
 import { isOwner } from '#utils/functions';
+import { getGuild } from '#lib/database';
 
 abstract class InteractionListener extends Listener {
 	constructor() {
@@ -14,13 +15,13 @@ abstract class InteractionListener extends Listener {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!interaction.isChatInputCommand()) return;
 		if (!interaction.inCachedGuild()) return;
-		const { db, interactions } = this.cobalt.container;
+		const { interactions } = this.cobalt.container;
 		const command = interactions.get(interaction.commandName);
 		if (command) {
-			const guild = await db.getGuild(interaction.guild.id);
+			const guild = await getGuild(interaction.guild.id);
 			if (guild) {
-				if (guild?.disabledCategories?.includes(command.category)) return;
-				if (guild?.disabledCommands?.includes(command.name)) return;
+				if (guild.disabledCategories.includes(command.category)) return;
+				if (guild.disabledCommands.includes(command.name)) return;
 				if (command.devOnly && !this.isDev(interaction)) {
 					return;
 				}
@@ -46,7 +47,7 @@ abstract class InteractionListener extends Listener {
 					}
 					if (clientPermissions?.length) {
 						for (let i = 0; i < clientPermissions.length; i++) {
-							const hasPermission = interaction.guild?.members.me?.permissions.has(clientPermissions[i]);
+							const hasPermission = interaction.guild.members.me?.permissions.has(clientPermissions[i]);
 							if (!hasPermission) missingPermissions.push(clientPermissions[i]);
 						}
 						if (missingPermissions.length)
@@ -84,7 +85,7 @@ abstract class InteractionListener extends Listener {
 	}
 
 	isDev(interaction: ChatInputCommandInteraction<'cached'>) {
-		return isOwner(interaction.member as GuildMember);
+		return isOwner(interaction.member);
 	}
 }
 

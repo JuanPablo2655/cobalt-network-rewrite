@@ -5,6 +5,7 @@ import { Default } from '#lib/typings';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
+import { getGuild } from '#lib/database';
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -17,8 +18,10 @@ abstract class MessageListener extends Listener {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		const { db, metrics, exp, redis, econ, commands } = this.cobalt.container;
 		metrics.messageInc();
+		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
-		const guild = await db.getGuild(message?.guild?.id);
+		const guild = await getGuild(message.guild.id);
+		if (!guild) throw new Error('Guild not found in database');
 
 		const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		const prefixReg = new RegExp(`^(<@!?${this.cobalt?.user?.id}>|${escapeRegex(guild?.prefix)})\\s*`);
@@ -28,7 +31,7 @@ abstract class MessageListener extends Listener {
 		if (!message.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) && !message.author.bot) {
 			let hasBadWord = false;
 			const badWords: string[] = [];
-			guild?.blacklistedWords?.forEach(word => {
+			guild.blacklistedWords.forEach(word => {
 				message.content.split(' ').forEach(messageWord => {
 					if (word.toLowerCase() === messageWord.toLowerCase()) {
 						badWords.push(word);
@@ -55,7 +58,7 @@ abstract class MessageListener extends Listener {
 					const _exp = await exp.manageXp(message);
 					const profile = await db.getUser(message.author.id);
 					if (_exp) {
-						if (guild?.levelMessage?.enabled) {
+						if (guild.levelMessage.enabled) {
 							const cleanMessage = guild.levelMessage.message
 								.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
@@ -84,12 +87,8 @@ abstract class MessageListener extends Listener {
 		if (commandName) {
 			const command = commands.get(commandName);
 			if (command) {
-				if (!guild?.verified && command.name !== 'verify')
-					message.channel.send({
-						content: 'You have to verify your server with one of the Directors in the main server!',
-					});
-				if (guild?.disabledCategories?.includes(command.category)) return;
-				if (guild?.disabledCommands?.includes(command.name)) return;
+				if (guild.disabledCategories.includes(command.category)) return;
+				if (guild.disabledCommands.includes(command.name)) return;
 				if (command.devOnly && !isOwner(message.member!)) {
 					return;
 				} else if (command.ownerOnly && (message.guild as Guild).ownerId !== message.author.id) {

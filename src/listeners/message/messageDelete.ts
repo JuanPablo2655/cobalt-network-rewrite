@@ -2,6 +2,7 @@ import { Message, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { getImage } from '#utils/util';
 import { logger } from '#lib/structures';
+import { getGuild } from '#lib/database';
 
 abstract class MessageDeleteListener extends Listener {
 	constructor() {
@@ -16,9 +17,9 @@ abstract class MessageDeleteListener extends Listener {
 		if (!message.author) return;
 		if (!message.guild) return;
 		if (!message.guild.available) return;
-		const guild = await this.cobalt.container.db.getGuild(message.guild.id);
+		const guild = await getGuild(message.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
+		if (!guild.logChannel.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(message.guild.id)?.channels.cache.get(logChannelId) as TextChannel;

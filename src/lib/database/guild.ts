@@ -153,9 +153,9 @@ export interface IGuild {
 	disabledCommands: string[];
 	disabledCategories: string[];
 	mutedRoleId: string | null;
-	levelMessage: LevelMessage;
-	welcomeMessage: WelcomeMessage;
-	leaveMessage: LeaveMessage;
-	banMessage: BanMessage;
-	logChannel: LogChannel;
+	levelMessage: Partial<Omit<LevelMessage, 'id'>>;
+	welcomeMessage: Partial<Omit<WelcomeMessage, 'id'>>;
+	leaveMessage: Partial<Omit<LeaveMessage, 'id'>>;
+	banMessage: Partial<Omit<BanMessage, 'id'>>;
+	logChannel: Partial<Omit<LogChannel, 'id'>>;
 }

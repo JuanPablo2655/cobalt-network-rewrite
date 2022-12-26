@@ -2,6 +2,7 @@ import { Guild, EmbedBuilder, WebhookClient } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
 import { logger } from '#lib/structures';
+import { deleteGuild } from '#lib/database';
 
 abstract class GuildDeleteListener extends Listener {
 	constructor() {
@@ -15,7 +16,7 @@ abstract class GuildDeleteListener extends Listener {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!guild) return;
 		if (!guild.available) return;
-		await this.cobalt.container.db.removeGuild(guild.id);
+		deleteGuild(guild.id);
 		const cobaltHook = new WebhookClient({ url: config.webhooks.guild! });
 		const guildEmbed = new EmbedBuilder()
 			.setTitle(`Guild Deleted`)

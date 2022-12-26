@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
+import { updateGuild } from '#lib/database';
 abstract class PrefixCommand extends GenericCommand {
 	constructor() {
 		super({
@@ -18,8 +19,9 @@ abstract class PrefixCommand extends GenericCommand {
 		await addCD();
 		const prefix = args[0];
 		if (!prefix) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing arg');
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Missing guild');
 
-		await this.cobalt.container.db.updateGuild(message.guild?.id, { prefix });
+		await updateGuild(message.guild.id, { prefix });
 		return message.channel.send({ content: `Successfully changed the prefix to \`${prefix}\`.` });
 	}
 }

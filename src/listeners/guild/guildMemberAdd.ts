@@ -1,6 +1,7 @@
 import { GuildMember, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
+import { getGuild } from '#lib/database';
 
 abstract class GuildMemberAddListener extends Listener {
 	constructor() {
@@ -17,9 +18,9 @@ abstract class GuildMemberAddListener extends Listener {
 		if (!member.guild.available) return;
 		const { db } = this.cobalt.container;
 		const user = await db.getMember(member.user.id, member.guild.id);
-		const guild = await db.getGuild(member.guild.id);
+		const guild = await getGuild(member.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
+		if (!guild.logChannel.enabled) return;
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
@@ -36,7 +37,7 @@ abstract class GuildMemberAddListener extends Listener {
 				content: `Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing, message the staff for the remaining roles.`,
 			});
 		}
-		if (guild.welcomeMessage?.channelId) {
+		if (guild.welcomeMessage.channelId) {
 			const welcomeChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.welcomeMessage.channelId) as TextChannel;
