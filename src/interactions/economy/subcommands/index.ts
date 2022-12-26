@@ -7,6 +7,7 @@ import { Default } from '#lib/typings';
 import { days, months } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { addMulti, formatMoney, formatNumber } from '#utils/functions';
+import { getBot, updateBot } from '#lib/database';
 
 export async function work(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { db, econ } = cobalt.container;
@@ -29,7 +30,8 @@ export async function work(cobalt: CobaltClient, interaction: ChatInputCommandIn
 
 export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { db, econ } = cobalt.container;
-	const bot = await db.getBot(interaction.client.user?.id);
+	const bot = await getBot(interaction.client.user?.id);
+	if (!bot) throw new Error('Missing bot database entry');
 	const member = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	const author = await db.getUser(interaction.user.id);
@@ -45,7 +47,7 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 	const afterTax = amount - tax;
 	await econ.removeFromWallet(interaction.user.id, amount);
 	await econ.addToWallet(member.id, afterTax);
-	await db.updateBot(interaction.client.user?.id, { bank: (bot?.bank ?? 0) + tax });
+	await updateBot(interaction.client.user?.id, { bank: bot.bank + tax });
 	return interaction.reply({
 		content: `>>> Transaction to **${member.username}**:\nSubtotal: **${formatMoney(amount)}**\nTaxes: **${formatMoney(
 			tax,

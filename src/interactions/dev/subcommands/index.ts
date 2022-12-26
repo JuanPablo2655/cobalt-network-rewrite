@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
+import { getBot, updateBot } from '#lib/database';
 
 export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.reply({ content: 'Shutting down.' });
@@ -10,10 +11,11 @@ export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommand
 
 export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
-	const { db, econ } = cobalt.container;
+	const { econ } = cobalt.container;
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
-	const bot = await db.getBot(cobalt.user?.id);
+	if (!cobalt.user) throw new Error('Missing user');
+	const bot = await getBot(cobalt.user.id);
 	if (!bot) throw new Error('Missing bot user');
 	let isDirector = false;
 	bot.directors?.forEach(director => {
@@ -25,7 +27,7 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 			{ identifier: Identifiers.ArgumentIntegerError },
 			`I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
 		);
-	await db.updateBot(cobalt.user?.id, { bank: bot.bank - amount });
+	await updateBot(cobalt.user.id, { bank: bot.bank - amount });
 	await econ.addToWallet(user.id, amount);
 	return interaction.editReply({
 		content: `You paid **${user.username}** **${formatMoney(amount)}** tax money.`,

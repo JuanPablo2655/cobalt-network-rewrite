@@ -156,10 +156,6 @@ abstract class MessageListener extends Listener {
 				};
 				try {
 					if (await isInCooldown()) return;
-					const bot = await db.getBot(this.cobalt.user?.id);
-					await db.updateBot(this.cobalt.user?.id, {
-						totalCommandsUsed: (bot?.totalCommandsUsed ?? 0) + 1,
-					});
 					metrics.commandInc(command.name);
 					await command.run(message, args, updateCooldown);
 					logger.info(`Command triggered by ${message.author.tag}`);
