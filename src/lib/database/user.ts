@@ -3,6 +3,11 @@ import { logger } from '#lib/structures';
 import { User } from '@prisma/client';
 const { prisma } = container;
 
+/**
+ * Create a user entry to the database
+ * @param id The user Id
+ * @param data The data to create the user with
+ */
 export async function createUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 	try {
 		return await prisma.user.create({
@@ -17,6 +22,10 @@ export async function createUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 	}
 }
 
+/**
+ * Delete a user entry from the database
+ * @param id The user Id
+ */
 export async function deleteUser(id: string) {
 	try {
 		return await prisma.user.delete({ where: { id } });
@@ -26,6 +35,10 @@ export async function deleteUser(id: string) {
 	}
 }
 
+/**
+ * Get a user entry from the database
+ * @param id The user Id
+ */
 export async function getUser(id: string) {
 	try {
 		return await prisma.user.findUniqueOrThrow({ where: { id } });
@@ -35,6 +48,11 @@ export async function getUser(id: string) {
 	}
 }
 
+/**
+ * Update a user entry in the database
+ * @param id The user Id
+ * @param data The data to update the user with
+ */
 export async function updateUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 	try {
 		return await prisma.user.update({

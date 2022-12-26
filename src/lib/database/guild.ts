@@ -17,6 +17,11 @@ async function queryGuild(id: string) {
 	}
 }
 
+/**
+ * Create a guild entry to the database
+ * @param guildId The guild Id
+ * @param data The data to create the guild with
+ */
 export async function createGuild(id: string, data?: Partial<IGuild>) {
 	try {
 		const raw = await prisma.guild.create({
@@ -70,6 +75,10 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
 	}
 }
 
+/**
+ * Delete a guild entry from the database
+ * @param id The guild Id
+ */
 export async function deleteGuild(id: string) {
 	try {
 		const half = await queryGuild(id);
@@ -81,6 +90,10 @@ export async function deleteGuild(id: string) {
 	}
 }
 
+/**
+ * Get a guild entry from the database
+ * @param id The guild Id
+ */
 export async function getGuild(id: string) {
 	try {
 		const raw = await prisma.guild.findUniqueOrThrow({ where: { id } });
@@ -92,6 +105,11 @@ export async function getGuild(id: string) {
 	}
 }
 
+/**
+ * Update a guild entry in the database
+ * @param id The guild Id
+ * @param data The data to update the guild with
+ */
 export async function updateGuild(id: string, data?: Partial<IGuild>) {
 	try {
 		const raw = await prisma.guild.update({

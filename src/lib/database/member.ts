@@ -3,6 +3,12 @@ import { logger } from '#lib/structures';
 import { Member } from '@prisma/client';
 const { prisma } = container;
 
+/**
+ * Create a member entry to the database
+ * @param userId the user Id
+ * @param guildId the guild Id
+ * @param data the data to create the member with
+ */
 export async function createMember(
 	userId: string,
 	guildId: string,
@@ -26,6 +32,11 @@ export async function createMember(
 	}
 }
 
+/**
+ * Delete a member entry from the database
+ * @param userId the user Id
+ * @param guildId the guild Id
+ */
 export async function deleteMember(userId: string, guildId: string) {
 	try {
 		return prisma.member.delete({
@@ -37,6 +48,11 @@ export async function deleteMember(userId: string, guildId: string) {
 	}
 }
 
+/**
+ * Get a member entry from the database
+ * @param userId the user Id
+ * @param guildId the guild Id
+ */
 export async function getMember(userId: string, guildId: string) {
 	try {
 		return prisma.member.findUniqueOrThrow({
@@ -48,6 +64,12 @@ export async function getMember(userId: string, guildId: string) {
 	}
 }
 
+/**
+ * Update a member entry in the database
+ * @param userId the user Id
+ * @param guildId the guild Id
+ * @param data the data to update the member with
+ */
 export async function updateMember(
 	userId: string,
 	guildId: string,
