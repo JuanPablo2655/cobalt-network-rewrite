@@ -3,7 +3,7 @@ import prettyMilliseconds from 'pretty-ms';
 import { Listener } from '#lib/structures/listeners';
 import { formatMoney } from '#utils/functions';
 import { logger } from '#lib/structures';
-import { createUser, getGuild, getUser, updateUser } from '#lib/database';
+import { createMember, createUser, getGuild, getMember, getUser, updateMember, updateUser } from '#lib/database';
 
 abstract class VoiceStateUpdateListener extends Listener {
 	constructor() {
@@ -14,7 +14,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 
 	async run(oldState: VoiceState, newState: VoiceState) {
 		if (!this.cobalt.testListeners) return;
-		const { db, econ, redis, metrics } = this.cobalt.container;
+		const { econ, redis, metrics } = this.cobalt.container;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (newState.member?.partial) await newState.member.fetch();
@@ -26,7 +26,10 @@ abstract class VoiceStateUpdateListener extends Listener {
 		if (!oldState.member || !newState.member) return;
 		const user = (await getUser(newState.member.id)) ?? (await createUser(newState.member.id));
 		if (!user) throw new Error('User not found');
-		const member = await db.getMember(newState.member.id, newState.guild.id);
+		const member =
+			(await getMember(newState.member.id, newState.guild.id)) ??
+			(await createMember(newState.member.id, newState.guild.id));
+		if (!member) throw new Error('Member not found');
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
 		const logChannel = newState.guild.channels.cache.get(logChannelId) as TextChannel;
@@ -54,8 +57,8 @@ abstract class VoiceStateUpdateListener extends Listener {
 				const addMoney = Math.round(time * 9) + 1;
 				await econ.addToWallet(oldState.member.id, addMoney);
 				await updateUser(oldState.member.id, { vcHours: [...user.vcHours, elapsed] });
-				await db.updateMember(oldState.member.id, oldState.guild.id, {
-					vcHours: [...(member?.vcHours ?? []), elapsed],
+				await updateMember(oldState.member.id, oldState.guild.id, {
+					vcHours: [...member.vcHours, elapsed],
 				});
 				oldState.member
 					.send({

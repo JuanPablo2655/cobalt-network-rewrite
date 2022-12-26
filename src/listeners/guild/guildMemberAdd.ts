@@ -1,7 +1,7 @@
 import { GuildMember, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
-import { getGuild } from '#lib/database';
+import { createMember, getGuild, getMember } from '#lib/database';
 
 abstract class GuildMemberAddListener extends Listener {
 	constructor() {
@@ -16,8 +16,9 @@ abstract class GuildMemberAddListener extends Listener {
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;
-		const { db } = this.cobalt.container;
-		const user = await db.getMember(member.user.id, member.guild.id);
+		const user =
+			(await getMember(member.user.id, member.guild.id)) ?? (await createMember(member.user.id, member.guild.id));
+		if (!user) return;
 		const guild = await getGuild(member.guild.id);
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
@@ -25,8 +26,8 @@ abstract class GuildMemberAddListener extends Listener {
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
-		if (user?.roles?.length !== 0) {
-			user?.roles?.forEach(r => {
+		if (user.roles.length !== 0) {
+			user.roles.forEach(r => {
 				if (!member.guild.members.me) return;
 				const role = member.guild.roles.cache.get(r);
 				if (!role) return;

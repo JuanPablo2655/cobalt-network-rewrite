@@ -4,7 +4,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createUser, getUser } from '#lib/database';
+import { createMember, createUser, getMember, getUser } from '#lib/database';
 
 abstract class GetVcTimeCommand extends GenericCommand {
 	constructor() {
@@ -18,17 +18,19 @@ abstract class GetVcTimeCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db } = this.cobalt.container;
 		const [option] = args;
 		const member = await resolveMember(args[1], message.guild!).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
-		const memberData = await db.getMember(member.id, message.guild?.id);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only');
+		const memberData =
+			(await getMember(member.id, message.guild.id)) ?? (await createMember(member.id, message.guild.id));
+		if (!memberData) throw new Error('Missing member database entry');
 		const user = (await getUser(member.id)) ?? (await createUser(member.id));
 		if (!user) throw new Error('Missing user database entry');
 		await addCD();
 		switch (option?.toLowerCase() ?? '') {
 			case 'local': {
-				if (!memberData?.vcHours) return message.reply({ content: "You haven't joined VC in this server!" });
+				if (memberData.vcHours.length === 0) return message.reply({ content: "You haven't joined VC in this server!" });
 				// TODO(Isidro): condense reduce and sort into one loop
 				const sum = memberData.vcHours.reduce((a, b) => a + b);
 				const average = sum / memberData.vcHours.length;
