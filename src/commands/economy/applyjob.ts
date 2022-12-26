@@ -4,7 +4,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
-import { getGuild } from '#lib/database';
+import { createUser, getGuild, getUser } from '#lib/database';
 
 abstract class ApplyJobCommand extends GenericCommand {
 	constructor() {
@@ -18,10 +18,11 @@ abstract class ApplyJobCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const { db, econ } = this.cobalt.container;
+		const { econ } = this.cobalt.container;
 		if (!message.guild) return;
 		const guild = await getGuild(message.guild.id);
-		const user = await db.getUser(message.author.id);
+		const user = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
+		if (!user) throw new Error('Database error');
 		if (!args[0])
 			throw new UserError(
 				{ identifier: Identifiers.ArgsMissing },
@@ -35,7 +36,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 				{ identifier: Identifiers.PreconditionMissingData },
 				'Please pick a valid job with a valid job id to apply for',
 			);
-		if (user?.job !== null)
+		if (user.job !== null)
 			throw new UserError(
 				{ identifier: Identifiers.PreconditionDataExists },
 				'You have a job already. If you want to switch, you have to quit your job',

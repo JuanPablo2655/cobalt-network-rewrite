@@ -5,6 +5,7 @@ import { calcMulti } from '#utils/util';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { addMulti, formatNumber } from '#utils/functions';
+import { createUser, getUser } from '#lib/database';
 
 abstract class WorkCommand extends GenericCommand {
 	constructor() {
@@ -17,8 +18,8 @@ abstract class WorkCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		const { db, econ } = this.cobalt.container;
-		const user = await db.getUser(message.author.id);
+		const { econ } = this.cobalt.container;
+		const user = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 		if (!user) throw new Error('Missing user database entry');
 		if (user.job === null)
 			throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'You need a job to work.');

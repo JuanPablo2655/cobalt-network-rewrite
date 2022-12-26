@@ -3,7 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { getBot, updateBot } from '#lib/database';
+import { createUser, getBot, getUser, updateBot } from '#lib/database';
 
 abstract class PayCommand extends GenericCommand {
 	constructor() {
@@ -16,16 +16,16 @@ abstract class PayCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db, econ } = this.cobalt.container;
+		const { econ } = this.cobalt.container;
 		if (!this.cobalt.user) throw new Error('Missing user');
 		const bot = await getBot(this.cobalt.user.id);
 		if (!bot) throw new Error('Missing bot database entry');
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
 		if (!member)
 			throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Please pick a valid member');
-		const author = await db.getUser(message.author.id);
+		const author = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 		if (!author) throw new Error('Missing author database entry');
-		const user = await db.getUser(member.id);
+		const user = (await getUser(member.id)) ?? (await createUser(member.id));
 		if (!user) throw new Error('Missing user database entry');
 		if (member.id === message.author.id)
 			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "You can't pay yourself");

@@ -1,9 +1,9 @@
 import { Message, EmbedBuilder } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { Default } from '#lib/typings';
 import { seconds } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
+import { createUser, getUser } from '#lib/database';
 
 abstract class checkSocialCredit extends GenericCommand {
 	constructor() {
@@ -18,14 +18,14 @@ abstract class checkSocialCredit extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
+		if (!member) throw new Error('missing member');
+		const user = (await getUser(member.id)) ?? (await createUser(member.id));
+		if (!user) throw new Error('missing user database entry');
 		addCD();
-		const user = await this.cobalt.container.db.getUser(member?.id);
 		const embed = new EmbedBuilder()
-			.setTitle(`${member?.user.username}'s social credit`)
+			.setTitle(`${member.user.username}'s social credit`)
 			.setDescription(
-				`**Score:** ${formatNumber(
-					user?.socialCredit ?? Default.SocialCredit,
-				)} / 2,000\nReduced Taxes: **0%**\nBonus Rewards: **0%**`,
+				`**Score:** ${formatNumber(user.socialCredit)} / 2,000\nReduced Taxes: **0%**\nBonus Rewards: **0%**`,
 			);
 		return message.channel.send({ embeds: [embed] });
 	}

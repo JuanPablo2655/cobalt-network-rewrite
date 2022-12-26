@@ -1,55 +1,54 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
-import { Default } from '#lib/typings';
 import { Identifiers, UserError } from '#lib/errors';
+import { createUser, getUser, updateUser } from '#lib/database';
 
-export async function check(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+export async function check(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const user = interaction.options.getUser('user') ?? interaction.user;
-	const userData = await cobalt.container.db.getUser(user.id);
+	const userData = (await getUser(user.id)) ?? (await createUser(user.id));
+	if (!userData) throw new Error('Missing user database entry');
 	const embed = new EmbedBuilder()
 		.setTitle(`${user.username}'s social credit`)
 		.setDescription(
-			`**Score:** ${formatNumber(
-				userData?.socialCredit ?? Default.SocialCredit,
-			)} / 2,000\nReduced Taxes: **0%**\nBonus Rewards: **0%**`,
+			`**Score:** ${formatNumber(userData.socialCredit)} / 2,000\nReduced Taxes: **0%**\nBonus Rewards: **0%**`,
 		);
 	return interaction.editReply({ embeds: [embed] });
 }
 
-export async function add(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+export async function add(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
-	const { db } = cobalt.container;
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	if (user.id == interaction.user.id)
 		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "can't give yourself social credit");
-	const userData = await db.getUser(user.id);
-	const newAmount = (userData?.socialCredit ?? Default.SocialCredit) + amount;
+	const userData = (await getUser(user.id)) ?? (await createUser(user.id));
+	if (!userData) throw new Error('Missing user database entry');
+	const newAmount = userData.socialCredit + amount;
 	if (newAmount > 2000)
 		throw new UserError(
 			{ identifier: Identifiers.ArgumentIntegerTooLarge },
 			'The max social credit score someone can have is 2,000',
 		);
-	db.updateUser(user.id, { socialCredit: newAmount });
+	await updateUser(user.id, { socialCredit: newAmount });
 	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount) ?? '0'}!` });
 }
 
-export async function remove(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+export async function remove(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
-	const { db } = cobalt.container;
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	if (user.id == interaction.user.id)
 		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't remove social credit from yourself");
-	const userData = await db.getUser(user.id);
-	const newAmount = (userData?.socialCredit ?? Default.SocialCredit) + amount;
+	const userData = (await getUser(user.id)) ?? (await createUser(user.id));
+	if (!userData) throw new Error('Missing user database entry');
+	const newAmount = userData.socialCredit + amount;
 	if (newAmount < 0)
 		throw new UserError(
 			{ identifier: Identifiers.ArgumentIntegerTooSmall },
 			'The min social credit someone can have is 0',
 		);
-	db.updateUser(user.id, { socialCredit: newAmount });
+	await updateUser(user.id, { socialCredit: newAmount });
 	interaction.editReply({ content: `${user.username} social credit score is now ${formatNumber(newAmount) ?? '0'}!` });
 }

@@ -4,6 +4,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
+import { createUser, getUser } from '#lib/database';
 
 abstract class GetVcTimeCommand extends GenericCommand {
 	constructor() {
@@ -22,7 +23,8 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		const member = await resolveMember(args[1], message.guild!).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		const memberData = await db.getMember(member.id, message.guild?.id);
-		const user = await db.getUser(member.id);
+		const user = (await getUser(member.id)) ?? (await createUser(member.id));
+		if (!user) throw new Error('Missing user database entry');
 		await addCD();
 		switch (option?.toLowerCase() ?? '') {
 			case 'local': {
@@ -45,13 +47,13 @@ abstract class GetVcTimeCommand extends GenericCommand {
 				return message.channel.send({ embeds: [vcEmbed] });
 			}
 			case 'global': {
-				if (!user?.vcHours) return message.reply({ content: "You haven't joined VC once!" });
+				if (user.vcHours.length === 0) return message.reply({ content: "You haven't joined VC once!" });
 				// TODO(Isidro): condense reduce and sort into one loop
 				const sum = user.vcHours.reduce((a, b) => a + b);
 				const average = sum / user.vcHours.length;
 				const sorted = user.vcHours.sort((a, b) => b - a);
 				const vcEmbed = new EmbedBuilder()
-					.setTitle(`${member?.user.username}'s Global VC Data`)
+					.setTitle(`${member.user.username}'s Global VC Data`)
 					.setDescription(
 						`**Total Time:** ${prettyMilliseconds(sum)}\n**Average Time:** ${prettyMilliseconds(
 							average,

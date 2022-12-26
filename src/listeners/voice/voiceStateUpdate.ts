@@ -3,7 +3,7 @@ import prettyMilliseconds from 'pretty-ms';
 import { Listener } from '#lib/structures/listeners';
 import { formatMoney } from '#utils/functions';
 import { logger } from '#lib/structures';
-import { getGuild } from '#lib/database';
+import { createUser, getGuild, getUser, updateUser } from '#lib/database';
 
 abstract class VoiceStateUpdateListener extends Listener {
 	constructor() {
@@ -24,7 +24,8 @@ abstract class VoiceStateUpdateListener extends Listener {
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		if (!oldState.member || !newState.member) return;
-		const user = await db.getUser(newState.member.id);
+		const user = (await getUser(newState.member.id)) ?? (await createUser(newState.member.id));
+		if (!user) throw new Error('User not found');
 		const member = await db.getMember(newState.member.id, newState.guild.id);
 		const logChannelId = guild.logChannel.channelId;
 		if (!logChannelId) return;
@@ -52,7 +53,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 				const time = elapsed / 60000;
 				const addMoney = Math.round(time * 9) + 1;
 				await econ.addToWallet(oldState.member.id, addMoney);
-				await db.updateUser(oldState.member.id, { vcHours: [...(user?.vcHours ?? []), elapsed] });
+				await updateUser(oldState.member.id, { vcHours: [...user.vcHours, elapsed] });
 				await db.updateMember(oldState.member.id, oldState.guild.id, {
 					vcHours: [...(member?.vcHours ?? []), elapsed],
 				});

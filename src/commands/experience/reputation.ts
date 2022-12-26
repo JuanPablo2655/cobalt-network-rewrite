@@ -3,6 +3,8 @@ import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { resolveMember } from '#utils/resolvers';
+import { createUser, getUser, updateUser } from '#lib/database';
+import { days } from '#utils/common';
 
 abstract class ReputationCommand extends GenericCommand {
 	constructor() {
@@ -16,27 +18,26 @@ abstract class ReputationCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db } = this.cobalt.container;
 		const member = await resolveMember(args[0], message.guild!);
-		const author = await db.getUser(message.author.id);
+		const author = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 		if (!author) throw new Error('Missing author database entry');
-		const user = await db.getUser(member.id);
+		const user = (await getUser(member.id)) ?? (await createUser(member.id));
 		if (!user) throw new Error('Missing user database entry');
 		if (member.id === message.author.id)
 			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't give yourself a reputation point!");
 		const date = Date.now();
-		const cooldown = date + 86400000;
-		if (!isNaN(author.repTime!) && author.repTime! > date) {
+		const cooldown = date + days(1);
+		if (author.repTime.getTime() > date) {
 			throw new UserError(
 				{ identifier: Identifiers.PreconditionCooldown },
 				`You still have **${prettyMilliseconds(
-					author.repTime! - Date.now(),
+					author.repTime.getTime() - Date.now(),
 				)}** left before you can give someone a reputation point!`,
 			);
 		}
 		await addCD();
-		await db.updateUser(message.author.id, { repTime: cooldown });
-		await db.updateUser(member.id, { rep: user.rep + 1 });
+		await updateUser(message.author.id, { repTime: new Date(cooldown) });
+		await updateUser(member.id, { rep: user.rep + 1 });
 		return message.channel.send({ content: `You gave **${member.user.username}** a reputation point!` });
 	}
 }

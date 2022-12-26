@@ -1,11 +1,10 @@
 import { setTimeout } from 'node:timers';
 import { Guild, Message, TextChannel, PermissionsBitField } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
-import { Default } from '#lib/typings';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
-import { getGuild } from '#lib/database';
+import { createUser, getGuild, getUser } from '#lib/database';
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -16,7 +15,7 @@ abstract class MessageListener extends Listener {
 
 	async run(message: Message) {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
-		const { db, metrics, exp, redis, econ, commands } = this.cobalt.container;
+		const { metrics, exp, redis, econ, commands } = this.cobalt.container;
 		metrics.messageInc();
 		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
@@ -56,13 +55,14 @@ abstract class MessageListener extends Listener {
 						exp.cooldowns.delete(message.author.id);
 					}, minutes(1));
 					const _exp = await exp.manageXp(message);
-					const profile = await db.getUser(message.author.id);
+					const profile = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
+					if (!profile) throw new Error('User not found in database');
 					if (_exp) {
 						if (guild.levelMessage?.enabled) {
 							const cleanMessage = guild.levelMessage.message
 								?.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
-								.replace(/{newLevel}/g, `**${formatNumber(profile?.lvl ?? Default.Level)}**`);
+								.replace(/{newLevel}/g, `**${formatNumber(profile.lvl)}**`);
 							message.channel.send({ content: cleanMessage });
 						}
 					}

@@ -1,16 +1,17 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
-import { Default } from '#lib/typings';
 import { Identifiers, UserError } from '#lib/errors';
+import { createUser, getUser } from '#lib/database';
 
 export async function deposit(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const { db, econ } = cobalt.container;
-	const profile = await db.getUser(interaction.user.id);
+	const { econ } = cobalt.container;
+	const profile = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
+	if (!profile) throw new Error('Missing user database entry');
 	const amount = interaction.options.getInteger('amount', true);
-	if ((profile?.wallet ?? Default.Wallet) - amount <= 0)
+	if (profile.wallet - amount <= 0)
 		throw new UserError({ identifier: Identifiers.ArgumentIntegerTooSmall }, "You don't have that much money");
-	if ((profile?.bank ?? Default.Bank) + amount > (profile?.bankSpace ?? Default.BankSpace))
+	if (profile.bank + amount > profile.bankSpace)
 		throw new UserError({ identifier: Identifiers.ArgumentIntegerTooLarge }, "You don't have that much bank space");
 	if (amount < 0)
 		throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, "You can't deposit negative money");
@@ -18,16 +19,17 @@ export async function deposit(cobalt: CobaltClient, interaction: ChatInputComman
 	await econ.addToBank(interaction.user.id, amount);
 	return interaction.reply({
 		content: `You deposited **${formatMoney(amount)}**. Your bank balance is now **${formatMoney(
-			(profile?.bank ?? Default.Bank) + amount,
+			profile.bank + amount,
 		)}**`,
 	});
 }
 
 export async function withdraw(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const { db, econ } = cobalt.container;
-	const profile = await db.getUser(interaction.user.id);
+	const { econ } = cobalt.container;
+	const profile = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
+	if (!profile) throw new Error('Missing user database entry');
 	const amount = interaction.options.getInteger('amount', true);
-	if ((profile?.bank ?? Default.Bank) - amount <= 0)
+	if (profile.bank - amount <= 0)
 		throw new UserError(
 			{ identifier: Identifiers.ArgumentIntegerTooLarge },
 			"You don't have that much money deposited",
@@ -38,7 +40,7 @@ export async function withdraw(cobalt: CobaltClient, interaction: ChatInputComma
 	await econ.addToWallet(interaction.user.id, amount);
 	return interaction.reply({
 		content: `You withdrew **${formatMoney(amount)}**. Your bank balance is now **${formatMoney(
-			(profile?.bank ?? Default.Bank) - amount,
+			profile.bank - amount,
 		)}**`,
 	});
 }

@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
+import { createUser, getUser } from '#lib/database';
 
 abstract class QuitJobCommand extends GenericCommand {
 	constructor() {
@@ -15,9 +16,10 @@ abstract class QuitJobCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const { db, econ } = this.cobalt.container;
-		const user = await db.getUser(message.author.id);
-		if (user?.job === null)
+		const { econ } = this.cobalt.container;
+		const user = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
+		if (!user) throw new Error('Missing user database entry');
+		if (user.job === null)
 			throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);
 		await econ.updateJob(message.author.id, null);
 		return message.channel.send({

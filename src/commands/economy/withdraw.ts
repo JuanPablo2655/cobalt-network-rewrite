@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
+import { createUser, getUser } from '#lib/database';
 
 abstract class WithdrawCommand extends GenericCommand {
 	constructor() {
@@ -15,8 +16,8 @@ abstract class WithdrawCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db, econ } = this.cobalt.container;
-		const profile = await db.getUser(message.author.id);
+		const { econ } = this.cobalt.container;
+		const profile = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 		if (!profile) throw new Error('missing user database entry');
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'How much money');
 		let money = Number(args[0]);
