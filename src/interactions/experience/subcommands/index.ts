@@ -6,7 +6,7 @@ import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { createUser, getUser, nextLevel, updateUser } from '#lib/database';
 
-export async function rank(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+export async function rank(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = (await getUser(user.id)) ?? (await createUser(user.id));
 	if (!profile) throw new Error('Missing user database entry');
