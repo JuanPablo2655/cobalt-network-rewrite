@@ -4,7 +4,7 @@ import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 import { addToBank, addToWallet, createUser, getUser, removeFromBank, removeFromWallet } from '#lib/database';
 
-export async function deposit(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+export async function deposit(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const profile = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
 	if (!profile) throw new Error('Missing user database entry');
 	const amount = interaction.options.getInteger('amount', true);
@@ -23,7 +23,7 @@ export async function deposit(cobalt: CobaltClient, interaction: ChatInputComman
 	});
 }
 
-export async function withdraw(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+export async function withdraw(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const profile = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
 	if (!profile) throw new Error('Missing user database entry');
 	const amount = interaction.options.getInteger('amount', true);

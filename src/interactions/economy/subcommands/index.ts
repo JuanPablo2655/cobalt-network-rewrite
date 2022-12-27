@@ -110,7 +110,7 @@ export async function daily(_cobalt: CobaltClient, interaction: ChatInputCommand
 	});
 }
 
-export async function weekly(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
+export async function weekly(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = (await getUser(member.id)) ?? (await createUser(member.id));
 	if (!user) throw new Error('Missing user database entry');
