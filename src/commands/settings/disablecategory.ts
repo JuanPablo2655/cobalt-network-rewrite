@@ -4,6 +4,8 @@ import { Identifiers, UserError } from '#lib/errors';
 import { SAVE_CATEGORIES } from '#utils/constants';
 import { removeDuplicates } from '#utils/functions';
 import { createGuild, getGuild, updateGuild } from '#lib/database';
+import { container } from '#root/Container';
+const { commands } = container;
 
 abstract class DisableCategoryCommand extends GenericCommand {
 	constructor() {
@@ -17,7 +19,6 @@ abstract class DisableCategoryCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { commands } = this.cobalt.container;
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing category');
 		const arg = args[0].toLowerCase();
 		const categories = removeDuplicates(commands.map(c => c.category as string));

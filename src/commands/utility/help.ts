@@ -4,6 +4,8 @@ import { GenericCommand } from '#lib/structures/commands';
 import { removeDuplicates, toCapitalize } from '#utils/functions';
 import { createGuild, getGuild } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
+import { container } from '#root/Container';
+const { commands: _commands } = container;
 
 abstract class HelpCommand extends GenericCommand {
 	constructor() {
@@ -19,7 +21,6 @@ abstract class HelpCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		// TODO(Isidro): refactor help command
 		await addCD();
-		const { commands: _commands } = this.cobalt.container;
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only command');
 		const guild = (await getGuild(message.guild?.id)) ?? (await createGuild(message.guild?.id));
 		if (!guild) throw new Error('Missing guild database entry');

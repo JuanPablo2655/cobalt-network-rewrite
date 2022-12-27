@@ -1,7 +1,7 @@
 import { container } from '#root/Container';
 import { logger } from '#lib/structures';
 import { Member } from '@prisma/client';
-const { prisma } = container;
+const { db } = container;
 
 /**
  * Create a member entry to the database
@@ -15,7 +15,7 @@ export async function createMember(
 	data?: Partial<Omit<Member, 'userId' | 'guildId'>>,
 ) {
 	try {
-		return prisma.member.create({
+		return db.member.create({
 			data: {
 				user: {
 					connectOrCreate: { where: { id: userId }, create: { id: userId } },
@@ -39,7 +39,7 @@ export async function createMember(
  */
 export async function deleteMember(userId: string, guildId: string) {
 	try {
-		return prisma.member.delete({
+		return db.member.delete({
 			where: { MemberId: { userId, guildId } },
 		});
 	} catch (err) {
@@ -55,7 +55,7 @@ export async function deleteMember(userId: string, guildId: string) {
  */
 export async function getMember(userId: string, guildId: string) {
 	try {
-		return prisma.member.findUniqueOrThrow({
+		return db.member.findUniqueOrThrow({
 			where: { MemberId: { userId, guildId } },
 		});
 	} catch (err) {
@@ -76,7 +76,7 @@ export async function updateMember(
 	data?: Partial<Omit<Member, 'userId' | 'guildId'>>,
 ) {
 	try {
-		return prisma.member.update({
+		return db.member.update({
 			where: { MemberId: { userId, guildId } },
 			data: {
 				...data,

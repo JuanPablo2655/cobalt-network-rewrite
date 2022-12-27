@@ -1,15 +1,15 @@
 import { BanMessage, LeaveMessage, LevelMessage, LogChannel, WelcomeMessage } from '@prisma/client';
 import { container } from '#root/Container';
 import { logger } from '#lib/structures';
-const { prisma } = container;
+const { db } = container;
 
 async function queryGuild(id: string) {
 	try {
-		const banMessage = await prisma.banMessage.findUniqueOrThrow({ where: { id: id } });
-		const welcomeMessage = await prisma.welcomeMessage.findUniqueOrThrow({ where: { id: id } });
-		const leaveMessage = await prisma.leaveMessage.findUniqueOrThrow({ where: { id: id } });
-		const levelMessage = await prisma.levelMessage.findUniqueOrThrow({ where: { id: id } });
-		const logChannel = await prisma.logChannel.findUniqueOrThrow({ where: { id: id } });
+		const banMessage = await db.banMessage.findUniqueOrThrow({ where: { id: id } });
+		const welcomeMessage = await db.welcomeMessage.findUniqueOrThrow({ where: { id: id } });
+		const leaveMessage = await db.leaveMessage.findUniqueOrThrow({ where: { id: id } });
+		const levelMessage = await db.levelMessage.findUniqueOrThrow({ where: { id: id } });
+		const logChannel = await db.logChannel.findUniqueOrThrow({ where: { id: id } });
 		return { banMessage, welcomeMessage, leaveMessage, levelMessage, logChannel };
 	} catch (err) {
 		const error = err as Error;
@@ -24,7 +24,7 @@ async function queryGuild(id: string) {
  */
 export async function createGuild(id: string, data?: Partial<IGuild>) {
 	try {
-		const raw = await prisma.guild.create({
+		const raw = await db.guild.create({
 			data: {
 				id,
 				prefix: data?.prefix,
@@ -82,7 +82,7 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
 export async function deleteGuild(id: string) {
 	try {
 		const half = await queryGuild(id);
-		const raw = await prisma.guild.delete({ where: { id } });
+		const raw = await db.guild.delete({ where: { id } });
 		return { ...raw, ...half };
 	} catch (err) {
 		const error = err as Error;
@@ -96,7 +96,7 @@ export async function deleteGuild(id: string) {
  */
 export async function getGuild(id: string) {
 	try {
-		const raw = await prisma.guild.findUniqueOrThrow({ where: { id } });
+		const raw = await db.guild.findUniqueOrThrow({ where: { id } });
 		const half = await queryGuild(id);
 		return { ...raw, ...half };
 	} catch (err) {
@@ -112,7 +112,7 @@ export async function getGuild(id: string) {
  */
 export async function updateGuild(id: string, data?: Partial<IGuild>) {
 	try {
-		const raw = await prisma.guild.update({
+		const raw = await db.guild.update({
 			where: {
 				id,
 			},

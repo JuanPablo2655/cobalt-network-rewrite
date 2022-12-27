@@ -1,7 +1,7 @@
 import { container } from '#root/Container';
 import { logger } from '#lib/structures';
 import { Bot } from '@prisma/client';
-const { prisma } = container;
+const { db } = container;
 
 /**
  * Create a bot entry to the database
@@ -10,7 +10,7 @@ const { prisma } = container;
  */
 export async function createBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
 	try {
-		return await prisma.bot.create({
+		return await db.bot.create({
 			data: {
 				id: id,
 				...data,
@@ -28,7 +28,7 @@ export async function createBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
  */
 export async function deleteBot(id: string) {
 	try {
-		return await prisma.bot.delete({
+		return await db.bot.delete({
 			where: { id },
 		});
 	} catch (err) {
@@ -43,7 +43,7 @@ export async function deleteBot(id: string) {
  */
 export async function getBot(id: string) {
 	try {
-		return await prisma.bot.findUniqueOrThrow({
+		return await db.bot.findUniqueOrThrow({
 			where: { id },
 		});
 	} catch (err) {
@@ -59,7 +59,7 @@ export async function getBot(id: string) {
  */
 export async function updateBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
 	try {
-		return await prisma.bot.update({
+		return await db.bot.update({
 			where: { id },
 			data: {
 				...data,

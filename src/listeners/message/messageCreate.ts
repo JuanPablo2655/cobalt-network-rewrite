@@ -6,7 +6,7 @@ import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
 import { createUser, createGuild, getGuild, getUser, awardBankSpace, rewardXp } from '#lib/database';
 import { container } from '#root/Container';
-const { messageCooldowns: cooldowns } = container;
+const { messageCooldowns: cooldowns, metrics, redis, commands } = container;
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -17,7 +17,6 @@ abstract class MessageListener extends Listener {
 
 	async run(message: Message) {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
-		const { metrics, redis, commands } = this.cobalt.container;
 		metrics.messageInc();
 		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);

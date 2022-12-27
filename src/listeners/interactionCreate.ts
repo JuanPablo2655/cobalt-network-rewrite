@@ -3,6 +3,8 @@ import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
 import { isOwner } from '#utils/functions';
 import { createGuild, getGuild } from '#lib/database';
+import { container } from '#root/Container';
+const { interactions } = container;
 
 abstract class InteractionListener extends Listener {
 	constructor() {
@@ -15,7 +17,6 @@ abstract class InteractionListener extends Listener {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!interaction.isChatInputCommand()) return;
 		if (!interaction.inCachedGuild()) return;
-		const { interactions } = this.cobalt.container;
 		const command = interactions.get(interaction.commandName);
 		if (command) {
 			const guild = (await getGuild(interaction.guild.id)) ?? (await createGuild(interaction.guild.id));

@@ -11,7 +11,6 @@ dotenv.config();
 
 export class CobaltClient extends Client {
 	public dev = process.env.NODE_ENV !== 'production';
-	public container = container;
 	public testListeners = config.testListeners;
 	public disableXp = config.disableXp;
 
@@ -20,21 +19,21 @@ export class CobaltClient extends Client {
 		container.messageCooldowns = new Set();
 		container.redis = new Redis(config.redis);
 		container.metrics = new Metrics(this);
-		container.prisma = new PrismaClient();
+		container.db = new PrismaClient();
 		container.cobalt = this;
-		this.on('raw', packet => this.container.metrics.eventInc(packet.t));
+		this.on('raw', packet => container.metrics.eventInc(packet.t));
 	}
 
 	public async login(token = config.token) {
 		await Promise.all([CommandRegistry(this), ListenerRegistry(this), InteractionRegistry(this)]);
 		const loginResponse = await super.login(token);
-		this.container.metrics.start();
+		container.metrics.start();
 		return loginResponse;
 	}
 
 	public async destroy() {
-		await this.container.redis.flushall();
-		this.container.metrics.server.close();
+		await container.redis.flushall();
+		container.metrics.server.close();
 		return super.destroy();
 	}
 }
@@ -43,7 +42,7 @@ declare module '../Container.js' {
 	interface Container {
 		redis: Redis;
 		metrics: Metrics;
-		prisma: PrismaClient;
+		db: PrismaClient;
 		cobalt: CobaltClient;
 		messageCooldowns: Set<Snowflake>;
 	}

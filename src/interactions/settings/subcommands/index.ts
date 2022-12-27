@@ -3,9 +3,10 @@ import { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
 import { removeDuplicates } from '#utils/functions';
 import { createGuild, getGuild, updateGuild } from '#lib/database';
+import { container } from '#root/Container';
+const { commands } = container;
 
-export async function category(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const { commands } = cobalt.container;
+export async function category(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const saveCategories = ['dev', 'settings'];
 	const categories = removeDuplicates(commands.map(c => c.category as string));
 	const category = interaction.options.getString('category', true).toLowerCase();
@@ -31,8 +32,7 @@ export async function category(cobalt: CobaltClient, interaction: ChatInputComma
 	}
 }
 
-export async function command(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const { commands } = cobalt.container;
+export async function command(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const saveCommands = ['help', 'enablecommand', 'disablecommand'];
 	const saveCategories = ['dev', 'settings'];
 	const commandName = interaction.options.getString('name', true).toLowerCase();

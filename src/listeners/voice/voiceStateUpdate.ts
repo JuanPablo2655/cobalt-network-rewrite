@@ -14,6 +14,8 @@ import {
 	updateUser,
 	addToWallet,
 } from '#lib/database';
+import { container } from '#root/Container';
+const { redis, metrics } = container;
 
 abstract class VoiceStateUpdateListener extends Listener {
 	constructor() {
@@ -24,7 +26,6 @@ abstract class VoiceStateUpdateListener extends Listener {
 
 	async run(oldState: VoiceState, newState: VoiceState) {
 		if (!this.cobalt.testListeners) return;
-		const { redis, metrics } = this.cobalt.container;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (newState.member?.partial) await newState.member.fetch();
