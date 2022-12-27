@@ -26,6 +26,7 @@ export class CobaltClient extends Client {
 		container.redis = new Redis(config.redis);
 		container.metrics = new Metrics(this);
 		container.prisma = new PrismaClient();
+		container.cobalt = this;
 		this.on('raw', packet => this.container.metrics.eventInc(packet.t));
 	}
 
@@ -54,5 +55,6 @@ declare module '../Container.js' {
 		redis: Redis;
 		metrics: Metrics;
 		prisma: PrismaClient;
+		cobalt: CobaltClient;
 	}
 }
