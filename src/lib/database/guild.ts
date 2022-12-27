@@ -1,16 +1,16 @@
-import { BanMessage, LeaveMessage, LevelMessage, LogChannel, WelcomeMessage } from '@prisma/client';
+import { Ban, Leave, Level, Log, Welcome } from '@prisma/client';
 import { container } from '#root/Container';
 import { logger } from '#lib/structures';
 const { db } = container;
 
 async function queryGuild(id: string) {
 	try {
-		const banMessage = await db.banMessage.findUniqueOrThrow({ where: { id: id } });
-		const welcomeMessage = await db.welcomeMessage.findUniqueOrThrow({ where: { id: id } });
-		const leaveMessage = await db.leaveMessage.findUniqueOrThrow({ where: { id: id } });
-		const levelMessage = await db.levelMessage.findUniqueOrThrow({ where: { id: id } });
-		const logChannel = await db.logChannel.findUniqueOrThrow({ where: { id: id } });
-		return { banMessage, welcomeMessage, leaveMessage, levelMessage, logChannel };
+		const ban = await db.ban.findUniqueOrThrow({ where: { id: id } });
+		const welcome = await db.welcome.findUniqueOrThrow({ where: { id: id } });
+		const leave = await db.leave.findUniqueOrThrow({ where: { id: id } });
+		const level = await db.level.findUniqueOrThrow({ where: { id: id } });
+		const log = await db.log.findUniqueOrThrow({ where: { id: id } });
+		return { ban, welcome, leave, level, log };
 	} catch (err) {
 		const error = err as Error;
 		logger.error(error, error.message);
@@ -32,37 +32,37 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
 				disabledCommands: data?.disabledCommands,
 				disabledCategories: data?.disabledCategories,
 				mutedRoleId: data?.mutedRoleId,
-				levelMessage: {
+				level: {
 					create: {
-						message: data?.levelMessage?.message,
-						enabled: data?.levelMessage?.enabled,
+						message: data?.level?.message,
+						enabled: data?.level?.enabled,
 					},
 				},
-				welcomeMessage: {
+				welcome: {
 					create: {
-						message: data?.welcomeMessage?.message,
-						channelId: data?.welcomeMessage?.channelId,
-						enabled: data?.welcomeMessage?.enabled,
+						message: data?.welcome?.message,
+						channelId: data?.welcome?.channelId,
+						enabled: data?.welcome?.enabled,
 					},
 				},
-				leaveMessage: {
+				leave: {
 					create: {
-						message: data?.leaveMessage?.message,
-						channelId: data?.leaveMessage?.channelId,
-						enabled: data?.leaveMessage?.enabled,
+						message: data?.leave?.message,
+						channelId: data?.leave?.channelId,
+						enabled: data?.leave?.enabled,
 					},
 				},
-				banMessage: {
+				ban: {
 					create: {
-						message: data?.banMessage?.message,
-						enabled: data?.banMessage?.enabled,
+						message: data?.ban?.message,
+						enabled: data?.ban?.enabled,
 					},
 				},
-				logChannel: {
+				log: {
 					create: {
-						channelId: data?.logChannel?.channelId,
-						enabled: data?.logChannel?.enabled,
-						disabledEvents: data?.logChannel?.disabledEvents,
+						channelId: data?.log?.channelId,
+						enabled: data?.log?.enabled,
+						disabledEvents: data?.log?.disabledEvents,
 					},
 				},
 			},
@@ -122,37 +122,37 @@ export async function updateGuild(id: string, data?: Partial<IGuild>) {
 				disabledCommands: data?.disabledCommands,
 				disabledCategories: data?.disabledCategories,
 				mutedRoleId: data?.mutedRoleId,
-				levelMessage: {
+				level: {
 					update: {
-						message: data?.levelMessage?.message,
-						enabled: data?.levelMessage?.enabled,
+						message: data?.level?.message,
+						enabled: data?.level?.enabled,
 					},
 				},
-				welcomeMessage: {
+				welcome: {
 					update: {
-						message: data?.welcomeMessage?.message,
-						channelId: data?.welcomeMessage?.channelId,
-						enabled: data?.welcomeMessage?.enabled,
+						message: data?.welcome?.message,
+						channelId: data?.welcome?.channelId,
+						enabled: data?.welcome?.enabled,
 					},
 				},
-				leaveMessage: {
+				leave: {
 					update: {
-						message: data?.leaveMessage?.message,
-						channelId: data?.leaveMessage?.channelId,
-						enabled: data?.leaveMessage?.enabled,
+						message: data?.leave?.message,
+						channelId: data?.leave?.channelId,
+						enabled: data?.leave?.enabled,
 					},
 				},
-				banMessage: {
+				ban: {
 					update: {
-						message: data?.banMessage?.message,
-						enabled: data?.banMessage?.enabled,
+						message: data?.ban?.message,
+						enabled: data?.ban?.enabled,
 					},
 				},
-				logChannel: {
+				log: {
 					update: {
-						channelId: data?.logChannel?.channelId,
-						enabled: data?.logChannel?.enabled,
-						disabledEvents: data?.logChannel?.disabledEvents,
+						channelId: data?.log?.channelId,
+						enabled: data?.log?.enabled,
+						disabledEvents: data?.log?.disabledEvents,
 					},
 				},
 			},
@@ -171,9 +171,9 @@ export interface IGuild {
 	disabledCommands: string[];
 	disabledCategories: string[];
 	mutedRoleId: string | null;
-	levelMessage: Partial<Omit<LevelMessage, 'id'>>;
-	welcomeMessage: Partial<Omit<WelcomeMessage, 'id'>>;
-	leaveMessage: Partial<Omit<LeaveMessage, 'id'>>;
-	banMessage: Partial<Omit<BanMessage, 'id'>>;
-	logChannel: Partial<Omit<LogChannel, 'id'>>;
+	level: Partial<Omit<Level, 'id'>>;
+	welcome: Partial<Omit<Welcome, 'id'>>;
+	leave: Partial<Omit<Leave, 'id'>>;
+	ban: Partial<Omit<Ban, 'id'>>;
+	log: Partial<Omit<Log, 'id'>>;
 }

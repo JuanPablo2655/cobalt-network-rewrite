@@ -59,8 +59,8 @@ abstract class MessageListener extends Listener {
 					const profile = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 					if (!profile) throw new Error('User not found in database');
 					if (_exp) {
-						if (guild.levelMessage?.enabled) {
-							const cleanMessage = guild.levelMessage.message
+						if (guild.level?.enabled) {
+							const cleanMessage = guild.level.message
 								?.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
 								.replace(/{newLevel}/g, `**${formatNumber(profile.level)}**`);

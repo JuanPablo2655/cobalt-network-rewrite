@@ -9,7 +9,7 @@ export async function channel(_cobalt: CobaltClient, interaction: ChatInputComma
 	const guild = (await getGuild(interaction.guild.id)) ?? (await createGuild(interaction.guild.id));
 	if (!guild) throw new Error('Missing guild database entry');
 	await updateGuild(interaction.guild.id, {
-		logChannel: {
+		log: {
 			channelId: channel.id,
 		},
 	});
@@ -21,10 +21,10 @@ export async function toggle(_cobalt: CobaltClient, interaction: ChatInputComman
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = (await getGuild(interaction.guild.id)) ?? (await createGuild(interaction.guild.id));
 	if (!guild) throw new Error('Missing guild database entry');
-	if (guild.logChannel?.enabled === option)
+	if (guild.log?.enabled === option)
 		throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `Already ${option}`);
 	await updateGuild(interaction.guild.id, {
-		logChannel: {
+		log: {
 			enabled: option,
 		},
 	});

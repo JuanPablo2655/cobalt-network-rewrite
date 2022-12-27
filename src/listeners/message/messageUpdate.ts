@@ -21,8 +21,8 @@ abstract class MessageUpdateListener extends Listener {
 		if (!newMessage.guild.available) return;
 		const guild = (await getGuild(newMessage.guild.id)) ?? (await createGuild(newMessage.guild.id));
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
-		const logChannelId = guild.logChannel.channelId;
+		if (!guild.log?.enabled) return;
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMessage.guild.id)

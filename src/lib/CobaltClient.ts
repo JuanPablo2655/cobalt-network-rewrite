@@ -33,6 +33,7 @@ export class CobaltClient extends Client {
 
 	public async destroy() {
 		await container.redis.flushall();
+		await container.db.$disconnect();
 		container.metrics.server.close();
 		return super.destroy();
 	}

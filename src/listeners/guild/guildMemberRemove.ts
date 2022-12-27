@@ -21,8 +21,8 @@ abstract class GuildMemberRemoveListener extends Listener {
 		if (!user) return;
 		const guild = (await getGuild(member.guild.id)) ?? (await createGuild(member.guild.id));
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
-		const logChannelId = guild.logChannel.channelId;
+		if (!guild.log?.enabled) return;
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
@@ -32,11 +32,11 @@ abstract class GuildMemberRemoveListener extends Listener {
 				roles: roleList,
 			});
 		}
-		if (guild.leaveMessage?.channelId) {
+		if (guild.leave?.channelId) {
 			const leaveChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
-				?.channels.cache.get(guild.leaveMessage.channelId) as TextChannel;
-			const leave = guild.leaveMessage.message
+				?.channels.cache.get(guild.leave.channelId) as TextChannel;
+			const leave = guild.leave.message
 				?.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);

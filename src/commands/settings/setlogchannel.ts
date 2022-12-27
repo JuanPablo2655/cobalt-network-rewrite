@@ -23,7 +23,7 @@ abstract class SetLogChannelCommand extends GenericCommand {
 		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		await updateGuild(guildId, {
-			logChannel: {
+			log: {
 				channelId: channel.id,
 			},
 		});

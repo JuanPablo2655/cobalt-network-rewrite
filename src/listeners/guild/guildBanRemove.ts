@@ -18,12 +18,12 @@ abstract class GuildBanRemoveListener extends Listener {
 		if (!ban.guild.available) return;
 		const guild = (await getGuild(ban.guild.id)) ?? (await createGuild(ban.guild.id));
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
+		if (!guild.log?.enabled) return;
 		let audit;
 		if (ban.guild.members.me?.permissions.has('ViewAuditLog')) {
 			audit = (await ban.guild.fetchAuditLogs()).entries.first();
 		}
-		const logChannelId = guild.logChannel.channelId;
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = ban.user.displayAvatarURL({ extension: 'png', forceStatic: false });

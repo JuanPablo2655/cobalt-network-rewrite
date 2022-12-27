@@ -28,7 +28,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			case 'toggle': {
 				const choice: boolean = action.toLowerCase() === 'true' || action.toLowerCase() === 'enable';
 				await updateGuild(guildId, {
-					leaveMessage: {
+					leave: {
 						enabled: choice,
 					},
 				});
@@ -39,7 +39,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 			case 'channel': {
 				const channel = await resolveGuildTextChannel(action, message.guild);
 				await updateGuild(guildId, {
-					leaveMessage: {
+					leave: {
 						channelId: channel.id,
 					},
 				});
@@ -53,7 +53,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 					);
 				if (action === 'edit') {
 					await updateGuild(guildId, {
-						leaveMessage: {
+						leave: {
 							message: leaveMessage.join(' '),
 						},
 					});
@@ -63,7 +63,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 				}
 				if (action === 'default') {
 					await updateGuild(guildId, {
-						leaveMessage: {
+						leave: {
 							message: 'Goodbye {user.username}.',
 						},
 					});

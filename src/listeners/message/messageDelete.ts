@@ -19,8 +19,8 @@ abstract class MessageDeleteListener extends Listener {
 		if (!message.guild.available) return;
 		const guild = (await getGuild(message.guild.id)) ?? (await createGuild(message.guild.id));
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
-		const logChannelId = guild.logChannel.channelId;
+		if (!guild.log?.enabled) return;
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(message.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = message.author.displayAvatarURL({ extension: 'png', forceStatic: false });

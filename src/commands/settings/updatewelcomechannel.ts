@@ -27,7 +27,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 			case 'toggle': {
 				const choice: boolean = action.toLowerCase() === 'true' || action.toLowerCase() === 'enable';
 				await updateGuild(guildId, {
-					welcomeMessage: {
+					welcome: {
 						enabled: choice,
 					},
 				});
@@ -39,7 +39,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 				const channel = await resolveGuildTextChannel(action, message.guild);
 				if (!channel) throw new UserError({ identifier: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
 				await updateGuild(guildId, {
-					welcomeMessage: {
+					welcome: {
 						channelId: channel.id,
 					},
 				});
@@ -53,7 +53,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 					);
 				if (action === 'edit') {
 					await updateGuild(guildId, {
-						welcomeMessage: {
+						welcome: {
 							message: welcomeMessage.join(' '),
 						},
 					});
@@ -63,7 +63,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 				}
 				if (action === 'default') {
 					await updateGuild(guildId, {
-						welcomeMessage: {
+						welcome: {
 							message: 'Welcome, {user.tag} to {guild.name}!',
 						},
 					});

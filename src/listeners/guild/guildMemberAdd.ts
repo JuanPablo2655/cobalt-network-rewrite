@@ -21,8 +21,8 @@ abstract class GuildMemberAddListener extends Listener {
 		if (!user) return;
 		const guild = (await getGuild(member.guild.id)) ?? (await createGuild(member.guild.id));
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
-		const logChannelId = guild.logChannel.channelId;
+		if (!guild.log?.enabled) return;
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
@@ -38,11 +38,11 @@ abstract class GuildMemberAddListener extends Listener {
 				content: `Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing, message the staff for the remaining roles.`,
 			});
 		}
-		if (guild.welcomeMessage?.channelId) {
+		if (guild.welcome?.channelId) {
 			const welcomeChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
-				?.channels.cache.get(guild.welcomeMessage.channelId) as TextChannel;
-			const welcome = guild.welcomeMessage.message
+				?.channels.cache.get(guild.welcome.channelId) as TextChannel;
+			const welcome = guild.welcome.message
 				?.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);

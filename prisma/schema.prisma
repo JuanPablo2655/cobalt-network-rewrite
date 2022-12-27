@@ -20,23 +20,23 @@ model Bot {
 }
 
 model Guild {
-  id                 String          @id @map("id") @db.VarChar(18)
-  prefix             String          @default("cn!") @map("prefix") @db.VarChar(20)
-  blacklistedWords   String[]        @default([]) @map("blacklisted_words") @db.VarChar(256)
-  disabledCommands   String[]        @default([]) @map("disabled_commands") @db.VarChar(256)
-  disabledCategories String[]        @default([]) @map("disabled_categories") @db.VarChar(256)
-  mutedRoleId        String?         @map("muted_role_id") @db.VarChar(18)
-  levelMessage       LevelMessage?
-  welcomeMessage     WelcomeMessage?
-  leaveMessage       LeaveMessage?
-  banMessage         BanMessage?
-  logChannel         LogChannel?
-  guildUser          Member[]
+  id                 String   @id @map("id") @db.VarChar(18)
+  prefix             String   @default("cn!") @map("prefix") @db.VarChar(20)
+  blacklistedWords   String[] @default([]) @map("blacklisted_words") @db.VarChar(256)
+  disabledCommands   String[] @default([]) @map("disabled_commands") @db.VarChar(256)
+  disabledCategories String[] @default([]) @map("disabled_categories") @db.VarChar(256)
+  mutedRoleId        String?  @map("muted_role_id") @db.VarChar(18)
+  level              Level?
+  welcome            Welcome?
+  leave              Leave?
+  ban                Ban?
+  log                Log?
+  members            Member[]
 
   @@map("guilds")
 }
 
-model LevelMessage {
+model Level {
   id      String  @id @map("id") @db.VarChar(18)
   guild   Guild?  @relation(fields: [id], references: [id], onDelete: Cascade)
   message String  @default("Congratulations {user.tag} you are now level {newLevel}!") @map("message") @db.VarChar(512)
@@ -45,7 +45,7 @@ model LevelMessage {
   @@map("level_messges")
 }
 
-model WelcomeMessage {
+model Welcome {
   id        String  @id @map("id") @db.VarChar(18)
   guild     Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
   message   String  @default("Welcome, {user.tag} to {guild.name}!") @map("message") @db.VarChar(512)
@@ -55,7 +55,7 @@ model WelcomeMessage {
   @@map("welcome_messages")
 }
 
-model LeaveMessage {
+model Leave {
   id        String  @id @map("id") @db.VarChar(18)
   guild     Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
   message   String  @default("Goodbye {user.username}.") @map("message") @db.VarChar(512)
@@ -65,7 +65,7 @@ model LeaveMessage {
   @@map("leave_messges")
 }
 
-model BanMessage {
+model Ban {
   id      String  @id @map("id") @db.VarChar(18)
   guild   Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
   message String  @default("{user.username} got banned from the server!") @map("message") @db.VarChar(512)
@@ -74,7 +74,7 @@ model BanMessage {
   @@map("ban_messages")
 }
 
-model LogChannel {
+model Log {
   id             String   @id @map("id") @db.VarChar(18)
   guild          Guild    @relation(fields: [id], references: [id], onDelete: Cascade)
   channelId      String?  @map("channel_id") @db.VarChar(18)
