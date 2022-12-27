@@ -2,7 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
-import { createUser, getUser } from '#lib/database';
+import { addToBank, createUser, getUser, removeFromWallet } from '#lib/database';
 
 abstract class DepositCommand extends GenericCommand {
 	constructor() {
@@ -16,7 +16,6 @@ abstract class DepositCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { econ } = this.cobalt.container;
 		const profile = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 		if (!profile) throw new Error('Missing user database entry');
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'How much money?');
@@ -36,8 +35,8 @@ abstract class DepositCommand extends GenericCommand {
 		if (money < 0)
 			throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, "You can't deposit negative money");
 		await addCD();
-		await econ.removeFromWallet(message.author.id, money);
-		await econ.addToBank(message.author.id, money);
+		await removeFromWallet(message.author.id, money);
+		await addToBank(message.author.id, money);
 		return message.channel.send({
 			content: `You deposited **${formatMoney(money)}**. Your bank balance is now **${formatMoney(
 				profile.bank + money,

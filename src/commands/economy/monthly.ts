@@ -5,7 +5,7 @@ import { months } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { addMulti, formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createUser, getUser, updateUser } from '#lib/database';
+import { addToWallet, createUser, getUser, updateUser } from '#lib/database';
 
 abstract class MonthlyCommand extends GenericCommand {
 	constructor() {
@@ -17,7 +17,6 @@ abstract class MonthlyCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { econ } = this.cobalt.container;
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Member missing');
 		const user = (await getUser(member.id)) ?? (await createUser(member.id));
@@ -35,7 +34,7 @@ abstract class MonthlyCommand extends GenericCommand {
 		if (member?.id === message.author.id) {
 			const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
 			await updateUser(message.author.id, { monthly: new Date(cooldown) });
-			await econ.addToWallet(member.id, monthlyAmount);
+			await addToWallet(member.id, monthlyAmount);
 			return message.channel.send({
 				content: `You have received your monthly **${formatMoney(monthlyAmount)}**.`,
 			});
@@ -43,7 +42,7 @@ abstract class MonthlyCommand extends GenericCommand {
 		const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
 		const moneyEarned = addMulti(monthlyAmount, 10);
 		await updateUser(message.author.id, { monthly: new Date(cooldown) });
-		await econ.addToWallet(member!.id, moneyEarned);
+		await addToWallet(member.id, moneyEarned);
 		return message.channel.send({
 			content: `You gave your monthly of **${formatMoney(moneyEarned)}** to **${member?.user.username}**.`,
 		});

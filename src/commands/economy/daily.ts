@@ -5,7 +5,7 @@ import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { addMulti, formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createUser, getUser, updateUser } from '#lib/database';
+import { addToWallet, createUser, getUser, updateUser } from '#lib/database';
 
 abstract class DailyCommand extends GenericCommand {
 	constructor() {
@@ -17,7 +17,6 @@ abstract class DailyCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { econ } = this.cobalt.container;
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = (await getUser(member.id)) ?? (await createUser(member.id));
@@ -35,7 +34,7 @@ abstract class DailyCommand extends GenericCommand {
 		if (member.id === message.author.id) {
 			const dailyAmount = Math.floor(250 + Math.random() * 150);
 			await updateUser(message.author.id, { daily: new Date(cooldown) });
-			await econ.addToWallet(member.id, dailyAmount);
+			await addToWallet(member.id, dailyAmount);
 			return message.channel.send({
 				content: `You have received your daily **${formatMoney(dailyAmount)}**.`,
 			});
@@ -43,7 +42,7 @@ abstract class DailyCommand extends GenericCommand {
 		const dailyAmount = Math.floor(250 + Math.random() * 150);
 		const moneyEarned = addMulti(dailyAmount, 10);
 		await updateUser(message.author.id, { daily: new Date(cooldown) });
-		await econ.addToWallet(member.id, moneyEarned);
+		await addToWallet(member.id, moneyEarned);
 		return message.channel.send({
 			content: `You gave your daily of **${formatMoney(moneyEarned)}** to **${member.user.username}**.`,
 		});

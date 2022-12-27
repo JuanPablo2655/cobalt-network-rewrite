@@ -3,7 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createBot, createUser, getBot, getUser, updateBot } from '#lib/database';
+import { addToWallet, createBot, createUser, getBot, getUser, removeFromWallet, updateBot } from '#lib/database';
 
 abstract class PayCommand extends GenericCommand {
 	constructor() {
@@ -16,7 +16,6 @@ abstract class PayCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { econ } = this.cobalt.container;
 		if (!this.cobalt.user) throw new Error('Missing user');
 		const bot = (await getBot(this.cobalt.user.id)) ?? (await createBot(this.cobalt.user.id));
 		if (!bot) throw new Error('Missing bot database entry');
@@ -43,8 +42,8 @@ abstract class PayCommand extends GenericCommand {
 		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;
-		await econ.removeFromWallet(message.author.id, amount);
-		await econ.addToWallet(member.id, afterTax);
+		await removeFromWallet(message.author.id, amount);
+		await addToWallet(member.id, afterTax);
 		await updateBot(this.cobalt.user.id, { bank: bot.bank + tax });
 		return message.channel.send({
 			content: `>>> Transaction to **${member.user.username}**:\nSubtotal: **${formatMoney(

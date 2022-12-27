@@ -12,6 +12,7 @@ import {
 	getUser,
 	updateMember,
 	updateUser,
+	addToWallet,
 } from '#lib/database';
 
 abstract class VoiceStateUpdateListener extends Listener {
@@ -23,7 +24,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 
 	async run(oldState: VoiceState, newState: VoiceState) {
 		if (!this.cobalt.testListeners) return;
-		const { econ, redis, metrics } = this.cobalt.container;
+		const { redis, metrics } = this.cobalt.container;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (newState.member?.partial) await newState.member.fetch();
@@ -64,7 +65,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 				metrics.voiceInc(elapsed, oldState.guild.id);
 				const time = elapsed / 60000;
 				const addMoney = Math.round(time * 9) + 1;
-				await econ.addToWallet(oldState.member.id, addMoney);
+				await addToWallet(oldState.member.id, addMoney);
 				await updateUser(oldState.member.id, { vcHours: [...user.vcHours, elapsed] });
 				await updateMember(oldState.member.id, oldState.guild.id, {
 					vcHours: [...member.vcHours, elapsed],

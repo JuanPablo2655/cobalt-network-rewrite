@@ -5,7 +5,7 @@ import { calcMulti } from '#utils/util';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { addMulti, formatNumber } from '#utils/functions';
-import { createUser, getUser } from '#lib/database';
+import { addToWallet, createUser, getUser } from '#lib/database';
 
 abstract class WorkCommand extends GenericCommand {
 	constructor() {
@@ -18,7 +18,6 @@ abstract class WorkCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		const { econ } = this.cobalt.container;
 		const user = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 		if (!user) throw new Error('Missing user database entry');
 		if (user.job === null)
@@ -30,7 +29,7 @@ abstract class WorkCommand extends GenericCommand {
 		const money = Math.floor(job.minAmount + Math.random() * 250);
 		const multi = await calcMulti(message.author, this.cobalt);
 		const moneyEarned = addMulti(money, multi);
-		await econ.addToWallet(message.author.id, moneyEarned);
+		await addToWallet(message.author.id, moneyEarned);
 		const cleanEntry = workEntry
 			?.replace(/{user.username}/g, message.author.username)
 			.replace(/{money}/g, formatNumber(moneyEarned) ?? '0');

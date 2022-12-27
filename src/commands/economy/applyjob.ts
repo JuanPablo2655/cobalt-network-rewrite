@@ -4,7 +4,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
-import { createUser, createGuild, getGuild, getUser } from '#lib/database';
+import { createUser, createGuild, getGuild, getUser, updateJob } from '#lib/database';
 
 abstract class ApplyJobCommand extends GenericCommand {
 	constructor() {
@@ -18,7 +18,6 @@ abstract class ApplyJobCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const { econ } = this.cobalt.container;
 		if (!message.guild) return;
 		const guild = (await getGuild(message.guild.id)) ?? (await createGuild(message.guild.id));
 		const user = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
@@ -42,7 +41,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 				'You have a job already. If you want to switch, you have to quit your job',
 			);
 
-		await econ.updateJob(message.author.id, job.id);
+		await updateJob(message.author.id, job.id);
 		return message.reply({
 			content: `Congratulations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
 				job.minAmount,

@@ -4,7 +4,7 @@ import { Listener } from '#lib/structures/listeners';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
-import { createUser, createGuild, getGuild, getUser } from '#lib/database';
+import { createUser, createGuild, getGuild, getUser, awardBankSpace } from '#lib/database';
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -15,7 +15,7 @@ abstract class MessageListener extends Listener {
 
 	async run(message: Message) {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
-		const { metrics, exp, redis, econ, commands } = this.cobalt.container;
+		const { metrics, exp, redis, commands } = this.cobalt.container;
 		metrics.messageInc();
 		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
@@ -73,7 +73,7 @@ abstract class MessageListener extends Listener {
 				setTimeout(() => {
 					exp.cooldowns.delete(message.author.id);
 				}, minutes(1));
-				await econ.manageBankSpace(message);
+				await awardBankSpace(message);
 			}
 		}
 		if (!prefix) return;

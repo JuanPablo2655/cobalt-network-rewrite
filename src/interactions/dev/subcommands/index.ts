@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
-import { createBot, getBot, updateBot } from '#lib/database';
+import { addToWallet, createBot, getBot, updateBot } from '#lib/database';
 
 export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.reply({ content: 'Shutting down.' });
@@ -11,7 +11,6 @@ export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommand
 
 export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
-	const { econ } = cobalt.container;
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	if (!cobalt.user) throw new Error('Missing user');
@@ -28,7 +27,7 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 			`I don't have that much. I have **${formatMoney(bot.bank)}** left.`,
 		);
 	await updateBot(cobalt.user.id, { bank: bot.bank - amount });
-	await econ.addToWallet(user.id, amount);
+	await addToWallet(user.id, amount);
 	return interaction.editReply({
 		content: `You paid **${user.username}** **${formatMoney(amount)}** tax money.`,
 	});
