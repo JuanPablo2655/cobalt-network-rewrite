@@ -2,7 +2,7 @@ import { Message, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { removeDuplicates, toCapitalize } from '#utils/functions';
-import { getGuild } from '#lib/database';
+import { createGuild, getGuild } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
 
 abstract class HelpCommand extends GenericCommand {
@@ -21,7 +21,7 @@ abstract class HelpCommand extends GenericCommand {
 		await addCD();
 		const { commands: _commands } = this.cobalt.container;
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only command');
-		const guild = await getGuild(message.guild?.id);
+		const guild = (await getGuild(message.guild?.id)) ?? (await createGuild(message.guild?.id));
 		if (!guild) throw new Error('Missing guild database entry');
 		const command = _commands.get(args[0]);
 		const categories = removeDuplicates(_commands.map(c => c.category as string));

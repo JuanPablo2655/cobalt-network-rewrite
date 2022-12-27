@@ -3,7 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { hours } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
-import { getBot, updateBot } from '#lib/database';
+import { createBot, getBot, updateBot } from '#lib/database';
 
 abstract class ClaimTaxCommand extends GenericCommand {
 	constructor() {
@@ -19,7 +19,7 @@ abstract class ClaimTaxCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { econ } = this.cobalt.container;
 		if (!this.cobalt.user) throw new Error('Missing user');
-		const bot = await getBot(this.cobalt.user.id);
+		const bot = (await getBot(this.cobalt.user.id)) ?? (await createBot(this.cobalt.user.id));
 		if (!bot) throw new Error('Missing user bot');
 		let isDirector = false;
 		bot.directors?.forEach(director => {

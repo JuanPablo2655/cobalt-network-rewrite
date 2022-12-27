@@ -1,7 +1,7 @@
 import { GuildBan, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
-import { getGuild } from '#lib/database';
+import { createGuild, getGuild } from '#lib/database';
 
 abstract class GuildBanRemoveListener extends Listener {
 	constructor() {
@@ -16,7 +16,7 @@ abstract class GuildBanRemoveListener extends Listener {
 		if (ban.user.partial) await ban.user.fetch();
 		if (!ban.guild) return;
 		if (!ban.guild.available) return;
-		const guild = await getGuild(ban.guild.id);
+		const guild = (await getGuild(ban.guild.id)) ?? (await createGuild(ban.guild.id));
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		let audit;

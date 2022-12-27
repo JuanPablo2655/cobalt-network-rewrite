@@ -1,7 +1,7 @@
 import { GuildMember, EmbedBuilder, Role, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
-import { getGuild } from '#lib/database';
+import { createGuild, getGuild } from '#lib/database';
 
 abstract class GuildMemberUpdateListener extends Listener {
 	constructor() {
@@ -18,7 +18,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 		if (!oldMember.guild) return;
 		if (!oldMember.guild.available) return;
 		const { econ } = this.cobalt.container;
-		const guild = await getGuild(newMember.guild.id);
+		const guild = (await getGuild(newMember.guild.id)) ?? (await createGuild(newMember.guild.id));
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;

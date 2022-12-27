@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
-import { getBot, updateBot } from '#lib/database';
+import { createBot, getBot, updateBot } from '#lib/database';
 
 export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.reply({ content: 'Shutting down.' });
@@ -15,7 +15,7 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 	const user = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	if (!cobalt.user) throw new Error('Missing user');
-	const bot = await getBot(cobalt.user.id);
+	const bot = (await getBot(cobalt.user.id)) ?? (await createBot(cobalt.user.id));
 	if (!bot) throw new Error('Missing bot user');
 	let isDirector = false;
 	bot.directors?.forEach(director => {

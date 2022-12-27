@@ -3,7 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createUser, getBot, getUser, updateBot } from '#lib/database';
+import { createBot, createUser, getBot, getUser, updateBot } from '#lib/database';
 
 abstract class PayCommand extends GenericCommand {
 	constructor() {
@@ -18,7 +18,7 @@ abstract class PayCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const { econ } = this.cobalt.container;
 		if (!this.cobalt.user) throw new Error('Missing user');
-		const bot = await getBot(this.cobalt.user.id);
+		const bot = (await getBot(this.cobalt.user.id)) ?? (await createBot(this.cobalt.user.id));
 		if (!bot) throw new Error('Missing bot database entry');
 		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
 		if (!member)

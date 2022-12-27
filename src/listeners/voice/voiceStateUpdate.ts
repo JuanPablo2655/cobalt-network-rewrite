@@ -3,7 +3,16 @@ import prettyMilliseconds from 'pretty-ms';
 import { Listener } from '#lib/structures/listeners';
 import { formatMoney } from '#utils/functions';
 import { logger } from '#lib/structures';
-import { createMember, createUser, getGuild, getMember, getUser, updateMember, updateUser } from '#lib/database';
+import {
+	createMember,
+	createUser,
+	createGuild,
+	getGuild,
+	getMember,
+	getUser,
+	updateMember,
+	updateUser,
+} from '#lib/database';
 
 abstract class VoiceStateUpdateListener extends Listener {
 	constructor() {
@@ -20,7 +29,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 		if (newState.member?.partial) await newState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;
 		if (!oldState.guild.available || !newState.guild.available) return;
-		const guild = await getGuild(newState.guild.id);
+		const guild = (await getGuild(newState.guild.id)) ?? (await createGuild(newState.guild.id));
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		if (!oldState.member || !newState.member) return;

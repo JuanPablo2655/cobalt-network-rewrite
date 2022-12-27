@@ -3,7 +3,7 @@ import { Listener } from '#lib/structures/listeners';
 import { getImage } from '#utils/util';
 import { logger } from '#lib/structures';
 import { getDiff } from '#utils/functions';
-import { getGuild } from '#lib/database';
+import { createGuild, getGuild } from '#lib/database';
 
 abstract class MessageUpdateListener extends Listener {
 	constructor() {
@@ -19,7 +19,7 @@ abstract class MessageUpdateListener extends Listener {
 		if (oldMessage === newMessage || newMessage.author.bot) return;
 		if (!newMessage.guild) return;
 		if (!newMessage.guild.available) return;
-		const guild = await getGuild(newMessage.guild.id);
+		const guild = (await getGuild(newMessage.guild.id)) ?? (await createGuild(newMessage.guild.id));
 		if (!guild) return;
 		if (!guild.logChannel?.enabled) return;
 		const logChannelId = guild.logChannel.channelId;

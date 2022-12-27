@@ -1,12 +1,12 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { UserError, Identifiers } from '#lib/errors';
-import { getGuild, updateGuild } from '#lib/database';
+import { createGuild, getGuild, updateGuild } from '#lib/database';
 
 export async function channel(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const channel = interaction.options.getChannel('channel', true);
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await getGuild(interaction.guild.id);
+	const guild = (await getGuild(interaction.guild.id)) ?? (await createGuild(interaction.guild.id));
 	if (!guild) throw new Error('Missing guild database entry');
 	await updateGuild(interaction.guild.id, {
 		welcomeMessage: {
@@ -19,7 +19,7 @@ export async function channel(_cobalt: CobaltClient, interaction: ChatInputComma
 export async function message(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const message = interaction.options.getString('message', true);
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await getGuild(interaction.guild.id);
+	const guild = (await getGuild(interaction.guild.id)) ?? (await createGuild(interaction.guild.id));
 	if (!guild) throw new Error('Missing guild database entry');
 	await updateGuild(interaction.guild.id, {
 		welcomeMessage: {
@@ -32,7 +32,7 @@ export async function message(_cobalt: CobaltClient, interaction: ChatInputComma
 export async function toggle(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const option = interaction.options.getBoolean('toggle', true);
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await getGuild(interaction.guild.id);
+	const guild = (await getGuild(interaction.guild.id)) ?? (await createGuild(interaction.guild.id));
 	if (!guild) throw new Error('Missing guild database entry');
 	if (guild.welcomeMessage?.enabled === option)
 		throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `Already ${option}`);

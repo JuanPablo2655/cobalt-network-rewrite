@@ -6,7 +6,7 @@ import { calcMulti } from '#utils/util';
 import { days, months } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { addMulti, formatMoney, formatNumber } from '#utils/functions';
-import { createUser, getBot, getUser, updateBot, updateUser } from '#lib/database';
+import { createBot, createUser, getBot, getUser, updateBot, updateUser } from '#lib/database';
 
 export async function work(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { econ } = cobalt.container;
@@ -29,7 +29,7 @@ export async function work(cobalt: CobaltClient, interaction: ChatInputCommandIn
 
 export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const { econ } = cobalt.container;
-	const bot = await getBot(interaction.client.user?.id);
+	const bot = (await getBot(interaction.client.user.id)) ?? (await createBot(interaction.client.user.id));
 	if (!bot) throw new Error('Missing bot database entry');
 	const member = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);

@@ -2,7 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { resolveGuildTextChannel } from '#utils/resolvers';
-import { getGuild, updateGuild } from '#lib/database';
+import { createGuild, getGuild, updateGuild } from '#lib/database';
 
 abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 	constructor() {
@@ -20,7 +20,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 		const [option, action, ...welcomeMessage] = args;
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Missing Guild');
 		const guildId = message.guild.id;
-		const guild = await getGuild(guildId);
+		const guild = (await getGuild(guildId)) ?? (await createGuild(guildId));
 		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		switch (option) {

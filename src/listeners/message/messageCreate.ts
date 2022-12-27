@@ -4,7 +4,7 @@ import { Listener } from '#lib/structures/listeners';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
-import { createUser, getGuild, getUser } from '#lib/database';
+import { createUser, createGuild, getGuild, getUser } from '#lib/database';
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -19,7 +19,7 @@ abstract class MessageListener extends Listener {
 		metrics.messageInc();
 		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
-		const guild = await getGuild(message.guild.id);
+		const guild = (await getGuild(message.guild.id)) ?? (await createGuild(message.guild.id));
 		if (!guild) throw new Error('Guild not found in database');
 
 		const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
