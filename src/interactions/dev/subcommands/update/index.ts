@@ -8,6 +8,7 @@ export async function directors(cobalt: CobaltClient, interaction: ChatInputComm
 	await interaction.deferReply();
 	const role = interaction.guild?.roles.cache.get('355885679076442112');
 	if (!role) throw new UserError({ identifier: Identifiers.ArgumentUserError }, 'Not in the correct server');
+	if (!cobalt.user) throw new Error('Missing user');
 	const directors: Snowflake[] = new Array<Snowflake>();
 	const directorUsernames: string[] = new Array<string>();
 	role?.members.forEach(member => {
@@ -17,7 +18,7 @@ export async function directors(cobalt: CobaltClient, interaction: ChatInputComm
 		const username = cobalt.users.cache.get(userId)!.username;
 		directorUsernames.push(username);
 	});
-	await cobalt.container.db.updateBot(cobalt.user?.id, { directors });
+	await updateBot(cobalt.user.id, { directors });
 	return interaction.editReply({ content: `Updated directors with ${directorUsernames.join(', ')}` });
 }
 

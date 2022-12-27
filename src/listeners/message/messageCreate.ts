@@ -5,6 +5,8 @@ import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
 import { createUser, createGuild, getGuild, getUser, awardBankSpace, rewardXp } from '#lib/database';
+import { container } from '#root/Container';
+const { messageCooldowns: cooldowns } = container;
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -15,7 +17,7 @@ abstract class MessageListener extends Listener {
 
 	async run(message: Message) {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
-		const { metrics, exp, redis, commands } = this.cobalt.container;
+		const { metrics, redis, commands } = this.cobalt.container;
 		metrics.messageInc();
 		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
@@ -49,10 +51,10 @@ abstract class MessageListener extends Listener {
 		// TODO(Isidro): refactor
 		if (!message.author.bot) {
 			if (!this.cobalt.disableXp) {
-				if (!exp.cooldowns.has(message.author.id)) {
-					exp.cooldowns.add(message.author.id);
+				if (!cooldowns.has(message.author.id)) {
+					cooldowns.add(message.author.id);
 					setTimeout(() => {
-						exp.cooldowns.delete(message.author.id);
+						cooldowns.delete(message.author.id);
 					}, minutes(1));
 					const _exp = await rewardXp(message);
 					const profile = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
@@ -68,10 +70,10 @@ abstract class MessageListener extends Listener {
 					}
 				}
 			}
-			if (!exp.cooldowns.has(message.author.id)) {
-				exp.cooldowns.add(message.author.id);
+			if (!cooldowns.has(message.author.id)) {
+				cooldowns.add(message.author.id);
 				setTimeout(() => {
-					exp.cooldowns.delete(message.author.id);
+					cooldowns.delete(message.author.id);
 				}, minutes(1));
 				await awardBankSpace(message);
 			}

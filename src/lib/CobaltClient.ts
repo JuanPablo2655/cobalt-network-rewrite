@@ -1,11 +1,8 @@
 import process from 'node:process';
-import { Client } from 'discord.js';
+import { Client, Snowflake } from 'discord.js';
 import Redis from 'ioredis';
 import * as dotenv from 'dotenv';
-import { CommandRegistry, ListenerRegistry, InteractionRegistry, logger } from '#lib/structures';
-import Database from './utils/Database.js';
-import Experience from './utils/Experience.js';
-import Economy from './utils/Economy.js';
+import { CommandRegistry, ListenerRegistry, InteractionRegistry } from '#lib/structures';
 import Metrics from './utils/Metrics.js';
 import { CLIENT_OPTIONS, config } from '#root/config';
 import { PrismaClient } from '@prisma/client';
@@ -20,9 +17,7 @@ export class CobaltClient extends Client {
 
 	constructor() {
 		super(CLIENT_OPTIONS);
-		container.db = new Database(this, config.mongoURL);
-		container.exp = new Experience(this);
-		container.econ = new Economy(this);
+		container.messageCooldowns = new Set();
 		container.redis = new Redis(config.redis);
 		container.metrics = new Metrics(this);
 		container.prisma = new PrismaClient();
@@ -40,21 +35,16 @@ export class CobaltClient extends Client {
 	public async destroy() {
 		await this.container.redis.flushall();
 		this.container.metrics.server.close();
-		this.container.db.mongoose.close(false, () => {
-			logger.info('Mongoose connection successfully closed');
-		});
 		return super.destroy();
 	}
 }
 
 declare module '../Container.js' {
 	interface Container {
-		db: Database;
-		exp: Experience;
-		econ: Economy;
 		redis: Redis;
 		metrics: Metrics;
 		prisma: PrismaClient;
 		cobalt: CobaltClient;
+		messageCooldowns: Set<Snowflake>;
 	}
 }
