@@ -4,7 +4,7 @@ import { Listener } from '#lib/structures/listeners';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
-import { createUser, createGuild, getGuild, getUser, awardBankSpace } from '#lib/database';
+import { createUser, createGuild, getGuild, getUser, awardBankSpace, rewardXp } from '#lib/database';
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -54,7 +54,7 @@ abstract class MessageListener extends Listener {
 					setTimeout(() => {
 						exp.cooldowns.delete(message.author.id);
 					}, minutes(1));
-					const _exp = await exp.manageXp(message);
+					const _exp = await rewardXp(message);
 					const profile = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 					if (!profile) throw new Error('User not found in database');
 					if (_exp) {
@@ -62,7 +62,7 @@ abstract class MessageListener extends Listener {
 							const cleanMessage = guild.levelMessage.message
 								?.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
-								.replace(/{newLevel}/g, `**${formatNumber(profile.lvl)}**`);
+								.replace(/{newLevel}/g, `**${formatNumber(profile.level)}**`);
 							message.channel.send({ content: cleanMessage });
 						}
 					}

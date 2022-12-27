@@ -116,7 +116,7 @@ model User {
   inventory    String[] @default([]) @map("inventory")
   activeItems  String[] @default([]) @map("active_items")
   xp           Int      @default(0) @map("xp")
-  lvl          Int      @default(0) @map("lvl")
+  level        Int      @default(0) @map("level")
   rep          Int      @default(0) @map("rep")
   totalXp      Int      @default(0) @map("total_xp")
   lost         Int      @default(0) @map("lost")

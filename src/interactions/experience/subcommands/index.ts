@@ -4,19 +4,18 @@ import { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
 import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
-import { createUser, getUser, updateUser } from '#lib/database';
+import { createUser, getUser, nextLevel, updateUser } from '#lib/database';
 
 export async function rank(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const { exp } = cobalt.container;
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = (await getUser(user.id)) ?? (await createUser(user.id));
 	if (!profile) throw new Error('Missing user database entry');
-	const xpPercent = (profile.xp / exp.nextLevel(profile.lvl)) * 100;
+	const xpPercent = (profile.xp / nextLevel(profile.level)) * 100;
 	const rankEmbed = new EmbedBuilder()
 		.setTitle(`${user.username}'s Rank`)
 		.setDescription(
-			`**Level**: ${formatNumber(profile.lvl)}\n**Experience**: ${formatNumber(profile.xp)} / ${formatNumber(
-				exp.nextLevel(profile.lvl),
+			`**Level**: ${formatNumber(profile.level)}\n**Experience**: ${formatNumber(profile.xp)} / ${formatNumber(
+				nextLevel(profile.level),
 			)} \`${xpPercent.toString().substring(0, 4)}%\``,
 		);
 	return interaction.reply({ embeds: [rankEmbed] });
