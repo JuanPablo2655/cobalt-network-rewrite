@@ -4,6 +4,7 @@ import { seconds } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
 import { createUser, getUser } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class checkSocialCredit extends GenericCommand {
 	constructor() {
@@ -17,7 +18,8 @@ abstract class checkSocialCredit extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new Error('missing member');
 		const user = (await getUser(member.id)) ?? (await createUser(member.id));
 		if (!user) throw new Error('missing user database entry');

@@ -19,7 +19,8 @@ abstract class PayCommand extends GenericCommand {
 		if (!this.cobalt.user) throw new Error('Missing user');
 		const bot = (await getBot(this.cobalt.user.id)) ?? (await createBot(this.cobalt.user.id));
 		if (!bot) throw new Error('Missing bot database entry');
-		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member)
 			throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Please pick a valid member');
 		const author = (await getUser(message.author.id)) ?? (await createUser(message.author.id));

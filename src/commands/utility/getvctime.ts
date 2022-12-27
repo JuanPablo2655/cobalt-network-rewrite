@@ -19,7 +19,8 @@ abstract class GetVcTimeCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [option] = args;
-		const member = await resolveMember(args[1], message.guild!).catch(() => message.member);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[1], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only');
 		const memberData =

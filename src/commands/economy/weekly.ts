@@ -17,7 +17,8 @@ abstract class WeeklyCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Member missing');
 		const user = (await getUser(member.id)) ?? (await createUser(member.id));
 		if (!user) throw new Error('Missing user database entry');

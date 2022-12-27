@@ -17,12 +17,13 @@ abstract class BalanceCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		await addCD();
-		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
 		const profile = (await getUser(user.id)) ?? (await createUser(user.id));
 		if (!profile) throw new Error('Database error');
+		await addCD();
 		const bankPercent = (profile.bank / profile.bankSpace) * 100;
 		const balanceEmbed = new EmbedBuilder()
 			.setTitle(`${user?.username}'s balance`)

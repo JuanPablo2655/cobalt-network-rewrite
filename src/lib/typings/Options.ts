@@ -16,7 +16,7 @@ export interface ListenerOptions {
 	 * Executes the listener's logic
 	 * @param args The listener parameters
 	 */
-	run: (...args: any[]) => void | Promise<void>;
+	run: (...args: unknown[]) => void | Promise<void>;
 }
 
 export type ListenerType = Omit<ListenerOptions, 'run'>;

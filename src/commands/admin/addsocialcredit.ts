@@ -18,7 +18,8 @@ abstract class addSocialCredit extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const member = await resolveMember(args[0], message.guild!);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[0], message.guild);
 		if (member.id == message.author.id)
 			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "can't give yourself social credit");
 		const amount = Number(args[1]);

@@ -18,7 +18,8 @@ abstract class ReputationCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const member = await resolveMember(args[0], message.guild!);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[0], message.guild);
 		const author = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
 		if (!author) throw new Error('Missing author database entry');
 		const user = (await getUser(member.id)) ?? (await createUser(member.id));

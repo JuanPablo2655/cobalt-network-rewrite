@@ -1,6 +1,7 @@
 import { Message, Snowflake } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { resolveRole } from '#utils/resolvers';
+import { Identifiers, UserError } from '#lib/errors';
 
 abstract class UpdateDirectorCommand extends GenericCommand {
 	constructor() {
@@ -14,11 +15,12 @@ abstract class UpdateDirectorCommand extends GenericCommand {
 	}
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
-		const role = await resolveRole('355885679076442112', message.guild!);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const role = await resolveRole('355885679076442112', message.guild);
 		await addCD();
 		const directors: Snowflake[] = [];
 		const directorUsernames: string[] = [];
-		role?.members.forEach(user => {
+		role.members.forEach(user => {
 			directors.push(user.user.id);
 		});
 
