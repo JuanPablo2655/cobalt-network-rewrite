@@ -3,6 +3,7 @@ import { CobaltClient } from '#lib/CobaltClient';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
 import { resolveFile, validateFile } from '#utils/util';
+import { container } from '#root/Container';
 
 export async function ListenerRegistry(cobalt: CobaltClient) {
 	try {
@@ -19,7 +20,7 @@ async function loadListener(file: string, cobalt: CobaltClient) {
 	if (!listener) return;
 	validateFile(file, listener);
 	listener.cobalt = cobalt;
-	cobalt.container.listeners.set(listener.name, listener);
+	container.listeners.set(listener.name, listener);
 	cobalt[listener.once ? 'once' : 'on'](listener.name, (...args: unknown[]) => listener.run(...args));
 	logger.info({ listener: { name: listener.name } }, `Registering listener: ${listener.name}`);
 }
