@@ -3,7 +3,7 @@ import { logger } from '#lib/structures';
 import { addMulti } from '#utils/functions';
 import { calcMulti } from '#utils/util';
 import { Message } from 'discord.js';
-import { createBot, getBot, createUser, getUser, updateUser, updateBot } from '.';
+import { createBot, getBot, createUser, getUser, updateUser, updateBot } from '#lib/database';
 const { cobalt } = container;
 
 /**

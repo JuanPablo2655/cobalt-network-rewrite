@@ -1,6 +1,6 @@
 import { logger } from '#lib/structures';
 import { Message } from 'discord.js';
-import { createUser, getUser, updateUser } from '.';
+import { createUser, getUser, updateUser } from '#lib/database';
 
 /**
  * Add xp to the user
@@ -82,7 +82,7 @@ export async function removeLevel(id: string, amount: number) {
  */
 export function nextLevel(level: number) {
 	if (isNaN(level)) throw new TypeError('Level must be a number.');
-	if (level <= 0) throw new TypeError('Must be more than zero.');
+	if (level < 0) throw new TypeError('Must be more than or equal to zero.');
 	return 5 * Math.pow(level, 2) + 50 * level + 100;
 }
 

@@ -40,9 +40,9 @@ model Level {
   id      String  @id @map("id") @db.VarChar(18)
   guild   Guild?  @relation(fields: [id], references: [id], onDelete: Cascade)
   message String  @default("Congratulations {user.tag} you are now level {newLevel}!") @map("message") @db.VarChar(512)
-  enabled Boolean @default(false) @map("enabled")
+  enabled Boolean @default(true) @map("enabled")
 
-  @@map("level_messges")
+  @@map("guild_levels")
 }
 
 model Welcome {
@@ -50,9 +50,9 @@ model Welcome {
   guild     Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
   message   String  @default("Welcome, {user.tag} to {guild.name}!") @map("message") @db.VarChar(512)
   channelId String? @map("channel_id")
-  enabled   Boolean @default(false) @map("enabled")
+  enabled   Boolean @default(true) @map("enabled")
 
-  @@map("welcome_messages")
+  @@map("guild_welcomes")
 }
 
 model Leave {
@@ -60,28 +60,28 @@ model Leave {
   guild     Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
   message   String  @default("Goodbye {user.username}.") @map("message") @db.VarChar(512)
   channelId String? @map("channel_id") @db.VarChar(18)
-  enabled   Boolean @default(false) @map("enabled")
+  enabled   Boolean @default(true) @map("enabled")
 
-  @@map("leave_messges")
+  @@map("guild_leaves")
 }
 
 model Ban {
   id      String  @id @map("id") @db.VarChar(18)
   guild   Guild   @relation(fields: [id], references: [id], onDelete: Cascade)
   message String  @default("{user.username} got banned from the server!") @map("message") @db.VarChar(512)
-  enabled Boolean @default(false) @map("enabled")
+  enabled Boolean @default(true) @map("enabled")
 
-  @@map("ban_messages")
+  @@map("guild_bans")
 }
 
 model Log {
   id             String   @id @map("id") @db.VarChar(18)
   guild          Guild    @relation(fields: [id], references: [id], onDelete: Cascade)
   channelId      String?  @map("channel_id") @db.VarChar(18)
-  enabled        Boolean  @default(false) @map("enabled")
+  enabled        Boolean  @default(true) @map("enabled")
   disabledEvents String[] @default([]) @map("disabled_events") @db.VarChar(256)
 
-  @@map("log_channel")
+  @@map("guild_logs")
 }
 
 model Member {
