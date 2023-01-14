@@ -2,7 +2,7 @@ import { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { SAVE_CATEGORIES, SAVE_COMMANDS } from '#utils/constants';
-import { createGuild, getGuild, updateGuild } from '#lib/database';
+import { getOrCreateGuild, updateGuild } from '#lib/database';
 import { container } from '#root/Container';
 const { commands } = container;
 
@@ -22,7 +22,7 @@ abstract class DisableCommandCommand extends GenericCommand {
 		const arg = args[0].toLowerCase();
 		const command = commands.get(arg);
 		const guildId = (message.guild as Guild)?.id;
-		const guild = (await getGuild(guildId)) ?? (await createGuild(guildId));
+		const guild = await getOrCreateGuild(guildId);
 		if (!guild) throw new Error('Missing guid database entry');
 		if (!command) throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid command');
 		if (SAVE_COMMANDS.includes(command.name))

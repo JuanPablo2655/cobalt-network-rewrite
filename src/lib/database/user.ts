@@ -23,6 +23,20 @@ export async function createUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 }
 
 /**
+ * Get a user entry from the database or create one if it doesn't exist
+ * @param id The user Id
+ * @param data The data to create the user with if it doesn't exist
+ */
+export async function getOrCreateUser(id: string, data?: Partial<Omit<User, 'id'>>) {
+	try {
+		return (await getUser(id)) ?? (await createUser(id, data));
+	} catch (err) {
+		const error = err as Error;
+		logger.error(error, error.message);
+	}
+}
+
+/**
  * Delete a user entry from the database
  * @param id The user Id
  */

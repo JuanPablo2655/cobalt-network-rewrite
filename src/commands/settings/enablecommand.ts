@@ -1,7 +1,7 @@
 import { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
-import { createGuild, getGuild, updateGuild } from '#lib/database';
+import { getOrCreateGuild, updateGuild } from '#lib/database';
 import { container } from '#root/Container';
 const { commands } = container;
 abstract class EnableCommandCommand extends GenericCommand {
@@ -20,7 +20,7 @@ abstract class EnableCommandCommand extends GenericCommand {
 		const arg = args[0].toLowerCase();
 		const command = commands.get(arg);
 		const guildId = (message.guild as Guild)?.id;
-		const guild = (await getGuild(guildId)) ?? (await createGuild(guildId));
+		const guild = await getOrCreateGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		if (!command) throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid command');
 		if (!guild.disabledCommands.includes(arg))

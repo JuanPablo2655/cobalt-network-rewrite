@@ -2,12 +2,12 @@ import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
-import { createUser, getUser, updateUser } from '#lib/database';
+import { getOrCreateUser, updateUser } from '#lib/database';
 
 export async function check(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	const user = interaction.options.getUser('user') ?? interaction.user;
-	const userData = (await getUser(user.id)) ?? (await createUser(user.id));
+	const userData = await getOrCreateUser(user.id);
 	if (!userData) throw new Error('Missing user database entry');
 	const embed = new EmbedBuilder()
 		.setTitle(`${user.username}'s social credit`)
@@ -23,7 +23,7 @@ export async function add(_cobalt: CobaltClient, interaction: ChatInputCommandIn
 	const amount = interaction.options.getInteger('amount', true);
 	if (user.id == interaction.user.id)
 		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "can't give yourself social credit");
-	const userData = (await getUser(user.id)) ?? (await createUser(user.id));
+	const userData = await getOrCreateUser(user.id);
 	if (!userData) throw new Error('Missing user database entry');
 	const newAmount = userData.socialCredit + amount;
 	if (newAmount > 2000)
@@ -41,7 +41,7 @@ export async function remove(_cobalt: CobaltClient, interaction: ChatInputComman
 	const amount = interaction.options.getInteger('amount', true);
 	if (user.id == interaction.user.id)
 		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't remove social credit from yourself");
-	const userData = (await getUser(user.id)) ?? (await createUser(user.id));
+	const userData = await getOrCreateUser(user.id);
 	if (!userData) throw new Error('Missing user database entry');
 	const newAmount = userData.socialCredit + amount;
 	if (newAmount < 0)

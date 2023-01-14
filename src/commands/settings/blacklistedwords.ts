@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
-import { createGuild, getGuild, updateGuild } from '#lib/database';
+import { getOrCreateGuild, updateGuild } from '#lib/database';
 
 abstract class BlacklistedWordsCommand extends GenericCommand {
 	constructor() {
@@ -21,7 +21,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 		if (!message.guild) return;
 		const [option, item] = args;
 		const guildId = message.guild.id;
-		const guild = (await getGuild(guildId)) ?? (await createGuild(guildId));
+		const guild = await getOrCreateGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		const { blacklistedWords } = guild;
 

@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, Snowflake } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
-import { createBot, getBot, updateBot } from '#lib/database';
+import { getOrCreateBot, updateBot } from '#lib/database';
 
 export async function directors(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
@@ -25,7 +25,7 @@ export async function directors(cobalt: CobaltClient, interaction: ChatInputComm
 export async function tax(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.deferReply();
 	if (!cobalt.user) throw new Error('Missing user');
-	const bot = (await getBot(cobalt.user.id)) ?? (await createBot(cobalt.user.id));
+	const bot = await getOrCreateBot(cobalt.user.id);
 	if (!bot) throw new Error('Missing bot user');
 	const tax = interaction.options.getNumber('tax', true);
 	if (tax < 1.5)

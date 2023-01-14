@@ -4,7 +4,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createMember, createUser, getMember, getUser } from '#lib/database';
+import { getOrCreateMember, getOrCreateUser } from '#lib/database';
 
 abstract class GetVcTimeCommand extends GenericCommand {
 	constructor() {
@@ -23,10 +23,9 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		const member = await resolveMember(args[1], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only');
-		const memberData =
-			(await getMember(member.id, message.guild.id)) ?? (await createMember(member.id, message.guild.id));
+		const memberData = await getOrCreateMember(member.id, message.guild.id);
 		if (!memberData) throw new Error('Missing member database entry');
-		const user = (await getUser(member.id)) ?? (await createUser(member.id));
+		const user = await getOrCreateUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		await addCD();
 		switch (option?.toLowerCase() ?? '') {

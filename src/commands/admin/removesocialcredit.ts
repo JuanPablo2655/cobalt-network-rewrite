@@ -4,7 +4,7 @@ import { seconds } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createUser, getUser, updateUser } from '#lib/database';
+import { getOrCreateUser, updateUser } from '#lib/database';
 
 abstract class removeSocialCredit extends GenericCommand {
 	constructor() {
@@ -25,7 +25,7 @@ abstract class removeSocialCredit extends GenericCommand {
 		const amount = Number(args[1]);
 		if (isNaN(amount)) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		addCD();
-		const userData = (await getUser(member.id)) ?? (await createUser(member.id));
+		const userData = await getOrCreateUser(member.id);
 		if (!userData) throw new Error('Database error');
 		const newAmount = userData.socialCredit - amount;
 		if (newAmount < 0)

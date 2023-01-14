@@ -3,7 +3,7 @@ import prettyMilliseconds from 'pretty-ms';
 import { InteractionCommand } from '#lib/structures/commands';
 import { formatNumber } from '#utils/functions';
 import { vcdataCommand } from './options.js';
-import { createMember, createUser, getMember, getUser } from '#lib/database';
+import { getOrCreateMember, getOrCreateUser } from '#lib/database';
 
 abstract class VcDataInteractionCommand extends InteractionCommand {
 	constructor() {
@@ -17,9 +17,8 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 		await interaction.deferReply();
 		const option = interaction.options.get('option')?.value;
 		const user = interaction.options.getUser('user') ?? interaction.user;
-		const memberData =
-			(await getMember(user.id, interaction.guild.id)) ?? (await createMember(user.id, interaction.guild.id));
-		const userData = (await getUser(user.id)) ?? (await createUser(user.id));
+		const memberData = await getOrCreateMember(user.id, interaction.guild.id);
+		const userData = await getOrCreateUser(user.id);
 		if (!memberData || !userData) throw new Error('Missing database entry');
 		if (option === 'local') {
 			if (memberData.vcHours.length === 0)

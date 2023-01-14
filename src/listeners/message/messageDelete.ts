@@ -2,7 +2,7 @@ import { Message, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { getImage } from '#utils/util';
 import { logger } from '#lib/structures';
-import { createGuild, getGuild } from '#lib/database';
+import { getOrCreateGuild } from '#lib/database';
 
 abstract class MessageDeleteListener extends Listener {
 	constructor() {
@@ -17,7 +17,7 @@ abstract class MessageDeleteListener extends Listener {
 		if (!message.author) return;
 		if (!message.guild) return;
 		if (!message.guild.available) return;
-		const guild = (await getGuild(message.guild.id)) ?? (await createGuild(message.guild.id));
+		const guild = await getOrCreateGuild(message.guild.id);
 		if (!guild) return;
 		if (!guild.log?.enabled) return;
 		const logChannelId = guild.log.channelId;

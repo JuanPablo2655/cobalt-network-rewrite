@@ -4,11 +4,11 @@ import { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
 import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
-import { createUser, getUser, nextLevel, updateUser } from '#lib/database';
+import { getOrCreateUser, nextLevel, updateUser } from '#lib/database';
 
 export async function rank(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
-	const profile = (await getUser(user.id)) ?? (await createUser(user.id));
+	const profile = await getOrCreateUser(user.id);
 	if (!profile) throw new Error('Missing user database entry');
 	const xpPercent = (profile.xp / nextLevel(profile.level)) * 100;
 	const rankEmbed = new EmbedBuilder()
@@ -23,9 +23,9 @@ export async function rank(_cobalt: CobaltClient, interaction: ChatInputCommandI
 
 export async function reputation(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user', true);
-	const author = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
+	const author = await getOrCreateUser(interaction.user.id);
 	if (!author) throw new Error('Missing author database entry');
-	const user = (await getUser(member.id)) ?? (await createUser(member.id));
+	const user = await getOrCreateUser(member.id);
 	if (!user) throw new Error('Missing user database entry');
 	if (member.id === interaction.user.id)
 		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't give yourself a reputation point!");

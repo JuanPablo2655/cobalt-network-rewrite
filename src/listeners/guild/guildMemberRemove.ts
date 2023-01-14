@@ -1,7 +1,7 @@
 import { GuildMember, EmbedBuilder, Snowflake, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
-import { createMember, createGuild, getGuild, getMember, updateMember } from '#lib/database';
+import { updateMember, getOrCreateMember, getOrCreateGuild } from '#lib/database';
 
 abstract class GuildMemberRemoveListener extends Listener {
 	constructor() {
@@ -16,10 +16,9 @@ abstract class GuildMemberRemoveListener extends Listener {
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;
-		const user =
-			(await getMember(member.user.id, member.guild.id)) ?? (await createMember(member.user.id, member.guild.id));
+		const user = await getOrCreateMember(member.user.id, member.guild.id);
 		if (!user) return;
-		const guild = (await getGuild(member.guild.id)) ?? (await createGuild(member.guild.id));
+		const guild = await getOrCreateGuild(member.guild.id);
 		if (!guild) return;
 		if (!guild.log?.enabled) return;
 		const logChannelId = guild.log.channelId;

@@ -3,7 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createUser, getUser, nextLevel } from '#lib/database';
+import { getOrCreateUser, nextLevel } from '#lib/database';
 
 abstract class RankCommand extends GenericCommand {
 	constructor() {
@@ -20,7 +20,7 @@ abstract class RankCommand extends GenericCommand {
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
-		const profile = (await getUser(user.id)) ?? (await createUser(user.id));
+		const profile = await getOrCreateUser(user.id);
 		if (!profile) throw new Error('missing user database entry');
 		await addCD();
 		const xpPercent = (profile.xp / nextLevel(profile.level)) * 100;

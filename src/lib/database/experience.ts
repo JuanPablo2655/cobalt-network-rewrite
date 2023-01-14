@@ -1,6 +1,6 @@
 import { logger } from '#lib/structures';
 import { Message } from 'discord.js';
-import { createUser, getUser, updateUser } from '#lib/database';
+import { getOrCreateUser, updateUser } from '#lib/database';
 
 /**
  * Add xp to the user
@@ -11,7 +11,7 @@ export async function addXp(id: string, amount: number) {
 	if (isNaN(amount)) throw new TypeError('Amount must be a number.');
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
-		const user = (await getUser(id)) ?? (await createUser(id));
+		const user = await getOrCreateUser(id);
 		if (!user) throw new Error('Database error');
 		return await updateUser(id, { xp: user.xp + amount, totalXp: user.totalXp + amount });
 	} catch (err) {
@@ -30,7 +30,7 @@ export async function removeXp(id: string, amount: number, levelUp: boolean) {
 	if (isNaN(amount)) throw new TypeError('Amount must be a number.');
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
-		const user = (await getUser(id)) ?? (await createUser(id));
+		const user = await getOrCreateUser(id);
 		if (!user) throw new Error('Database error');
 		if (levelUp) return await updateUser(id, { xp: user.xp - amount });
 		return await updateUser(id, { xp: user.xp - amount, totalXp: user.totalXp - amount });
@@ -49,7 +49,7 @@ export async function addLevel(id: string, amount: number) {
 	if (isNaN(amount)) throw new TypeError('Amount must be a number.');
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
-		const user = (await getUser(id)) ?? (await createUser(id));
+		const user = await getOrCreateUser(id);
 		if (!user) throw new Error('Database error');
 		return await updateUser(id, { level: user.level + amount });
 	} catch (err) {
@@ -67,7 +67,7 @@ export async function removeLevel(id: string, amount: number) {
 	if (isNaN(amount)) throw new TypeError('Amount must be a number.');
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
-		const user = (await getUser(id)) ?? (await createUser(id));
+		const user = await getOrCreateUser(id);
 		if (!user) throw new Error('Database error');
 		return await updateUser(id, { level: user.level - amount });
 	} catch (err) {
@@ -93,7 +93,7 @@ export function nextLevel(level: number) {
  */
 export async function rewardXp(message: Message) {
 	try {
-		const user = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
+		const user = await getOrCreateUser(message.author.id);
 		if (!user) throw new Error('Database error');
 		const xp = Math.round(Math.random() * 11 + 15);
 		const nextLevelXp = nextLevel(user.level);

@@ -4,15 +4,12 @@ import { Listener } from '#lib/structures/listeners';
 import { formatMoney } from '#utils/functions';
 import { logger } from '#lib/structures';
 import {
-	createMember,
-	createUser,
-	createGuild,
-	getGuild,
-	getMember,
-	getUser,
 	updateMember,
 	updateUser,
 	addToWallet,
+	getOrCreateUser,
+	getOrCreateMember,
+	getOrCreateGuild,
 } from '#lib/database';
 import { container } from '#root/Container';
 const { redis, metrics } = container;
@@ -31,15 +28,13 @@ abstract class VoiceStateUpdateListener extends Listener {
 		if (newState.member?.partial) await newState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;
 		if (!oldState.guild.available || !newState.guild.available) return;
-		const guild = (await getGuild(newState.guild.id)) ?? (await createGuild(newState.guild.id));
+		const guild = await getOrCreateGuild(newState.guild.id);
 		if (!guild) return;
 		if (!guild.log?.enabled) return;
 		if (!oldState.member || !newState.member) return;
-		const user = (await getUser(newState.member.id)) ?? (await createUser(newState.member.id));
+		const user = await getOrCreateUser(newState.member.id);
 		if (!user) throw new Error('User not found');
-		const member =
-			(await getMember(newState.member.id, newState.guild.id)) ??
-			(await createMember(newState.member.id, newState.guild.id));
+		const member = await getOrCreateMember(newState.member.id, newState.guild.id);
 		if (!member) throw new Error('Member not found');
 		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;

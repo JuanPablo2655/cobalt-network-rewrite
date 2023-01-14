@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
 import { removeDuplicates } from '#utils/functions';
-import { createGuild, getGuild, updateGuild } from '#lib/database';
+import { getOrCreateGuild, updateGuild } from '#lib/database';
 import { container } from '#root/Container';
 const { commands } = container;
 
@@ -11,7 +11,7 @@ export async function category(_cobalt: CobaltClient, interaction: ChatInputComm
 	const categories = removeDuplicates(commands.map(c => c.category as string));
 	const category = interaction.options.getString('category', true).toLowerCase();
 	const option = interaction.options.getBoolean('toggle', true);
-	const guild = (await getGuild(interaction.guildId)) ?? (await createGuild(interaction.guildId));
+	const guild = await getOrCreateGuild(interaction.guildId);
 	if (!guild) throw new Error('Missing guild database entry');
 	if (!categories.includes(category))
 		throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid category');
@@ -38,7 +38,7 @@ export async function command(_cobalt: CobaltClient, interaction: ChatInputComma
 	const commandName = interaction.options.getString('name', true).toLowerCase();
 	const command = commands.get(commandName);
 	const option = interaction.options.getBoolean('toggle', true);
-	const guild = (await getGuild(interaction.guildId)) ?? (await createGuild(interaction.guildId));
+	const guild = await getOrCreateGuild(interaction.guildId);
 	if (!guild) throw new Error('Missing guid database entry');
 	if (!command) throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid command');
 	if (saveCommands.includes(command.name))

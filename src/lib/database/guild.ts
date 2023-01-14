@@ -76,6 +76,20 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
 }
 
 /**
+ * Get a guild entry from the database, if it doesn't exist, create it
+ * @param id The guild Id
+ * @param data The data to create the guild with if it doesn't exist
+ */
+export async function getOrCreateGuild(id: string, data?: Partial<IGuild>) {
+	try {
+		return (await getGuild(id)) ?? (await createGuild(id, data));
+	} catch (err) {
+		const error = err as Error;
+		logger.error(error, error.message);
+	}
+}
+
+/**
  * Delete a guild entry from the database
  * @param id The guild Id
  */

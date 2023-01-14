@@ -4,7 +4,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
-import { createUser, createGuild, getGuild, getUser, updateJob } from '#lib/database';
+import { updateJob, getOrCreateUser, getOrCreateGuild } from '#lib/database';
 
 abstract class ApplyJobCommand extends GenericCommand {
 	constructor() {
@@ -19,8 +19,8 @@ abstract class ApplyJobCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		if (!message.guild) return;
-		const guild = (await getGuild(message.guild.id)) ?? (await createGuild(message.guild.id));
-		const user = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
+		const guild = await getOrCreateGuild(message.guild.id);
+		const user = await getOrCreateUser(message.author.id);
 		if (!user) throw new Error('Database error');
 		if (!args[0])
 			throw new UserError(

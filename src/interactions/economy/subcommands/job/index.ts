@@ -3,10 +3,10 @@ import { jobs } from '#lib/data';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
-import { createUser, getUser, updateJob } from '#lib/database';
+import { getOrCreateUser, updateJob } from '#lib/database';
 
 export async function apply(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const user = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
+	const user = await getOrCreateUser(interaction.user.id);
 	if (!user) throw new Error('Missing user database entry');
 	const jobId = interaction.options.getString('job', true);
 	const job = jobs.find(j => j.id === jobId.toLowerCase());
@@ -29,7 +29,7 @@ export async function apply(_cobalt: CobaltClient, interaction: ChatInputCommand
 }
 
 export async function quit(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const user = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
+	const user = await getOrCreateUser(interaction.user.id);
 	if (!user) throw new Error('Missing user database entry');
 	if (user.job === null)
 		throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);

@@ -2,10 +2,10 @@ import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
-import { addToBank, addToWallet, createUser, getUser, removeFromBank, removeFromWallet } from '#lib/database';
+import { addToBank, addToWallet, getOrCreateUser, removeFromBank, removeFromWallet } from '#lib/database';
 
 export async function deposit(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const profile = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
+	const profile = await getOrCreateUser(interaction.user.id);
 	if (!profile) throw new Error('Missing user database entry');
 	const amount = interaction.options.getInteger('amount', true);
 	if (profile.wallet - amount <= 0)
@@ -24,7 +24,7 @@ export async function deposit(_cobalt: CobaltClient, interaction: ChatInputComma
 }
 
 export async function withdraw(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const profile = (await getUser(interaction.user.id)) ?? (await createUser(interaction.user.id));
+	const profile = await getOrCreateUser(interaction.user.id);
 	if (!profile) throw new Error('Missing user database entry');
 	const amount = interaction.options.getInteger('amount', true);
 	if (profile.bank - amount <= 0)

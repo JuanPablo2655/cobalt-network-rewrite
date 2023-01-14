@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, GuildMember, Interaction, PermissionsStrin
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
 import { isOwner } from '#utils/functions';
-import { createGuild, getGuild } from '#lib/database';
+import { getOrCreateGuild } from '#lib/database';
 import { container } from '#root/Container';
 const { interactions } = container;
 
@@ -19,7 +19,7 @@ abstract class InteractionListener extends Listener {
 		if (!interaction.inCachedGuild()) return;
 		const command = interactions.get(interaction.commandName);
 		if (command) {
-			const guild = (await getGuild(interaction.guild.id)) ?? (await createGuild(interaction.guild.id));
+			const guild = await getOrCreateGuild(interaction.guild.id);
 			if (guild) {
 				if (guild.disabledCategories.includes(command.category)) return;
 				if (guild.disabledCommands.includes(command.name)) return;

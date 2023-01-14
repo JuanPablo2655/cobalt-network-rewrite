@@ -4,7 +4,7 @@ import { Listener } from '#lib/structures/listeners';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
-import { createUser, createGuild, getGuild, getUser, awardBankSpace, rewardXp } from '#lib/database';
+import { awardBankSpace, rewardXp, getOrCreateUser, getOrCreateGuild } from '#lib/database';
 import { container } from '#root/Container';
 const { messageCooldowns: cooldowns, metrics, redis, commands } = container;
 
@@ -20,7 +20,7 @@ abstract class MessageListener extends Listener {
 		metrics.messageInc();
 		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
-		const guild = (await getGuild(message.guild.id)) ?? (await createGuild(message.guild.id));
+		const guild = await getOrCreateGuild(message.guild.id);
 		if (!guild) throw new Error('Guild not found in database');
 
 		const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -56,7 +56,7 @@ abstract class MessageListener extends Listener {
 						cooldowns.delete(message.author.id);
 					}, minutes(1));
 					const _exp = await rewardXp(message);
-					const profile = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
+					const profile = await getOrCreateUser(message.author.id);
 					if (!profile) throw new Error('User not found in database');
 					if (_exp) {
 						if (guild.level?.enabled) {

@@ -5,7 +5,7 @@ import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
 import { addMulti, formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { addToWallet, createUser, getUser, updateUser } from '#lib/database';
+import { addToWallet, getOrCreateUser, updateUser } from '#lib/database';
 
 abstract class WeeklyCommand extends GenericCommand {
 	constructor() {
@@ -20,7 +20,7 @@ abstract class WeeklyCommand extends GenericCommand {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Member missing');
-		const user = (await getUser(member.id)) ?? (await createUser(member.id));
+		const user = await getOrCreateUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		const date = Date.now();
 		const cooldown = date + days(7);

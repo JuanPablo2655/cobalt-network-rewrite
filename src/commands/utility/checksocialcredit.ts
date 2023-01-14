@@ -3,7 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { seconds } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { createUser, getUser } from '#lib/database';
+import { getOrCreateUser } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
 
 abstract class checkSocialCredit extends GenericCommand {
@@ -21,7 +21,7 @@ abstract class checkSocialCredit extends GenericCommand {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new Error('missing member');
-		const user = (await getUser(member.id)) ?? (await createUser(member.id));
+		const user = await getOrCreateUser(member.id);
 		if (!user) throw new Error('missing user database entry');
 		addCD();
 		const embed = new EmbedBuilder()

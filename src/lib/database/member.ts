@@ -33,6 +33,25 @@ export async function createMember(
 }
 
 /**
+ * Get a member entry from the database or create one if it doesn't exist
+ * @param userId the user Id
+ * @param guildId the guild Id
+ * @param data the data to create the member with if it doesn't exist
+ */
+export async function getOrCreateMember(
+	userId: string,
+	guildId: string,
+	data?: Partial<Omit<Member, 'userId' | 'guildId'>>,
+) {
+	try {
+		return (await getMember(userId, guildId)) ?? (await createMember(userId, guildId, data));
+	} catch (err) {
+		const error = err as Error;
+		logger.error(error, error.message);
+	}
+}
+
+/**
  * Delete a member entry from the database
  * @param userId the user Id
  * @param guildId the guild Id

@@ -3,7 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
 import { Identifiers, UserError } from '#lib/errors';
-import { createUser, getUser } from '#lib/database';
+import { getOrCreateUser } from '#lib/database';
 
 abstract class BalanceCommand extends GenericCommand {
 	constructor() {
@@ -21,7 +21,7 @@ abstract class BalanceCommand extends GenericCommand {
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
-		const profile = (await getUser(user.id)) ?? (await createUser(user.id));
+		const profile = await getOrCreateUser(user.id);
 		if (!profile) throw new Error('Database error');
 		await addCD();
 		const bankPercent = (profile.bank / profile.bankSpace) * 100;

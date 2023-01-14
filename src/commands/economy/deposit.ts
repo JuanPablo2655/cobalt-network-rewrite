@@ -2,7 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
-import { addToBank, createUser, getUser, removeFromWallet } from '#lib/database';
+import { addToBank, getOrCreateUser, removeFromWallet } from '#lib/database';
 
 abstract class DepositCommand extends GenericCommand {
 	constructor() {
@@ -16,7 +16,7 @@ abstract class DepositCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const profile = (await getUser(message.author.id)) ?? (await createUser(message.author.id));
+		const profile = await getOrCreateUser(message.author.id);
 		if (!profile) throw new Error('Missing user database entry');
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'How much money?');
 		let money = Number(args[0]);
