@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
+import { addToWallet, getOrCreateUser, removeFromBank } from '#lib/database';
 
 abstract class WithdrawCommand extends GenericCommand {
 	constructor() {
@@ -15,8 +16,7 @@ abstract class WithdrawCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db, econ } = this.cobalt.container;
-		const profile = await db.getUser(message.author.id);
+		const profile = await getOrCreateUser(message.author.id);
 		if (!profile) throw new Error('missing user database entry');
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'How much money');
 		let money = Number(args[0]);
@@ -34,8 +34,8 @@ abstract class WithdrawCommand extends GenericCommand {
 				"You can't withdraw money you don't have",
 			);
 		await addCD();
-		await econ.removeFromBank(message.author.id, money);
-		await econ.addToWallet(message.author.id, money);
+		await removeFromBank(message.author.id, money);
+		await addToWallet(message.author.id, money);
 		return message.channel.send({
 			content: `You withdrew **${formatMoney(money)}**. Your bank balance is now **${formatMoney(
 				profile.bank - money,

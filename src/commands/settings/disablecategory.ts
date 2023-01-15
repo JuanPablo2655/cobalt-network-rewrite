@@ -3,6 +3,9 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { SAVE_CATEGORIES } from '#utils/constants';
 import { removeDuplicates } from '#utils/functions';
+import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { container } from '#root/Container';
+const { commands } = container;
 
 abstract class DisableCategoryCommand extends GenericCommand {
 	constructor() {
@@ -16,22 +19,21 @@ abstract class DisableCategoryCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db, commands } = this.cobalt.container;
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing category');
 		const arg = args[0].toLowerCase();
 		const categories = removeDuplicates(commands.map(c => c.category as string));
 		const guildId = (message.guild as Guild)?.id;
-		const guild = await db.getGuild(guildId);
+		const guild = await getOrCreateGuild(guildId);
 		if (!guild) throw new Error('Missing guild database entry');
 		if (!categories.includes(arg))
 			throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid category');
 		if (SAVE_CATEGORIES.includes(arg))
 			throw new UserError({ identifier: Identifiers.CategoryDisabled }, `Can't disabled ${arg} category`);
-		if (guild.disabledCategories?.includes(arg))
+		if (guild.disabledCategories.includes(arg))
 			throw new UserError({ identifier: Identifiers.PreconditionDataExists }, 'Already disabled');
 		await addCD();
-		await db.updateGuild(guildId, {
-			disabledCategories: [...(guild.disabledCategories ?? []), arg],
+		await updateGuild(guildId, {
+			disabledCategories: [...guild.disabledCategories, arg],
 		});
 		return message.channel.send({ content: `Disabled \`${arg}\`` });
 	}

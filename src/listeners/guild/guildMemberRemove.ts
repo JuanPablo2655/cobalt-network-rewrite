@@ -1,6 +1,7 @@
 import { GuildMember, EmbedBuilder, Snowflake, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
+import { updateMember, getOrCreateMember, getOrCreateGuild } from '#lib/database';
 
 abstract class GuildMemberRemoveListener extends Listener {
 	constructor() {
@@ -15,26 +16,26 @@ abstract class GuildMemberRemoveListener extends Listener {
 		if (member.partial) await member.fetch();
 		if (!member.guild) return;
 		if (!member.guild.available) return;
-		const { db } = this.cobalt.container;
-		const user = await db.getMember(member.user.id, member.guild.id);
-		const guild = await db.getGuild(member.guild.id);
+		const user = await getOrCreateMember(member.user.id, member.guild.id);
+		if (!user) return;
+		const guild = await getOrCreateGuild(member.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
-		const logChannelId = guild?.logChannel.channelId;
+		if (!guild.log?.enabled) return;
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
-		if (user && member.roles.cache.size !== 0) {
+		if (member.roles.cache.size !== 0) {
 			const roleList: Snowflake[] = member.roles.cache.map(r => r.id);
-			await db.updateMember(member.user.id, member.guild.id, {
+			await updateMember(member.user.id, member.guild.id, {
 				roles: roleList,
 			});
 		}
-		if (guild.leaveMessage?.channelId) {
+		if (guild.leave?.channelId) {
 			const leaveChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
-				?.channels.cache.get(guild.leaveMessage.channelId) as TextChannel;
-			const leave = guild.leaveMessage.message
+				?.channels.cache.get(guild.leave.channelId) as TextChannel;
+			const leave = guild.leave.message
 				?.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);

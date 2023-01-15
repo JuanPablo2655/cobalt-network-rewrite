@@ -1,9 +1,9 @@
 import { Message, EmbedBuilder } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
-import { Default } from '#lib/typings';
 import { formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
 import { Identifiers, UserError } from '#lib/errors';
+import { getOrCreateUser } from '#lib/database';
 
 abstract class BalanceCommand extends GenericCommand {
 	constructor() {
@@ -17,22 +17,22 @@ abstract class BalanceCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		await addCD();
-		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
-		const profile = await this.cobalt.container.db.getUser(user.id);
-		const bankPercent = ((profile?.bank ?? Default.Bank) / (profile?.bankSpace ?? Default.BankSpace)) * 100;
+		const profile = await getOrCreateUser(user.id);
+		if (!profile) throw new Error('Database error');
+		await addCD();
+		const bankPercent = (profile.bank / profile.bankSpace) * 100;
 		const balanceEmbed = new EmbedBuilder()
 			.setTitle(`${user?.username}'s balance`)
 			.setDescription(
-				`**Wallet**: ${formatMoney(profile?.wallet ?? Default.Wallet)}\n**Bank**: ${formatMoney(
-					profile?.bank ?? Default.Bank,
-				)} / ${formatMoney(profile?.bankSpace ?? Default.BankSpace)} \`${bankPercent
-					.toString()
-					.substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
-					profile?.netWorth ?? Default.Default,
-				)}\n**Bounty**: ${formatMoney(profile?.bounty ?? Default.Default)}`,
+				`**Wallet**: ${formatMoney(profile.wallet)}\n**Bank**: ${formatMoney(profile.bank)} / ${formatMoney(
+					profile.bankSpace,
+				)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
+					profile.netWorth,
+				)}\n**Bounty**: ${formatMoney(profile.bounty)}`,
 			);
 		message.reply({ embeds: [balanceEmbed] });
 	}

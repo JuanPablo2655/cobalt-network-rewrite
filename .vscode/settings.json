@@ -18,5 +18,8 @@
 		"Mulit",
 		"multistream",
 		"vcdata"
-	]
+	],
+	"[prisma]": {
+		"editor.defaultFormatter": "Prisma.prisma"
+	}
 }

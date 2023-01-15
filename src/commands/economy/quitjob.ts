@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
+import { getOrCreateUser, updateJob } from '#lib/database';
 
 abstract class QuitJobCommand extends GenericCommand {
 	constructor() {
@@ -15,11 +16,11 @@ abstract class QuitJobCommand extends GenericCommand {
 
 	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const { db, econ } = this.cobalt.container;
-		const user = await db.getUser(message.author.id);
-		if (user?.job === null)
+		const user = await getOrCreateUser(message.author.id);
+		if (!user) throw new Error('Missing user database entry');
+		if (user.job === null)
 			throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);
-		await econ.updateJob(message.author.id, null);
+		await updateJob(message.author.id, null);
 		return message.channel.send({
 			content: `You have successfully quit from your current job. You need to apply to a new job if you want to work.`,
 		});

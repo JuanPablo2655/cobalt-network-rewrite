@@ -1,51 +1,43 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
+import { getOrCreateGuild, updateGuild } from '#lib/database';
 
-export async function channel(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const { db } = cobalt.container;
+export async function channel(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const channel = interaction.options.getChannel('channel', true);
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await db.getGuild(interaction.guild.id);
+	const guild = await getOrCreateGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
-	await db.updateGuild(interaction.guild.id, {
-		leaveMessage: {
-			message: guild.leaveMessage?.message ?? null,
+	await updateGuild(interaction.guild.id, {
+		leave: {
 			channelId: channel.id,
-			enabled: guild.leaveMessage?.enabled ?? true,
 		},
 	});
 	return interaction.reply({ content: `Successfully changed the log channel to ${channel}` });
 }
 
-export async function message(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const { db } = cobalt.container;
+export async function message(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const message = interaction.options.getString('message', true);
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await db.getGuild(interaction.guild.id);
+	const guild = await getOrCreateGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
-	await db.updateGuild(interaction.guild.id, {
-		leaveMessage: {
+	await updateGuild(interaction.guild.id, {
+		leave: {
 			message: message,
-			channelId: guild.leaveMessage?.channelId ?? null,
-			enabled: guild.leaveMessage?.enabled ?? true,
 		},
 	});
 	return interaction.reply({ content: `Successfully changed the leave message to:\n\`${message}\`` });
 }
 
-export async function toggle(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
-	const { db } = cobalt.container;
+export async function toggle(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const option = interaction.options.getBoolean('toggle', true);
 	if (!interaction.guild) return interaction.reply({ content: `Must be in a guild!` });
-	const guild = await db.getGuild(interaction.guild.id);
+	const guild = await getOrCreateGuild(interaction.guild.id);
 	if (!guild) throw new Error('Missing guild database entry');
-	if (guild.leaveMessage?.enabled === option)
+	if (guild.leave?.enabled === option)
 		throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `Already ${option}`);
-	await db.updateGuild(interaction.guild.id, {
-		leaveMessage: {
-			message: guild.leaveMessage?.message ?? null,
-			channelId: guild.leaveMessage?.channelId ?? null,
+	await updateGuild(interaction.guild.id, {
+		leave: {
 			enabled: option,
 		},
 	});

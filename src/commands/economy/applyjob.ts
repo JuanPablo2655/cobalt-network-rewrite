@@ -4,6 +4,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { minutes } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
+import { updateJob, getOrCreateUser, getOrCreateGuild } from '#lib/database';
 
 abstract class ApplyJobCommand extends GenericCommand {
 	constructor() {
@@ -17,9 +18,10 @@ abstract class ApplyJobCommand extends GenericCommand {
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
-		const { db, econ } = this.cobalt.container;
-		const guild = await db.getGuild(message.guild?.id);
-		const user = await db.getUser(message.author.id);
+		if (!message.guild) return;
+		const guild = await getOrCreateGuild(message.guild.id);
+		const user = await getOrCreateUser(message.author.id);
+		if (!user) throw new Error('Database error');
 		if (!args[0])
 			throw new UserError(
 				{ identifier: Identifiers.ArgsMissing },
@@ -33,13 +35,13 @@ abstract class ApplyJobCommand extends GenericCommand {
 				{ identifier: Identifiers.PreconditionMissingData },
 				'Please pick a valid job with a valid job id to apply for',
 			);
-		if (user?.job !== null)
+		if (user.job !== null)
 			throw new UserError(
 				{ identifier: Identifiers.PreconditionDataExists },
 				'You have a job already. If you want to switch, you have to quit your job',
 			);
 
-		await econ.updateJob(message.author.id, job.id);
+		await updateJob(message.author.id, job.id);
 		return message.reply({
 			content: `Congratulations on becoming a **${job.name}**. Your minimum payment is now **${formatMoney(
 				job.minAmount,

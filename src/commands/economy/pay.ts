@@ -3,6 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
+import { addToWallet, getOrCreateBot, getOrCreateUser, removeFromWallet, updateBot } from '#lib/database';
 
 abstract class PayCommand extends GenericCommand {
 	constructor() {
@@ -15,15 +16,16 @@ abstract class PayCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db, econ } = this.cobalt.container;
-		const bot = await db.getBot(this.cobalt.user?.id);
+		if (!this.cobalt.user) throw new Error('Missing user');
+		const bot = await getOrCreateBot(this.cobalt.user.id);
 		if (!bot) throw new Error('Missing bot database entry');
-		const member = await resolveMember(args[0], message.guild!).catch(() => message.member);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
+		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member)
 			throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Please pick a valid member');
-		const author = await db.getUser(message.author.id);
+		const author = await getOrCreateUser(message.author.id);
 		if (!author) throw new Error('Missing author database entry');
-		const user = await db.getUser(member.id);
+		const user = await getOrCreateUser(member.id);
 		if (!user) throw new Error('Missing user database entry');
 		if (member.id === message.author.id)
 			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "You can't pay yourself");
@@ -41,9 +43,9 @@ abstract class PayCommand extends GenericCommand {
 		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;
-		await econ.removeFromWallet(message.author.id, amount);
-		await econ.addToWallet(member.id, afterTax);
-		await db.updateBot(this.cobalt.user?.id, { bank: bot.bank + tax });
+		await removeFromWallet(message.author.id, amount);
+		await addToWallet(member.id, afterTax);
+		await updateBot(this.cobalt.user.id, { bank: bot.bank + tax });
 		return message.channel.send({
 			content: `>>> Transaction to **${member.user.username}**:\nSubtotal: **${formatMoney(
 				amount,

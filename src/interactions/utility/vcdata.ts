@@ -3,6 +3,7 @@ import prettyMilliseconds from 'pretty-ms';
 import { InteractionCommand } from '#lib/structures/commands';
 import { formatNumber } from '#utils/functions';
 import { vcdataCommand } from './options.js';
+import { getOrCreateMember, getOrCreateUser } from '#lib/database';
 
 abstract class VcDataInteractionCommand extends InteractionCommand {
 	constructor() {
@@ -14,13 +15,14 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 
 	async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
-		const { db } = this.cobalt.container;
 		const option = interaction.options.get('option')?.value;
 		const user = interaction.options.getUser('user') ?? interaction.user;
-		const memberData = await db.getMember(user.id, interaction.guild?.id);
-		const userData = await db.getUser(user.id);
+		const memberData = await getOrCreateMember(user.id, interaction.guild.id);
+		const userData = await getOrCreateUser(user.id);
+		if (!memberData || !userData) throw new Error('Missing database entry');
 		if (option === 'local') {
-			if (!memberData?.vcHours) return interaction.editReply({ content: "You haven't joined VC in this server!" });
+			if (memberData.vcHours.length === 0)
+				return interaction.editReply({ content: "You haven't joined VC in this server!" });
 			// TODO(Isidro): condense reduce and sort into one loop
 			const sum = memberData.vcHours.reduce((a, b) => a + b);
 			const average = sum / memberData.vcHours.length;
@@ -39,7 +41,7 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 			return interaction.editReply({ embeds: [vcEmbed] });
 		}
 		if (option === 'global') {
-			if (!userData?.vcHours) return interaction.editReply({ content: "You haven't joined VC once!" });
+			if (userData.vcHours.length === 0) return interaction.editReply({ content: "You haven't joined VC once!" });
 			// TODO(Isidro): condense reduce and sort into one loop
 			const sum = userData.vcHours.reduce((a, b) => a + b);
 			const average = sum / userData.vcHours.length;

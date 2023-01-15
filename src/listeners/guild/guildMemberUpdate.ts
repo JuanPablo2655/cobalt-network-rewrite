@@ -1,6 +1,7 @@
 import { GuildMember, EmbedBuilder, Role, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
+import { addToWallet, getOrCreateGuild } from '#lib/database';
 
 abstract class GuildMemberUpdateListener extends Listener {
 	constructor() {
@@ -16,11 +17,10 @@ abstract class GuildMemberUpdateListener extends Listener {
 		if (newMember.partial) await newMember.fetch();
 		if (!oldMember.guild) return;
 		if (!oldMember.guild.available) return;
-		const { db, econ } = this.cobalt.container;
-		const guild = await db.getGuild(newMember.guild.id);
+		const guild = await getOrCreateGuild(newMember.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
-		const logChannelId = guild?.logChannel.channelId;
+		if (!guild.log?.enabled) return;
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache
 			.get(newMember.guild.id)
@@ -62,7 +62,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 			return void logChannel.send({ embeds: [logEmbed] });
 		}
 		if (!oldMember.premiumSince && newMember.premiumSince) {
-			await econ.addToWallet(newMember.user.id, 5000);
+			await addToWallet(newMember.user.id, 5000);
 			newMember.user.send({
 				content: `You have boosted **${newMember.guild.name}**, **₡5000** has been added to your wallet!`,
 			});

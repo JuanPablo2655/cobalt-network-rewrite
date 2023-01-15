@@ -2,6 +2,10 @@ import { Message, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 import { GenericCommand } from '#lib/structures/commands';
 import { removeDuplicates, toCapitalize } from '#utils/functions';
+import { getOrCreateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { container } from '#root/Container';
+const { commands: _commands } = container;
 
 abstract class HelpCommand extends GenericCommand {
 	constructor() {
@@ -17,8 +21,9 @@ abstract class HelpCommand extends GenericCommand {
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		// TODO(Isidro): refactor help command
 		await addCD();
-		const { db, commands: _commands } = this.cobalt.container;
-		const guild = await db.getGuild(message.guild?.id);
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only command');
+		const guild = await getOrCreateGuild(message.guild.id);
+		if (!guild) throw new Error('Missing guild database entry');
 		const command = _commands.get(args[0]);
 		const categories = removeDuplicates(_commands.map(c => c.category as string));
 		if (command) {
@@ -26,7 +31,7 @@ abstract class HelpCommand extends GenericCommand {
 			const helpEmbed = new EmbedBuilder().setColor('Random');
 			helpEmbed.setTitle(`${command.name} Info`).addFields([
 				{ name: 'Description:', value: `${command.description}` },
-				{ name: 'Usage:', value: `${guild?.prefix}${usage}` },
+				{ name: 'Usage:', value: `${guild.prefix}${usage}` },
 				{ name: 'Aliases:', value: `${command.aliases?.length ? command.aliases.join(', ') : 'None'}` },
 				{ name: 'Cooldown:', value: `${prettyMilliseconds((command.cooldown || 1) * 1000)}` },
 				{ name: 'Perms Needed:', value: `${command.clientPermissions?.map(p => `\`${p}\``).join(', ')}` },
@@ -50,7 +55,7 @@ abstract class HelpCommand extends GenericCommand {
 			for (const category of categories) {
 				if (category === 'dev') continue;
 				helpEmbed.addFields([
-					{ name: `${toCapitalize(category)}`, value: `\`${guild?.prefix}help ${category}\``, inline: true },
+					{ name: `${toCapitalize(category)}`, value: `\`${guild.prefix}help ${category}\``, inline: true },
 				]);
 			}
 			return message.reply({ embeds: [helpEmbed] });

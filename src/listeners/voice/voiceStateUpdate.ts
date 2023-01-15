@@ -3,6 +3,16 @@ import prettyMilliseconds from 'pretty-ms';
 import { Listener } from '#lib/structures/listeners';
 import { formatMoney } from '#utils/functions';
 import { logger } from '#lib/structures';
+import {
+	updateMember,
+	updateUser,
+	addToWallet,
+	getOrCreateUser,
+	getOrCreateMember,
+	getOrCreateGuild,
+} from '#lib/database';
+import { container } from '#root/Container';
+const { redis, metrics } = container;
 
 abstract class VoiceStateUpdateListener extends Listener {
 	constructor() {
@@ -13,19 +23,20 @@ abstract class VoiceStateUpdateListener extends Listener {
 
 	async run(oldState: VoiceState, newState: VoiceState) {
 		if (!this.cobalt.testListeners) return;
-		const { db, econ, redis, metrics } = this.cobalt.container;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (oldState.member?.partial) await oldState.member.fetch();
 		if (newState.member?.partial) await newState.member.fetch();
 		if (!oldState.guild || !newState.guild) return;
 		if (!oldState.guild.available || !newState.guild.available) return;
-		const guild = await db.getGuild(newState.guild.id);
+		const guild = await getOrCreateGuild(newState.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
+		if (!guild.log?.enabled) return;
 		if (!oldState.member || !newState.member) return;
-		const user = await db.getUser(newState.member.id);
-		const member = await db.getMember(newState.member.id, newState.guild.id);
-		const logChannelId = guild.logChannel.channelId;
+		const user = await getOrCreateUser(newState.member.id);
+		if (!user) throw new Error('User not found');
+		const member = await getOrCreateMember(newState.member.id, newState.guild.id);
+		if (!member) throw new Error('Member not found');
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = newState.guild.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = newState.member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
@@ -50,10 +61,10 @@ abstract class VoiceStateUpdateListener extends Listener {
 				metrics.voiceInc(elapsed, oldState.guild.id);
 				const time = elapsed / 60000;
 				const addMoney = Math.round(time * 9) + 1;
-				await econ.addToWallet(oldState.member.id, addMoney);
-				await db.updateUser(oldState.member.id, { vcHours: [...(user?.vcHours ?? []), elapsed] });
-				await db.updateMember(oldState.member.id, oldState.guild.id, {
-					vcHours: [...(member?.vcHours ?? []), elapsed],
+				await addToWallet(oldState.member.id, addMoney);
+				await updateUser(oldState.member.id, { vcHours: [...user.vcHours, elapsed] });
+				await updateMember(oldState.member.id, oldState.guild.id, {
+					vcHours: [...member.vcHours, elapsed],
 				});
 				oldState.member
 					.send({

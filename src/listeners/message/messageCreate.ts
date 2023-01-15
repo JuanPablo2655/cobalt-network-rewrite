@@ -1,10 +1,12 @@
 import { setTimeout } from 'node:timers';
 import { Guild, Message, TextChannel, PermissionsBitField } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
-import { Default } from '#lib/typings';
 import { minutes, seconds } from '#utils/common';
 import { logger } from '#lib/structures';
 import { formatNumber, isOwner } from '#utils/functions';
+import { awardBankSpace, rewardXp, getOrCreateUser, getOrCreateGuild } from '#lib/database';
+import { container } from '#root/Container';
+const { messageCooldowns: cooldowns, metrics, redis, commands } = container;
 
 abstract class MessageListener extends Listener {
 	constructor() {
@@ -15,10 +17,11 @@ abstract class MessageListener extends Listener {
 
 	async run(message: Message) {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
-		const { db, metrics, exp, redis, econ, commands } = this.cobalt.container;
 		metrics.messageInc();
+		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
-		const guild = await db.getGuild(message?.guild?.id);
+		const guild = await getOrCreateGuild(message.guild.id);
+		if (!guild) throw new Error('Guild not found in database');
 
 		const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		const prefixReg = new RegExp(`^(<@!?${this.cobalt?.user?.id}>|${escapeRegex(guild?.prefix)})\\s*`);
@@ -28,7 +31,7 @@ abstract class MessageListener extends Listener {
 		if (!message.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) && !message.author.bot) {
 			let hasBadWord = false;
 			const badWords: string[] = [];
-			guild?.blacklistedWords?.forEach(word => {
+			guild.blacklistedWords.forEach(word => {
 				message.content.split(' ').forEach(messageWord => {
 					if (word.toLowerCase() === messageWord.toLowerCase()) {
 						badWords.push(word);
@@ -47,30 +50,31 @@ abstract class MessageListener extends Listener {
 		// TODO(Isidro): refactor
 		if (!message.author.bot) {
 			if (!this.cobalt.disableXp) {
-				if (!exp.cooldowns.has(message.author.id)) {
-					exp.cooldowns.add(message.author.id);
+				if (!cooldowns.has(message.author.id)) {
+					cooldowns.add(message.author.id);
 					setTimeout(() => {
-						exp.cooldowns.delete(message.author.id);
+						cooldowns.delete(message.author.id);
 					}, minutes(1));
-					const _exp = await exp.manageXp(message);
-					const profile = await db.getUser(message.author.id);
+					const _exp = await rewardXp(message);
+					const profile = await getOrCreateUser(message.author.id);
+					if (!profile) throw new Error('User not found in database');
 					if (_exp) {
-						if (guild?.levelMessage?.enabled) {
-							const cleanMessage = guild.levelMessage.message
-								.replace(/{user.username}/g, `**${message.author.username}**`)
+						if (guild.level?.enabled) {
+							const cleanMessage = guild.level.message
+								?.replace(/{user.username}/g, `**${message.author.username}**`)
 								.replace(/{user.tag}/g, `**${message.author.tag}**`)
-								.replace(/{newLevel}/g, `**${formatNumber(profile?.lvl ?? Default.Level)}**`);
+								.replace(/{newLevel}/g, `**${formatNumber(profile.level)}**`);
 							message.channel.send({ content: cleanMessage });
 						}
 					}
 				}
 			}
-			if (!exp.cooldowns.has(message.author.id)) {
-				exp.cooldowns.add(message.author.id);
+			if (!cooldowns.has(message.author.id)) {
+				cooldowns.add(message.author.id);
 				setTimeout(() => {
-					exp.cooldowns.delete(message.author.id);
+					cooldowns.delete(message.author.id);
 				}, minutes(1));
-				await econ.manageBankSpace(message);
+				await awardBankSpace(message);
 			}
 		}
 		if (!prefix) return;
@@ -84,12 +88,8 @@ abstract class MessageListener extends Listener {
 		if (commandName) {
 			const command = commands.get(commandName);
 			if (command) {
-				if (!guild?.verified && command.name !== 'verify')
-					message.channel.send({
-						content: 'You have to verify your server with one of the Directors in the main server!',
-					});
-				if (guild?.disabledCategories?.includes(command.category)) return;
-				if (guild?.disabledCommands?.includes(command.name)) return;
+				if (guild.disabledCategories.includes(command.category)) return;
+				if (guild.disabledCommands.includes(command.name)) return;
 				if (command.devOnly && !isOwner(message.member!)) {
 					return;
 				} else if (command.ownerOnly && (message.guild as Guild).ownerId !== message.author.id) {
@@ -157,10 +157,6 @@ abstract class MessageListener extends Listener {
 				};
 				try {
 					if (await isInCooldown()) return;
-					const bot = await db.getBot(this.cobalt.user?.id);
-					await db.updateBot(this.cobalt.user?.id, {
-						totalCommandsUsed: (bot?.totalCommandsUsed ?? 0) + 1,
-					});
 					metrics.commandInc(command.name);
 					await command.run(message, args, updateCooldown);
 					logger.info(`Command triggered by ${message.author.tag}`);

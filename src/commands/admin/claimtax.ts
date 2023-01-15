@@ -3,6 +3,7 @@ import { GenericCommand } from '#lib/structures/commands';
 import { formatMoney } from '#utils/functions';
 import { hours } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
+import { addToWallet, getOrCreateBot, updateBot } from '#lib/database';
 
 abstract class ClaimTaxCommand extends GenericCommand {
 	constructor() {
@@ -16,8 +17,8 @@ abstract class ClaimTaxCommand extends GenericCommand {
 	}
 
 	async run(message: Message, args: string[], addCD: () => Promise<void>) {
-		const { db, econ } = this.cobalt.container;
-		const bot = await db.getBot(this.cobalt.user?.id);
+		if (!this.cobalt.user) throw new Error('Missing user');
+		const bot = await getOrCreateBot(this.cobalt.user.id);
 		if (!bot) throw new Error('Missing user bot');
 		let isDirector = false;
 		bot.directors?.forEach(director => {
@@ -37,9 +38,9 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		await addCD();
 		const tax = Math.round(amount * (bot.tax / 100));
 		const afterTax = amount - tax;
-		await db.updateBot(this.cobalt.user?.id, { bank: bot.bank - amount });
-		await econ.addToWallet('232670598872956929', tax);
-		await econ.addToWallet(message.author.id, afterTax);
+		await updateBot(this.cobalt.user.id, { bank: bot.bank - amount });
+		await addToWallet('232670598872956929', tax);
+		await addToWallet(message.author.id, afterTax);
 		return message.channel.send({
 			content: `You have claimed **${formatMoney(afterTax)}** after paying Axalis **${formatMoney(tax)}** as tax.`,
 		});

@@ -3,6 +3,7 @@ import { CobaltClient } from '#lib/CobaltClient';
 import { InteractionCommand } from '#lib/structures/commands';
 import { logger } from '#lib/structures';
 import { resolveFile, validateFile } from '#utils/util';
+import { container } from '#root/Container';
 
 export async function InteractionRegistry(cobalt: CobaltClient) {
 	try {
@@ -19,6 +20,6 @@ async function loadInteraction(file: string, cobalt: CobaltClient) {
 	if (!interaction) return;
 	validateFile(file, interaction);
 	interaction.cobalt = cobalt;
-	cobalt.container.interactions.set(interaction.name, interaction);
+	container.interactions.set(interaction.name, interaction);
 	logger.info({ interaction: { name: interaction.name } }, `Registering interaction: ${interaction.name}`);
 }

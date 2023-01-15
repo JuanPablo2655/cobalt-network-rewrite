@@ -1,6 +1,7 @@
 import { GuildBan, EmbedBuilder, TextChannel } from 'discord.js';
 import { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
+import { getOrCreateGuild } from '#lib/database';
 
 abstract class GuildBanRemoveListener extends Listener {
 	constructor() {
@@ -15,14 +16,14 @@ abstract class GuildBanRemoveListener extends Listener {
 		if (ban.user.partial) await ban.user.fetch();
 		if (!ban.guild) return;
 		if (!ban.guild.available) return;
-		const guild = await this.cobalt.container.db.getGuild(ban.guild.id);
+		const guild = await getOrCreateGuild(ban.guild.id);
 		if (!guild) return;
-		if (!guild.logChannel?.enabled) return;
+		if (!guild.log?.enabled) return;
 		let audit;
 		if (ban.guild.members.me?.permissions.has('ViewAuditLog')) {
 			audit = (await ban.guild.fetchAuditLogs()).entries.first();
 		}
-		const logChannelId = guild.logChannel.channelId;
+		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = ban.user.displayAvatarURL({ extension: 'png', forceStatic: false });
