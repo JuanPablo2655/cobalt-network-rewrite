@@ -9,13 +9,9 @@ node_modules/
 .env
 .env.test
 
-# yarn v2
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
+# Yarn files
 .yarn/install-state.gz
-.pnp.*
-yarn-error.log
+.yarn/build-state.yml
 
 # Ignore generated files
 dist/

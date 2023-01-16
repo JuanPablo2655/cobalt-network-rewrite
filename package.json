@@ -92,5 +92,6 @@
   "engines": {
     "node": ">=16.9.0",
     "npm": "^7.0.0"
-  }
+  },
+  "packageManager": "yarn@3.3.1"
 }
