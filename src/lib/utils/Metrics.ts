@@ -1,9 +1,9 @@
 import { setInterval } from 'node:timers';
 import { logger } from '#lib/structures';
-import { ClientEvents, Snowflake } from 'discord.js';
+import type { ClientEvents, Snowflake } from 'discord.js';
 import express, { Express } from 'express';
 import { Counter, Gauge, collectDefaultMetrics, register } from 'prom-client';
-import { CobaltClient } from '../CobaltClient.js';
+import type { CobaltClient } from '../CobaltClient.js';
 import { seconds } from '#utils/common';
 
 export default class Metrics {

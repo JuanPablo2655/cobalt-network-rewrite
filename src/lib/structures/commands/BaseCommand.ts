@@ -1,6 +1,6 @@
-import { PermissionsString } from 'discord.js';
-import { BaseCommandOptions, Categories } from '../../typings/CommandOptions.js';
-import { CobaltClient } from '../../CobaltClient.js';
+import type { PermissionsString } from 'discord.js';
+import type { BaseCommandOptions, Categories } from '../../typings/CommandOptions.js';
+import type { CobaltClient } from '../../CobaltClient.js';
 
 export abstract class BaseCommand {
 	/**

@@ -1,4 +1,4 @@
-import { Ban, Leave, Level, Log, Welcome } from '@prisma/client';
+import type { Ban, Leave, Level, Log, Welcome } from '@prisma/client';
 import { container } from '#root/Container';
 import { logger } from '#lib/structures';
 const { db } = container;

@@ -1,5 +1,5 @@
-import { ApplicationCommandPermissions, ChatInputCommandInteraction } from 'discord.js';
-import { InteractionCommandType } from '../../typings/CommandOptions.js';
+import type { ApplicationCommandPermissions, ChatInputCommandInteraction } from 'discord.js';
+import type { InteractionCommandType } from '../../typings/CommandOptions.js';
 import { BaseCommand } from './BaseCommand.js';
 
 export abstract class InteractionCommand extends BaseCommand {

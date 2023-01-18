@@ -1,4 +1,9 @@
-import { ApplicationCommandPermissions, ChatInputCommandInteraction, Message, PermissionsString } from 'discord.js';
+import type {
+	ApplicationCommandPermissions,
+	ChatInputCommandInteraction,
+	Message,
+	PermissionsString,
+} from 'discord.js';
 
 export type Categories = 'dev' | 'economy' | 'experience' | 'settings' | 'utility' | 'admin';
 

@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { formatMoney } from '#utils/functions';

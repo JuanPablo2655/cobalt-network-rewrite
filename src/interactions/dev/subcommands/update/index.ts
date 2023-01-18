@@ -1,5 +1,5 @@
-import { ChatInputCommandInteraction, Snowflake } from 'discord.js';
-import { CobaltClient } from '#lib/CobaltClient';
+import type { ChatInputCommandInteraction, Snowflake } from 'discord.js';
+import type { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 import { getOrCreateBot, updateBot } from '#lib/database';

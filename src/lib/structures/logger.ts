@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 		'es-version': 7,
 	});
 	logger = pino(
-		{ ...ecsFormat(), name: config.elastic.loggerName },
+		{ ...ecsFormat(), name: config.elastic.loggerName ?? 'Cobaltia' },
 		multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
 	);
 }

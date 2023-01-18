@@ -1,6 +1,6 @@
 import { globbySync as sync } from 'globby';
-import { CobaltClient } from '#lib/CobaltClient';
-import { Listener } from '#lib/structures/listeners';
+import type { CobaltClient } from '#lib/CobaltClient';
+import type { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
 import { resolveFile, validateFile } from '#utils/util';
 import { container } from '#root/Container';

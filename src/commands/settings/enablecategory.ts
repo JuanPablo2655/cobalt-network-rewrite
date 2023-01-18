@@ -1,4 +1,4 @@
-import { Guild, Message } from 'discord.js';
+import type { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { Identifiers, UserError } from '#lib/errors';
 import { removeDuplicates } from '#utils/functions';

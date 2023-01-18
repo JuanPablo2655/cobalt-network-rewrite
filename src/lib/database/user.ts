@@ -1,6 +1,6 @@
 import { container } from '#root/Container';
 import { logger } from '#lib/structures';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 const { db } = container;
 
 /**

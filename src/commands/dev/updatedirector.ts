@@ -1,4 +1,4 @@
-import { Message, Snowflake } from 'discord.js';
+import type { Message, Snowflake } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { resolveRole } from '#utils/resolvers';
 import { Identifiers, UserError } from '#lib/errors';

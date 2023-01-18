@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 import { InteractionCommand } from '#lib/structures/commands';
-import { CovidAll, covidCountry, covidState } from '#lib/typings';
+import type { CovidAll, covidCountry, covidState } from '#lib/typings';
 import { formatNumber } from '#utils/functions';
 import { covidCommand } from './options.js';
 import { Identifiers, UserError } from '#lib/errors';

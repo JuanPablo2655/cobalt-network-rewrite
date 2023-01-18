@@ -1,6 +1,6 @@
 import { globbySync as sync } from 'globby';
-import { CobaltClient } from '#lib/CobaltClient';
-import { InteractionCommand } from '#lib/structures/commands';
+import type { CobaltClient } from '#lib/CobaltClient';
+import type { InteractionCommand } from '#lib/structures/commands';
 import { logger } from '#lib/structures';
 import { resolveFile, validateFile } from '#utils/util';
 import { container } from '#root/Container';

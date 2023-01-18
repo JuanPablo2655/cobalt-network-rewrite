@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
 import { economyCommand } from './options.js';
 import { balance, daily, monthly, pay, weekly, work } from './subcommands/index.js';

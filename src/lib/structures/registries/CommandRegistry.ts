@@ -1,6 +1,6 @@
 import { globbySync as sync } from 'globby';
-import { CobaltClient } from '#lib/CobaltClient';
-import { GenericCommand } from '#lib/structures/commands';
+import type { CobaltClient } from '#lib/CobaltClient';
+import type { GenericCommand } from '#lib/structures/commands';
 import { logger } from '#lib/structures';
 import { resolveFile, validateFile } from '#utils/util';
 import { container } from '#root/Container';

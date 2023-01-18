@@ -1,5 +1,5 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { CobaltClient } from '#lib/CobaltClient';
+import { type ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import type { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 import { getOrCreateUser, updateUser } from '#lib/database';

@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import { InteractionCommand } from '#lib/structures/commands';
 import { settingCommand } from './options.js';
 import { add, list, remove } from './subcommands/blacklistword/index.js';

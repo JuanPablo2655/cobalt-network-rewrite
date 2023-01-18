@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { CobaltClient } from '#lib/CobaltClient';
+import type { CobaltClient } from '#lib/CobaltClient';
 import { formatNumber } from '#utils/functions';
 import { days } from '#utils/common';
 import { Identifiers, UserError } from '#lib/errors';
