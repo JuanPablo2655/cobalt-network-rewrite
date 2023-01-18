@@ -1,6 +1,6 @@
-import { ClientEvents } from 'discord.js';
-import { ListenerType } from '../../typings/Options.js';
-import { CobaltClient } from '../../CobaltClient.js';
+import type { ClientEvents } from 'discord.js';
+import type { ListenerType } from '../../typings/Options.js';
+import type { CobaltClient } from '../../CobaltClient.js';
 
 export abstract class Listener {
 	/**

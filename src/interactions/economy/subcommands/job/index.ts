@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import { jobs } from '#lib/data';
-import { CobaltClient } from '#lib/CobaltClient';
+import type { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 import { getOrCreateUser, updateJob } from '#lib/database';

@@ -1,6 +1,6 @@
-import { CobaltClient } from '../CobaltClient.js';
-import * as DJS from 'discord.js';
-import { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
+import type { CobaltClient } from '../CobaltClient.js';
+import type * as DJS from 'discord.js';
+import type { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
 import { isClass } from '@sapphire/utilities';
 import { IMAGE_EXTENSION } from './constants.js';
 

@@ -1,5 +1,5 @@
 import { logger } from '#lib/structures';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { getOrCreateUser, updateUser } from '#lib/database';
 
 /**

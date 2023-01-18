@@ -1,4 +1,4 @@
-import { Guild, Message } from 'discord.js';
+import type { Guild, Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures/commands';
 import { resolveGuildTextChannel } from '#utils/resolvers';
 import { getOrCreateGuild, updateGuild } from '#lib/database';

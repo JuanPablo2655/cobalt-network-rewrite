@@ -1,5 +1,5 @@
-import { ChatInputCommandInteraction } from 'discord.js';
-import { CobaltClient } from '#lib/CobaltClient';
+import type { ChatInputCommandInteraction } from 'discord.js';
+import type { CobaltClient } from '#lib/CobaltClient';
 import { formatMoney } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 import { addToBank, addToWallet, getOrCreateUser, removeFromBank, removeFromWallet } from '#lib/database';

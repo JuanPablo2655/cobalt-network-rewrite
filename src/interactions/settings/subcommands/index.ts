@@ -1,5 +1,5 @@
-import { ChatInputCommandInteraction } from 'discord.js';
-import { CobaltClient } from '#lib/CobaltClient';
+import type { ChatInputCommandInteraction } from 'discord.js';
+import type { CobaltClient } from '#lib/CobaltClient';
 import { Identifiers, UserError } from '#lib/errors';
 import { removeDuplicates } from '#utils/functions';
 import { getOrCreateGuild, updateGuild } from '#lib/database';

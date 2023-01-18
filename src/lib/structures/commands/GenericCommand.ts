@@ -1,6 +1,6 @@
 import { seconds } from '#utils/common';
-import { Message } from 'discord.js';
-import { GenericCommandType } from '../../typings/CommandOptions.js';
+import type { Message } from 'discord.js';
+import type { GenericCommandType } from '../../typings/CommandOptions.js';
 import { BaseCommand } from './BaseCommand.js';
 
 export abstract class GenericCommand extends BaseCommand {

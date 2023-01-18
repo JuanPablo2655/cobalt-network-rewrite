@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { jobs } from '#lib/data';
 import { GenericCommand } from '#lib/structures/commands';
 import { calcMulti } from '#utils/util';

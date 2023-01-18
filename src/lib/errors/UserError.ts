@@ -14,7 +14,7 @@ export class UserError extends Error {
 		this.identifier = options.identifier;
 	}
 
-	public get name(): string {
+	public override get name(): string {
 		return 'UserError';
 	}
 }

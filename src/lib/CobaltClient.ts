@@ -24,14 +24,14 @@ export class CobaltClient extends Client {
 		this.on('raw', packet => container.metrics.eventInc(packet.t));
 	}
 
-	public async login(token = config.token) {
+	public override async login(token = config.token) {
 		await Promise.all([CommandRegistry(this), ListenerRegistry(this), InteractionRegistry(this)]);
 		const loginResponse = await super.login(token);
 		container.metrics.start();
 		return loginResponse;
 	}
 
-	public async destroy() {
+	public override async destroy() {
 		await container.redis.flushall();
 		await container.db.$disconnect();
 		container.metrics.server.close();

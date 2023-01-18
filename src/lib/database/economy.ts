@@ -2,7 +2,7 @@ import { container } from '#root/Container';
 import { logger } from '#lib/structures';
 import { addMulti } from '#utils/functions';
 import { calcMulti } from '#utils/util';
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { updateUser, updateBot, getOrCreateUser, getOrCreateBot } from '#lib/database';
 const { cobalt } = container;
 

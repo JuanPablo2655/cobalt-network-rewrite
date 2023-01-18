@@ -1,4 +1,4 @@
-import { GenericCommandOptions, InteractionCommandOptions, ListenerOptions } from '#lib/typings';
+import type { GenericCommandOptions, InteractionCommandOptions, ListenerOptions } from '#lib/typings';
 import { Collection, Snowflake } from 'discord.js';
 
 export interface Container {

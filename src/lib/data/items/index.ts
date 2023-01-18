@@ -1,6 +1,6 @@
 import apparels from './apparels.js';
 import food from './food.js';
-import { Item } from './items.js';
+import type { Item } from './items.js';
 import materials from './materials.js';
 import misc from './misc.js';
 import potions from './potions.js';

@@ -1,7 +1,7 @@
 import { Message, EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 import { GenericCommand } from '#lib/structures/commands';
-import { CovidAll, covidCountry, covidState } from '#lib/typings';
+import type { CovidAll, covidCountry, covidState } from '#lib/typings';
 import { formatNumber } from '#utils/functions';
 import { Identifiers, UserError } from '#lib/errors';
 
