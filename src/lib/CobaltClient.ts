@@ -1,20 +1,24 @@
+/* eslint-disable typescript-sort-keys/interface */
 import process from 'node:process';
-import { Client, Snowflake } from 'discord.js';
-import Redis from 'ioredis';
-import * as dotenv from 'dotenv';
-import { CommandRegistry, ListenerRegistry, InteractionRegistry } from '#lib/structures';
-import Metrics from './utils/Metrics.js';
-import { CLIENT_OPTIONS, config } from '#root/config';
 import { PrismaClient } from '@prisma/client';
+import { type Snowflake, Client } from 'discord.js';
+import * as dotenv from 'dotenv';
+import Redis from 'ioredis';
 import { container } from '../Container.js';
+import Metrics from './utils/Metrics.js';
+import { CommandRegistry, ListenerRegistry, InteractionRegistry } from '#lib/structures';
+import { CLIENT_OPTIONS, config } from '#root/config';
+
 dotenv.config();
 
 export class CobaltClient extends Client {
 	public dev = process.env.NODE_ENV !== 'production';
+
 	public testListeners = config.testListeners;
+
 	public disableXp = config.disableXp;
 
-	constructor() {
+	public constructor() {
 		super(CLIENT_OPTIONS);
 		container.messageCooldowns = new Set();
 		container.redis = new Redis(config.redis);
@@ -35,7 +39,7 @@ export class CobaltClient extends Client {
 		await container.redis.flushall();
 		await container.db.$disconnect();
 		container.metrics.server.close();
-		return super.destroy();
+		super.destroy();
 	}
 }
 

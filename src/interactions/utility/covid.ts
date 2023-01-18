@@ -1,39 +1,43 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { type ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
-import { InteractionCommand } from '#lib/structures/commands';
-import type { CovidAll, covidCountry, covidState } from '#lib/typings';
-import { formatNumber } from '#utils/functions';
 import { covidCommand } from './options.js';
 import { Identifiers, UserError } from '#lib/errors';
+import { InteractionCommand } from '#lib/structures';
+import type { CovidAll, covidCountry, covidState } from '#lib/typings';
+import { formatNumber } from '#utils/functions';
 
 abstract class CovidInteractionCommand extends InteractionCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: covidCommand.name,
 			category: 'utility',
 		});
 	}
 
-	async run(interaction: ChatInputCommandInteraction<'cached'>) {
+	public async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		const command = interaction.options.getSubcommand(true);
 		switch (command) {
 			case 'country': {
 				await this.country(interaction);
 				break;
 			}
+
 			case 'state': {
 				await this.state(interaction);
 				break;
 			}
+
 			case 'global': {
 				await this.global(interaction);
 				break;
 			}
+
 			default:
 				break;
 		}
 	}
-	async country(interaction: ChatInputCommandInteraction<'cached'>) {
+
+	private async country(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
 		const name = interaction.options.getString('country', true);
 		const country = await fetch(`https://disease.sh/v3/covid-19/countries/${name}?strict=false`);
@@ -53,7 +57,7 @@ abstract class CovidInteractionCommand extends InteractionCommand {
 		return interaction.editReply({ embeds: [covidEmbed] });
 	}
 
-	async state(interaction: ChatInputCommandInteraction<'cached'>) {
+	private async state(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
 		const name = interaction.options.getString('state', true);
 		const state = await fetch(`https://disease.sh/v3/covid-19/states/${name}`);
@@ -73,7 +77,7 @@ abstract class CovidInteractionCommand extends InteractionCommand {
 		return interaction.editReply({ embeds: [covidEmbed] });
 	}
 
-	async global(interaction: ChatInputCommandInteraction<'cached'>) {
+	private async global(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
 		const all = await fetch(`https://disease.sh/v3/covid-19/all`);
 		const res = (await all.json()) as CovidAll;

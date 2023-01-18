@@ -1,7 +1,7 @@
-import { seconds } from '#utils/common';
 import type { Message } from 'discord.js';
 import type { GenericCommandType } from '../../typings/CommandOptions.js';
 import { BaseCommand } from './BaseCommand.js';
+import { seconds } from '#utils/common';
 
 export abstract class GenericCommand extends BaseCommand {
 	/**
@@ -48,9 +48,10 @@ export abstract class GenericCommand extends BaseCommand {
 
 	/**
 	 * Constructs a GenericCommand
-	 * @param options Optional Command settings other than name, category, and description
+	 *
+	 * @param options - Optional Command settings other than name, category, and description
 	 */
-	constructor(options: GenericCommandType) {
+	public constructor(options: GenericCommandType) {
 		super(options);
 		this.description = options.description;
 		this.usage = options.usage ?? '';
@@ -66,9 +67,10 @@ export abstract class GenericCommand extends BaseCommand {
 
 	/**
 	 * Executes the message command's logic
-	 * @param message The message that triggered the command
-	 * @param args The parsed arguments
-	 * @param addCD Adds cooldown to the user
+	 *
+	 * @param message - The message that triggered the command
+	 * @param args - The parsed arguments
+	 * @param addCD - Adds cooldown to the user
 	 */
-	public abstract run(message: Message, args: string[], addCD: () => Promise<void>): unknown | Promise<unknown>;
+	public abstract run(message: Message, args: string[], addCD: () => Promise<void>): Promise<unknown> | unknown;
 }

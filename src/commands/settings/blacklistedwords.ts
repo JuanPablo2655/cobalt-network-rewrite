@@ -1,10 +1,10 @@
 import type { Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { Identifiers, UserError } from '#lib/errors';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 
 abstract class BlacklistedWordsCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'blacklistedwords',
 			description: 'add, remove, or list blacklisted words in your server.',
@@ -16,7 +16,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		if (!message.guild) return;
 		const [option, item] = args;
@@ -37,6 +37,7 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 				});
 				return message.channel.send({ content: `${item} was added to the list of blacklisted words` });
 			}
+
 			case 'remove': {
 				if (blacklistedWords === null)
 					throw new UserError(
@@ -49,10 +50,12 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 				await updateGuild(guildId, { blacklistedWords: words });
 				return message.channel.send({ content: `${item} was removed from the list of blacklisted words` });
 			}
+
 			case 'list': {
-				const words = blacklistedWords !== null && blacklistedWords?.map(w => `\`${w}\``).join(', ');
+				const words = blacklistedWords?.map(w => `\`${w}\``).join(', ');
 				return message.channel.send({ content: words || 'There are no blacklisted words yet.' });
 			}
+
 			default: {
 				throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Invalid arg type');
 			}

@@ -1,11 +1,11 @@
 import type { Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { formatMoney } from '#utils/functions';
-import { Identifiers, UserError } from '#lib/errors';
 import { addToWallet, getOrCreateUser, removeFromBank } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+import { formatMoney } from '#utils/functions';
 
 abstract class WithdrawCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'withdraw',
 			description: 'Withdraw money from your bank.',
@@ -15,12 +15,12 @@ abstract class WithdrawCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const profile = await getOrCreateUser(message.author.id);
 		if (!profile) throw new Error('missing user database entry');
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'How much money');
 		let money = Number(args[0]);
-		if (isNaN(money) && args[0] !== 'all')
+		if (Number.isNaN(money) && args[0] !== 'all')
 			throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		if (profile.bank - money <= 0)
 			throw new UserError(

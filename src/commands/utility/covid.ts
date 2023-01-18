@@ -1,12 +1,12 @@
-import { Message, EmbedBuilder } from 'discord.js';
+import { type Message, EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
-import { GenericCommand } from '#lib/structures/commands';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 import type { CovidAll, covidCountry, covidState } from '#lib/typings';
 import { formatNumber } from '#utils/functions';
-import { Identifiers, UserError } from '#lib/errors';
 
 abstract class CovidCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'covid',
 			description: 'Get the lastest Covid-19 data',
@@ -14,7 +14,7 @@ abstract class CovidCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [parameter, ...path] = args;
 		if (parameter === 'global') {
 			const all = await fetch(`https://disease.sh/v3/covid-19/all`);
@@ -33,6 +33,7 @@ abstract class CovidCommand extends GenericCommand {
 				.setTimestamp(res.updated);
 			return message.channel.send({ embeds: [covidEmbed] });
 		}
+
 		if (parameter === 'country') {
 			if (!path[0])
 				throw new UserError(
@@ -55,6 +56,7 @@ abstract class CovidCommand extends GenericCommand {
 				.setTimestamp(res.updated);
 			return message.channel.send({ embeds: [covidEmbed] });
 		}
+
 		if (parameter === 'state') {
 			if (!path[0])
 				throw new UserError({ identifier: Identifiers.ArgsMissing }, 'I need a correct state name. Ex. New York.');
@@ -74,6 +76,7 @@ abstract class CovidCommand extends GenericCommand {
 				.setTimestamp(res.updated);
 			return message.channel.send({ embeds: [covidEmbed] });
 		}
+
 		await addCD();
 		const all = await fetch(`https://disease.sh/v3/covid-19/all`);
 		const res = (await all.json()) as CovidAll;

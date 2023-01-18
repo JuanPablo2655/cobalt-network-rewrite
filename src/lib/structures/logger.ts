@@ -1,10 +1,11 @@
 import process from 'node:process';
-import pino, { Logger, multistream } from 'pino';
+import ecsFormat from '@elastic/ecs-pino-format';
+import pino, { type Logger, multistream } from 'pino';
 // @ts-expect-error: no type definitions
 import pinoElastic from 'pino-elasticsearch';
-import ecsFormat from '@elastic/ecs-pino-format';
 import { config } from '#root/config';
 
+// eslint-disable-next-line import/no-mutable-exports
 let logger: Logger;
 if (process.env.NODE_ENV !== 'production') {
 	logger = pino({ level: 'trace' });

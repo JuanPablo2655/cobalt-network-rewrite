@@ -1,8 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { CobaltClient } from '#lib/CobaltClient';
-import { formatMoney } from '#utils/functions';
-import { Identifiers, UserError } from '#lib/errors';
 import { addToWallet, getOrCreateBot, updateBot } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { formatMoney } from '#utils/functions';
 
 export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.reply({ content: 'Shutting down.' });

@@ -1,16 +1,16 @@
-import { GuildBan, EmbedBuilder, TextChannel } from 'discord.js';
-import { Listener } from '#lib/structures/listeners';
-import { logger } from '#lib/structures';
+import { type GuildBan, type TextChannel, EmbedBuilder } from 'discord.js';
 import { getOrCreateGuild } from '#lib/database';
+import { logger } from '#lib/structures';
+import { Listener } from '#lib/structures/listeners';
 
 abstract class GuildBanAddListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'guildBanAdd',
 		});
 	}
 
-	async run(ban: GuildBan) {
+	public async run(ban: GuildBan) {
 		if (!this.cobalt.testListeners) return;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (ban.user.partial) await ban.user.fetch();
@@ -23,6 +23,7 @@ abstract class GuildBanAddListener extends Listener {
 		if (ban.guild.members.me?.permissions.has('ViewAuditLog')) {
 			audit = (await ban.guild.fetchAuditLogs()).entries.first();
 		}
+
 		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(ban.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
@@ -31,7 +32,7 @@ abstract class GuildBanAddListener extends Listener {
 			.setAuthor({ name: ban.user.username, iconURL: avatar })
 			.setTitle('Member Banned')
 			.setColor('#8f0a0a')
-			.setDescription(`**Reason:** ${ban.reason || audit?.reason || 'No reason provided'}`)
+			.setDescription(`**Reason:** ${ban.reason ?? audit?.reason ?? 'No reason provided'}`)
 			.setFooter({ text: `User ID: ${ban.user.id}` })
 			.setTimestamp();
 		return void logChannel.send({ embeds: [logEmbed] });

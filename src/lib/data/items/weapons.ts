@@ -1,12 +1,12 @@
-import { Item, ItemData, Market } from './items.js';
+import { type Item, ItemData, Market } from './items.js';
 
 export class Weapon extends ItemData {
-	weapon: {
-		damage: number;
+	public weapon: {
 		craftable: boolean;
+		damage: number;
 	};
 
-	constructor(damage: number, craftable: boolean) {
+	public constructor(damage: number, craftable: boolean) {
 		super();
 		this.weapon = { damage, craftable };
 	}

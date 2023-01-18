@@ -1,9 +1,9 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { jobs } from '#lib/data';
+import { type ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import type { CobaltClient } from '#lib/CobaltClient';
-import { formatMoney } from '#utils/functions';
-import { Identifiers, UserError } from '#lib/errors';
+import { jobs } from '#lib/data';
 import { getOrCreateUser, updateJob } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { formatMoney } from '#utils/functions';
 
 export async function apply(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = await getOrCreateUser(interaction.user.id);
@@ -42,5 +42,5 @@ export async function quit(_cobalt: CobaltClient, interaction: ChatInputCommandI
 export async function list(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const jobLists = jobs.map(job => `\`${job.id}\` - **${job.name}**: ₡${job.minAmount}`);
 	const jobEmbed = new EmbedBuilder().setTitle(`Job Listing`).setDescription(`${jobLists.join('\n')}`);
-	interaction.reply({ embeds: [jobEmbed] });
+	await interaction.reply({ embeds: [jobEmbed] });
 }

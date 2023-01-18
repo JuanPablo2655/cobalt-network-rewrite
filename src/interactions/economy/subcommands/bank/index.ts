@@ -1,8 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { CobaltClient } from '#lib/CobaltClient';
-import { formatMoney } from '#utils/functions';
-import { Identifiers, UserError } from '#lib/errors';
 import { addToBank, addToWallet, getOrCreateUser, removeFromBank, removeFromWallet } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { formatMoney } from '#utils/functions';
 
 export async function deposit(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const profile = await getOrCreateUser(interaction.user.id);

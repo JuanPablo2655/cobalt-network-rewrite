@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { CobaltClient } from '#lib/CobaltClient';
-import { UserError, Identifiers } from '#lib/errors';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { UserError, Identifiers } from '#lib/errors';
 
 export async function channel(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const channel = interaction.options.getChannel('channel', true);
@@ -23,7 +23,7 @@ export async function message(_cobalt: CobaltClient, interaction: ChatInputComma
 	if (!guild) throw new Error('Missing guild database entry');
 	await updateGuild(interaction.guild.id, {
 		welcome: {
-			message: message,
+			message,
 		},
 	});
 	return interaction.reply({ content: `Successfully changed the welcome message to:\n\`${message}\`` });

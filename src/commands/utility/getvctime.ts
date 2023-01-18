@@ -1,13 +1,13 @@
-import { Message, EmbedBuilder } from 'discord.js';
+import { type Message, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { GenericCommand } from '#lib/structures/commands';
+import { getOrCreateMember, getOrCreateUser } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { getOrCreateMember, getOrCreateUser } from '#lib/database';
 
 abstract class GetVcTimeCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'getvctime',
 			description: "see how much time you've spent in vc",
@@ -17,7 +17,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [option] = args;
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[1], message.guild).catch(() => message.member);
@@ -48,6 +48,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 					);
 				return message.channel.send({ embeds: [vcEmbed] });
 			}
+
 			case 'global': {
 				if (user.vcHours.length === 0) return message.reply({ content: "You haven't joined VC once!" });
 				// TODO(Isidro): condense reduce and sort into one loop
@@ -67,6 +68,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 					);
 				return message.channel.send({ embeds: [vcEmbed] });
 			}
+
 			default: {
 				throw new UserError(
 					{ identifier: Identifiers.ArgsMissing },

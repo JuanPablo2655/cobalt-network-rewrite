@@ -1,14 +1,15 @@
 import type { Guild, Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
+import { getOrCreateGuild, updateGuild } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+import { container } from '#root/Container';
 import { SAVE_CATEGORIES } from '#utils/constants';
 import { removeDuplicates } from '#utils/functions';
-import { getOrCreateGuild, updateGuild } from '#lib/database';
-import { container } from '#root/Container';
+
 const { commands } = container;
 
 abstract class DisableCategoryCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'disablecategory',
 			description: 'Disable a category in your server',
@@ -18,7 +19,7 @@ abstract class DisableCategoryCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing category');
 		const arg = args[0].toLowerCase();
 		const categories = removeDuplicates(commands.map(c => c.category as string));

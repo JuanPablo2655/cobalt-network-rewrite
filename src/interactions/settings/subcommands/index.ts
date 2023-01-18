@@ -1,9 +1,10 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { CobaltClient } from '#lib/CobaltClient';
-import { Identifiers, UserError } from '#lib/errors';
-import { removeDuplicates } from '#utils/functions';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
 import { container } from '#root/Container';
+import { removeDuplicates } from '#utils/functions';
+
 const { commands } = container;
 
 export async function category(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {

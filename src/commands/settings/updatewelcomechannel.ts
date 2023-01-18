@@ -1,11 +1,11 @@
 import type { Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { Identifiers, UserError } from '#lib/errors';
-import { resolveGuildTextChannel } from '#utils/resolvers';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+import { resolveGuildTextChannel } from '#utils/resolvers';
 
 abstract class UpdateWelcomeChannelCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'setwelcomechannel',
 			description: 'Set the weclome channel.',
@@ -16,7 +16,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [option, action, ...welcomeMessage] = args;
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Missing Guild');
 		const guildId = message.guild.id;
@@ -35,6 +35,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 					content: `Successfully ${choice === true ? 'enabled' : 'disabled'} the welcome message`,
 				});
 			}
+
 			case 'channel': {
 				const channel = await resolveGuildTextChannel(action, message.guild);
 				if (!channel) throw new UserError({ identifier: Identifiers.ArgumentGuildChannelError }, 'Invalid channel');
@@ -45,6 +46,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 				});
 				return message.channel.send({ content: `Successfully changed the welcome channel to ${channel}` });
 			}
+
 			case 'message': {
 				if (!action)
 					throw new UserError(
@@ -61,6 +63,7 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 						content: `Successfully changed the welcome message to:\n\`${welcomeMessage.join(' ')}\``,
 					});
 				}
+
 				if (action === 'default') {
 					await updateGuild(guildId, {
 						welcome: {
@@ -69,8 +72,10 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 					});
 					return message.channel.send({ content: `Successfully changed the welcome message to default` });
 				}
+
 				break;
 			}
+
 			default: {
 				throw new UserError(
 					{ identifier: Identifiers.ArgsMissing },

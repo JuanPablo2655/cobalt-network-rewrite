@@ -1,6 +1,6 @@
-import { Identifiers, UserError } from '#lib/errors';
 import { SnowflakeRegex, UserOrMemberMentionRegex } from '@sapphire/discord-utilities';
 import type { Guild, Snowflake } from 'discord.js';
+import { Identifiers, UserError } from '#lib/errors';
 
 export async function resolveMember(parameter: string, guild: Guild) {
 	const member = (await resolveById(parameter, guild)) ?? (await resolveByQuery(parameter, guild));

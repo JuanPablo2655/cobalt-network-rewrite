@@ -1,14 +1,14 @@
 import type { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { GenericCommand } from '#lib/structures/commands';
-import { days } from '#utils/common';
+import { addToWallet, getOrCreateUser, updateUser } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+import { days } from '#utils/common';
 import { addMulti, formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { addToWallet, getOrCreateUser, updateUser } from '#lib/database';
 
 abstract class DailyCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'daily',
 			description: 'Claim your daily reward',
@@ -16,7 +16,7 @@ abstract class DailyCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
@@ -40,6 +40,7 @@ abstract class DailyCommand extends GenericCommand {
 				content: `You have received your daily **${formatMoney(dailyAmount)}**.`,
 			});
 		}
+
 		const dailyAmount = Math.floor(250 + Math.random() * 150);
 		const moneyEarned = addMulti(dailyAmount, 10);
 		await updateUser(message.author.id, { daily: new Date(cooldown) });

@@ -1,9 +1,9 @@
 import type { Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
+import { GenericCommand } from '#lib/structures';
 import { seconds } from '#utils/common';
 
 abstract class PingCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'ping',
 			description: 'Check the bot ping.',
@@ -13,7 +13,7 @@ abstract class PingCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		const m = await message.reply({ content: 'If you see this neck yourself #owned' });
 		const ping = m.createdTimestamp - message.createdTimestamp;

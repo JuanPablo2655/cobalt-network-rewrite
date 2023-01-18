@@ -1,13 +1,13 @@
 import type { Message } from 'discord.js';
 import { jobs } from '#lib/data';
-import { GenericCommand } from '#lib/structures/commands';
-import { formatMoney } from '#utils/functions';
-import { minutes } from '#utils/common';
-import { Identifiers, UserError } from '#lib/errors';
 import { updateJob, getOrCreateUser, getOrCreateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+import { minutes } from '#utils/common';
+import { formatMoney } from '#utils/functions';
 
 abstract class ApplyJobCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'applyjob',
 			description: 'Apply for a job you want.',
@@ -16,7 +16,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		if (!message.guild) return;
 		const guild = await getOrCreateGuild(message.guild.id);
@@ -29,7 +29,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 					guild?.prefix ?? this.cobalt.user?.username
 				}listjobs\``,
 			);
-		const job = jobs.find(j => j.id === args[0].toLowerCase());
+		const job = jobs.find(job => job.id === args[0].toLowerCase());
 		if (!job)
 			throw new UserError(
 				{ identifier: Identifiers.PreconditionMissingData },

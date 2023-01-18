@@ -1,14 +1,14 @@
 import type { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { GenericCommand } from '#lib/structures/commands';
-import { months } from '#utils/common';
+import { addToWallet, getOrCreateUser, updateUser } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+import { months } from '#utils/common';
 import { addMulti, formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { addToWallet, getOrCreateUser, updateUser } from '#lib/database';
 
 abstract class MonthlyCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'monthly',
 			description: 'Claim your monthly reward.',
@@ -16,7 +16,7 @@ abstract class MonthlyCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Member missing');
@@ -33,14 +33,15 @@ abstract class MonthlyCommand extends GenericCommand {
 			);
 		await addCD();
 		if (member?.id === message.author.id) {
-			const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
+			const monthlyAmount = Math.floor(3_500 + Math.random() * 1_500);
 			await updateUser(message.author.id, { monthly: new Date(cooldown) });
 			await addToWallet(member.id, monthlyAmount);
 			return message.channel.send({
 				content: `You have received your monthly **${formatMoney(monthlyAmount)}**.`,
 			});
 		}
-		const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
+
+		const monthlyAmount = Math.floor(3_500 + Math.random() * 1_500);
 		const moneyEarned = addMulti(monthlyAmount, 10);
 		await updateUser(message.author.id, { monthly: new Date(cooldown) });
 		await addToWallet(member.id, moneyEarned);

@@ -1,12 +1,12 @@
-import { Message, EmbedBuilder } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
+import { type Message, EmbedBuilder } from 'discord.js';
+import { getOrCreateUser, nextLevel } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { getOrCreateUser, nextLevel } from '#lib/database';
 
 abstract class RankCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'rank',
 			description: 'Get your or someone elses rank in the server.',
@@ -15,7 +15,7 @@ abstract class RankCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
@@ -29,9 +29,9 @@ abstract class RankCommand extends GenericCommand {
 			.setDescription(
 				`**Level**: ${formatNumber(profile.level)}\n**Experience**: ${formatNumber(profile.xp)} / ${formatNumber(
 					nextLevel(profile.level),
-				)} \`${xpPercent.toString().substring(0, 4)}%\``,
+				)} \`${xpPercent.toString().slice(0, 4)}%\``,
 			);
-		message.channel.send({ embeds: [rankEmbed] });
+		await message.channel.send({ embeds: [rankEmbed] });
 	}
 }
 

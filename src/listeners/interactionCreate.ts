@@ -1,19 +1,26 @@
-import { ChatInputCommandInteraction, GuildMember, Interaction, PermissionsString, TextChannel } from 'discord.js';
-import { Listener } from '#lib/structures/listeners';
-import { logger } from '#lib/structures';
-import { isOwner } from '#utils/functions';
+import {
+	type ChatInputCommandInteraction,
+	type GuildMember,
+	type Interaction,
+	type PermissionsString,
+	TextChannel,
+} from 'discord.js';
 import { getOrCreateGuild } from '#lib/database';
+import { logger } from '#lib/structures';
+import { Listener } from '#lib/structures/listeners';
 import { container } from '#root/Container';
+import { isOwner } from '#utils/functions';
+
 const { interactions } = container;
 
 abstract class InteractionListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'interactionCreate',
 		});
 	}
 
-	async run(interaction: Interaction<'cached'>) {
+	public async run(interaction: Interaction<'cached'>) {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!interaction.isChatInputCommand()) return;
 		if (!interaction.inCachedGuild()) return;
@@ -26,19 +33,21 @@ abstract class InteractionListener extends Listener {
 				if (command.devOnly && !this.isDev(interaction)) {
 					return;
 				}
+
 				if (interaction.channel instanceof TextChannel) {
 					const userPermissions = command.userPermissions;
 					const clientPermissions = command.clientPermissions;
 					const missingPermissions = new Array<PermissionsString>();
 					if (userPermissions?.length) {
-						for (let i = 0; i < userPermissions.length; i++) {
+						for (const userPermission of userPermissions) {
 							const hasPermissions = interaction.channel
 								.permissionsFor(interaction.member as GuildMember)
-								?.has(userPermissions[i]);
-							if (!hasPermissions) missingPermissions.push(userPermissions[i]);
+								?.has(userPermission);
+							if (!hasPermissions) missingPermissions.push(userPermission);
 						}
+
 						if (missingPermissions.length)
-							interaction.reply({
+							await interaction.reply({
 								content: `Your missing these required permissions: ${missingPermissions
 									.map(p => `\`${p}\``)
 									.join(', ')}`,
@@ -46,13 +55,15 @@ abstract class InteractionListener extends Listener {
 							});
 						return;
 					}
+
 					if (clientPermissions?.length) {
-						for (let i = 0; i < clientPermissions.length; i++) {
-							const hasPermission = interaction.guild.members.me?.permissions.has(clientPermissions[i]);
-							if (!hasPermission) missingPermissions.push(clientPermissions[i]);
+						for (const clientPermission of clientPermissions) {
+							const hasPermission = interaction.guild.members.me?.permissions.has(clientPermission);
+							if (!hasPermission) missingPermissions.push(clientPermission);
 						}
+
 						if (missingPermissions.length)
-							interaction.reply({
+							await interaction.reply({
 								content: `I'm missing these required permissions: ${missingPermissions
 									.map(p => `\`${p}\``)
 									.join(', ')}`,
@@ -62,11 +73,12 @@ abstract class InteractionListener extends Listener {
 					}
 				}
 			}
+
 			try {
 				await command.run(interaction);
 				logger.info(`Interaction triggered by ${interaction.user.tag}`);
-			} catch (err) {
-				const error = err as Error;
+			} catch (error_) {
+				const error = error_ as Error;
 				logger.error(error, error.message);
 				try {
 					if (!interaction.deferred && !interaction.replied) {
@@ -76,16 +88,17 @@ abstract class InteractionListener extends Listener {
 						);
 						await interaction.deferReply();
 					}
+
 					await interaction.editReply({ content: error.message, components: [] });
-				} catch (err) {
-					const error = err as Error;
+				} catch (error_) {
+					const error = error_ as Error;
 					logger.error(error, error.message);
 				}
 			}
 		}
 	}
 
-	isDev(interaction: ChatInputCommandInteraction<'cached'>) {
+	private isDev(interaction: ChatInputCommandInteraction<'cached'>) {
 		return isOwner(interaction.member);
 	}
 }

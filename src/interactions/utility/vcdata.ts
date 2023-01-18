@@ -1,19 +1,19 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { type ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { InteractionCommand } from '#lib/structures/commands';
-import { formatNumber } from '#utils/functions';
 import { vcdataCommand } from './options.js';
 import { getOrCreateMember, getOrCreateUser } from '#lib/database';
+import { InteractionCommand } from '#lib/structures';
+import { formatNumber } from '#utils/functions';
 
 abstract class VcDataInteractionCommand extends InteractionCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: vcdataCommand.name,
 			category: 'utility',
 		});
 	}
 
-	async run(interaction: ChatInputCommandInteraction<'cached'>) {
+	public async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		await interaction.deferReply();
 		const option = interaction.options.get('option')?.value;
 		const user = interaction.options.getUser('user') ?? interaction.user;
@@ -40,6 +40,7 @@ abstract class VcDataInteractionCommand extends InteractionCommand {
 				);
 			return interaction.editReply({ embeds: [vcEmbed] });
 		}
+
 		if (option === 'global') {
 			if (userData.vcHours.length === 0) return interaction.editReply({ content: "You haven't joined VC once!" });
 			// TODO(Isidro): condense reduce and sort into one loop

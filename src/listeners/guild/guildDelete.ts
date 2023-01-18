@@ -1,17 +1,17 @@
-import { Guild, EmbedBuilder, WebhookClient } from 'discord.js';
+import { type Guild, EmbedBuilder, WebhookClient } from 'discord.js';
+import { deleteGuild } from '#lib/database';
+import { logger } from '#lib/structures';
 import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
-import { logger } from '#lib/structures';
-import { deleteGuild } from '#lib/database';
 
 abstract class GuildDeleteListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'guildDelete',
 		});
 	}
 
-	async run(guild: Guild) {
+	public async run(guild: Guild) {
 		if (!this.cobalt.testListeners) return;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!guild) return;
@@ -24,7 +24,7 @@ abstract class GuildDeleteListener extends Listener {
 			.setDescription(`Guild Name: **${guild.name}**\nGuild ID: **${guild.id}**\nmember: **${guild.memberCount}**`)
 			.setFooter({ text: `Now I'm in ${this.cobalt.guilds.cache.size} guilds` })
 			.setTimestamp();
-		cobaltHook.send({ embeds: [guildEmbed] });
+		await cobaltHook.send({ embeds: [guildEmbed] });
 	}
 }
 

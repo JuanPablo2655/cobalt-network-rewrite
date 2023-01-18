@@ -1,5 +1,5 @@
-import { IMAGE_EXTENSION } from '#utils/constants';
 import { describe, test, expect } from 'vitest';
+import { IMAGE_EXTENSION } from '#utils/constants';
 
 describe('Cobalt', () => {
 	describe('constants', () => {

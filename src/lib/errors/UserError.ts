@@ -6,17 +6,16 @@ export class UserError extends Error {
 
 	/**
 	 * Constructs an UserError
-	 * @param options The identifier, useful to localize emitted errors
-	 * @param message The error message
+	 *
+	 * @param options - The identifier, useful to localize emitted errors
+	 * @param message - The error message
 	 */
 	public constructor(options: UserError.Options, message: string) {
 		super(message);
 		this.identifier = options.identifier;
 	}
 
-	public override get name(): string {
-		return 'UserError';
-	}
+	public override readonly name = 'UserError';
 }
 
 // eslint-disable-next-line no-redeclare

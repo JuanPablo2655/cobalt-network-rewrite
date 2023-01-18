@@ -1,13 +1,13 @@
-import { Message, EmbedBuilder } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
+import { type Message, EmbedBuilder } from 'discord.js';
+import { getOrCreateUser } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 import { seconds } from '#utils/common';
 import { formatNumber } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { getOrCreateUser } from '#lib/database';
-import { Identifiers, UserError } from '#lib/errors';
 
 abstract class checkSocialCredit extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'checksocialcredit',
 			description: 'Check your or someone elses social credit.',
@@ -17,13 +17,13 @@ abstract class checkSocialCredit extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new Error('missing member');
 		const user = await getOrCreateUser(member.id);
 		if (!user) throw new Error('missing user database entry');
-		addCD();
+		await addCD();
 		const embed = new EmbedBuilder()
 			.setTitle(`${member.user.username}'s social credit`)
 			.setDescription(

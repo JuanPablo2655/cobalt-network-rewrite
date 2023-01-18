@@ -1,6 +1,7 @@
 export interface JobData {
 	id: string;
 	name: string;
+	// eslint-disable-next-line typescript-sort-keys/interface
 	entries: string[];
 	firedEntry: string;
 	minAmount: number;

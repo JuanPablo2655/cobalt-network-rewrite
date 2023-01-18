@@ -17,4 +17,5 @@ export const SAVE_CATEGORIES = ['dev', 'settings'];
  * - gif
  * - webp
  */
+// eslint-disable-next-line prefer-named-capture-group
 export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;

@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { CobaltClient } from '#lib/CobaltClient';
-import { Identifiers, UserError } from '#lib/errors';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
 
 export async function add(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const word = interaction.options.getString('word', true);

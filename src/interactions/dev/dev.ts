@@ -1,11 +1,12 @@
-import { ApplicationCommandPermissionType, ChatInputCommandInteraction } from 'discord.js';
-import { InteractionCommand } from '#lib/structures/commands';
+import type { ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationCommandPermissionType } from 'discord.js';
 import { devCommand } from './options.js';
 import { pay, reboot } from './subcommands/index.js';
 import { directors, tax } from './subcommands/update/index.js';
+import { InteractionCommand } from '#lib/structures';
 
 abstract class PingInteractionCommand extends InteractionCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: devCommand.name,
 			category: 'dev',
@@ -19,17 +20,19 @@ abstract class PingInteractionCommand extends InteractionCommand {
 		});
 	}
 
-	async run(interaction: ChatInputCommandInteraction<'cached'>) {
+	public async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		const command = interaction.options.getSubcommand(true);
 		switch (command) {
 			case 'reboot': {
 				await reboot(this.cobalt, interaction);
 				break;
 			}
+
 			case 'pay': {
 				await pay(this.cobalt, interaction);
 				break;
 			}
+
 			default: {
 				const group = interaction.options.getSubcommandGroup(true);
 				switch (group) {
@@ -40,18 +43,23 @@ abstract class PingInteractionCommand extends InteractionCommand {
 								await directors(this.cobalt, interaction);
 								break;
 							}
+
 							case 'tax': {
 								await tax(this.cobalt, interaction);
 								break;
 							}
+
 							default:
 								break;
 						}
+
 						break;
 					}
+
 					default:
 						break;
 				}
+
 				break;
 			}
 		}

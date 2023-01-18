@@ -1,23 +1,33 @@
 import { setInterval } from 'node:timers';
-import { logger } from '#lib/structures';
 import type { ClientEvents, Snowflake } from 'discord.js';
-import express, { Express } from 'express';
+import express, { type Express } from 'express';
 import { Counter, Gauge, collectDefaultMetrics, register } from 'prom-client';
 import type { CobaltClient } from '../CobaltClient.js';
+import { logger } from '#lib/structures';
 import { seconds } from '#utils/common';
 
 export default class Metrics {
-	private messageCounter: Counter<string>;
-	private messageGuildCounter: Counter<string>;
-	private voiceTimeCounter: Counter<string>;
-	private VoiceGuildTimeCounter: Counter<string>;
-	private eventCounter: Counter<string>;
-	private latency: Gauge<string>;
-	private commandsExecuted: Counter<string>;
-	private app: Express;
+	private readonly messageCounter: Counter<string>;
+
+	private readonly messageGuildCounter: Counter<string>;
+
+	private readonly voiceTimeCounter: Counter<string>;
+
+	private readonly VoiceGuildTimeCounter: Counter<string>;
+
+	private readonly eventCounter: Counter<string>;
+
+	private readonly latency: Gauge<string>;
+
+	private readonly commandsExecuted: Counter<string>;
+
+	private readonly app: Express;
+
 	public cobalt: CobaltClient;
+
 	public server: import('http').Server;
-	constructor(cobalt: CobaltClient) {
+
+	public constructor(cobalt: CobaltClient) {
 		this.cobalt = cobalt;
 		collectDefaultMetrics({ prefix: 'cobalt_' });
 		this.messageCounter = new Counter({ name: 'cobalt_messages_total', help: 'Total number of messages seen' });
@@ -51,55 +61,70 @@ export default class Metrics {
 
 	/**
 	 * Increment message count
-	 * @param guildId The guild Id
+	 *
+	 * @param guildId - The guild Id
 	 */
-	messageInc(guildId?: Snowflake): void {
-		if (guildId) return this.messageGuildCounter.labels(guildId).inc();
-		return this.messageCounter.inc();
+	public messageInc(guildId?: Snowflake): void {
+		if (guildId) {
+			this.messageGuildCounter.labels(guildId).inc();
+			return;
+		}
+
+		this.messageCounter.inc();
 	}
 
 	/**
 	 * Increment the event count
-	 * @param event The event
+	 *
+	 * @param event - The event
 	 */
-	eventInc(event: keyof ClientEvents): void {
-		return this.eventCounter.labels(event).inc();
+	public eventInc(event: keyof ClientEvents): void {
+		this.eventCounter.labels(event).inc();
 	}
 
 	/**
 	 * Increment time spent in vc
-	 * @param elapsed The time spent in vc
-	 * @param guildId The guild id
+	 *
+	 * @param elapsed - The time spent in vc
+	 * @param guildId - The guild id
 	 */
-	voiceInc(elapsed: number, guildId?: Snowflake): void {
-		if (guildId) return this.VoiceGuildTimeCounter.labels(guildId).inc(elapsed);
-		return this.voiceTimeCounter.inc(elapsed);
+	public voiceInc(elapsed: number, guildId?: Snowflake): void {
+		if (guildId) {
+			this.VoiceGuildTimeCounter.labels(guildId).inc(elapsed);
+			return;
+		}
+
+		this.voiceTimeCounter.inc(elapsed);
 	}
 
 	/**
 	 * Increment the command usage
-	 * @param command The command name
+	 *
+	 * @param command - The command name
 	 */
-	commandInc(command: string): void {
-		return this.commandsExecuted.labels(command).inc();
+	public commandInc(command: string): void {
+		this.commandsExecuted.labels(command).inc();
 	}
 
-	/** Start the metric server */
-	start() {
+	/**
+	 * Start the metric server
+	 */
+	public start() {
 		const ping = () => {
 			this.latency.labels('Websocket').set(this.cobalt.ws.ping);
 		};
+
 		setInterval(ping, seconds(15));
 
 		this.app.get('/metrics', async (_, res) => {
 			try {
 				res.set('Content-Type', register.contentType);
 				res.end(await register.metrics());
-			} catch (err) {
-				res.status(500).end(err);
+			} catch (error) {
+				res.status(500).end(error);
 			}
 		});
 
-		this.server = this.app.listen(3030, () => logger.info(`Prometheus listening on port 3030!`));
+		this.server = this.app.listen(3_030, () => logger.info(`Prometheus listening on port 3030!`));
 	}
 }

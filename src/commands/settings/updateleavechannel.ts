@@ -1,11 +1,11 @@
 import type { Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { Identifiers, UserError } from '#lib/errors';
-import { resolveGuildTextChannel } from '#utils/resolvers';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+import { resolveGuildTextChannel } from '#utils/resolvers';
 
 abstract class UpdateLeaveChannelCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'setleavechannel',
 			description: 'Manage the leave channel in your server.',
@@ -17,7 +17,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [option, action, ...leaveMessage] = args;
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Missing Guild');
 		const guildId = message.guild.id;
@@ -36,6 +36,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 					content: `Successfully ${choice === true ? 'enabled' : 'disabled'} the leave message`,
 				});
 			}
+
 			case 'channel': {
 				const channel = await resolveGuildTextChannel(action, message.guild);
 				await updateGuild(guildId, {
@@ -45,6 +46,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 				});
 				return message.channel.send({ content: `Successfully changed the leave channel to ${channel}` });
 			}
+
 			case 'message': {
 				if (!action)
 					throw new UserError(
@@ -61,6 +63,7 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 						content: `Successfully changed the leave message to:\n\`${leaveMessage.join(' ')}\``,
 					});
 				}
+
 				if (action === 'default') {
 					await updateGuild(guildId, {
 						leave: {
@@ -69,8 +72,10 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 					});
 					return message.channel.send({ content: `Successfully changed the leave message to default` });
 				}
+
 				break;
 			}
+
 			default: {
 				throw new UserError(
 					{ identifier: Identifiers.ArgsMissing },

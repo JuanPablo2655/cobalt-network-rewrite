@@ -1,6 +1,6 @@
 import type { ClientEvents } from 'discord.js';
-import type { ListenerType } from '../../typings/Options.js';
 import type { CobaltClient } from '../../CobaltClient.js';
+import type { ListenerType } from '../../typings/Options.js';
 
 export abstract class Listener {
 	/**
@@ -17,17 +17,19 @@ export abstract class Listener {
 
 	/**
 	 * Constructs an listener
-	 * @param options Optional listener settings other than name
+	 *
+	 * @param options - Optional listener settings other than name
 	 */
-	constructor(options: ListenerType) {
+	public constructor(options: ListenerType) {
 		this.name = options.name;
 		this.once = options.once ?? false;
 	}
 
 	/**
 	 * Executes the listener's logic
-	 * @param args The listener parameters
+	 *
+	 * @param args - The listener parameters
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	public abstract run(...args: any[]): void | Promise<void>;
+	public abstract run(...args: any[]): Promise<void> | void;
 }

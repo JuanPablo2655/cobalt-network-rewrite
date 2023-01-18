@@ -1,6 +1,6 @@
-import { Identifiers, UserError } from '#lib/errors';
 import { RoleMentionRegex, SnowflakeRegex } from '@sapphire/discord-utilities';
 import type { Guild, Role, Snowflake } from 'discord.js';
+import { Identifiers, UserError } from '#lib/errors';
 
 export async function resolveRole(parameter: string, guild: Guild) {
 	const role = (await resolveById(parameter, guild)) ?? resolveByQuery(parameter, guild);

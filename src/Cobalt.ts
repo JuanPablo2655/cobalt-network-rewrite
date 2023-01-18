@@ -15,8 +15,9 @@ async function main() {
 					logger.warn(stream);
 				});
 		}
+
 		await cobalt.login();
-	} catch (err) {
+	} catch {
 		await cobalt.destroy();
 		process.exit(1);
 	}

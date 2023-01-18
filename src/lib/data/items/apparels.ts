@@ -1,4 +1,4 @@
-import { Item, ItemData, Market } from './items.js';
+import { type Item, ItemData, Market } from './items.js';
 
 enum ApparelType {
 	Head = 0,
@@ -11,12 +11,12 @@ enum ApparelType {
 }
 
 export class Apparel extends ItemData {
-	apparel: {
+	public apparel: {
 		armor: number;
 		body: ApparelType;
 	};
 
-	constructor(armor: number, body: ApparelType) {
+	public constructor(armor: number, body: ApparelType) {
 		super();
 		this.apparel = { armor, body };
 	}

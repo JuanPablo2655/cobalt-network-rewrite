@@ -1,6 +1,6 @@
 import type { PermissionsString } from 'discord.js';
-import type { BaseCommandOptions, Categories } from '../../typings/CommandOptions.js';
 import type { CobaltClient } from '../../CobaltClient.js';
+import type { BaseCommandOptions, Categories } from '../../typings/CommandOptions.js';
 
 export abstract class BaseCommand {
 	/**
@@ -32,9 +32,10 @@ export abstract class BaseCommand {
 
 	/**
 	 * Constructs a BaseCommand
-	 * @param options Optional Command settings other than name and category
+	 *
+	 * @param options - Optional Command settings other than name and category
 	 */
-	constructor(options: BaseCommandOptions) {
+	public constructor(options: BaseCommandOptions) {
 		this.name = options.name;
 		this.category = options.category;
 		this.devOnly = options.devOnly ?? false;

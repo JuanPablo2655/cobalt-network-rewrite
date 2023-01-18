@@ -1,11 +1,12 @@
+/* eslint-disable typescript-sort-keys/interface */
 export type RaceOptions =
 	| 'Dragonborn'
 	| 'Dwarf'
 	| 'Elf'
 	| 'Gnome'
 	| 'Half-Elf'
-	| 'Halfling'
 	| 'Half-Orc'
+	| 'Halfling'
 	| 'Human'
 	| 'Kobold'
 	| 'Lizardfolk'

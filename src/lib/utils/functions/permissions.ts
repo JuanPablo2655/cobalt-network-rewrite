@@ -1,5 +1,5 @@
+import { type GuildMember, PermissionsBitField } from 'discord.js';
 import { OWNERS } from '#root/config';
-import { GuildMember, PermissionsBitField } from 'discord.js';
 
 export function isOwner(member: GuildMember) {
 	return OWNERS.includes(member.id);
