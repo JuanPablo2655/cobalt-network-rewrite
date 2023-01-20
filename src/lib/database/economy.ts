@@ -225,7 +225,7 @@ export async function addBotBank(id: string, amount: number) {
 	try {
 		const bot = await getOrCreateBot(id);
 		if (!bot) throw new Error('Database error');
-		return await updateBot(id, { bank: bot.bank + amount });
+		return updateBot(id, { bank: bot.bank + amount });
 	} catch (error_) {
 		const error = error_ as Error;
 		logger.error(error, error.message);

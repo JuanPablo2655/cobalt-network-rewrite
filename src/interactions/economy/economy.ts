@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-nested-switch */
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { economyCommand } from './options.js';
 import { deposit, withdraw } from './subcommands/bank/index.js';

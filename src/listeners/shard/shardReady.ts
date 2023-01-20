@@ -15,14 +15,14 @@ abstract class ShardReadyListener extends Listener {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
 		const shardEmbed = new EmbedBuilder().setTitle(`Shard Ready`).setTimestamp();
-		if (!unavailableGuilds) {
-			shardEmbed.setDescription(`Shard \`${id}\` is connected!`);
-		} else {
+		if (unavailableGuilds) {
 			shardEmbed.setDescription(
 				`Shard \`${id}\` is connected!\n\nThe following guilds are unavailable due to a server outage:\n\`\`\`\n${Array.from(
 					unavailableGuilds,
 				).join('\n')}\n\`\`\``,
 			);
+		} else {
+			shardEmbed.setDescription(`Shard \`${id}\` is connected!`);
 		}
 
 		await cobaltHook.send({ embeds: [shardEmbed] });

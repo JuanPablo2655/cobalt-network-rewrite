@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-nested-switch */
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { settingCommand } from './options.js';
 import { add, list, remove } from './subcommands/blacklistword/index.js';

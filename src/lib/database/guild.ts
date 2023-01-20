@@ -1,4 +1,3 @@
-/* eslint-disable typescript-sort-keys/interface */
 import type { Ban, Leave, Level, Log, Welcome } from '@prisma/client';
 import { logger } from '#lib/structures';
 import { container } from '#root/Container';

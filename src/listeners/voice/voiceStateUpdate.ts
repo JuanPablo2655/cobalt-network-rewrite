@@ -68,7 +68,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 				await updateMember(oldState.member.id, oldState.guild.id, {
 					vcHours: [...member.vcHours, elapsed],
 				});
-				oldState.member
+				await oldState.member
 					.send({
 						content: `You have earned **${formatMoney(addMoney)}** for spending **${prettyMilliseconds(
 							elapsed,

@@ -32,9 +32,10 @@ abstract class GuildMemberUpdateListener extends Listener {
 			.setTimestamp();
 		if (oldMember.roles.cache.size < newMember.roles.cache.size) {
 			const addedRoles: Role[] = [];
-			newMember.roles.cache.forEach(role => {
+			for (const [_, role] of newMember.roles.cache) {
 				if (!oldMember.roles.cache.has(role.id)) addedRoles.push(role);
-			});
+			}
+
 			logEmbed
 				.setTitle('Roles Update')
 				.setColor('#2f7db1')
@@ -44,9 +45,10 @@ abstract class GuildMemberUpdateListener extends Listener {
 
 		if (oldMember.roles.cache.size > newMember.roles.cache.size) {
 			const removedRoles: Role[] = [];
-			oldMember.roles.cache.forEach(role => {
+			for (const [_, role] of oldMember.roles.cache) {
 				if (!newMember.roles.cache.has(role.id)) removedRoles.push(role);
-			});
+			}
+
 			logEmbed
 				.setTitle('Roles Update')
 				.setColor('#2f7db1')

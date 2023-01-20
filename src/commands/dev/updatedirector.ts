@@ -22,14 +22,14 @@ abstract class UpdateDirectorCommand extends GenericCommand {
 		await addCD();
 		const directors: Snowflake[] = [];
 		const directorUsernames: string[] = [];
-		role.members.forEach(user => {
-			directors.push(user.user.id);
-		});
+		for (const [_, member] of role.members) {
+			directors.push(member.user.id);
+		}
 
-		directors.forEach(userId => {
+		for (const userId of directors) {
 			const username = this.cobalt.users.cache.get(userId)!.username;
 			directorUsernames.push(username);
-		});
+		}
 
 		await updateBot(this.cobalt.user.id, { directors });
 		return message.channel.send({ content: `Updated directors with ${directorUsernames.join(', ')}` });

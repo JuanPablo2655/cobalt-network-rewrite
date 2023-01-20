@@ -1,5 +1,4 @@
 /* eslint-disable tsdoc/syntax */
-/* eslint-disable typescript-sort-keys/interface */
 import type {
 	ApplicationCommandPermissions,
 	ChatInputCommandInteraction,

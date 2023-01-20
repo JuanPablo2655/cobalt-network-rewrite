@@ -1,4 +1,3 @@
-/* eslint-disable typescript-sort-keys/interface */
 export type RaceOptions =
 	| 'Dragonborn'
 	| 'Dwarf'

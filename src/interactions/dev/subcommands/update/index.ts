@@ -11,13 +11,15 @@ export async function directors(cobalt: CobaltClient, interaction: ChatInputComm
 	if (!cobalt.user) throw new Error('Missing user');
 	const directors: Snowflake[] = new Array<Snowflake>();
 	const directorUsernames: string[] = new Array<string>();
-	role?.members.forEach(member => {
+	for (const [_, member] of role.members) {
 		directors.push(member.user.id);
-	});
-	directors.forEach(userId => {
+	}
+
+	for (const userId of directors) {
 		const username = cobalt.users.cache.get(userId)!.username;
 		directorUsernames.push(username);
-	});
+	}
+
 	await updateBot(cobalt.user.id, { directors });
 	return interaction.editReply({ content: `Updated directors with ${directorUsernames.join(', ')}` });
 }

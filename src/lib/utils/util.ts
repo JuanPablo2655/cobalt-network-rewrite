@@ -1,4 +1,3 @@
-/* eslint-disable typescript-sort-keys/interface */
 import { URL } from 'node:url';
 import { isClass } from '@sapphire/utilities';
 import type * as DJS from 'discord.js';

@@ -27,6 +27,7 @@ export class ItemData {
 	[subtype: string]: any;
 
 	public join(data: ItemData): this {
+		// eslint-disable-next-line guard-for-in
 		for (const prop in data) {
 			this[prop] = data[prop];
 		}

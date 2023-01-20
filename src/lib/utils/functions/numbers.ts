@@ -5,7 +5,7 @@
  */
 export function formatNumber(n: number | string): string | null {
 	const number = Number.parseFloat(String(n)).toLocaleString('en-US');
-	return number !== 'NaN' ? number : null;
+	return number === 'NaN' ? null : number;
 }
 
 /**
@@ -14,7 +14,7 @@ export function formatNumber(n: number | string): string | null {
  * @param n - The number to format
  */
 export function formatMoney(n: number | string): string | null {
-	return formatNumber(n) !== null ? `₡ ${formatNumber(n)}` : null;
+	return formatNumber(n) === null ? null : `₡ ${formatNumber(n)}`;
 }
 
 /**

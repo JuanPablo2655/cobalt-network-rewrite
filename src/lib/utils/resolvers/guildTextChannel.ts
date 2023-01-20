@@ -1,5 +1,5 @@
 import type { Nullish } from '@sapphire/utilities';
-import { type Channel, ChannelType, type Guild, type TextChannel } from 'discord.js';
+import { type Channel, type Guild, type TextChannel, ChannelType } from 'discord.js';
 import { resolveGuildChannel } from './guildChannel.js';
 import { Identifiers } from '#lib/errors/Identifiers';
 import { UserError } from '#lib/errors/UserError';

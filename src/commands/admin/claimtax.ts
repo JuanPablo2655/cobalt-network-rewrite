@@ -21,9 +21,13 @@ abstract class ClaimTaxCommand extends GenericCommand {
 		const bot = await getOrCreateBot(this.cobalt.user.id);
 		if (!bot) throw new Error('Missing user bot');
 		let isDirector = false;
-		bot.directors?.forEach(director => {
-			if (director === message.author.id) return (isDirector = true);
-		});
+		if (bot.directors)
+			for (const director of bot.directors) {
+				if (director === message.author.id) {
+					isDirector = true;
+				}
+			}
+
 		if (!isDirector) throw new UserError({ identifier: Identifiers.PreconditionUserPermissions }, 'Not a director');
 		const amount = Number(args[0]);
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing integer');

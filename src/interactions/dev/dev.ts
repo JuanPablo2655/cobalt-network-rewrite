@@ -1,5 +1,5 @@
-import type { ChatInputCommandInteraction } from 'discord.js';
-import { ApplicationCommandPermissionType } from 'discord.js';
+/* eslint-disable sonarjs/no-nested-switch */
+import { type ChatInputCommandInteraction, ApplicationCommandPermissionType } from 'discord.js';
 import { devCommand } from './options.js';
 import { pay, reboot } from './subcommands/index.js';
 import { directors, tax } from './subcommands/update/index.js';

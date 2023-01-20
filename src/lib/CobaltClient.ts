@@ -1,4 +1,3 @@
-/* eslint-disable typescript-sort-keys/interface */
 import process from 'node:process';
 import { PrismaClient } from '@prisma/client';
 import { type Snowflake, Client } from 'discord.js';

@@ -40,4 +40,4 @@ process.on('unhandledRejection', err => {
 	logger.error(error, error.message);
 });
 
-main().catch(error => logger.error(error));
+await main().catch(error => logger.error(error));

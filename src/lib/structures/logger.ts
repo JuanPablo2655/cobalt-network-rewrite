@@ -7,6 +7,7 @@ import { config } from '#root/config';
 
 // eslint-disable-next-line import/no-mutable-exports
 let logger: Logger;
+// eslint-disable-next-line no-negated-condition
 if (process.env.NODE_ENV !== 'production') {
 	logger = pino({ level: 'trace' });
 } else {

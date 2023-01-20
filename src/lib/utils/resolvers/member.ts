@@ -10,10 +10,12 @@ export async function resolveMember(parameter: string, guild: Guild) {
 
 async function resolveById(argument: string, guild: Guild) {
 	const memberId = UserOrMemberMentionRegex.exec(argument) ?? SnowflakeRegex.exec(argument);
+	// eslint-disable-next-line promise/prefer-await-to-then
 	return memberId ? guild.members.fetch(memberId[1] as Snowflake).catch(() => null) : null;
 }
 
 async function resolveByQuery(argument: string, guild: Guild) {
+	// eslint-disable-next-line no-param-reassign
 	argument = argument.length > 5 && argument.at(-5) === '#' ? argument.slice(0, -5) : argument;
 
 	const member = await guild.members.fetch({ query: argument, limit: 1 }).catch(() => null);

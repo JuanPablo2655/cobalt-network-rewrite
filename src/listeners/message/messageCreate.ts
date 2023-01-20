@@ -24,7 +24,8 @@ abstract class MessageListener extends Listener {
 		const guild = await getOrCreateGuild(message.guild.id);
 		if (!guild) throw new Error('Guild not found in database');
 
-		const escapeRegex = (str?: string) => str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		// eslint-disable-next-line unicorn/consistent-function-scoping
+		const escapeRegex = (str?: string) => str?.replace(/[$()*+.?[\\\]^{|}]/g, '\\$&');
 		const prefixReg = new RegExp(`^(<@!?${this.cobalt?.user?.id}>|${escapeRegex(guild?.prefix)})\\s*`);
 		const prefixArr = message.content.match(prefixReg);
 		const prefix = prefixArr?.[0];
@@ -32,16 +33,17 @@ abstract class MessageListener extends Listener {
 		if (!message.member?.permissions.has(PermissionsBitField.Flags.ManageGuild) && !message.author.bot) {
 			let hasBadWord = false;
 			const badWords: string[] = [];
-			guild.blacklistedWords.forEach(word => {
-				message.content.split(' ').forEach(messageWord => {
+			for (const word of guild.blacklistedWords) {
+				for (const messageWord of message.content.split(' ')) {
 					if (word.toLowerCase() === messageWord.toLowerCase()) {
 						badWords.push(word);
-						return (hasBadWord = true);
+						hasBadWord = true;
 					}
-				});
-			});
+				}
+			}
+
 			if (hasBadWord) {
-				message.deletable && message.delete();
+				if (message.deletable) await message.delete();
 				const user = this.cobalt.users.cache.get(message.author.id);
 				return void user?.send({
 					content: `The word(s) \`${badWords.join(', ')}\` is banned, please watch your language.`,

@@ -1,3 +1,4 @@
+import type { Server } from 'node:http';
 import { setInterval } from 'node:timers';
 import type { ClientEvents, Snowflake } from 'discord.js';
 import express, { type Express } from 'express';
@@ -25,7 +26,7 @@ export default class Metrics {
 
 	public cobalt: CobaltClient;
 
-	public server: import('http').Server;
+	public server: Server;
 
 	public constructor(cobalt: CobaltClient) {
 		this.cobalt = cobalt;
@@ -106,14 +107,15 @@ export default class Metrics {
 		this.commandsExecuted.labels(command).inc();
 	}
 
+	private ping() {
+		this.latency.labels('Websocket').set(this.cobalt.ws.ping);
+	}
+
 	/**
 	 * Start the metric server
 	 */
 	public start() {
-		const ping = () => {
-			this.latency.labels('Websocket').set(this.cobalt.ws.ping);
-		};
-
+		const ping = this.ping.bind(this);
 		setInterval(ping, seconds(15));
 
 		this.app.get('/metrics', async (_, res) => {
