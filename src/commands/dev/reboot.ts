@@ -1,9 +1,9 @@
 import process from 'node:process';
 import type { Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
+import { GenericCommand } from '#lib/structures';
 
 abstract class RebootCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'reboot',
 			description: 'Reboot the bot. Only works if using pm2 or anything else similar.',
@@ -12,7 +12,7 @@ abstract class RebootCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, _args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		await message.channel.send({ content: 'Shutting down' });
 		process.exit(1);

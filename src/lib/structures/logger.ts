@@ -1,14 +1,14 @@
 import process from 'node:process';
-import pino, { Logger, multistream } from 'pino';
+import ecsFormat from '@elastic/ecs-pino-format';
+import pino, { type Logger, multistream } from 'pino';
 // @ts-expect-error: no type definitions
 import pinoElastic from 'pino-elasticsearch';
-import ecsFormat from '@elastic/ecs-pino-format';
 import { config } from '#root/config';
 
+// eslint-disable-next-line import/no-mutable-exports
 let logger: Logger;
-if (process.env.NODE_ENV !== 'production') {
-	logger = pino({ level: 'trace' });
-} else {
+
+if (process.env.NODE_ENV === 'production') {
 	const streamToElastic = pinoElastic({
 		index: config.elastic.index,
 		consistency: 'one',
@@ -23,6 +23,8 @@ if (process.env.NODE_ENV !== 'production') {
 		{ ...ecsFormat(), name: config.elastic.loggerName ?? 'Cobaltia' },
 		multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
 	);
+} else {
+	logger = pino({ level: 'trace' });
 }
 
 export { logger };

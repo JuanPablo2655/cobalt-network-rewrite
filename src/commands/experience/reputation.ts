@@ -1,13 +1,13 @@
 import type { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { GenericCommand } from '#lib/structures/commands';
-import { Identifiers, UserError } from '#lib/errors';
-import { resolveMember } from '#utils/resolvers';
 import { getOrCreateUser, updateUser } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 import { days } from '#utils/common';
+import { resolveMember } from '#utils/resolvers';
 
 abstract class ReputationCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'reputation',
 			description: 'Give someone a reputation point.',
@@ -17,7 +17,7 @@ abstract class ReputationCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[0], message.guild);
 		const author = await getOrCreateUser(message.author.id);
@@ -36,6 +36,7 @@ abstract class ReputationCommand extends GenericCommand {
 				)}** left before you can give someone a reputation point!`,
 			);
 		}
+
 		await addCD();
 		await updateUser(message.author.id, { repTime: new Date(cooldown) });
 		await updateUser(member.id, { rep: user.rep + 1 });

@@ -1,4 +1,4 @@
-import { CobaltClient } from '#lib/CobaltClient';
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import {
 	ChannelType,
 	GuildFeature,
@@ -10,6 +10,7 @@ import {
 	type APIUser,
 } from 'discord-api-types/v10';
 import { Guild, GuildMember, Role, TextChannel, User } from 'discord.js';
+import { CobaltClient } from '#lib/CobaltClient';
 
 export const client = new CobaltClient();
 export const userData: APIUser = {
@@ -73,13 +74,12 @@ export const guildData: APIGuild = {
 	features: [
 		GuildFeature.News,
 		GuildFeature.AnimatedIcon,
-		GuildFeature.Commerce,
 		GuildFeature.WelcomeScreenEnabled,
 		GuildFeature.InviteSplash,
 		GuildFeature.Community,
 	],
 	hub_type: null,
-	max_members: 100000,
+	max_members: 100_000,
 	max_presences: null,
 	max_video_channel_users: 25,
 	mfa_level: 1,
@@ -109,6 +109,7 @@ export function createGuild(data: Partial<APIGuild> = {}) {
 	client.guilds.cache.set(g.id, g);
 	return g;
 }
+
 export const guild = createGuild();
 
 export const textChannelData: APIChannel = {
@@ -133,4 +134,5 @@ export function createTextChannel(data: Partial<APIChannel> = {}, g: Guild = gui
 	g.client.channels.cache.set(c.id, c);
 	return c;
 }
+
 export const textChannel = createTextChannel();

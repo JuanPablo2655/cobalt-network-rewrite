@@ -1,10 +1,10 @@
 import type { Guild, Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { Identifiers, UserError } from '#lib/errors';
 import { getOrCreateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 
 abstract class DisableEventsCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'disableevent',
 			description: 'Disable events from emitting on you log channel.',
@@ -14,7 +14,7 @@ abstract class DisableEventsCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		// TODO(Isidro): finish the command
 		const event = args[0].toLowerCase();
 		const guildId = (message.guild as Guild)?.id;

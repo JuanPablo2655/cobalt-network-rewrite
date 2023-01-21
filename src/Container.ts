@@ -1,11 +1,11 @@
+import { type Snowflake, Collection } from 'discord.js';
 import type { GenericCommandOptions, InteractionCommandOptions, ListenerOptions } from '#lib/typings';
-import { Collection, Snowflake } from 'discord.js';
 
 export interface Container {
 	commands: Collection<string, GenericCommandOptions>;
 	cooldowns: Collection<string, Collection<string, number>>;
-	listeners: Collection<string, ListenerOptions>;
 	interactions: Collection<string, InteractionCommandOptions>;
+	listeners: Collection<string, ListenerOptions>;
 	voice: Map<Snowflake, number>;
 }
 
@@ -13,7 +13,7 @@ export interface Container {
 export const container: Container = {
 	commands: new Collection<string, GenericCommandOptions>(),
 	cooldowns: new Collection<string, Collection<string, number>>(),
-	listeners: new Collection<string, ListenerOptions>(),
 	interactions: new Collection<string, InteractionCommandOptions>(),
+	listeners: new Collection<string, ListenerOptions>(),
 	voice: new Map<Snowflake, number>(),
 };

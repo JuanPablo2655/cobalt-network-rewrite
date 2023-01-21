@@ -1,11 +1,11 @@
 import type { Guild, Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { resolveGuildTextChannel } from '#utils/resolvers';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+import { resolveGuildTextChannel } from '#utils/resolvers';
 
 abstract class SetLogChannelCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'setlogchannel',
 			description: 'Set the log channel for you server.',
@@ -15,7 +15,7 @@ abstract class SetLogChannelCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only command');
 		const channel = resolveGuildTextChannel(args[0], message.guild);
 		const guildId = (message.guild as Guild)?.id;

@@ -8,14 +8,15 @@ export abstract class InteractionCommand extends BaseCommand {
 	 */
 	public permissions: ApplicationCommandPermissions[];
 
-	constructor(options: InteractionCommandType) {
+	public constructor(options: InteractionCommandType) {
 		super(options);
 		this.permissions = options.permissions ?? [];
 	}
 
 	/**
 	 * Executes the interaction command's logic
-	 * @param interactions The interaction that triggered the command
+	 *
+	 * @param interactions - The interaction that triggered the command
 	 */
-	public abstract run(interactions: ChatInputCommandInteraction<'cached'>): unknown | Promise<unknown>;
+	public abstract run(interactions: ChatInputCommandInteraction<'cached'>): Promise<unknown> | unknown;
 }

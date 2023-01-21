@@ -1,10 +1,11 @@
-import { REST } from 'discord.js';
 import {
+	type Snowflake,
+	type RESTGetAPIApplicationGuildCommandsResult,
 	ApplicationCommandPermissionType,
-	RESTGetAPIApplicationGuildCommandsResult,
 	Routes,
-	Snowflake,
 } from 'discord-api-types/v10';
+import { REST } from 'discord.js';
+import { config } from './config.js';
 import {
 	covidCommand,
 	devCommand,
@@ -15,7 +16,6 @@ import {
 	vcdataCommand,
 	socialCreditCommand,
 } from '#root/interactions';
-import { config } from './config.js';
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const rest = new REST({ version: '10' }).setToken(config.token!);
@@ -57,7 +57,7 @@ const rest = new REST({ version: '10' }).setToken(config.token!);
 		);
 
 		console.log('Successfully reloaded interaction (/) commands.');
-	} catch (e) {
-		console.error(e);
+	} catch (error) {
+		console.error(error);
 	}
 })();

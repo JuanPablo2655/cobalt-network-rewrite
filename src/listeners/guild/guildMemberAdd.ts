@@ -1,16 +1,16 @@
-import { GuildMember, EmbedBuilder, TextChannel } from 'discord.js';
-import { Listener } from '#lib/structures/listeners';
-import { logger } from '#lib/structures';
+import { type GuildMember, type TextChannel, EmbedBuilder } from 'discord.js';
 import { getOrCreateGuild, getOrCreateMember } from '#lib/database';
+import { logger } from '#lib/structures';
+import { Listener } from '#lib/structures/listeners';
 
 abstract class GuildMemberAddListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'guildMemberAdd',
 		});
 	}
 
-	async run(member: GuildMember) {
+	public async run(member: GuildMember) {
 		if (!this.cobalt.testListeners) return;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (member.partial) await member.fetch();
@@ -26,17 +26,19 @@ abstract class GuildMemberAddListener extends Listener {
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
 		const avatar = member.user.displayAvatarURL({ extension: 'png', forceStatic: false });
 		if (user.roles.length !== 0) {
-			user.roles.forEach(r => {
-				if (!member.guild.members.me) return;
+			for (const r of user.roles) {
+				if (!member.guild.members.me) continue;
 				const role = member.guild.roles.cache.get(r);
-				if (!role) return;
-				if (member.guild.members.me.roles.highest.comparePositionTo(role) < 0) return;
-				member.roles.add(role.id);
-			});
+				if (!role) continue;
+				if (member.guild.members.me.roles.highest.comparePositionTo(role) < 0) continue;
+				await member.roles.add(role.id);
+			}
+
 			return void member.user.send({
 				content: `Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing, message the staff for the remaining roles.`,
 			});
 		}
+
 		if (guild.welcome?.channelId) {
 			const welcomeChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)

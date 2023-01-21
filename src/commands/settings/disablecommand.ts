@@ -1,13 +1,14 @@
 import type { Guild, Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { Identifiers, UserError } from '#lib/errors';
-import { SAVE_CATEGORIES, SAVE_COMMANDS } from '#utils/constants';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 import { container } from '#root/Container';
+import { SAVE_CATEGORIES, SAVE_COMMANDS } from '#utils/constants';
+
 const { commands } = container;
 
 abstract class DisableCommandCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'disablecommand',
 			description: 'Disable a command in your server.',
@@ -17,7 +18,7 @@ abstract class DisableCommandCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing command');
 		const arg = args[0].toLowerCase();
 		const command = commands.get(arg);

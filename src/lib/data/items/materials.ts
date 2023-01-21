@@ -1,11 +1,11 @@
-import { Item, ItemData, Market } from './items.js';
+import { type Item, ItemData, Market } from './items.js';
 
 export class Material extends ItemData {
-	material: {
+	public material: {
 		keep: boolean;
 	};
 
-	constructor(keep: boolean) {
+	public constructor(keep: boolean) {
 		super();
 		this.material = { keep };
 	}

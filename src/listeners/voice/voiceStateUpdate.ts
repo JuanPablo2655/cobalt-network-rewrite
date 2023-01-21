@@ -1,8 +1,5 @@
-import { EmbedBuilder, TextChannel, VoiceState } from 'discord.js';
+import { type TextChannel, type VoiceState, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { Listener } from '#lib/structures/listeners';
-import { formatMoney } from '#utils/functions';
-import { logger } from '#lib/structures';
 import {
 	updateMember,
 	updateUser,
@@ -11,17 +8,21 @@ import {
 	getOrCreateMember,
 	getOrCreateGuild,
 } from '#lib/database';
+import { logger } from '#lib/structures';
+import { Listener } from '#lib/structures/listeners';
 import { container } from '#root/Container';
+import { formatMoney } from '#utils/functions';
+
 const { redis, metrics } = container;
 
 abstract class VoiceStateUpdateListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'voiceStateUpdate',
 		});
 	}
 
-	async run(oldState: VoiceState, newState: VoiceState) {
+	public async run(oldState: VoiceState, newState: VoiceState) {
 		if (!this.cobalt.testListeners) return;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (oldState.member?.partial) await oldState.member.fetch();
@@ -51,6 +52,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 			logEmbed.setTitle(`Member Joined VC`).setDescription(`**VC Channel:** ${newState.channel}`);
 			return void logChannel.send({ embeds: [logEmbed] });
 		}
+
 		if (oldState.channel && !newState.channel) {
 			if (oldState.member.user.bot) return;
 			const end = Date.now();
@@ -59,21 +61,21 @@ abstract class VoiceStateUpdateListener extends Listener {
 				const elapsed = end - Number(startTime);
 				metrics.voiceInc(elapsed);
 				metrics.voiceInc(elapsed, oldState.guild.id);
-				const time = elapsed / 60000;
+				const time = elapsed / 60_000;
 				const addMoney = Math.round(time * 9) + 1;
 				await addToWallet(oldState.member.id, addMoney);
 				await updateUser(oldState.member.id, { vcHours: [...user.vcHours, elapsed] });
 				await updateMember(oldState.member.id, oldState.guild.id, {
 					vcHours: [...member.vcHours, elapsed],
 				});
-				oldState.member
+				await oldState.member
 					.send({
 						content: `You have earned **${formatMoney(addMoney)}** for spending **${prettyMilliseconds(
 							elapsed,
 						)}** in VC.`,
 					})
-					.catch(err => {
-						const error = err as Error;
+					.catch(error_ => {
+						const error = error_ as Error;
 						logger.error(error, error.message);
 					});
 				logEmbed
@@ -85,8 +87,10 @@ abstract class VoiceStateUpdateListener extends Listener {
 			} else {
 				logEmbed.setTitle(`Member Left VC`).setDescription(`**VC Channel:** ${oldState.channel}`);
 			}
+
 			return void logChannel.send({ embeds: [logEmbed] });
 		}
+
 		if (oldState.channel && newState.channel && oldState.channel.id !== newState.channel.id) {
 			if (newState.member.user.bot) return;
 			logEmbed

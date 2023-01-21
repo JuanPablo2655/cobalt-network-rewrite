@@ -1,18 +1,18 @@
-import { Message, EmbedBuilder, TextChannel } from 'discord.js';
-import { Listener } from '#lib/structures/listeners';
-import { getImage } from '#utils/util';
-import { logger } from '#lib/structures';
-import { getDiff } from '#utils/functions';
+import { type Message, type TextChannel, EmbedBuilder } from 'discord.js';
 import { getOrCreateGuild } from '#lib/database';
+import { logger } from '#lib/structures';
+import { Listener } from '#lib/structures/listeners';
+import { getDiff } from '#utils/functions';
+import { getImage } from '#utils/util';
 
 abstract class MessageUpdateListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'messageUpdate',
 		});
 	}
 
-	async run(oldMessage: Message, newMessage: Message) {
+	public async run(oldMessage: Message, newMessage: Message) {
 		if (!this.cobalt.testListeners) return;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!oldMessage.author) return;
@@ -35,7 +35,7 @@ abstract class MessageUpdateListener extends Listener {
 			.setFooter({ text: `Message ID: ${newMessage.id}` })
 			.setTimestamp();
 		if (oldMessage.content !== newMessage.content) {
-			if (newMessage.content == '') {
+			if (newMessage.content === '') {
 				logEmbed.setImage(getImage(newMessage)!);
 			} else if (newMessage.attachments.size === 0) {
 				logEmbed.setDescription(
@@ -51,6 +51,7 @@ abstract class MessageUpdateListener extends Listener {
 				);
 				logEmbed.setImage(getImage(newMessage)!);
 			}
+
 			return void logChannel.send({ embeds: [logEmbed] });
 		}
 	}

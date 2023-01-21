@@ -17,4 +17,4 @@ export const SAVE_CATEGORIES = ['dev', 'settings'];
  * - gif
  * - webp
  */
-export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
+export const IMAGE_EXTENSION = /\.(?:bmp|jpe?g|png|gif|webp)$/i;

@@ -1,8 +1,9 @@
-import type { CobaltClient } from '../CobaltClient.js';
-import type * as DJS from 'discord.js';
-import type { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
+import { URL } from 'node:url';
 import { isClass } from '@sapphire/utilities';
+import type * as DJS from 'discord.js';
+import type { CobaltClient } from '../CobaltClient.js';
 import { IMAGE_EXTENSION } from './constants.js';
+import type { GenericCommand, InteractionCommand, Listener } from '#lib/structures';
 
 export interface ImageAttachment {
 	url: string;
@@ -13,7 +14,8 @@ export interface ImageAttachment {
 
 /**
  * Get a image attachment from a message
- * @param message The Message instance to get the image url from
+ *
+ * @param message - The Message instance to get the image url from
  */
 export function getAttachment(message: DJS.Message): ImageAttachment | null {
 	if (message.attachments.size) {
@@ -27,6 +29,7 @@ export function getAttachment(message: DJS.Message): ImageAttachment | null {
 			};
 		}
 	}
+
 	for (const embed of message.embeds) {
 		if (embed.thumbnail) {
 			return {
@@ -36,6 +39,7 @@ export function getAttachment(message: DJS.Message): ImageAttachment | null {
 				width: embed.thumbnail.width!,
 			};
 		}
+
 		if (embed.image) {
 			return {
 				url: embed.image.url,
@@ -51,7 +55,8 @@ export function getAttachment(message: DJS.Message): ImageAttachment | null {
 
 /**
  * Get the image url from a message
- * @param message The Message instance to get the image url from
+ *
+ * @param message - The Message instance to get the image url from
  */
 export function getImage(message: DJS.Message) {
 	const attachment = getAttachment(message);
@@ -60,8 +65,9 @@ export function getImage(message: DJS.Message) {
 
 /**
  * Calculate a multiplier for a user
- * @param user The user from to calculate the multiplier
- * @param client Cobalt client
+ *
+ * @param user - The user from to calculate the multiplier
+ * @param client - Cobalt client
  * @returns Returns a whole number ex. 6%
  */
 // TODO(Isidro): refactor this to depend on cache or database table or something I don't know yet
@@ -84,7 +90,7 @@ export async function calcMulti(user: DJS.User, client: CobaltClient): Promise<n
 	return multi;
 }
 
-export type Structures = Listener | GenericCommand | InteractionCommand;
+export type Structures = GenericCommand | InteractionCommand | Listener;
 
 export async function resolveFile<T>(file: string) {
 	const rootFolder = new URL('../../../', import.meta.url);

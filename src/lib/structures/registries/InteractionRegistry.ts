@@ -1,16 +1,16 @@
 import { globbySync as sync } from 'globby';
 import type { CobaltClient } from '#lib/CobaltClient';
-import type { InteractionCommand } from '#lib/structures/commands';
+import type { InteractionCommand } from '#lib/structures';
 import { logger } from '#lib/structures';
-import { resolveFile, validateFile } from '#utils/util';
 import { container } from '#root/Container';
+import { resolveFile, validateFile } from '#utils/util';
 
 export async function InteractionRegistry(cobalt: CobaltClient) {
 	try {
 		const files = sync('./dist/interactions/**/*.js');
 		await Promise.all(files.map(async file => loadInteraction(file, cobalt)));
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }

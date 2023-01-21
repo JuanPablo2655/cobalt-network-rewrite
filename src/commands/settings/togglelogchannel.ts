@@ -1,10 +1,10 @@
 import type { Guild, Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { Identifiers, UserError } from '#lib/errors';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 
 abstract class ToggleLogChannelCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'togglelogchannel',
 			description: 'Toggle the log channel to either send or ignore audit logs.',
@@ -14,7 +14,7 @@ abstract class ToggleLogChannelCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const option: boolean = args[0].toLowerCase() === 'true' || args[0].toLowerCase() === 'enable';
 		const guildId = (message.guild as Guild)?.id;
 		const guild = await getOrCreateGuild(guildId);

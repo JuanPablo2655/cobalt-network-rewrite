@@ -1,4 +1,4 @@
-import { Item, ItemData, Market } from './items.js';
+import { type Item, ItemData, Market } from './items.js';
 
 enum MiscType {
 	Book = 0,
@@ -8,11 +8,11 @@ enum MiscType {
 }
 
 export class Misc extends ItemData {
-	misc: {
+	public misc: {
 		type: MiscType;
 	};
 
-	constructor(type: MiscType) {
+	public constructor(type: MiscType) {
 		super();
 		this.misc = { type };
 	}

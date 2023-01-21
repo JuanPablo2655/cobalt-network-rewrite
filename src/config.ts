@@ -1,48 +1,85 @@
 import process from 'node:process';
 import { type ClientOptions, GatewayIntentBits, Options, Partials } from 'discord.js';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 export const OWNERS = process.env.OWNERS?.split(',') ?? ['288703114473635841'];
 
 export const config = {
-	/** Client information */
+	/**
+	 * Client information
+	 */
 	client: {
-		/** Bot client Id found in Discord Development Portal */
+		/**
+		 * Bot client Id found in Discord Development Portal
+		 */
 		id: process.env.CLIENT_ID,
-		/** Bot client secret found in Discord Development Portal */
+		/**
+		 * Bot client secret found in Discord Development Portal
+		 */
 		secret: process.env.CLIENT_SECRET,
 	},
-	/** Bot token */
+	/**
+	 * Bot token
+	 */
 	token: process.env.TOKEN,
-	/** Default message command prefix */
+	/**
+	 * Default message command prefix
+	 */
 	prefix: process.env.PREFIX ?? 'cn!',
-	/** MongoDB URI */
+	/**
+	 * MongoDB URI
+	 */
 	mongoURL: process.env.MONGO_URL ?? 'mongodb://localhost:27017/cobalt',
-	/** Redis URI */
+	/**
+	 * Redis URI
+	 */
 	redis: process.env.REDIS ?? 'redis://localhost:6379',
-	/** Either test listeners or not */
+	/**
+	 * Either test listeners or not
+	 */
 	testListeners: process.env.TEST_LISTENERS === 'true' ?? false,
-	/** Disable XP in development */
+	/**
+	 * Disable XP in development
+	 */
 	disableXp: process.env.DISABLE_XP === 'true' ?? false,
-	/** Webhook URLs */
+	/**
+	 * Webhook URLs
+	 */
 	webhooks: {
-		/** Shard webhook URL */
+		/**
+		 * Shard webhook URL
+		 */
 		shard: process.env.SHARD_URL,
-		/** Guild join/leave webhook URL */
+		/**
+		 * Guild join/leave webhook URL
+		 */
 		guild: process.env.GUILD_URL,
 	},
-	/** Elastic information */
+	/**
+	 * Elastic information
+	 */
 	elastic: {
-		/** Elastic index id */
+		/**
+		 * Elastic index id
+		 */
 		index: process.env.ELASTIC_INDEX ?? 'index',
-		/** Elastic URL */
+		/**
+		 * Elastic URL
+		 */
 		url: process.env.ELASTIC_URL ?? 'http://localhost:9200',
-		/** Elastic login username */
+		/**
+		 * Elastic login username
+		 */
 		username: process.env.ELASTIC_USERNAME,
-		/** Elastic login password */
+		/**
+		 * Elastic login password
+		 */
 		password: process.env.ELASTIC_PASSWORD,
-		/** Elastic logger name */
+		/**
+		 * Elastic logger name
+		 */
 		loggerName: process.env.LOGGER_NAME,
 	},
 };

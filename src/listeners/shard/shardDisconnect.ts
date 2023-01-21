@@ -1,16 +1,16 @@
-import { CloseEvent, EmbedBuilder, WebhookClient } from 'discord.js';
+import { type CloseEvent, EmbedBuilder, WebhookClient } from 'discord.js';
+import { logger } from '#lib/structures';
 import { Listener } from '#lib/structures/listeners';
 import { config } from '#root/config';
-import { logger } from '#lib/structures';
 
 abstract class ShardDisconnectListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'shardDisconnect',
 		});
 	}
 
-	async run(event: CloseEvent, id: number) {
+	public async run(event: CloseEvent, id: number) {
 		if (!this.cobalt.testListeners) return;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
@@ -18,7 +18,7 @@ abstract class ShardDisconnectListener extends Listener {
 			.setTitle(`Shard Disconnect`)
 			.setDescription(`Shard \`${id}\` disconnected:\n\n\`\`\`\nCode: ${event.code}\nReason: ${event.reason}\n\`\`\``)
 			.setTimestamp();
-		cobaltHook.send({ embeds: [shardEmbed] });
+		await cobaltHook.send({ embeds: [shardEmbed] });
 	}
 }
 

@@ -1,11 +1,11 @@
-import { Item, ItemData, Market } from './items.js';
+import { type Item, ItemData, Market } from './items.js';
 
 export class Food extends ItemData {
-	food: {
+	public food: {
 		saturation: number;
 	};
 
-	constructor(saturation: number) {
+	public constructor(saturation: number) {
 		super();
 		this.food = { saturation };
 	}

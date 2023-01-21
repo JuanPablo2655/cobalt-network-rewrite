@@ -1,27 +1,29 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
-import { InteractionCommand } from '#lib/structures/commands';
 import { experienceCommand } from './options.js';
 import { rank, reputation } from './subcommands/index.js';
+import { InteractionCommand } from '#lib/structures';
 
 abstract class ExperienceInteractionCommand extends InteractionCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: experienceCommand.name,
 			category: 'experience',
 		});
 	}
 
-	async run(interaction: ChatInputCommandInteraction<'cached'>) {
+	public async run(interaction: ChatInputCommandInteraction<'cached'>) {
 		const command = interaction.options.getSubcommand(true);
 		switch (command) {
 			case 'rank': {
 				await rank(this.cobalt, interaction);
 				break;
 			}
+
 			case 'reputation': {
 				await reputation(this.cobalt, interaction);
 				break;
 			}
+
 			default:
 				break;
 		}

@@ -1,16 +1,16 @@
-import { GuildMember, EmbedBuilder, Snowflake, TextChannel } from 'discord.js';
-import { Listener } from '#lib/structures/listeners';
-import { logger } from '#lib/structures';
+import { type GuildMember, type Snowflake, type TextChannel, EmbedBuilder } from 'discord.js';
 import { updateMember, getOrCreateMember, getOrCreateGuild } from '#lib/database';
+import { logger } from '#lib/structures';
+import { Listener } from '#lib/structures/listeners';
 
 abstract class GuildMemberRemoveListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'guildMemberRemove',
 		});
 	}
 
-	async run(member: GuildMember) {
+	public async run(member: GuildMember) {
 		if (!this.cobalt.testListeners) return;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (member.partial) await member.fetch();
@@ -31,6 +31,7 @@ abstract class GuildMemberRemoveListener extends Listener {
 				roles: roleList,
 			});
 		}
+
 		if (guild.leave?.channelId) {
 			const leaveChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)

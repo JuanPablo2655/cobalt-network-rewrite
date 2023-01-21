@@ -1,26 +1,28 @@
 import type { Ban, Leave, Level, Log, Welcome } from '@prisma/client';
-import { container } from '#root/Container';
 import { logger } from '#lib/structures';
+import { container } from '#root/Container';
+
 const { db } = container;
 
 async function queryGuild(id: string) {
 	try {
-		const ban = await db.ban.findUniqueOrThrow({ where: { id: id } });
-		const welcome = await db.welcome.findUniqueOrThrow({ where: { id: id } });
-		const leave = await db.leave.findUniqueOrThrow({ where: { id: id } });
-		const level = await db.level.findUniqueOrThrow({ where: { id: id } });
-		const log = await db.log.findUniqueOrThrow({ where: { id: id } });
+		const ban = await db.ban.findUniqueOrThrow({ where: { id } });
+		const welcome = await db.welcome.findUniqueOrThrow({ where: { id } });
+		const leave = await db.leave.findUniqueOrThrow({ where: { id } });
+		const level = await db.level.findUniqueOrThrow({ where: { id } });
+		const log = await db.log.findUniqueOrThrow({ where: { id } });
 		return { ban, welcome, leave, level, log };
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }
 
 /**
  * Create a guild entry to the database
- * @param guildId The guild Id
- * @param data The data to create the guild with
+ *
+ * @param id - The guild Id
+ * @param data - The data to create the guild with
  */
 export async function createGuild(id: string, data?: Partial<IGuild>) {
 	try {
@@ -69,60 +71,64 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
 		});
 		const half = await queryGuild(id);
 		return { ...raw, ...half };
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }
 
 /**
  * Get a guild entry from the database, if it doesn't exist, create it
- * @param id The guild Id
- * @param data The data to create the guild with if it doesn't exist
+ *
+ * @param id - The guild Id
+ * @param data - The data to create the guild with if it doesn't exist
  */
 export async function getOrCreateGuild(id: string, data?: Partial<IGuild>) {
 	try {
 		return (await getGuild(id)) ?? (await createGuild(id, data));
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }
 
 /**
  * Delete a guild entry from the database
- * @param id The guild Id
+ *
+ * @param id - The guild Id
  */
 export async function deleteGuild(id: string) {
 	try {
 		const half = await queryGuild(id);
 		const raw = await db.guild.delete({ where: { id } });
 		return { ...raw, ...half };
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }
 
 /**
  * Get a guild entry from the database
- * @param id The guild Id
+ *
+ * @param id - The guild Id
  */
 export async function getGuild(id: string) {
 	try {
 		const raw = await db.guild.findUniqueOrThrow({ where: { id } });
 		const half = await queryGuild(id);
 		return { ...raw, ...half };
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }
 
 /**
  * Update a guild entry in the database
- * @param id The guild Id
- * @param data The data to update the guild with
+ *
+ * @param id - The guild Id
+ * @param data - The data to update the guild with
  */
 export async function updateGuild(id: string, data?: Partial<IGuild>) {
 	try {
@@ -173,8 +179,8 @@ export async function updateGuild(id: string, data?: Partial<IGuild>) {
 		});
 		const half = await queryGuild(id);
 		return { ...raw, ...half };
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }

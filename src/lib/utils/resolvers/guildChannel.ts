@@ -1,6 +1,6 @@
-import { Identifiers, UserError } from '#lib/errors';
 import { ChannelMentionRegex, SnowflakeRegex } from '@sapphire/discord-utilities';
 import type { Guild, GuildBasedChannel, Snowflake } from 'discord.js';
+import { Identifiers, UserError } from '#lib/errors';
 
 export function resolveGuildChannel(parameter: string, guild: Guild) {
 	const channel = resolveById(parameter, guild) ?? resolveByQuery(parameter, guild);

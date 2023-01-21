@@ -1,8 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { CobaltClient } from '#lib/CobaltClient';
-import { formatMoney } from '#utils/functions';
-import { Identifiers, UserError } from '#lib/errors';
 import { addToWallet, getOrCreateBot, updateBot } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { formatMoney } from '#utils/functions';
 
 export async function reboot(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	await interaction.reply({ content: 'Shutting down.' });
@@ -17,9 +17,13 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 	const bot = await getOrCreateBot(cobalt.user.id);
 	if (!bot) throw new Error('Missing bot user');
 	let isDirector = false;
-	bot.directors?.forEach(director => {
-		if (director === interaction.user.id) return (isDirector = true);
-	});
+	if (bot.directors)
+		for (const director of bot.directors) {
+			if (director === interaction.user.id) {
+				isDirector = true;
+			}
+		}
+
 	if (!isDirector) throw new UserError({ identifier: Identifiers.PreconditionUserPermissions }, 'Not a director');
 	if (bot.bank < amount)
 		throw new UserError(

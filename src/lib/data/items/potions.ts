@@ -1,4 +1,4 @@
-import { ItemData, Item, Market } from './items.js';
+import { type Item, ItemData, Market } from './items.js';
 
 enum PotionStatType {
 	Heal = 0,
@@ -13,13 +13,13 @@ enum PotionEffectType {
 }
 
 export class Potion extends ItemData {
-	potion: {
-		stat: PotionStatType;
+	public potion: {
 		amount: number;
 		effect: PotionEffectType;
+		stat: PotionStatType;
 	};
 
-	constructor(stat: PotionStatType, amount: number, effect: PotionEffectType) {
+	public constructor(stat: PotionStatType, amount: number, effect: PotionEffectType) {
 		super();
 		this.potion = { stat, amount, effect };
 	}

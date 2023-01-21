@@ -1,12 +1,12 @@
 import type { Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
+import { addToWallet, getOrCreateBot, getOrCreateUser, removeFromWallet, updateBot } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
 import { formatMoney } from '#utils/functions';
 import { resolveMember } from '#utils/resolvers';
-import { addToWallet, getOrCreateBot, getOrCreateUser, removeFromWallet, updateBot } from '#lib/database';
 
 abstract class PayCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'pay',
 			description: 'Pay someone some of your money. There is a tax of **7.5%**.',
@@ -15,7 +15,7 @@ abstract class PayCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!this.cobalt.user) throw new Error('Missing user');
 		const bot = await getOrCreateBot(this.cobalt.user.id);
 		if (!bot) throw new Error('Missing bot database entry');
@@ -33,7 +33,7 @@ abstract class PayCommand extends GenericCommand {
 		if (!args[1]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'You need to pay the user some money');
 		if (args[1] === 'all') amount = author.wallet;
 		else amount = Number(args[1]);
-		if (isNaN(amount) && args[1] !== 'all')
+		if (Number.isNaN(amount) && args[1] !== 'all')
 			throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'invalid number');
 		if (author.wallet < amount)
 			throw new UserError(

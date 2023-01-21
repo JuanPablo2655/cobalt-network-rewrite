@@ -1,17 +1,17 @@
-import { Message, EmbedBuilder, TextChannel } from 'discord.js';
+import { type Message, type TextChannel, EmbedBuilder } from 'discord.js';
+import { getOrCreateGuild } from '#lib/database';
+import { logger } from '#lib/structures';
 import { Listener } from '#lib/structures/listeners';
 import { getImage } from '#utils/util';
-import { logger } from '#lib/structures';
-import { getOrCreateGuild } from '#lib/database';
 
 abstract class MessageDeleteListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'messageDelete',
 		});
 	}
 
-	async run(message: Message) {
+	public async run(message: Message) {
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
 		if (!this.cobalt.testListeners) return;
 		if (!message.author) return;
@@ -31,7 +31,7 @@ abstract class MessageDeleteListener extends Listener {
 			.setFooter({ text: `Message ID: ${message.id}` })
 			.setTimestamp()
 			.addFields([{ name: 'Text Channel', value: `${message.channel}` }]);
-		if (message.content == '') {
+		if (message.content === '') {
 			logEmbed.setImage(getImage(message)!);
 		} else if (message.attachments.size === 0) {
 			logEmbed.setDescription(`${message.content}`);
@@ -39,6 +39,7 @@ abstract class MessageDeleteListener extends Listener {
 			logEmbed.setDescription(`${message.content}`);
 			logEmbed.setImage(getImage(message)!);
 		}
+
 		return void logChannel.send({ embeds: [logEmbed] });
 	}
 }

@@ -1,9 +1,10 @@
 import type { Message } from 'discord.js';
-import { GenericCommand } from '#lib/structures/commands';
-import { Identifiers, UserError } from '#lib/errors';
 import { updateGuild } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { GenericCommand } from '#lib/structures';
+
 abstract class PrefixCommand extends GenericCommand {
-	constructor() {
+	public constructor() {
 		super({
 			name: 'prefix',
 			description: 'Change the prefix for the server.',
@@ -13,7 +14,7 @@ abstract class PrefixCommand extends GenericCommand {
 		});
 	}
 
-	async run(message: Message, args: string[], addCD: () => Promise<void>) {
+	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		// TODO(Isidro): refactor to include limits
 		// aslkd;fj84rfo34fhweporufhw3p49i7h3098f457h3qew9fh3qpg-hg9-03r - valid prefix lol
 		await addCD();

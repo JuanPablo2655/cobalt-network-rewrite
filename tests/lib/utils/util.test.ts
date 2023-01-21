@@ -1,8 +1,9 @@
+import { URL } from 'node:url';
+import type { DeepPartial } from '@sapphire/utilities';
+import { type Message, Attachment, Collection } from 'discord.js';
 import { describe, test, expect } from 'vitest';
 import { Listener } from '#lib/structures';
 import { getImage, resolveFile } from '#utils/util';
-import { Attachment, Collection, Message } from 'discord.js';
-import { DeepPartial } from '@sapphire/utilities';
 
 // TODO(*): Write a more thorough test suite
 describe('Cobalt', () => {

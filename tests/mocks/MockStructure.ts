@@ -1,16 +1,14 @@
 import { Listener } from '#lib/structures';
 
 abstract class MockListener extends Listener {
-	constructor() {
+	public constructor() {
 		super({
 			// @ts-expect-error: testing structure
 			name: 'test',
 		});
 	}
 
-	async run() {
-		return;
-	}
+	public async run() {}
 }
 
 export default MockListener;

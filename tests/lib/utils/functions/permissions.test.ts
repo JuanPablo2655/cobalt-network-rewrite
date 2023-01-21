@@ -1,6 +1,6 @@
+import { describe, test, expect } from 'vitest';
 import { createGuild, createGuildMember, createRole } from '#mocks/MockInstances';
 import { isAdmin, isGuildOwner, isModerator, isOwner } from '#utils/functions';
-import { describe, test, expect } from 'vitest';
 
 describe('functions', () => {
 	describe('permissions', () => {

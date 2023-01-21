@@ -1,3 +1,4 @@
+/* eslint-disable tsdoc/syntax */
 import type { ClientEvents } from 'discord.js';
 
 export interface ListenerOptions {
@@ -8,15 +9,17 @@ export interface ListenerOptions {
 
 	/**
 	 * option to make it run once
+	 *
 	 * @default false
 	 */
 	once?: boolean;
 
 	/**
 	 * Executes the listener's logic
-	 * @param args The listener parameters
+	 *
+	 * @param args - The listener parameters
 	 */
-	run: (...args: unknown[]) => void | Promise<void>;
+	run(...args: unknown[]): Promise<void> | void;
 }
 
 export type ListenerType = Omit<ListenerOptions, 'run'>;

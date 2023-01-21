@@ -1,12 +1,12 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { type ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
-import { jobs } from '#lib/data';
 import type { CobaltClient } from '#lib/CobaltClient';
-import { calcMulti } from '#utils/util';
-import { days, months } from '#utils/common';
-import { Identifiers, UserError } from '#lib/errors';
-import { addMulti, formatMoney, formatNumber } from '#utils/functions';
+import { jobs } from '#lib/data';
 import { addToWallet, getOrCreateBot, getOrCreateUser, removeFromWallet, updateBot, updateUser } from '#lib/database';
+import { Identifiers, UserError } from '#lib/errors';
+import { days, months } from '#utils/common';
+import { addMulti, formatMoney, formatNumber } from '#utils/functions';
+import { calcMulti } from '#utils/util';
 
 export async function work(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = await getOrCreateUser(interaction.user.id);
@@ -22,7 +22,7 @@ export async function work(cobalt: CobaltClient, interaction: ChatInputCommandIn
 	await addToWallet(interaction.user.id, moneyEarned);
 	const cleanEntry = workEntry
 		?.replace(/{user.username}/g, interaction.user.username)
-		.replace(/{money}/g, formatNumber(moneyEarned) ?? '0');
+		.replaceAll('{money}', formatNumber(moneyEarned) ?? '0');
 	return interaction.reply({ content: cleanEntry });
 }
 
@@ -62,11 +62,11 @@ export async function balance(_cobalt: CobaltClient, interaction: ChatInputComma
 		.setDescription(
 			`**Wallet**: ${formatMoney(profile.wallet)}\n**Bank**: ${formatMoney(profile.bank)} / ${formatMoney(
 				profile.bankSpace,
-			)} \`${bankPercent.toString().substring(0, 4)}%\`\n**Net Worth**: ${formatMoney(
+			)} \`${bankPercent.toString().slice(0, 4)}%\`\n**Net Worth**: ${formatMoney(
 				profile.netWorth,
 			)}\n**Bounty**: ${formatMoney(profile.bounty)}`,
 		);
-	interaction.reply({ embeds: [balanceEmbed] });
+	await interaction.reply({ embeds: [balanceEmbed] });
 }
 
 export async function daily(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
@@ -84,6 +84,7 @@ export async function daily(_cobalt: CobaltClient, interaction: ChatInputCommand
 			)}** left before you can claim your daily!`,
 		);
 	}
+
 	if (member.id === interaction.user.id) {
 		const dailyAmount = Math.floor(250 + Math.random() * 150);
 		await updateUser(interaction.user.id, { daily: new Date(cooldown) });
@@ -92,6 +93,7 @@ export async function daily(_cobalt: CobaltClient, interaction: ChatInputCommand
 			content: `You have received your daily **${formatMoney(dailyAmount)}**.`,
 		});
 	}
+
 	const dailyAmount = Math.floor(250 + Math.random() * 150);
 	const moneyEarned = addMulti(dailyAmount, 10);
 	await updateUser(interaction.user.id, { daily: new Date(cooldown) });
@@ -122,6 +124,7 @@ export async function weekly(_cobalt: CobaltClient, interaction: ChatInputComman
 			content: `You have received your weekly **${formatMoney(weeklyAmount)}**.`,
 		});
 	}
+
 	const weeklyAmount = Math.floor(750 + Math.random() * 750);
 	const moneyEarned = addMulti(weeklyAmount, 10);
 	await updateUser(interaction.user.id, { weekly: new Date(cooldown) });
@@ -145,14 +148,15 @@ export async function monthly(_cobalt: CobaltClient, interaction: ChatInputComma
 			)}** left before you can claim your monthly!`,
 		);
 	if (member?.id === interaction.user.id) {
-		const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
+		const monthlyAmount = Math.floor(3_500 + Math.random() * 1_500);
 		await updateUser(interaction.user.id, { monthly: new Date(cooldown) });
 		await addToWallet(member.id, monthlyAmount);
 		return interaction.reply({
 			content: `You have received your monthly **${formatMoney(monthlyAmount)}**.`,
 		});
 	}
-	const monthlyAmount = Math.floor(3500 + Math.random() * 1500);
+
+	const monthlyAmount = Math.floor(3_500 + Math.random() * 1_500);
 	const moneyEarned = addMulti(monthlyAmount, 10);
 	await updateUser(interaction.user.id, { monthly: new Date(cooldown) });
 	await addToWallet(member.id, moneyEarned);

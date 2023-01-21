@@ -2,7 +2,8 @@ import { Time } from '@sapphire/time-utilities';
 
 /**
  * Converts a number of seconds to milliseconds
- * @param seconds The amount of seconds
+ *
+ * @param seconds - The amount of seconds
  * @returns The amount of milliseconds `seconds` equals to
  */
 export function seconds(seconds: number): number {
@@ -11,7 +12,8 @@ export function seconds(seconds: number): number {
 
 /**
  * Converts a number of minutes to milliseconds
- * @param minutes The amount of minutes
+ *
+ * @param minutes - The amount of minutes
  * @returns The amount of milliseconds `minutes` equals to
  */
 export function minutes(minutes: number): number {
@@ -20,7 +22,8 @@ export function minutes(minutes: number): number {
 
 /**
  * Converts a number of hours to milliseconds
- * @param hours The amount of hours
+ *
+ * @param hours - The amount of hours
  * @returns The amount of milliseconds `hours` equals to
  */
 export function hours(hours: number): number {
@@ -29,7 +32,8 @@ export function hours(hours: number): number {
 
 /**
  * Converts a number of days to milliseconds
- * @param days The amount of days
+ *
+ * @param days - The amount of days
  * @returns The amount of milliseconds `days` equals to
  */
 export function days(days: number): number {
@@ -38,7 +42,8 @@ export function days(days: number): number {
 
 /**
  * Converts a number of months to milliseconds
- * @param months The amount of months
+ *
+ * @param months - The amount of months
  * @returns The amount of milliseconds `months` equals to
  */
 export function months(months: number): number {
@@ -47,7 +52,8 @@ export function months(months: number): number {
 
 /**
  * Converts a number of years to milliseconds
- * @param years The amount of years
+ *
+ * @param years - The amount of years
  * @returns The amount of milliseconds `years` equals to
  */
 export function years(years: number): number {

@@ -15,8 +15,9 @@ async function main() {
 					logger.warn(stream);
 				});
 		}
+
 		await cobalt.login();
-	} catch (err) {
+	} catch {
 		await cobalt.destroy();
 		process.exit(1);
 	}
@@ -39,4 +40,4 @@ process.on('unhandledRejection', err => {
 	logger.error(error, error.message);
 });
 
-main().catch(error => logger.error(error));
+await main().catch(error => logger.error(error));

@@ -1,16 +1,16 @@
 import { globbySync as sync } from 'globby';
 import type { CobaltClient } from '#lib/CobaltClient';
-import type { GenericCommand } from '#lib/structures/commands';
+import type { GenericCommand } from '#lib/structures';
 import { logger } from '#lib/structures';
-import { resolveFile, validateFile } from '#utils/util';
 import { container } from '#root/Container';
+import { resolveFile, validateFile } from '#utils/util';
 
 export async function CommandRegistry(cobalt: CobaltClient) {
 	try {
 		const files = sync('./dist/commands/**/*.js');
 		await Promise.all(files.map(async file => loadCommand(file, cobalt)));
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }
@@ -21,6 +21,6 @@ async function loadCommand(file: string, cobalt: CobaltClient) {
 	validateFile(file, command);
 	command.cobalt = cobalt;
 	container.commands.set(command.name, command);
-	command.aliases.forEach(alias => container.commands.set(alias, command));
+	for (const alias of command.aliases) container.commands.set(alias, command);
 	logger.info({ command: { name: command.name } }, `Registering command: ${command.name}`);
 }

@@ -1,16 +1,16 @@
 import { globbySync as sync } from 'globby';
 import type { CobaltClient } from '#lib/CobaltClient';
-import type { Listener } from '#lib/structures/listeners';
 import { logger } from '#lib/structures';
-import { resolveFile, validateFile } from '#utils/util';
+import type { Listener } from '#lib/structures/listeners';
 import { container } from '#root/Container';
+import { resolveFile, validateFile } from '#utils/util';
 
 export async function ListenerRegistry(cobalt: CobaltClient) {
 	try {
 		const files = sync('./dist/listeners/**/*.js');
 		await Promise.all(files.map(async file => loadListener(file, cobalt)));
-	} catch (err) {
-		const error = err as Error;
+	} catch (error_) {
+		const error = error_ as Error;
 		logger.error(error, error.message);
 	}
 }
