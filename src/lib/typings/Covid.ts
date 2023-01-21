@@ -1,4 +1,3 @@
-/* eslint-disable typescript-sort-keys/interface */
 export interface CovidAll {
 	updated: number;
 	cases: number;

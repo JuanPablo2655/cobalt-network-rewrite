@@ -1,6 +1,6 @@
 import type { Message } from 'discord.js';
 import { GenericCommand } from '#lib/structures';
-/* import { resolveRole } from '#utils/resolvers'; */
+// import { resolveRole } from '#utils/resolvers';
 
 abstract class TestCommand extends GenericCommand {
 	public constructor() {

@@ -22,7 +22,7 @@ abstract class addSocialCredit extends GenericCommand {
 		const member = await resolveMember(args[0], message.guild);
 		if (member.id === message.author.id)
 			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "can't give yourself social credit");
-		const amount = Number.parseInt(args[1], 10);
+		const amount = Number(args[1]);
 		if (Number.isNaN(amount)) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		await addCD();
 		const userData = await getOrCreateUser(member.id);

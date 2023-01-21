@@ -11,6 +11,7 @@
     "#lib/errors": "./dist/lib/errors/index.js",
     "#lib/database": "./dist/lib/database/index.js",
     "#lib/structures": "./dist/lib/structures/index.js",
+    "#lib/structures/commands": "./dist/lib/structures/commands/index.js",
     "#lib/structures/listeners": "./dist/lib/structures/listeners/index.js",
     "#root/*": "./dist/*.js",
     "#utils/*": "./dist/lib/utils/*.js",

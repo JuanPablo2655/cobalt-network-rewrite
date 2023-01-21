@@ -23,7 +23,7 @@ abstract class WorkCommand extends GenericCommand {
 		if (user.job === null)
 			throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'You need a job to work.');
 		await addCD();
-		const job = jobs.find(job => job.id === user.job);
+		const job = jobs.find(j => j.id === user.job);
 		if (!job) throw new Error('Invalid job id');
 		const workEntry = job.entries[Math.floor(Math.random() * job.entries.length)];
 		const money = Math.floor(job.minAmount + Math.random() * 250);

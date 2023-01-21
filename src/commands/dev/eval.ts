@@ -27,7 +27,6 @@ abstract class EvalCommand extends GenericCommand {
 					evalued = await eval('(async() => {\n' + args.slice(1).join(' ') + '\n})();');
 					evalued = inspect(evalued, { depth: 0 });
 				} catch (error) {
-					// eslint-disable-next-line @typescript-eslint/no-base-to-string
 					evalued = error instanceof Error ? error.toString() : 'Unknown Error';
 				}
 
@@ -44,7 +43,6 @@ abstract class EvalCommand extends GenericCommand {
 					if (stdout) evalued = stdout;
 					if (stderr) evalued = stderr;
 				} catch (error) {
-					// eslint-disable-next-line @typescript-eslint/no-base-to-string
 					evalued = error instanceof Error ? error.toString() : 'Unknown Error';
 				}
 
@@ -58,7 +56,6 @@ abstract class EvalCommand extends GenericCommand {
 					evalued = await eval(args.join(' '));
 					evalued = inspect(evalued, { depth: 0 });
 				} catch (error) {
-					// eslint-disable-next-line @typescript-eslint/no-base-to-string
 					evalued = error instanceof Error ? error.toString() : 'Unknown Error';
 				}
 

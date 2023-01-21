@@ -63,8 +63,8 @@ abstract class MessageListener extends Listener {
 				if (!profile) throw new Error('User not found in database');
 				if (_exp && guild.level?.enabled) {
 					const cleanMessage = guild.level.message
-						?.replace(/{user.username}/g, `**${message.author.username}**`)
-						.replaceAll(/{user.tag}/g, `**${message.author.tag}**`)
+						?.replaceAll('{user.username}', `**${message.author.username}**`)
+						.replaceAll('{user.tag}', `**${message.author.tag}**`)
 						.replaceAll('{newLevel}', `**${formatNumber(profile.level)}**`);
 					await message.channel.send({ content: cleanMessage });
 				}

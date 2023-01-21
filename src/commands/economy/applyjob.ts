@@ -29,7 +29,7 @@ abstract class ApplyJobCommand extends GenericCommand {
 					guild?.prefix ?? this.cobalt.user?.username
 				}listjobs\``,
 			);
-		const job = jobs.find(job => job.id === args[0].toLowerCase());
+		const job = jobs.find(j => j.id === args[0].toLowerCase());
 		if (!job)
 			throw new UserError(
 				{ identifier: Identifiers.PreconditionMissingData },
