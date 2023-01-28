@@ -12,11 +12,10 @@ export async function addXp(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { xp: user.xp + amount, totalXp: user.totalXp + amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -32,12 +31,11 @@ export async function removeXp(id: string, amount: number, levelUp: boolean) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		if (levelUp) return updateUser(id, { xp: user.xp - amount });
 		return updateUser(id, { xp: user.xp - amount, totalXp: user.totalXp - amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -52,11 +50,10 @@ export async function addLevel(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { level: user.level + amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -71,11 +68,10 @@ export async function removeLevel(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { level: user.level - amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -99,7 +95,6 @@ export function nextLevel(level: number) {
 export async function rewardXp(message: Message) {
 	try {
 		const user = await getOrCreateUser(message.author.id);
-		if (!user) throw new Error('Database error');
 		const xp = Math.round(Math.random() * 11 + 15);
 		const nextLevelXp = nextLevel(user.level);
 		if (user.xp + xp >= nextLevelXp) {
@@ -111,8 +106,8 @@ export async function rewardXp(message: Message) {
 			await addXp(message.author.id, xp);
 			return false;
 		}
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }

@@ -11,9 +11,9 @@ async function queryGuild(id: string) {
 		const level = await db.level.findUniqueOrThrow({ where: { id } });
 		const log = await db.log.findUniqueOrThrow({ where: { id } });
 		return { ban, welcome, leave, level, log };
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -70,9 +70,9 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
 		});
 		const half = await queryGuild(id);
 		return { ...raw, ...half };
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -84,10 +84,10 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
  */
 export async function getOrCreateGuild(id: string, data?: Partial<IGuild>) {
 	try {
-		return (await getGuild(id)) ?? (await createGuild(id, data));
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+		return await getGuild(id).catch(async () => createGuild(id, data));
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -101,9 +101,9 @@ export async function deleteGuild(id: string) {
 		const half = await queryGuild(id);
 		const raw = await db.guild.delete({ where: { id } });
 		return { ...raw, ...half };
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -117,9 +117,9 @@ export async function getGuild(id: string) {
 		const raw = await db.guild.findUniqueOrThrow({ where: { id } });
 		const half = await queryGuild(id);
 		return { ...raw, ...half };
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -131,11 +131,49 @@ export async function getGuild(id: string) {
  */
 export async function updateGuild(id: string, data?: Partial<IGuild>) {
 	try {
-		const raw = await db.guild.update({
-			where: {
+		const raw = await db.guild.upsert({
+			create: {
 				id,
+				prefix: data?.prefix,
+				blacklistedWords: data?.blacklistedWords,
+				disabledCommands: data?.disabledCommands,
+				disabledCategories: data?.disabledCategories,
+				mutedRoleId: data?.mutedRoleId,
+				level: {
+					create: {
+						message: data?.level?.message,
+						enabled: data?.level?.enabled,
+					},
+				},
+				welcome: {
+					create: {
+						message: data?.welcome?.message,
+						channelId: data?.welcome?.channelId,
+						enabled: data?.welcome?.enabled,
+					},
+				},
+				leave: {
+					create: {
+						message: data?.leave?.message,
+						channelId: data?.leave?.channelId,
+						enabled: data?.leave?.enabled,
+					},
+				},
+				ban: {
+					create: {
+						message: data?.ban?.message,
+						enabled: data?.ban?.enabled,
+					},
+				},
+				log: {
+					create: {
+						channelId: data?.log?.channelId,
+						enabled: data?.log?.enabled,
+						disabledEvents: data?.log?.disabledEvents,
+					},
+				},
 			},
-			data: {
+			update: {
 				prefix: data?.prefix,
 				blacklistedWords: data?.blacklistedWords,
 				disabledCommands: data?.disabledCommands,
@@ -175,12 +213,15 @@ export async function updateGuild(id: string, data?: Partial<IGuild>) {
 					},
 				},
 			},
+			where: {
+				id,
+			},
 		});
 		const half = await queryGuild(id);
 		return { ...raw, ...half };
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 

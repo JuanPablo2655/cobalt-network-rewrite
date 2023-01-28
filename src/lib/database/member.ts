@@ -27,9 +27,9 @@ export async function createMember(
 				...data,
 			},
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -46,10 +46,10 @@ export async function getOrCreateMember(
 	data?: Partial<Omit<Member, 'guildId' | 'userId'>>,
 ) {
 	try {
-		return (await getMember(userId, guildId)) ?? (await createMember(userId, guildId, data));
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+		return await getMember(userId, guildId).catch(async () => createMember(userId, guildId, data));
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -64,9 +64,9 @@ export async function deleteMember(userId: string, guildId: string) {
 		return db.member.delete({
 			where: { MemberId: { userId, guildId } },
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -81,9 +81,9 @@ export async function getMember(userId: string, guildId: string) {
 		return db.member.findUniqueOrThrow({
 			where: { MemberId: { userId, guildId } },
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -100,14 +100,23 @@ export async function updateMember(
 	data?: Partial<Omit<Member, 'guildId' | 'userId'>>,
 ) {
 	try {
-		return db.member.update({
-			where: { MemberId: { userId, guildId } },
-			data: {
+		return db.member.upsert({
+			create: {
+				user: {
+					connectOrCreate: { where: { id: userId }, create: { id: userId } },
+				},
+				guild: {
+					connectOrCreate: { where: { id: guildId }, create: { id: guildId } },
+				},
 				...data,
 			},
+			update: {
+				...data,
+			},
+			where: { MemberId: { userId, guildId } },
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }

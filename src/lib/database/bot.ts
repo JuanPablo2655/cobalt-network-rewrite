@@ -17,9 +17,9 @@ export async function createBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
 				...data,
 			},
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -31,10 +31,10 @@ export async function createBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
  */
 export async function getOrCreateBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
 	try {
-		return (await getBot(id)) ?? (await createBot(id, data));
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+		return await getBot(id).catch(async () => createBot(id, data));
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -48,9 +48,9 @@ export async function deleteBot(id: string) {
 		return db.bot.delete({
 			where: { id },
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -64,9 +64,9 @@ export async function getBot(id: string) {
 		return db.bot.findUniqueOrThrow({
 			where: { id },
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -78,14 +78,18 @@ export async function getBot(id: string) {
  */
 export async function updateBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
 	try {
-		return db.bot.update({
-			where: { id },
-			data: {
+		return db.bot.upsert({
+			create: {
+				id,
 				...data,
 			},
+			update: {
+				...data,
+			},
+			where: { id },
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }

@@ -17,9 +17,9 @@ export async function createUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 				...data,
 			},
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -31,10 +31,10 @@ export async function createUser(id: string, data?: Partial<Omit<User, 'id'>>) {
  */
 export async function getOrCreateUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 	try {
-		return (await getUser(id)) ?? (await createUser(id, data));
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+		return await getUser(id).catch(async () => createUser(id, data));
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -46,9 +46,9 @@ export async function getOrCreateUser(id: string, data?: Partial<Omit<User, 'id'
 export async function deleteUser(id: string) {
 	try {
 		return db.user.delete({ where: { id } });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -60,9 +60,9 @@ export async function deleteUser(id: string) {
 export async function getUser(id: string) {
 	try {
 		return db.user.findUniqueOrThrow({ where: { id } });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -74,14 +74,18 @@ export async function getUser(id: string) {
  */
 export async function updateUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 	try {
-		return db.user.update({
-			where: { id },
-			data: {
+		return db.user.upsert({
+			create: {
+				id,
 				...data,
 			},
+			update: {
+				...data,
+			},
+			where: { id },
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }

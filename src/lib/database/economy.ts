@@ -17,11 +17,10 @@ export async function addToWallet(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { wallet: user.wallet + amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -36,11 +35,10 @@ export async function removeFromWallet(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { wallet: user.wallet - amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -55,11 +53,10 @@ export async function addToBank(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { bank: user.bank + amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -74,11 +71,10 @@ export async function removeFromBank(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { bank: user.bank - amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -93,11 +89,10 @@ export async function addBankSpace(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { bankSpace: user.bankSpace + amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -114,9 +109,9 @@ export async function removeBankSpace(id: string, amount: number) {
 		const user = await getOrCreateUser(id);
 		if (!user) throw new Error('Database error');
 		return updateUser(id, { bankSpace: user.bankSpace - amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -131,11 +126,10 @@ export async function addBounty(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { bounty: user.bounty + amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -150,11 +144,10 @@ export async function removeBounty(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { bounty: user.bounty - amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -166,12 +159,10 @@ export async function removeBounty(id: string, amount: number) {
  */
 export async function updateJob(id: string, job: string | null) {
 	try {
-		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, { job });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -183,7 +174,6 @@ export async function updateJob(id: string, job: string | null) {
 export async function killUser(id: string) {
 	try {
 		const user = await getOrCreateUser(id);
-		if (!user) throw new Error('Database error');
 		return updateUser(id, {
 			wallet: 0,
 			bank: 0,
@@ -192,9 +182,9 @@ export async function killUser(id: string) {
 			job: null,
 			deaths: user.deaths + 1,
 		});
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -204,12 +194,15 @@ export async function killUser(id: string) {
  * @param message - The message
  */
 export async function awardBankSpace(message: Message) {
-	const user = await getOrCreateUser(message.author.id);
-	if (!user) throw new Error('Database error');
-	const amount = Math.round(Math.random() * 11 + 15);
-	const multi = await calcMulti(message.author, cobalt);
-	const total = addMulti(amount, multi);
-	await addBankSpace(message.author.id, total);
+	try {
+		const amount = Math.round(Math.random() * 11 + 15);
+		const multi = await calcMulti(message.author, cobalt);
+		const total = addMulti(amount, multi);
+		await addBankSpace(message.author.id, total);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
+	}
 }
 
 /**
@@ -223,11 +216,10 @@ export async function addBotBank(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const bot = await getOrCreateBot(id);
-		if (!bot) throw new Error('Database error');
 		return updateBot(id, { bank: bot.bank + amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -242,11 +234,10 @@ export async function removeBotBank(id: string, amount: number) {
 	if (amount <= 0) throw new TypeError('Must be more than zero.');
 	try {
 		const bot = await getOrCreateBot(id);
-		if (!bot) throw new Error('Database error');
 		return updateBot(id, { bank: bot.bank - amount });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
 
@@ -260,11 +251,9 @@ export async function updateTax(id: string, tax: number) {
 	if (Number.isNaN(tax)) throw new TypeError('Tax must be a number.');
 	if (tax <= 0) throw new TypeError('Must be more than zero.');
 	try {
-		const bot = await getOrCreateBot(id);
-		if (!bot) throw new Error('Database error');
 		return updateBot(id, { tax });
-	} catch (error_) {
-		const error = error_ as Error;
-		throw new Error(error.message);
+	} catch (error) {
+		const err = error as Error;
+		throw new Error(err.message);
 	}
 }
