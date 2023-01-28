@@ -17,7 +17,6 @@ abstract class DepositCommand extends GenericCommand {
 
 	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const profile = await getOrCreateUser(message.author.id);
-		if (!profile) throw new Error('Missing user database entry');
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'How much money?');
 		let money = Number(args[0]);
 		if (Number.isNaN(money) && args[0] !== 'max')

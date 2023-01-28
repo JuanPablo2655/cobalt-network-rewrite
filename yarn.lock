@@ -1016,6 +1016,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@skyra/env-utilities@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@skyra/env-utilities@npm:1.1.0"
+  dependencies:
+    dotenv-cra: ^3.0.2
+  checksum: 4b33b0c11041f1b0075bfa92ddbece9d09cb16c2c2cc9818f3ef49bf5c4e82a3945160abed220080d1b474f3c8af07ef11ca680742dbc7e2d5a930af9955f065
+  languageName: node
+  linkType: hard
+
 "@tokenizer/token@npm:^0.3.0":
   version: 0.3.0
   resolution: "@tokenizer/token@npm:0.3.0"
@@ -2201,6 +2210,7 @@ __metadata:
     "@sapphire/discord-utilities": ^2.12.0
     "@sapphire/time-utilities": ^1.7.8
     "@sapphire/utilities": ^3.11.0
+    "@skyra/env-utilities": ^1.1.0
     "@types/diff": ^5.0.2
     "@types/eslint": ^8
     "@types/express": ^4.17.15
@@ -2716,6 +2726,30 @@ __metadata:
   dependencies:
     is-obj: ^2.0.0
   checksum: d5775790093c234ef4bfd5fbe40884ff7e6c87573e5339432870616331189f7f5d86575c5b5af2dcf0f61172990f4f734d07844b1f23482fff09e3c4bead05ea
+  languageName: node
+  linkType: hard
+
+"dotenv-cra@npm:^3.0.2":
+  version: 3.0.3
+  resolution: "dotenv-cra@npm:3.0.3"
+  dependencies:
+    dotenv: ^10.0.0
+    dotenv-expand: ^5.1.0
+  checksum: 2e4b60113757273685453a30f405601258f8d73066babad772f22d238bf9dd5f93d92e7e6e22c76bf1d4f74a2e4f694be78bb2e324bd7d9b36e0476d61abc930
+  languageName: node
+  linkType: hard
+
+"dotenv-expand@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "dotenv-expand@npm:5.1.0"
+  checksum: 8017675b7f254384915d55f9eb6388e577cf0a1231a28d54b0ca03b782be9501b0ac90ac57338636d395fa59051e6209e9b44b8ddf169ce6076dffb5dea227d3
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "dotenv@npm:10.0.0"
+  checksum: f412c5fe8c24fbe313d302d2500e247ba8a1946492db405a4de4d30dd0eb186a88a43f13c958c5a7de303938949c4231c56994f97d05c4bc1f22478d631b4005
   languageName: node
   linkType: hard
 

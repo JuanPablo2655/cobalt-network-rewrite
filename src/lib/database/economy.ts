@@ -1,6 +1,5 @@
 import type { Message } from 'discord.js';
 import { updateUser, updateBot, getOrCreateUser, getOrCreateBot } from '#lib/database';
-import { logger } from '#lib/structures';
 import { container } from '#root/Container';
 import { addMulti } from '#utils/functions';
 import { calcMulti } from '#utils/util';
@@ -22,7 +21,7 @@ export async function addToWallet(id: string, amount: number) {
 		return updateUser(id, { wallet: user.wallet + amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -41,7 +40,7 @@ export async function removeFromWallet(id: string, amount: number) {
 		return updateUser(id, { wallet: user.wallet - amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -60,7 +59,7 @@ export async function addToBank(id: string, amount: number) {
 		return updateUser(id, { bank: user.bank + amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -79,7 +78,7 @@ export async function removeFromBank(id: string, amount: number) {
 		return updateUser(id, { bank: user.bank - amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -98,7 +97,7 @@ export async function addBankSpace(id: string, amount: number) {
 		return updateUser(id, { bankSpace: user.bankSpace + amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -117,7 +116,7 @@ export async function removeBankSpace(id: string, amount: number) {
 		return updateUser(id, { bankSpace: user.bankSpace - amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -136,7 +135,7 @@ export async function addBounty(id: string, amount: number) {
 		return updateUser(id, { bounty: user.bounty + amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -155,7 +154,7 @@ export async function removeBounty(id: string, amount: number) {
 		return updateUser(id, { bounty: user.bounty - amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -172,7 +171,7 @@ export async function updateJob(id: string, job: string | null) {
 		return updateUser(id, { job });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -195,7 +194,7 @@ export async function killUser(id: string) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -228,7 +227,7 @@ export async function addBotBank(id: string, amount: number) {
 		return updateBot(id, { bank: bot.bank + amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -247,7 +246,7 @@ export async function removeBotBank(id: string, amount: number) {
 		return updateBot(id, { bank: bot.bank - amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -266,6 +265,6 @@ export async function updateTax(id: string, tax: number) {
 		return updateBot(id, { tax });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }

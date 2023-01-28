@@ -18,8 +18,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 		if (!oldMember.guild) return;
 		if (!oldMember.guild.available) return;
 		const guild = await getOrCreateGuild(newMember.guild.id);
-		if (!guild) return;
-		if (!guild.log?.enabled) return;
+		if (!guild.log.enabled) return;
 		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache
@@ -40,7 +39,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 				.setTitle('Roles Update')
 				.setColor('#2f7db1')
 				.setDescription(`Role(s) Added: ${addedRoles.join(', ')}`);
-			return void logChannel.send({ embeds: [logEmbed] });
+			return void logChannel?.send({ embeds: [logEmbed] });
 		}
 
 		if (oldMember.roles.cache.size > newMember.roles.cache.size) {
@@ -53,7 +52,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 				.setTitle('Roles Update')
 				.setColor('#2f7db1')
 				.setDescription(`Role(s) Removed: ${removedRoles.join(', ')}`);
-			return void logChannel.send({ embeds: [logEmbed] });
+			return void logChannel?.send({ embeds: [logEmbed] });
 		}
 
 		if (oldMember.nickname !== newMember.nickname) {
@@ -63,7 +62,7 @@ abstract class GuildMemberUpdateListener extends Listener {
 				.setTitle(`Nickname Update`)
 				.setColor('#2f7db1')
 				.setDescription(`Old Nickname: **${oldNick}**\nNew Nickname: **${newNick}**`);
-			return void logChannel.send({ embeds: [logEmbed] });
+			return void logChannel?.send({ embeds: [logEmbed] });
 		}
 
 		if (!oldMember.premiumSince && newMember.premiumSince) {
@@ -76,12 +75,12 @@ abstract class GuildMemberUpdateListener extends Listener {
 					content: `You have boosted **${newMember.guild.name}**, you also have an additional **4%** multi!`,
 				});
 			logEmbed.setTitle(`Booster Added`).setColor('#118511');
-			return void logChannel.send({ embeds: [logEmbed] });
+			return void logChannel?.send({ embeds: [logEmbed] });
 		}
 
 		if (oldMember.premiumSince && !newMember.premiumSince) {
 			logEmbed.setTitle(`Booster Removed`).setColor('#8f0a0a');
-			return void logChannel.send({ embeds: [logEmbed] });
+			return void logChannel?.send({ embeds: [logEmbed] });
 		}
 	}
 }

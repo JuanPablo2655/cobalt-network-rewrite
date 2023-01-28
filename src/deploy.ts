@@ -17,8 +17,7 @@ import {
 	socialCreditCommand,
 } from '#root/interactions';
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const rest = new REST({ version: '10' }).setToken(config.token!);
+const rest = new REST({ version: '10' }).setToken(config.token);
 
 (async () => {
 	try {

@@ -7,7 +7,6 @@ import { formatMoney } from '#utils/functions';
 
 export async function apply(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = await getOrCreateUser(interaction.user.id);
-	if (!user) throw new Error('Missing user database entry');
 	const jobId = interaction.options.getString('job', true);
 	const job = jobs.find(j => j.id === jobId.toLowerCase());
 	if (!job)
@@ -30,7 +29,6 @@ export async function apply(_cobalt: CobaltClient, interaction: ChatInputCommand
 
 export async function quit(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = await getOrCreateUser(interaction.user.id);
-	if (!user) throw new Error('Missing user database entry');
 	if (user.job === null)
 		throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);
 	await updateJob(interaction.user.id, null);

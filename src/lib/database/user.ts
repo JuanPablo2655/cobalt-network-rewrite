@@ -1,5 +1,4 @@
 import type { User } from '@prisma/client';
-import { logger } from '#lib/structures';
 import { container } from '#root/Container';
 
 const { db } = container;
@@ -20,7 +19,7 @@ export async function createUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -35,7 +34,7 @@ export async function getOrCreateUser(id: string, data?: Partial<Omit<User, 'id'
 		return (await getUser(id)) ?? (await createUser(id, data));
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -49,7 +48,7 @@ export async function deleteUser(id: string) {
 		return db.user.delete({ where: { id } });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -63,7 +62,7 @@ export async function getUser(id: string) {
 		return db.user.findUniqueOrThrow({ where: { id } });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -83,6 +82,6 @@ export async function updateUser(id: string, data?: Partial<Omit<User, 'id'>>) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }

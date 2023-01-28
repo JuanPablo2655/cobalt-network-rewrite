@@ -19,10 +19,9 @@ abstract class UpdateLeaveChannelCommand extends GenericCommand {
 
 	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		const [option, action, ...leaveMessage] = args;
-		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Missing Guild');
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only command');
 		const guildId = message.guild.id;
 		const guild = await getOrCreateGuild(guildId);
-		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		switch (option) {
 			case 'toggle': {

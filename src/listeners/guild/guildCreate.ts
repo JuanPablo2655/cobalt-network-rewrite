@@ -17,7 +17,7 @@ abstract class GuildCreateListener extends Listener {
 		if (!guild) return;
 		if (!guild.available) return;
 		await createGuild(guild.id);
-		const cobaltHook = new WebhookClient({ url: config.webhooks.guild! });
+		const cobaltHook = new WebhookClient({ url: config.webhooks.guild });
 		const guildEmbed = new EmbedBuilder()
 			.setTitle(`New Guild Created`)
 			.setThumbnail(guild.iconURL({ extension: 'png', forceStatic: false }) ?? '')

@@ -1,5 +1,4 @@
 import type { Member } from '@prisma/client';
-import { logger } from '#lib/structures';
 import { container } from '#root/Container';
 
 const { db } = container;
@@ -30,7 +29,7 @@ export async function createMember(
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -50,7 +49,7 @@ export async function getOrCreateMember(
 		return (await getMember(userId, guildId)) ?? (await createMember(userId, guildId, data));
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -67,7 +66,7 @@ export async function deleteMember(userId: string, guildId: string) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -84,7 +83,7 @@ export async function getMember(userId: string, guildId: string) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -109,6 +108,6 @@ export async function updateMember(
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }

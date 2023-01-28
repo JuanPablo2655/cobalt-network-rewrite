@@ -22,12 +22,11 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 		const [option, item] = args;
 		const guildId = message.guild.id;
 		const guild = await getOrCreateGuild(guildId);
-		if (!guild) throw new Error('Missing guild database entry');
 		const { blacklistedWords } = guild;
 
 		switch (option) {
 			case 'add': {
-				if (blacklistedWords?.includes(item))
+				if (blacklistedWords.includes(item))
 					throw new UserError(
 						{ identifier: Identifiers.PreconditionDataExists },
 						`\`${item}\` already exists in the list`,
@@ -44,15 +43,15 @@ abstract class BlacklistedWordsCommand extends GenericCommand {
 						{ identifier: Identifiers.PreconditionMissingData },
 						'There are no blacklisted words yet',
 					);
-				if (!blacklistedWords?.includes(item))
+				if (!blacklistedWords.includes(item))
 					throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Word does not exist in the list');
-				const words = blacklistedWords?.filter(w => w.toLowerCase() !== item.toLowerCase());
+				const words = blacklistedWords.filter(w => w.toLowerCase() !== item.toLowerCase());
 				await updateGuild(guildId, { blacklistedWords: words });
 				return message.channel.send({ content: `${item} was removed from the list of blacklisted words` });
 			}
 
 			case 'list': {
-				const words = blacklistedWords?.map(w => `\`${w}\``).join(', ');
+				const words = blacklistedWords.map(w => `\`${w}\``).join(', ');
 				return message.channel.send({ content: words || 'There are no blacklisted words yet.' });
 			}
 

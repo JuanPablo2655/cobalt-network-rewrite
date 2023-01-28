@@ -1,6 +1,5 @@
 import type { Message } from 'discord.js';
 import { getOrCreateUser, updateUser } from '#lib/database';
-import { logger } from '#lib/structures';
 
 /**
  * Add xp to the user
@@ -17,7 +16,7 @@ export async function addXp(id: string, amount: number) {
 		return updateUser(id, { xp: user.xp + amount, totalXp: user.totalXp + amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -38,7 +37,7 @@ export async function removeXp(id: string, amount: number, levelUp: boolean) {
 		return updateUser(id, { xp: user.xp - amount, totalXp: user.totalXp - amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -57,7 +56,7 @@ export async function addLevel(id: string, amount: number) {
 		return updateUser(id, { level: user.level + amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -76,7 +75,7 @@ export async function removeLevel(id: string, amount: number) {
 		return updateUser(id, { level: user.level - amount });
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -114,6 +113,6 @@ export async function rewardXp(message: Message) {
 		}
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }

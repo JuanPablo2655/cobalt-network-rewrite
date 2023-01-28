@@ -6,8 +6,6 @@ import { UserError, Identifiers } from '#lib/errors';
 export async function channel(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const channel = interaction.options.getChannel('channel', true);
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await getOrCreateGuild(interaction.guild.id);
-	if (!guild) throw new Error('Missing guild database entry');
 	await updateGuild(interaction.guild.id, {
 		welcome: {
 			channelId: channel.id,
@@ -19,8 +17,6 @@ export async function channel(_cobalt: CobaltClient, interaction: ChatInputComma
 export async function message(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const message = interaction.options.getString('message', true);
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
-	const guild = await getOrCreateGuild(interaction.guild.id);
-	if (!guild) throw new Error('Missing guild database entry');
 	await updateGuild(interaction.guild.id, {
 		welcome: {
 			message,
@@ -33,8 +29,7 @@ export async function toggle(_cobalt: CobaltClient, interaction: ChatInputComman
 	const option = interaction.options.getBoolean('toggle', true);
 	if (!interaction.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Must be in a guild');
 	const guild = await getOrCreateGuild(interaction.guild.id);
-	if (!guild) throw new Error('Missing guild database entry');
-	if (guild.welcome?.enabled === option)
+	if (guild.welcome.enabled === option)
 		throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `Already ${option}`);
 	await updateGuild(interaction.guild.id, {
 		welcome: {

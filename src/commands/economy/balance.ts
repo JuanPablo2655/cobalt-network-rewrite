@@ -22,11 +22,10 @@ abstract class BalanceCommand extends GenericCommand {
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
 		const profile = await getOrCreateUser(user.id);
-		if (!profile) throw new Error('Database error');
 		await addCD();
 		const bankPercent = (profile.bank / profile.bankSpace) * 100;
 		const balanceEmbed = new EmbedBuilder()
-			.setTitle(`${user?.username}'s balance`)
+			.setTitle(`${user.username}'s balance`)
 			.setDescription(
 				`**Wallet**: ${formatMoney(profile.wallet)}\n**Bank**: ${formatMoney(profile.bank)} / ${formatMoney(
 					profile.bankSpace,

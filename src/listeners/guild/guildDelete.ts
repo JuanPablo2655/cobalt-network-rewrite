@@ -17,7 +17,7 @@ abstract class GuildDeleteListener extends Listener {
 		if (!guild) return;
 		if (!guild.available) return;
 		deleteGuild(guild.id);
-		const cobaltHook = new WebhookClient({ url: config.webhooks.guild! });
+		const cobaltHook = new WebhookClient({ url: config.webhooks.guild });
 		const guildEmbed = new EmbedBuilder()
 			.setTitle(`Guild Deleted`)
 			.setThumbnail(guild.iconURL({ extension: 'png', forceStatic: false }) ?? '')

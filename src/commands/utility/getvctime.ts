@@ -24,11 +24,9 @@ abstract class GetVcTimeCommand extends GenericCommand {
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Invalid member');
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only');
 		const memberData = await getOrCreateMember(member.id, message.guild.id);
-		if (!memberData) throw new Error('Missing member database entry');
 		const user = await getOrCreateUser(member.id);
-		if (!user) throw new Error('Missing user database entry');
 		await addCD();
-		switch (option?.toLowerCase() ?? '') {
+		switch (option.toLowerCase() ?? '') {
 			case 'local': {
 				if (memberData.vcHours.length === 0) return message.reply({ content: "You haven't joined VC in this server!" });
 				// TODO(Isidro): condense reduce and sort into one loop
@@ -36,7 +34,7 @@ abstract class GetVcTimeCommand extends GenericCommand {
 				const average = sum / memberData.vcHours.length;
 				const sorted = memberData.vcHours.sort((a, b) => b - a);
 				const vcEmbed = new EmbedBuilder()
-					.setTitle(`${member?.user.username}'s VC Data`)
+					.setTitle(`${member.user.username}'s VC Data`)
 					.setDescription(
 						`**Total Time:** ${prettyMilliseconds(sum)}\n**Average Time:** ${prettyMilliseconds(
 							average,

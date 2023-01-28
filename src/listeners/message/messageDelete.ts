@@ -18,8 +18,7 @@ abstract class MessageDeleteListener extends Listener {
 		if (!message.guild) return;
 		if (!message.guild.available) return;
 		const guild = await getOrCreateGuild(message.guild.id);
-		if (!guild) return;
-		if (!guild.log?.enabled) return;
+		if (!guild.log.enabled) return;
 		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(message.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
@@ -40,7 +39,7 @@ abstract class MessageDeleteListener extends Listener {
 			logEmbed.setImage(getImage(message)!);
 		}
 
-		return void logChannel.send({ embeds: [logEmbed] });
+		return void logChannel?.send({ embeds: [logEmbed] });
 	}
 }
 

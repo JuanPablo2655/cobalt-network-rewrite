@@ -1,10 +1,10 @@
-import process from 'node:process';
+import { URL } from 'node:url';
+import { type BooleanString, envParseString, setup, envParseBoolean } from '@skyra/env-utilities';
 import { type ClientOptions, GatewayIntentBits, Options, Partials } from 'discord.js';
-import * as dotenv from 'dotenv';
 
-dotenv.config();
+setup(new URL('.env', import.meta.url));
 
-export const OWNERS = process.env.OWNERS?.split(',') ?? ['288703114473635841'];
+export const OWNERS = ['288703114473635841', '232670598872956929'];
 
 export const config = {
 	/**
@@ -14,36 +14,32 @@ export const config = {
 		/**
 		 * Bot client Id found in Discord Development Portal
 		 */
-		id: process.env.CLIENT_ID,
+		id: envParseString('CLIENT_ID'),
 		/**
 		 * Bot client secret found in Discord Development Portal
 		 */
-		secret: process.env.CLIENT_SECRET,
+		secret: envParseString('CLIENT_SECRET'),
 	},
 	/**
 	 * Bot token
 	 */
-	token: process.env.TOKEN,
+	token: envParseString('TOKEN'),
 	/**
 	 * Default message command prefix
 	 */
-	prefix: process.env.PREFIX ?? 'cn!',
-	/**
-	 * MongoDB URI
-	 */
-	mongoURL: process.env.MONGO_URL ?? 'mongodb://localhost:27017/cobalt',
+	prefix: envParseString('PREFIX', 'cn!'),
 	/**
 	 * Redis URI
 	 */
-	redis: process.env.REDIS ?? 'redis://localhost:6379',
+	redis: envParseString('REDIS', 'redis://localhost:6379'),
 	/**
 	 * Either test listeners or not
 	 */
-	testListeners: process.env.TEST_LISTENERS === 'true' ?? false,
+	testListeners: envParseBoolean('TEST_LISTENERS', false),
 	/**
 	 * Disable XP in development
 	 */
-	disableXp: process.env.DISABLE_XP === 'true' ?? false,
+	disableXp: envParseBoolean('DISABLE_XP', false),
 	/**
 	 * Webhook URLs
 	 */
@@ -51,11 +47,11 @@ export const config = {
 		/**
 		 * Shard webhook URL
 		 */
-		shard: process.env.SHARD_URL,
+		shard: envParseString('SHARD_URL'),
 		/**
 		 * Guild join/leave webhook URL
 		 */
-		guild: process.env.GUILD_URL,
+		guild: envParseString('GUILD_URL'),
 	},
 	/**
 	 * Elastic information
@@ -64,23 +60,23 @@ export const config = {
 		/**
 		 * Elastic index id
 		 */
-		index: process.env.ELASTIC_INDEX ?? 'index',
+		index: envParseString('ELASTIC_INDEX', 'index'),
 		/**
 		 * Elastic URL
 		 */
-		url: process.env.ELASTIC_URL ?? 'http://localhost:9200',
+		url: envParseString('ELASTIC_URL', 'http://localhost:9200'),
 		/**
 		 * Elastic login username
 		 */
-		username: process.env.ELASTIC_USERNAME,
+		username: envParseString('ELASTIC_USERNAME'),
 		/**
 		 * Elastic login password
 		 */
-		password: process.env.ELASTIC_PASSWORD,
+		password: envParseString('ELASTIC_PASSWORD'),
 		/**
 		 * Elastic logger name
 		 */
-		loggerName: process.env.LOGGER_NAME,
+		loggerName: envParseString('LOGGER_NAME', 'Cobaltia'),
 	},
 };
 
@@ -103,3 +99,22 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	makeCache: Options.cacheEverything(),
 	sweepers: { ...Options.DefaultSweeperSettings },
 };
+
+declare module '@skyra/env-utilities' {
+	interface Env {
+		CLIENT_ID?: string;
+		CLIENT_SECRET?: string;
+		TOKEN?: string;
+		PREFIX?: string;
+		REDIS?: string;
+		TEST_LISTENERS?: BooleanString;
+		DISABLE_XP?: BooleanString;
+		SHARD_URL?: string;
+		GUILD_URL?: string;
+		ELASTIC_INDEX?: string;
+		ELASTIC_URL?: string;
+		ELASTIC_USERNAME?: string;
+		ELASTIC_PASSWORD?: string;
+		LOGGER_NAME?: string;
+	}
+}

@@ -17,7 +17,6 @@ abstract class QuitJobCommand extends GenericCommand {
 	public async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		await addCD();
 		const user = await getOrCreateUser(message.author.id);
-		if (!user) throw new Error('Missing user database entry');
 		if (user.job === null)
 			throw new UserError({ identifier: Identifiers.PreconditionDataExists }, `You don't have a job to quit from`);
 		await updateJob(message.author.id, null);

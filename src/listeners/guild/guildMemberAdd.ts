@@ -19,8 +19,7 @@ abstract class GuildMemberAddListener extends Listener {
 		const user = await getOrCreateMember(member.user.id, member.guild.id);
 		if (!user) return;
 		const guild = await getOrCreateGuild(member.guild.id);
-		if (!guild) return;
-		if (!guild.log?.enabled) return;
+		if (!guild.log.enabled) return;
 		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache.get(member.guild.id)?.channels.cache.get(logChannelId) as TextChannel;
@@ -35,19 +34,19 @@ abstract class GuildMemberAddListener extends Listener {
 			}
 
 			return void member.user.send({
-				content: `Welcome back **${member.user.username}**, I've give you all of your roles I could give back. If there are some missing, message the staff for the remaining roles.`,
+				content: `Welcome back **${member.user.username}**, I've given you all of your roles I can give back. If there are some missing, message the staff for the remaining roles.`,
 			});
 		}
 
-		if (guild.welcome?.channelId) {
+		if (guild.welcome.channelId) {
 			const welcomeChannel = this.cobalt.guilds.cache
 				.get(member.guild.id)
 				?.channels.cache.get(guild.welcome.channelId) as TextChannel;
 			const welcome = guild.welcome.message
-				?.replace('{user.tag}', member.user.tag)
+				.replace('{user.tag}', member.user.tag)
 				.replace('{user.username}', member.user.username)
 				.replace('{guild.name}', member.guild.name);
-			return void welcomeChannel.send({ content: welcome ?? `Welcome ${member.user.tag}` });
+			return void welcomeChannel?.send({ content: welcome ?? `Welcome ${member.user.tag}` });
 		}
 
 		const created = Math.floor(member.user.createdTimestamp / 100);

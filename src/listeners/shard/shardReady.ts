@@ -13,7 +13,7 @@ abstract class ShardReadyListener extends Listener {
 	public async run(id: number, unavailableGuilds: Set<string>) {
 		if (!this.cobalt.testListeners) return;
 		logger.info({ listener: { name: this.name } }, `Listener triggered`);
-		const cobaltHook = new WebhookClient({ url: config.webhooks.shard! });
+		const cobaltHook = new WebhookClient({ url: config.webhooks.shard });
 		const shardEmbed = new EmbedBuilder().setTitle(`Shard Ready`).setTimestamp();
 		if (unavailableGuilds) {
 			shardEmbed.setDescription(

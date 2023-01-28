@@ -1,5 +1,4 @@
 import type { Bot } from '@prisma/client';
-import { logger } from '#lib/structures';
 import { container } from '#root/Container';
 
 const { db } = container;
@@ -20,7 +19,7 @@ export async function createBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -35,7 +34,7 @@ export async function getOrCreateBot(id: string, data?: Partial<Omit<Bot, 'id'>>
 		return (await getBot(id)) ?? (await createBot(id, data));
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -51,7 +50,7 @@ export async function deleteBot(id: string) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -67,7 +66,7 @@ export async function getBot(id: string) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -87,6 +86,6 @@ export async function updateBot(id: string, data?: Partial<Omit<Bot, 'id'>>) {
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }

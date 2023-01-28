@@ -22,11 +22,10 @@ abstract class MessageListener extends Listener {
 		if (!message.guild) return;
 		if (message.guild instanceof Guild) metrics.messageInc(message.guild.id);
 		const guild = await getOrCreateGuild(message.guild.id);
-		if (!guild) throw new Error('Guild not found in database');
 
 		// eslint-disable-next-line unicorn/consistent-function-scoping
 		const escapeRegex = (str?: string) => str?.replace(/[$()*+.?[\\\]^{|}]/g, '\\$&');
-		const prefixReg = new RegExp(`^(<@!?${this.cobalt?.user?.id}>|${escapeRegex(guild?.prefix)})\\s*`);
+		const prefixReg = new RegExp(`^(<@!?${this.cobalt.user?.id}>|${escapeRegex(guild.prefix)})\\s*`);
 		const prefixArr = message.content.match(prefixReg);
 		const prefix = prefixArr?.[0];
 		if (message.author.bot) return;
@@ -61,9 +60,9 @@ abstract class MessageListener extends Listener {
 				const _exp = await rewardXp(message);
 				const profile = await getOrCreateUser(message.author.id);
 				if (!profile) throw new Error('User not found in database');
-				if (_exp && guild.level?.enabled) {
+				if (_exp && guild.level.enabled) {
 					const cleanMessage = guild.level.message
-						?.replaceAll('{user.username}', `**${message.author.username}**`)
+						.replaceAll('{user.username}', `**${message.author.username}**`)
 						.replaceAll('{user.tag}', `**${message.author.tag}**`)
 						.replaceAll('{newLevel}', `**${formatNumber(profile.level)}**`);
 					await message.channel.send({ content: cleanMessage });
@@ -84,10 +83,10 @@ abstract class MessageListener extends Listener {
 			return; // handle xp and bank space
 		}
 
-		const args = message.content.slice(prefix?.length).trim().split(/ +/);
+		const args = message.content.slice(prefix.length).trim().split(/ +/);
 		const commandName: string | undefined = args.shift();
 		if (message.mentions.members?.has(this.cobalt.user!.id) && !commandName)
-			await message.channel.send({ content: `My prefix is \`${guild?.prefix}\`` });
+			await message.channel.send({ content: `My prefix is \`${guild.prefix}\`` });
 		if (commandName) {
 			const command = commands.get(commandName);
 			if (command) {

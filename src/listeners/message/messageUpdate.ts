@@ -20,8 +20,7 @@ abstract class MessageUpdateListener extends Listener {
 		if (!newMessage.guild) return;
 		if (!newMessage.guild.available) return;
 		const guild = await getOrCreateGuild(newMessage.guild.id);
-		if (!guild) return;
-		if (!guild.log?.enabled) return;
+		if (!guild.log.enabled) return;
 		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = this.cobalt.guilds.cache
@@ -52,7 +51,7 @@ abstract class MessageUpdateListener extends Listener {
 				logEmbed.setImage(getImage(newMessage)!);
 			}
 
-			return void logChannel.send({ embeds: [logEmbed] });
+			return void logChannel?.send({ embeds: [logEmbed] });
 		}
 	}
 }

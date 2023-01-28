@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 	const streamToElastic = pinoElastic({
 		index: config.elastic.index,
 		consistency: 'one',
-		node: config.elastic.url ?? 'http://localhost:9200',
+		node: config.elastic.url,
 		auth: {
 			username: config.elastic.username,
 			password: config.elastic.password,
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 		'es-version': 7,
 	});
 	logger = pino(
-		{ ...ecsFormat(), name: config.elastic.loggerName ?? 'Cobaltia' },
+		{ ...ecsFormat(), name: config.elastic.loggerName },
 		multistream([{ stream: process.stdout }, { stream: streamToElastic }]),
 	);
 } else {

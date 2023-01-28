@@ -24,7 +24,6 @@ abstract class HelpCommand extends GenericCommand {
 		await addCD();
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only command');
 		const guild = await getOrCreateGuild(message.guild.id);
-		if (!guild) throw new Error('Missing guild database entry');
 		const command = _commands.get(args[0]);
 		const categories = removeDuplicates(_commands.map(c => c.category as string));
 		if (command) {

@@ -1,5 +1,4 @@
 import type { Ban, Leave, Level, Log, Welcome } from '@prisma/client';
-import { logger } from '#lib/structures';
 import { container } from '#root/Container';
 
 const { db } = container;
@@ -14,7 +13,7 @@ async function queryGuild(id: string) {
 		return { ban, welcome, leave, level, log };
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -73,7 +72,7 @@ export async function createGuild(id: string, data?: Partial<IGuild>) {
 		return { ...raw, ...half };
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -88,7 +87,7 @@ export async function getOrCreateGuild(id: string, data?: Partial<IGuild>) {
 		return (await getGuild(id)) ?? (await createGuild(id, data));
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -104,7 +103,7 @@ export async function deleteGuild(id: string) {
 		return { ...raw, ...half };
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -120,7 +119,7 @@ export async function getGuild(id: string) {
 		return { ...raw, ...half };
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 
@@ -181,7 +180,7 @@ export async function updateGuild(id: string, data?: Partial<IGuild>) {
 		return { ...raw, ...half };
 	} catch (error_) {
 		const error = error_ as Error;
-		logger.error(error, error.message);
+		throw new Error(error.message);
 	}
 }
 

@@ -30,13 +30,10 @@ abstract class VoiceStateUpdateListener extends Listener {
 		if (!oldState.guild || !newState.guild) return;
 		if (!oldState.guild.available || !newState.guild.available) return;
 		const guild = await getOrCreateGuild(newState.guild.id);
-		if (!guild) return;
-		if (!guild.log?.enabled) return;
+		if (!guild.log.enabled) return;
 		if (!oldState.member || !newState.member) return;
 		const user = await getOrCreateUser(newState.member.id);
-		if (!user) throw new Error('User not found');
 		const member = await getOrCreateMember(newState.member.id, newState.guild.id);
-		if (!member) throw new Error('Member not found');
 		const logChannelId = guild.log.channelId;
 		if (!logChannelId) return;
 		const logChannel = newState.guild.channels.cache.get(logChannelId) as TextChannel;
@@ -50,7 +47,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 			const start = Date.now();
 			await redis.set(`voice-${newState.member.id}`, start);
 			logEmbed.setTitle(`Member Joined VC`).setDescription(`**VC Channel:** ${newState.channel}`);
-			return void logChannel.send({ embeds: [logEmbed] });
+			return void logChannel?.send({ embeds: [logEmbed] });
 		}
 
 		if (oldState.channel && !newState.channel) {
@@ -96,7 +93,7 @@ abstract class VoiceStateUpdateListener extends Listener {
 			logEmbed
 				.setTitle(`Member Switched VC`)
 				.setDescription(`**From:** ${oldState.channel}\n**To:** ${newState.channel}`);
-			return void logChannel.send({ embeds: [logEmbed] });
+			return void logChannel?.send({ embeds: [logEmbed] });
 		}
 	}
 }
