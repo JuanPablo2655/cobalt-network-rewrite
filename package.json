@@ -23,7 +23,7 @@
     "test": "vitest run",
     "test:typescript": "tsc -b src",
     "test:prettier": "prettier --check .",
-    "clean": "node scripts/build/clean.mjs",
+    "clean": "node scripts/clean.mjs",
     "build": "tsc -b src",
     "start": "NODE_ENV=production node --enable-source-maps dist/Cobalt.js",
     "start:dev": "node --enable-source-maps dist/Cobalt.js | pino-pretty -i pid,hostname -t yyyy-mm-dd HH:MM:ss",
