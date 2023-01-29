@@ -1,10 +1,17 @@
 import { URL } from 'node:url';
-import { type BooleanString, envParseString, setup, envParseBoolean } from '@skyra/env-utilities';
+import {
+	type BooleanString,
+	type ArrayString,
+	envParseString,
+	setup,
+	envParseBoolean,
+	envParseArray,
+} from '@skyra/env-utilities';
 import { type ClientOptions, GatewayIntentBits, Options, Partials } from 'discord.js';
 
 setup(new URL('.env', import.meta.url));
 
-export const OWNERS = ['288703114473635841', '232670598872956929'];
+export const OWNERS = envParseArray('CLIENT_OWNERS', ['288703114473635841']);
 
 export function praseConfig() {
 	return {
@@ -63,6 +70,7 @@ declare module '@skyra/env-utilities' {
 	interface Env {
 		CLIENT_ID?: string;
 		CLIENT_SECRET?: string;
+		CLIENT_OWNERS: ArrayString;
 		PREFIX?: string;
 		REDIS?: string;
 		TEST_LISTENERS?: BooleanString;
