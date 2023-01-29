@@ -6,79 +6,113 @@ setup(new URL('.env', import.meta.url));
 
 export const OWNERS = ['288703114473635841', '232670598872956929'];
 
-export const config = {
-	/**
-	 * Client information
-	 */
-	client: {
-		/**
-		 * Bot client Id found in Discord Development Portal
-		 */
+// export const config = {
+// 	/**
+// 	 * Client information
+// 	 */
+// 	client: {
+// 		/**
+// 		 * Bot client Id found in Discord Development Portal
+// 		 */
+// 		id: envParseString('CLIENT_ID'),
+// 		/**
+// 		 * Bot client secret found in Discord Development Portal
+// 		 */
+// 		secret: envParseString('CLIENT_SECRET'),
+// 	},
+// 	/**
+// 	 * Bot token
+// 	 */
+// 	token: envParseString('TOKEN'),
+// 	/**
+// 	 * Default message command prefix
+// 	 */
+// 	prefix: envParseString('PREFIX', 'cn!'),
+// 	/**
+// 	 * Redis URI
+// 	 */
+// 	redis: envParseString('REDIS', 'redis://localhost:6379'),
+// 	/**
+// 	 * Either test listeners or not
+// 	 */
+// 	testListeners: envParseBoolean('TEST_LISTENERS', false),
+// 	/**
+// 	 * Disable XP in development
+// 	 */
+// 	disableXp: envParseBoolean('DISABLE_XP', false),
+// 	/**
+// 	 * Webhook URLs
+// 	 */
+// 	webhooks: {
+// 		/**
+// 		 * Shard webhook URL
+// 		 */
+// 		shard: envParseString('SHARD_URL'),
+// 		/**
+// 		 * Guild join/leave webhook URL
+// 		 */
+// 		guild: envParseString('GUILD_URL'),
+// 	},
+// 	/**
+// 	 * Elastic information
+// 	 */
+// 	elastic: {
+// 		/**
+// 		 * Elastic index id
+// 		 */
+// 		index: envParseString('ELASTIC_INDEX', 'index'),
+// 		/**
+// 		 * Elastic URL
+// 		 */
+// 		url: envParseString('ELASTIC_URL', 'http://localhost:9200'),
+// 		/**
+// 		 * Elastic login username
+// 		 */
+// 		username: envParseString('ELASTIC_USERNAME'),
+// 		/**
+// 		 * Elastic login password
+// 		 */
+// 		password: envParseString('ELASTIC_PASSWORD'),
+// 		/**
+// 		 * Elastic logger name
+// 		 */
+// 		loggerName: envParseString('LOGGER_NAME', 'Cobaltia'),
+// 	},
+// };
+
+export function praseConfig() {
+	return {
+		token: envParseString('TOKEN'),
+		prefix: envParseString('PREFIX', 'cn!'),
+		redis: envParseString('REDIS', 'redis://localhost:6379'),
+		testListeners: envParseBoolean('TEST_LISTENERS', false),
+		disableXp: envParseBoolean('DISABLE_XP', false),
+	};
+}
+
+export function parseClient() {
+	return {
 		id: envParseString('CLIENT_ID'),
-		/**
-		 * Bot client secret found in Discord Development Portal
-		 */
 		secret: envParseString('CLIENT_SECRET'),
-	},
-	/**
-	 * Bot token
-	 */
-	token: envParseString('TOKEN'),
-	/**
-	 * Default message command prefix
-	 */
-	prefix: envParseString('PREFIX', 'cn!'),
-	/**
-	 * Redis URI
-	 */
-	redis: envParseString('REDIS', 'redis://localhost:6379'),
-	/**
-	 * Either test listeners or not
-	 */
-	testListeners: envParseBoolean('TEST_LISTENERS', false),
-	/**
-	 * Disable XP in development
-	 */
-	disableXp: envParseBoolean('DISABLE_XP', false),
-	/**
-	 * Webhook URLs
-	 */
-	webhooks: {
-		/**
-		 * Shard webhook URL
-		 */
+	};
+}
+
+export function parseWebhooks() {
+	return {
 		shard: envParseString('SHARD_URL'),
-		/**
-		 * Guild join/leave webhook URL
-		 */
 		guild: envParseString('GUILD_URL'),
-	},
-	/**
-	 * Elastic information
-	 */
-	elastic: {
-		/**
-		 * Elastic index id
-		 */
+	};
+}
+
+export function parseElastic() {
+	return {
 		index: envParseString('ELASTIC_INDEX', 'index'),
-		/**
-		 * Elastic URL
-		 */
 		url: envParseString('ELASTIC_URL', 'http://localhost:9200'),
-		/**
-		 * Elastic login username
-		 */
 		username: envParseString('ELASTIC_USERNAME'),
-		/**
-		 * Elastic login password
-		 */
 		password: envParseString('ELASTIC_PASSWORD'),
-		/**
-		 * Elastic logger name
-		 */
 		loggerName: envParseString('LOGGER_NAME', 'Cobaltia'),
-	},
-};
+	};
+}
 
 export const CLIENT_OPTIONS: ClientOptions = {
 	intents: [

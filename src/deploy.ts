@@ -5,7 +5,7 @@ import {
 	Routes,
 } from 'discord-api-types/v10';
 import { REST } from 'discord.js';
-import { config } from './config.js';
+import { praseConfig, parseClient } from './config.js';
 import {
 	covidCommand,
 	devCommand,
@@ -17,6 +17,8 @@ import {
 	socialCreditCommand,
 } from '#root/interactions';
 
+const config = praseConfig();
+const client = parseClient();
 const rest = new REST({ version: '10' }).setToken(config.token);
 
 (async () => {
@@ -24,7 +26,7 @@ const rest = new REST({ version: '10' }).setToken(config.token);
 		console.log('Start refreshing interaction (/) commands.');
 
 		const commands = (await rest.put(
-			Routes.applicationGuildCommands(config.client.id as Snowflake, '823300821994569748' as Snowflake),
+			Routes.applicationGuildCommands(client.id as Snowflake, '823300821994569748' as Snowflake),
 			{
 				body: [
 					devCommand,
@@ -40,7 +42,7 @@ const rest = new REST({ version: '10' }).setToken(config.token);
 		)) as RESTGetAPIApplicationGuildCommandsResult;
 
 		await rest.put(
-			Routes.guildApplicationCommandsPermissions(config.client.id as Snowflake, '823300821994569748' as Snowflake),
+			Routes.guildApplicationCommandsPermissions(client.id as Snowflake, '823300821994569748' as Snowflake),
 			{
 				body: commands.map(cmd => ({
 					id: cmd.id,

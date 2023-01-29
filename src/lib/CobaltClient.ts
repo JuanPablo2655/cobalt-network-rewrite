@@ -1,15 +1,13 @@
 import process from 'node:process';
 import { PrismaClient } from '@prisma/client';
 import { type Snowflake, Client } from 'discord.js';
-import * as dotenv from 'dotenv';
 import Redis from 'ioredis';
 import { container } from '../Container.js';
 import Metrics from './utils/Metrics.js';
 import { CommandRegistry, ListenerRegistry, InteractionRegistry } from '#lib/structures';
-import { CLIENT_OPTIONS, config } from '#root/config';
+import { CLIENT_OPTIONS, praseConfig } from '#root/config';
 
-dotenv.config();
-
+const config = praseConfig();
 export class CobaltClient extends Client {
 	public dev = process.env.NODE_ENV !== 'production';
 
