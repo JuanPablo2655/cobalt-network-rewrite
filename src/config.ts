@@ -8,7 +8,6 @@ export const OWNERS = ['288703114473635841', '232670598872956929'];
 
 export function praseConfig() {
 	return {
-		token: envParseString('TOKEN'),
 		prefix: envParseString('PREFIX', 'cn!'),
 		redis: envParseString('REDIS', 'redis://localhost:6379'),
 		testListeners: envParseBoolean('TEST_LISTENERS', false),
@@ -64,7 +63,6 @@ declare module '@skyra/env-utilities' {
 	interface Env {
 		CLIENT_ID?: string;
 		CLIENT_SECRET?: string;
-		TOKEN?: string;
 		PREFIX?: string;
 		REDIS?: string;
 		TEST_LISTENERS?: BooleanString;

@@ -25,7 +25,7 @@ export class CobaltClient extends Client {
 		this.on('raw', packet => container.metrics.eventInc(packet.t));
 	}
 
-	public override async login(token = config.token) {
+	public override async login(token?: string) {
 		await Promise.all([CommandRegistry(this), ListenerRegistry(this), InteractionRegistry(this)]);
 		const loginResponse = await super.login(token);
 		container.metrics.start();

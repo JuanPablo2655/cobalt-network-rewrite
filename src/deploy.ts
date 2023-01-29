@@ -1,3 +1,4 @@
+import { envParseString } from '@skyra/env-utilities';
 import {
 	type Snowflake,
 	type RESTGetAPIApplicationGuildCommandsResult,
@@ -5,7 +6,7 @@ import {
 	Routes,
 } from 'discord-api-types/v10';
 import { REST } from 'discord.js';
-import { praseConfig, parseClient } from './config.js';
+import { parseClient } from './config.js';
 import {
 	covidCommand,
 	devCommand,
@@ -17,9 +18,8 @@ import {
 	socialCreditCommand,
 } from '#root/interactions';
 
-const config = praseConfig();
 const client = parseClient();
-const rest = new REST({ version: '10' }).setToken(config.token);
+const rest = new REST({ version: '10' }).setToken(envParseString('DISCORD_TOKEN'));
 
 (async () => {
 	try {
@@ -62,3 +62,9 @@ const rest = new REST({ version: '10' }).setToken(config.token);
 		console.error(error);
 	}
 })();
+
+declare module '@skyra/env-utilities' {
+	interface Env {
+		DISCORD_TOKEN: string;
+	}
+}
