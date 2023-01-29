@@ -21,7 +21,6 @@ abstract class RankCommand extends GenericCommand {
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = member.user;
 		const profile = await getOrCreateUser(user.id);
-		if (!profile) throw new Error('missing user database entry');
 		await addCD();
 		const xpPercent = (profile.xp / nextLevel(profile.level)) * 100;
 		const rankEmbed = new EmbedBuilder()

@@ -15,7 +15,6 @@ export async function pay(cobalt: CobaltClient, interaction: ChatInputCommandInt
 	const amount = interaction.options.getInteger('amount', true);
 	if (!cobalt.user) throw new Error('Missing user');
 	const bot = await getOrCreateBot(cobalt.user.id);
-	if (!bot) throw new Error('Missing bot user');
 	let isDirector = false;
 	if (bot.directors)
 		for (const director of bot.directors) {

@@ -4,40 +4,21 @@ import { logger } from '#lib/structures';
 
 const cobalt: CobaltClient = new CobaltClient();
 
-async function main() {
-	try {
-		if (cobalt.dev) {
-			cobalt
-				.on('debug', stream => {
-					logger.debug(stream);
-				})
-				.on('warn', stream => {
-					logger.warn(stream);
-				});
-		}
-
-		await cobalt.login();
-	} catch {
-		await cobalt.destroy();
-		process.exit(1);
+try {
+	if (cobalt.dev) {
+		cobalt
+			.on('debug', stream => {
+				logger.debug(stream);
+			})
+			.on('warn', stream => {
+				logger.warn(stream);
+			});
 	}
-}
 
-process.on('SIGTERM', async () => {
-	logger.info('SIGTERM signal received (kill).');
-	await cobalt.destroy();
+	await cobalt.login();
+} catch (error) {
+	const err = error as Error;
+	logger.error(err);
+	cobalt.destroy();
 	process.exit(1);
-});
-
-process.on('SIGINT', async () => {
-	logger.info('SIGINT signal received (terminal).');
-	await cobalt.destroy();
-	process.exit(0);
-});
-
-process.on('unhandledRejection', err => {
-	const error = err as Error;
-	logger.error(error, error.message);
-});
-
-await main().catch(error => logger.error(error));
+}

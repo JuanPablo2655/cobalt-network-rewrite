@@ -21,7 +21,6 @@ abstract class DailyCommand extends GenericCommand {
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Missing member');
 		const user = await getOrCreateUser(member.id);
-		if (!user) throw new Error('Missing user database entry');
 		const date = Date.now();
 		const cooldown = date + days(1);
 		if (user.daily.getTime() > date)

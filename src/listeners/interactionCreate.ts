@@ -1,10 +1,4 @@
-import {
-	type ChatInputCommandInteraction,
-	type GuildMember,
-	type Interaction,
-	type PermissionsString,
-	TextChannel,
-} from 'discord.js';
+import { type ChatInputCommandInteraction, type Interaction, type PermissionsString, TextChannel } from 'discord.js';
 import { getOrCreateGuild } from '#lib/database';
 import { logger } from '#lib/structures';
 import { Listener } from '#lib/structures/listeners';
@@ -40,9 +34,7 @@ abstract class InteractionListener extends Listener {
 					const missingPermissions = new Array<PermissionsString>();
 					if (userPermissions?.length) {
 						for (const userPermission of userPermissions) {
-							const hasPermissions = interaction.channel
-								.permissionsFor(interaction.member as GuildMember)
-								?.has(userPermission);
+							const hasPermissions = interaction.channel.permissionsFor(interaction.member).has(userPermission);
 							if (!hasPermissions) missingPermissions.push(userPermission);
 						}
 

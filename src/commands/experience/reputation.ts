@@ -21,9 +21,7 @@ abstract class ReputationCommand extends GenericCommand {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'guild only command');
 		const member = await resolveMember(args[0], message.guild);
 		const author = await getOrCreateUser(message.author.id);
-		if (!author) throw new Error('Missing author database entry');
 		const user = await getOrCreateUser(member.id);
-		if (!user) throw new Error('Missing user database entry');
 		if (member.id === message.author.id)
 			throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't give yourself a reputation point!");
 		const date = Date.now();

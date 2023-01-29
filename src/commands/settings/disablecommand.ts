@@ -1,4 +1,4 @@
-import type { Guild, Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { getOrCreateGuild, updateGuild } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
 import { GenericCommand } from '#lib/structures';
@@ -19,16 +19,17 @@ abstract class DisableCommandCommand extends GenericCommand {
 	}
 
 	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
+		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Guild only command');
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing command');
 		const arg = args[0].toLowerCase();
 		const command = commands.get(arg);
-		const guildId = (message.guild as Guild)?.id;
+		const guildId = message.guild.id;
 		const guild = await getOrCreateGuild(guildId);
 		if (!guild) throw new Error('Missing guid database entry');
 		if (!command) throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'Invalid command');
 		if (SAVE_COMMANDS.includes(command.name))
 			throw new UserError({ identifier: Identifiers.CommandDisabled }, `Can't disable \`${command}\``);
-		if (SAVE_CATEGORIES.includes(command?.category))
+		if (SAVE_CATEGORIES.includes(command.category))
 			throw new UserError(
 				{ identifier: Identifiers.CategoryDisabled },
 				`Can't disabled command in \`${command.category}\` category`,

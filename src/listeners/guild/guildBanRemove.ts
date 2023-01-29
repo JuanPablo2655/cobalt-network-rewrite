@@ -17,8 +17,7 @@ abstract class GuildBanRemoveListener extends Listener {
 		if (!ban.guild) return;
 		if (!ban.guild.available) return;
 		const guild = await getOrCreateGuild(ban.guild.id);
-		if (!guild) return;
-		if (!guild.log?.enabled) return;
+		if (!guild.log.enabled) return;
 		let audit;
 		if (ban.guild.members.me?.permissions.has('ViewAuditLog')) {
 			audit = (await ban.guild.fetchAuditLogs()).entries.first();
@@ -35,7 +34,7 @@ abstract class GuildBanRemoveListener extends Listener {
 			.setDescription(`**Reason:** ${ban.reason ?? audit?.reason ?? 'No reason provided'}`)
 			.setFooter({ text: `User ID: ${ban.user.id}` })
 			.setTimestamp();
-		return void logChannel.send({ embeds: [logEmbed] });
+		return void logChannel?.send({ embeds: [logEmbed] });
 	}
 }
 

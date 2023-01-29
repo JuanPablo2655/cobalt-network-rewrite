@@ -22,7 +22,6 @@ abstract class checkSocialCredit extends GenericCommand {
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new Error('missing member');
 		const user = await getOrCreateUser(member.id);
-		if (!user) throw new Error('missing user database entry');
 		await addCD();
 		const embed = new EmbedBuilder()
 			.setTitle(`${member.user.username}'s social credit`)

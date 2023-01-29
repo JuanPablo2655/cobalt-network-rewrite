@@ -10,12 +10,11 @@ import { calcMulti } from '#utils/util';
 
 export async function work(cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = await getOrCreateUser(interaction.user.id);
-	if (!user) throw new Error('Missing user database entry');
 	if (user.job === null)
 		throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'You need a job to work.');
 	const job = jobs.find(j => j.id === user.job);
 	if (!job) throw new Error('Invalid job id');
-	const workEntry = job?.entries[Math.floor(Math.random() * job?.entries.length)];
+	const workEntry = job.entries[Math.floor(Math.random() * job.entries.length)];
 	const money = Math.floor(job.minAmount + Math.random() * 250);
 	const multi = await calcMulti(interaction.user, cobalt);
 	const moneyEarned = addMulti(money, multi);
@@ -28,11 +27,9 @@ export async function work(cobalt: CobaltClient, interaction: ChatInputCommandIn
 
 export async function pay(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const bot = await getOrCreateBot(interaction.client.user.id);
-	if (!bot) throw new Error('Missing bot database entry');
 	const member = interaction.options.getUser('user', true);
 	const amount = interaction.options.getInteger('amount', true);
 	const author = await getOrCreateUser(interaction.user.id);
-	if (!author) throw new Error('Missing author database entry');
 	if (member.id === interaction.user.id)
 		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "You can't pay yourself");
 	if (author.wallet < amount)
@@ -44,7 +41,7 @@ export async function pay(_cobalt: CobaltClient, interaction: ChatInputCommandIn
 	const afterTax = amount - tax;
 	await removeFromWallet(interaction.user.id, amount);
 	await addToWallet(member.id, afterTax);
-	await updateBot(interaction.client.user?.id, { bank: bot.bank + tax });
+	await updateBot(interaction.client.user.id, { bank: bot.bank + tax });
 	return interaction.reply({
 		content: `>>> Transaction to **${member.username}**:\nSubtotal: **${formatMoney(amount)}**\nTaxes: **${formatMoney(
 			tax,
@@ -55,7 +52,6 @@ export async function pay(_cobalt: CobaltClient, interaction: ChatInputCommandIn
 export async function balance(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await getOrCreateUser(user.id);
-	if (!profile) throw new Error('Missing user database entry');
 	const bankPercent = (profile.bank / profile.bankSpace) * 100;
 	const balanceEmbed = new EmbedBuilder()
 		.setTitle(`${user.username}'s balance`)
@@ -72,7 +68,6 @@ export async function balance(_cobalt: CobaltClient, interaction: ChatInputComma
 export async function daily(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await getOrCreateUser(member.id);
-	if (!user) throw new Error('Missing user database entry');
 	const date = Date.now();
 	const cooldown = date + days(1);
 	// TODO(Isidro): fix the is doodoo code
@@ -99,14 +94,13 @@ export async function daily(_cobalt: CobaltClient, interaction: ChatInputCommand
 	await updateUser(interaction.user.id, { daily: new Date(cooldown) });
 	await addToWallet(member.id, moneyEarned);
 	return interaction.reply({
-		content: `You gave your daily of **${formatMoney(moneyEarned)}** to **${member?.username}**.`,
+		content: `You gave your daily of **${formatMoney(moneyEarned)}** to **${member.username}**.`,
 	});
 }
 
 export async function weekly(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await getOrCreateUser(member.id);
-	if (!user) throw new Error('Missing user database entry');
 	const date = Date.now();
 	const cooldown = date + days(7);
 	if (user.weekly.getTime() > date)
@@ -116,7 +110,7 @@ export async function weekly(_cobalt: CobaltClient, interaction: ChatInputComman
 				user.weekly.getTime() - Date.now(),
 			)}** left before you can claim your weekly!`,
 		);
-	if (member?.id === interaction.user.id) {
+	if (member.id === interaction.user.id) {
 		const weeklyAmount = Math.floor(750 + Math.random() * 250);
 		await updateUser(interaction.user.id, { weekly: new Date(cooldown) });
 		await addToWallet(member.id, weeklyAmount);
@@ -130,14 +124,13 @@ export async function weekly(_cobalt: CobaltClient, interaction: ChatInputComman
 	await updateUser(interaction.user.id, { weekly: new Date(cooldown) });
 	await addToWallet(member.id, moneyEarned);
 	return interaction.reply({
-		content: `You gave your weekly of **${formatMoney(moneyEarned)}** to **${member?.username}**.`,
+		content: `You gave your weekly of **${formatMoney(moneyEarned)}** to **${member.username}**.`,
 	});
 }
 
 export async function monthly(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user') ?? interaction.user;
 	const user = await getOrCreateUser(member.id);
-	if (!user) throw new Error('Missing user database entry');
 	const date = Date.now();
 	const cooldown = date + months(1);
 	if (user.monthly.getTime() > date)
@@ -147,7 +140,7 @@ export async function monthly(_cobalt: CobaltClient, interaction: ChatInputComma
 				user.monthly.getTime() - Date.now(),
 			)}** left before you can claim your monthly!`,
 		);
-	if (member?.id === interaction.user.id) {
+	if (member.id === interaction.user.id) {
 		const monthlyAmount = Math.floor(3_500 + Math.random() * 1_500);
 		await updateUser(interaction.user.id, { monthly: new Date(cooldown) });
 		await addToWallet(member.id, monthlyAmount);

@@ -1,5 +1,5 @@
 import type { Message } from 'discord.js';
-import { getOrCreateBot, updateBot } from '#lib/database';
+import { updateBot } from '#lib/database';
 import { Identifiers, UserError } from '#lib/errors';
 import { GenericCommand } from '#lib/structures';
 import { formatNumber } from '#utils/functions';
@@ -17,8 +17,6 @@ abstract class UpdateTaxCommand extends GenericCommand {
 
 	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!this.cobalt.user) throw new Error('Missing user');
-		const bot = await getOrCreateBot(this.cobalt.user.id);
-		if (!bot) throw new Error('Missing bot user');
 		const tax = Number(args[0]);
 		if (!args[0]) throw new UserError({ identifier: Identifiers.ArgsMissing }, 'Missing number');
 		if (Number.isNaN(tax)) throw new UserError({ identifier: Identifiers.ArgumentNumberError }, 'Invalid number');

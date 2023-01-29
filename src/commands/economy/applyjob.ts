@@ -21,13 +21,10 @@ abstract class ApplyJobCommand extends GenericCommand {
 		if (!message.guild) return;
 		const guild = await getOrCreateGuild(message.guild.id);
 		const user = await getOrCreateUser(message.author.id);
-		if (!user) throw new Error('Database error');
 		if (!args[0])
 			throw new UserError(
 				{ identifier: Identifiers.ArgsMissing },
-				`Please provide a job id. You can find a list by running \`${
-					guild?.prefix ?? this.cobalt.user?.username
-				}listjobs\``,
+				`Please provide a job id. You can find a list by running \`${guild.prefix}listjobs\``,
 			);
 		const job = jobs.find(j => j.id === args[0].toLowerCase());
 		if (!job)

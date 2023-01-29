@@ -19,7 +19,6 @@ abstract class WorkCommand extends GenericCommand {
 
 	public async run(message: Message, _args: string[], addCD: () => Promise<void>) {
 		const user = await getOrCreateUser(message.author.id);
-		if (!user) throw new Error('Missing user database entry');
 		if (user.job === null)
 			throw new UserError({ identifier: Identifiers.PreconditionMissingData }, 'You need a job to work.');
 		await addCD();
@@ -31,7 +30,7 @@ abstract class WorkCommand extends GenericCommand {
 		const moneyEarned = addMulti(money, multi);
 		await addToWallet(message.author.id, moneyEarned);
 		const cleanEntry = workEntry
-			?.replaceAll('{user.username}', message.author.username)
+			.replaceAll('{user.username}', message.author.username)
 			.replaceAll('{money}', formatNumber(moneyEarned) ?? '0');
 		return message.channel.send({ content: cleanEntry });
 	}

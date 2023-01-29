@@ -19,7 +19,6 @@ abstract class ClaimTaxCommand extends GenericCommand {
 	public async run(message: Message, args: string[], addCD: () => Promise<void>) {
 		if (!this.cobalt.user) throw new Error('Missing user');
 		const bot = await getOrCreateBot(this.cobalt.user.id);
-		if (!bot) throw new Error('Missing user bot');
 		let isDirector = false;
 		if (bot.directors)
 			for (const director of bot.directors) {

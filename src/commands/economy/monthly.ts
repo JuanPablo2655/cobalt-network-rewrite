@@ -21,7 +21,6 @@ abstract class MonthlyCommand extends GenericCommand {
 		const member = await resolveMember(args[0], message.guild).catch(() => message.member);
 		if (!member) throw new UserError({ identifier: Identifiers.ArgumentMemberMissingGuild }, 'Member missing');
 		const user = await getOrCreateUser(member.id);
-		if (!user) throw new Error('Missing user database entry');
 		const date = Date.now();
 		const cooldown = date + months(1);
 		if (user.monthly.getTime() > date)
@@ -32,7 +31,7 @@ abstract class MonthlyCommand extends GenericCommand {
 				)}** left before you can claim your monthly!`,
 			);
 		await addCD();
-		if (member?.id === message.author.id) {
+		if (member.id === message.author.id) {
 			const monthlyAmount = Math.floor(3_500 + Math.random() * 1_500);
 			await updateUser(message.author.id, { monthly: new Date(cooldown) });
 			await addToWallet(member.id, monthlyAmount);
@@ -46,7 +45,7 @@ abstract class MonthlyCommand extends GenericCommand {
 		await updateUser(message.author.id, { monthly: new Date(cooldown) });
 		await addToWallet(member.id, moneyEarned);
 		return message.channel.send({
-			content: `You gave your monthly of **${formatMoney(moneyEarned)}** to **${member?.user.username}**.`,
+			content: `You gave your monthly of **${formatMoney(moneyEarned)}** to **${member.user.username}**.`,
 		});
 	}
 }

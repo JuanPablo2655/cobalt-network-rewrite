@@ -26,7 +26,6 @@ abstract class addSocialCredit extends GenericCommand {
 		if (Number.isNaN(amount)) throw new UserError({ identifier: Identifiers.ArgumentIntegerError }, 'Invalid integer');
 		await addCD();
 		const userData = await getOrCreateUser(member.id);
-		if (!userData) throw new Error('Database error');
 		const newAmount = userData.socialCredit + amount;
 		if (newAmount > 2_000)
 			throw new UserError(

@@ -21,7 +21,6 @@ abstract class UpdateWelcomeChannelCommand extends GenericCommand {
 		if (!message.guild) throw new UserError({ identifier: Identifiers.PreconditionGuildOnly }, 'Missing Guild');
 		const guildId = message.guild.id;
 		const guild = await getOrCreateGuild(guildId);
-		if (!guild) throw new Error('Missing guild database entry');
 		await addCD();
 		switch (option) {
 			case 'toggle': {

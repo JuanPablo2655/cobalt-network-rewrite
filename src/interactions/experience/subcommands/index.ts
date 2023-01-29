@@ -9,7 +9,6 @@ import { formatNumber } from '#utils/functions';
 export async function rank(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
 	const profile = await getOrCreateUser(user.id);
-	if (!profile) throw new Error('Missing user database entry');
 	const xpPercent = (profile.xp / nextLevel(profile.level)) * 100;
 	const rankEmbed = new EmbedBuilder()
 		.setTitle(`${user.username}'s Rank`)
@@ -24,9 +23,7 @@ export async function rank(_cobalt: CobaltClient, interaction: ChatInputCommandI
 export async function reputation(_cobalt: CobaltClient, interaction: ChatInputCommandInteraction<'cached'>) {
 	const member = interaction.options.getUser('user', true);
 	const author = await getOrCreateUser(interaction.user.id);
-	if (!author) throw new Error('Missing author database entry');
 	const user = await getOrCreateUser(member.id);
-	if (!user) throw new Error('Missing user database entry');
 	if (member.id === interaction.user.id)
 		throw new UserError({ identifier: Identifiers.ArgumentUserError }, "Can't give yourself a reputation point!");
 	const date = Date.now();

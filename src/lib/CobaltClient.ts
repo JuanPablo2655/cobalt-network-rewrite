@@ -1,15 +1,13 @@
 import process from 'node:process';
 import { PrismaClient } from '@prisma/client';
 import { type Snowflake, Client } from 'discord.js';
-import * as dotenv from 'dotenv';
 import Redis from 'ioredis';
 import { container } from '../Container.js';
 import Metrics from './utils/Metrics.js';
 import { CommandRegistry, ListenerRegistry, InteractionRegistry } from '#lib/structures';
-import { CLIENT_OPTIONS, config } from '#root/config';
+import { CLIENT_OPTIONS, praseConfig } from '#root/config';
 
-dotenv.config();
-
+const config = praseConfig();
 export class CobaltClient extends Client {
 	public dev = process.env.NODE_ENV !== 'production';
 
@@ -27,7 +25,7 @@ export class CobaltClient extends Client {
 		this.on('raw', packet => container.metrics.eventInc(packet.t));
 	}
 
-	public override async login(token = config.token) {
+	public override async login(token?: string) {
 		await Promise.all([CommandRegistry(this), ListenerRegistry(this), InteractionRegistry(this)]);
 		const loginResponse = await super.login(token);
 		container.metrics.start();
