@@ -2318,7 +2318,7 @@ __metadata:
     node-fetch: ^3.3.0
     pino: ^8.8.0
     pino-elasticsearch: ^6.3.0
-    pino-pretty: ^9.1.1
+    pino-pretty: ^10.0.0
     prettier: ^2.8.3
     pretty-ms: ^8.0.0
     prisma: ^4.9.0
@@ -6109,9 +6109,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-pretty@npm:^9.1.1":
-  version: 9.1.1
-  resolution: "pino-pretty@npm:9.1.1"
+"pino-pretty@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "pino-pretty@npm:10.0.0"
   dependencies:
     colorette: ^2.0.7
     dateformat: ^4.6.3
@@ -6129,7 +6129,7 @@ __metadata:
     strip-json-comments: ^3.1.1
   bin:
     pino-pretty: bin.js
-  checksum: c1d148aa0c5f2d1034cf76c0b397cf9725923d16343e9dff78d56b564090c1c86208aae94f1208f0fb936f456eece7eab6264095337540f42d91aaa13e5b8935
+  checksum: af45c69fdb50bdd27875d1456b7f2a7227bc1b98ca8b39ff3a4ef0c473ac8bd2ae1cb7de19921dc8cc0217b6d5f800c7af040eae294e5cc26e0fadf0a0a4afd7
   languageName: node
   linkType: hard
 
